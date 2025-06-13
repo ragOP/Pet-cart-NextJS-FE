@@ -8,7 +8,7 @@ import Footer from "@/components/home/Footer";
 import Header from "@/components/home/Header";
 import NewLaunched from "@/components/home/NewLaunched";
 import Promotions from "@/components/home/Promotions";
-import Trending from "@/components/home/Treanding";
+import Trending from "@/components/home/Trending";
 import TreatSection from "@/components/home/TreatSection";
 
 const Home = () => {

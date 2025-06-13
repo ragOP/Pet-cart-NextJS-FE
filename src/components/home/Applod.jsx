@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import applodLogo from "@/assets/applod/applod-brand.png";
 import CustomImage from "@/components/images/CustomImage";
 import banner1 from "@/assets/banners/banner1.png";
@@ -11,6 +11,58 @@ import AnimatedImage from "../images/AnimatedImage";
 
 const Applod = () => {
   const bannerImages = [banner1, banner2, banner3, banner4];
+  const scrollRef = useRef(null);
+  const isHovered = useRef(false);
+  const animationRef = useRef();
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    let scrollStep = 1;
+    let trackWidth = 0;
+
+    // Set up hover listeners
+    const onEnter = () => {
+      isHovered.current = true;
+    };
+    const onLeave = () => {
+      isHovered.current = false;
+    };
+    el.addEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+
+    // Calculate track width after images load
+    function updateTrackWidth() {
+      const track = el.querySelector(".applod-banner-track");
+      if (track) {
+        trackWidth = track.scrollWidth / 2; // since we duplicate images
+      }
+    }
+    updateTrackWidth();
+    window.addEventListener("resize", updateTrackWidth);
+
+    function autoScroll() {
+      if (!isHovered.current) {
+        if (el.scrollLeft >= trackWidth) {
+          el.scrollLeft = el.scrollLeft - trackWidth;
+        } else {
+          el.scrollLeft += scrollStep;
+        }
+      }
+      animationRef.current = requestAnimationFrame(autoScroll);
+    }
+    animationRef.current = requestAnimationFrame(autoScroll);
+
+    return () => {
+      cancelAnimationFrame(animationRef.current);
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
+      window.removeEventListener("resize", updateTrackWidth);
+    };
+  }, []);
+
+  // Duplicate images for seamless scroll
+  const images = [...bannerImages, ...bannerImages];
 
   return (
     <>
@@ -19,17 +71,18 @@ const Applod = () => {
         <AnimatedImage src={applodLogo} alt="Applod Logo" />
       </div>
 
-      {/* Scrollable Banners with hidden scrollbar */}
-      <div className="w-full overflow-x-auto px-2 hide-scrollbar">
-        <div className="flex gap-4 w-max">
-          {bannerImages.map((img, index) => (
-            <CustomImage
-              key={index}
+      <div
+        className="w-full mt-1 overflow-x-auto px-2 hide-scrollbar"
+        ref={scrollRef}
+        style={{ whiteSpace: "nowrap" }}
+      >
+        <div className="flex gap-4 w-max applod-banner-track">
+          {images.map((img, index) => (
+            <AnimatedImage
               src={img}
-              alt={`Banner ${index + 1}`}
-              className="h-[120px] md:h-[250px] rounded-xl flex-shrink-0"
-              width={400}
-              height={120}
+              alt={`Promo ${(index % bannerImages.length) + 1}`}
+              className="object-cover w-full h-full"
+              priority={index === 0}
             />
           ))}
         </div>

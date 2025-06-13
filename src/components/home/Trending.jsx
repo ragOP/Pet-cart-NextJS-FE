@@ -1,0 +1,71 @@
+"use client";
+
+import React from "react";
+import pawLogo from "@/assets/essential/paws-logo.png";
+import trendingSnacks from "@/assets/trending/snacks.png";
+import trendingCatToys from "@/assets/trending/cat-toys.png";
+import trendingDogToys from "@/assets/trending/dog-toys.png";
+import trendingBedding from "@/assets/trending/bedding.png";
+import trendingDogTreats from "@/assets/trending/dog-treats.png";
+import trendingCare from "@/assets/trending/care.png";
+import CustomImage from "@/components/images/CustomImage";
+import CustomCarousel from "../carousel/CustomCarousel";
+import { CarouselItem } from "../ui/carousel";
+
+const trendingItems = [
+  { id: 1, image: trendingSnacks, label: "Snacks & Treat" },
+  { id: 2, image: trendingCatToys, label: "Cat Toys" },
+  { id: 3, image: trendingDogToys, label: "Dog Toys" },
+  { id: 4, image: trendingBedding, label: "Bedding" },
+  { id: 5, image: trendingDogTreats, label: "Dog Treats" },
+  { id: 6, image: trendingCare, label: "Care Products" },
+  { id: 7, image: trendingCare, label: "Care Products" },
+  { id: 8, image: trendingCare, label: "Care Products" },
+];
+
+function Trending() {
+  return (
+    <div className="w-full px-4 py-6">
+      {/* Title */}
+      <h2 className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle">
+        <span className="text-yellow-500">
+          <CustomImage
+            src={pawLogo}
+            alt="Paw Logo"
+            className="inline-block mr-0 h-6"
+            width={24}
+            height={24}
+          />
+        </span>{" "}
+        <span className="text-[#F59A11]">Trending</span>{" "}
+        <span className="text-[#0888B1]">Add-To-Carts</span>
+      </h2>
+
+      {/* Carousel for trending items */}
+      <CustomCarousel
+        className="max-w-full"
+        contentClassName=""
+        itemClassName="flex flex-col items-center min-w-[20%] sm:min-w-[16.66%] md:min-w-[12.5%] lg:min-w-[10%] xl:min-w-[8.33%]"
+      >
+        {trendingItems.map((item) => (
+          <CarouselItem key={item.id} className="flex flex-col items-center">
+            {/* Image */}
+            <CustomImage
+              src={item.image}
+              alt={item.label}
+              className="w-36 h-36 object-contain bg-white font-gotham-rounded"
+              width={144}
+              height={144}
+            />
+            {/* Label */}
+            <p className="text-sm mt-2 font-medium text-[#181818] text-center">
+              {item.label}
+            </p>
+          </CarouselItem>
+        ))}
+      </CustomCarousel>
+    </div>
+  );
+}
+
+export default Trending;
