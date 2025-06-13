@@ -80,6 +80,7 @@ const Applod = () => {
           {images.map((img, index) => (
             <AnimatedImage
               src={img}
+              key={index}
               alt={`Promo ${(index % bannerImages.length) + 1}`}
               className="object-cover w-full h-full"
               priority={index === 0}

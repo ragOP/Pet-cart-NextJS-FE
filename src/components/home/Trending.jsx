@@ -27,19 +27,19 @@ function Trending() {
   return (
     <div className="w-full px-4 py-6">
       {/* Title */}
-      <h2 className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle">
-        <span className="text-yellow-500">
-          <CustomImage
-            src={pawLogo}
-            alt="Paw Logo"
-            className="inline-block mr-0 h-6"
-            width={24}
-            height={24}
-          />
-        </span>{" "}
-        <span className="text-[#F59A11]">Trending</span>{" "}
-        <span className="text-[#0888B1]">Add-To-Carts</span>
-      </h2>
+      <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
+        <CustomImage
+          src={pawLogo}
+          alt="Paw Logo"
+          className="inline-block mr-0 h-6"
+          width={50}
+          height={60}
+        />
+        <span className="space-x-2">
+          <span className="text-[#F59A11]">Trending</span>
+          <span className="text-[#0888B1]">Add-To-Carts</span>
+        </span>
+      </div>
 
       {/* Carousel for trending items */}
       <CustomCarousel
@@ -53,7 +53,7 @@ function Trending() {
             <CustomImage
               src={item.image}
               alt={item.label}
-              className="w-36 h-36 object-contain bg-white font-gotham-rounded"
+              className="w-36 h-36 object-contain"
               width={144}
               height={144}
             />

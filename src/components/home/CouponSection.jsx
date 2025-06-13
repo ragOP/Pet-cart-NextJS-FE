@@ -16,14 +16,19 @@ const CouponSection = () => {
   return (
     <div className="w-full px-4 py-6">
       {/* Title */}
-      <h2 className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex items-center gap-2">
-        <span className="text-yellow-500">
-          <CustomImage src={pawLogo} alt="Paw Logo" className="inline-block mr-1 h-6" width={24} height={24} />
+      <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
+        <CustomImage
+          src={pawLogo}
+          alt="Paw Logo"
+          className="inline-block mr-0 h-6"
+          width={50}
+          height={60}
+        />
+        <span>
+          <span className="text-[#F59A11]">Coupons You'll </span>
+          <span className="text-[#F73518]">Love ❤️</span>
         </span>
-        <span className="text-[#F59A11]">Coupons You&apos;ll </span>
-        <span className="text-[#F73518]">Love</span>
-        <CustomImage src={heartLogo} alt="Heart Logo" className="inline-block ml-2 h-6" width={24} height={24} />
-      </h2>
+      </div>
       {/* Carousel for coupons */}
       <CustomCarousel
         className="max-w-full"
@@ -32,13 +37,23 @@ const CouponSection = () => {
       >
         {coupons.map((img, index) => (
           <CarouselItem key={index} className="flex flex-col items-center">
-            <CustomImage
-              src={img}
-              alt={`Coupon ${index + 1}`}
-              className="w-full h-40 md:h-56 object-contain rounded-2xl shadow-lg bg-white"
-              width={400}
-              height={160}
-            />
+            <button
+              type="button"
+              aria-label={`Activate coupon ${index + 1}`}
+              className="w-full h-40 md:h-56 outline-none focus:outline-none bg-transparent rounded-2xl transition-all duration-200 shadow-lg hover:shadow-2xl hover:scale-105 hover:ring-2 hover:ring-[#F59A11] focus:shadow-2xl focus:scale-105 focus:ring-2 focus:ring-[#F59A11] cursor-pointer"
+              onClick={() => {
+                // Placeholder: replace with copy code, open modal, or show toast
+                console.log(`Coupon ${index + 1} clicked`);
+              }}
+            >
+              <CustomImage
+                src={img}
+                alt={`Coupon ${index + 1}`}
+                className="w-full h-40 md:h-56 object-contain rounded-2xl bg-white"
+                width={400}
+                height={160}
+              />
+            </button>
           </CarouselItem>
         ))}
       </CustomCarousel>

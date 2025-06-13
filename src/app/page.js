@@ -13,7 +13,7 @@ import TreatSection from "@/components/home/TreatSection";
 
 const Home = () => {
   return (
-    <div>
+    <div style={{ background: 'linear-gradient(180deg, #FDF4E6 0%, #F7F5FF 100%)' }}>
       <Header />
       <Category />
       <Applod />

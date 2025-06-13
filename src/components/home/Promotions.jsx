@@ -40,12 +40,15 @@ function Promotions() {
     updateTrackWidth();
     window.addEventListener("resize", updateTrackWidth);
 
+    // Start at the end for RTL scroll
+    el.scrollLeft = el.scrollWidth;
+
     function autoScroll() {
       if (!isHovered.current) {
-        if (el.scrollLeft >= trackWidth) {
-          el.scrollLeft = el.scrollLeft - trackWidth;
+        if (el.scrollLeft <= 0) {
+          el.scrollLeft = trackWidth;
         } else {
-          el.scrollLeft += scrollStep;
+          el.scrollLeft -= scrollStep;
         }
       }
       animationRef.current = requestAnimationFrame(autoScroll);

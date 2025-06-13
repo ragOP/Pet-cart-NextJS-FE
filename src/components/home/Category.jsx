@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
 import React, { useState } from "react";
 import catIcon from "@/assets/cat.png";
 import dogIcon from "@/assets/dog.png";
 import pawIcon from "@/assets/pawicon.png";
 import { ChevronDown } from "lucide-react";
-import CustomImage from '@/components/images/CustomImage';
-
+import CustomImage from "@/components/images/CustomImage";
+import CustomCarousel from "@/components/carousel/CustomCarousel";
 
 // Importing breed images
 import breed1 from "@/assets/breed/1.png";
@@ -32,7 +32,6 @@ function Category() {
   const [showCatOptions, setShowCatOptions] = useState(false);
   const [showDogOptions, setShowDogOptions] = useState(false);
   const [showShopByBreed, setShowShopByBreed] = useState(false);
-
 
   const breeds = [
     {
@@ -89,7 +88,153 @@ function Category() {
       hoverImg: breed9Hover,
       link: "/shop-by-breed",
     },
+    {
+      name: "German Shepherd",
+      img: breed6,
+      hoverImg: breed6Hover,
+      link: "/shop-by-breed",
+    },
+    {
+      name: "German Shepherd",
+      img: breed7,
+      hoverImg: breed7Hover,
+      link: "/shop-by-breed",
+    },
+    {
+      name: "German Shepherd",
+      img: breed6,
+      hoverImg: breed6Hover,
+      link: "/shop-by-breed",
+    },
+    {
+      name: "German Shepherd",
+      img: breed7,
+      hoverImg: breed7Hover,
+      link: "/shop-by-breed",
+    },
   ];
+
+  // Dropdown section data
+  const catSections = [
+    {
+      title: "Cat Food",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Cat Litter Supplies",
+      items: ["Wet Food", "Kitten Food", "Scoopers"],
+    },
+    {
+      title: "Cat Walk & Travel Supplies",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Bowls & Feeders",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Cat Clothing",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Cat Treats",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Cat Toys",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+  ];
+  const dogSections = [
+    {
+      title: "Dog Food",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Dog Litter Supplies",
+      items: ["Wet Food", "Kitten Food", "Scoopers"],
+    },
+    {
+      title: "Dog Walk & Travel Supplies",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Bowls & Feeders",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Dog Clothing",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Dog Treats",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+    {
+      title: "Dog Toys",
+      items: ["Wet Food", "Kitten Food", "Premium Food"],
+    },
+  ];
+
+  function Dropdown({ icon, title, sections, onClose }) {
+    // Close dropdown on outside click
+    React.useEffect(() => {
+      function handleClick(e) {
+        if (e.target.closest(".petcaart-dropdown") === null) {
+          onClose();
+        }
+      }
+      document.addEventListener("mousedown", handleClick);
+      return () => document.removeEventListener("mousedown", handleClick);
+    }, [onClose]);
+    return (
+      <div
+        className="absolute left-0 right-0 w-full bg-white rounded-b-lg p-4 md:p-6 text-black shadow-lg z-30 petcaart-dropdown"
+        style={{ maxWidth: "100vw" }}
+      >
+        <h2 className="uppercase flex pb-4 font-gotham-rounded font-bold text-[24px] leading-[28.5px] tracking-[0.57px] align-middle">
+          <CustomImage
+            src={icon}
+            alt={title}
+            className="h-6 w-6 mr-2"
+            width={24}
+            height={24}
+          />
+          Categories
+        </h2>
+        <hr className="mb-4" />
+        <div className="flex flex-col md:grid md:grid-cols-6 md:gap-6 text-sm">
+          {sections.map((section) => (
+            <div className="mb-6 md:mb-0" key={section.title}>
+              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[16px] leading-[22px] tracking-[0.57px] align-middle">
+                {section.title}
+              </h3>
+              <div className="flex flex-col space-y-2">
+                {section.items.map((item) => (
+                  <div
+                    className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1"
+                    key={item}
+                  >
+                    <CustomImage
+                      src={pawIcon}
+                      alt="paw"
+                      className="w-4 h-4 hidden group-hover:inline"
+                      width={16}
+                      height={16}
+                    />
+                    <p className="font-gotham-rounded font-normal text-[12px] leading-[20px] tracking-[0.57px] align-middle group-hover:font-medium">
+                      {item}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* Top Navigation */}
@@ -102,9 +247,15 @@ function Category() {
               setShowDogOptions(false);
               setShowShopByBreed(false);
             }}
-            className="flex items-center space-x-1 "
+            className="flex items-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] transition-colors cursor-pointer outline-none focus:underline"
           >
-            <CustomImage src={catIcon} alt="Cats" className="h-5 w-5" width={20} height={20} />
+            <CustomImage
+              src={catIcon}
+              alt="Cats"
+              className="h-5 w-5"
+              width={20}
+              height={20}
+            />
             <span>
               Cats
               <ChevronDown className="inline-block h-4 w-4" />
@@ -120,9 +271,15 @@ function Category() {
               setShowCatOptions(false);
               setShowShopByBreed(false);
             }}
-            className="flex items-center space-x-1 mr-12"
+            className="flex items-center space-x-1 mr-12 hover:text-[#F59A11] focus:text-[#F59A11] transition-colors cursor-pointer outline-none focus:underline"
           >
-            <CustomImage src={dogIcon} alt="Dogs" className="h-5 w-5" width={20} height={20} />
+            <CustomImage
+              src={dogIcon}
+              alt="Dogs"
+              className="h-5 w-5"
+              width={20}
+              height={20}
+            />
             <span>
               Dogs
               <ChevronDown className="inline-block h-4 w-4" />
@@ -137,7 +294,7 @@ function Category() {
               setShowCatOptions(false);
               setShowDogOptions(false);
             }}
-            className="text-sm"
+            className="text-sm hover:text-[#F59A11] focus:text-[#F59A11] transition-colors cursor-pointer outline-none focus:underline"
           >
             Shop By Breed
             <ChevronDown className="inline-block h-4 w-4" />
@@ -147,445 +304,61 @@ function Category() {
 
       {/*CAT DROPDOWN */}
       {showCatOptions && (
-        <div className="absolute left-0 right-0 mx-auto max-w-7xl bg-white rounded p-4 md:p-6 text-black shadow-lg z-30 mt-2">
-          <h2 className="uppercase flex pb-4 font-gotham-rounded font-bold text-[24px] leading-[28.5px] tracking-[0.57px] align-middle">
-            <CustomImage src={catIcon} alt="Cats" className="h-6 w-6 mr-2" width={24} height={24} />
-            Categories
-          </h2>
-          <hr className="mb-4" />
-          <div className="flex flex-col md:grid md:grid-cols-6 md:gap-6 text-sm">
-            {/* Cat Food Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Cat Food
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Cat Litter Supplies Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Cat Litter Supplies
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Scoopers
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Cat Walk & Travel Supplies Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Cat Walk & Travel Supplies
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Bowls & Feeders Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Bowls & Feeders
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Cat Clothing Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Cat Clothing
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Cat Clothing Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Cat Treats
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Cat Toys Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Cat Toys
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Dropdown
+          icon={catIcon}
+          title="Cats"
+          sections={catSections}
+          onClose={() => setShowCatOptions(false)}
+        />
       )}
-
       {/*DOG DROPDOWN*/}
       {showDogOptions && (
-        <div className="absolute max-w-full md:left-4 bg-white rounded p-4 md:p-6 text-black shadow-lg z-30 mt-2">
-          <h2 className="uppercase flex pb-4 font-gotham-rounded font-bold text-[24px] leading-[28.5px] tracking-[0.57px] align-middle">
-            <CustomImage src={dogIcon} alt="Dogs" className="h-6 w-6 mr-2" width={24} height={24} />
-            Categories
-          </h2>
-          <hr className="mb-4" />
-          <div className="flex flex-col md:grid md:grid-cols-6 md:gap-6 text-sm">
-            {/* Cat Food Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Dog Food
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Dog Litter Supplies Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Dog Litter Supplies
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Scoopers
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Dog Walk & Travel Supplies Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Dog Walk & Travel Supplies
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Bowls & Feeders Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Bowls & Feeders
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Dog Clothing Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Dog Clothing
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Dog Clothing Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Dog Treats
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Dog Toys Section */}
-            <div className="mb-6 md:mb-0">
-              <h3 className="uppercase mb-2 font-gotham-rounded font-medium text-[20px] leading-[28.5px] tracking-[0.57px] align-middle">
-                Dog Toys
-              </h3>
-              <div className="flex flex-col space-y-2">
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Wet Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Kitten Food
-                  </p>
-                </div>
-                <div className="group flex items-center space-x-2 cursor-pointer transition-all duration-200 hover:translate-x-1">
-                  <CustomImage src={pawIcon} alt="paw" className="w-4 h-4 hidden group-hover:inline" width={16} height={16} />
-                  <p className="font-gotham-rounded font-normal text-[16px] leading-[28.5px] tracking-[0.57px] align-middle group-hover:font-medium">
-                    Premium Food
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Dropdown
+          icon={dogIcon}
+          title="Dogs"
+          sections={dogSections}
+          onClose={() => setShowDogOptions(false)}
+        />
       )}
 
       {/*SHOW BREEDS*/}
       {showShopByBreed && (
-        <div className="top-full left-0 bg-white shadow-lg p-6 z-10">
-          <div className="overflow-x-auto">
-            <div className="flex gap-6 w-max">
-              {breeds.map((breed, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col items-center w-28 group cursor-pointer relative"
-                  onClick={() => {
-                    console.log("habscbb")
-                    
-                  }}
-                >
-                  {/* Circular Thumbnail */}
-                  <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200 z-10">
-                    <CustomImage
-                      src={breed.img}
-                      alt={breed.name}
-                      className="w-full h-full object-cover"
-                      width={96}
-                      height={96}
-                    />
-                  </div>
-
-                  {/* Full Hover Image */}
+        <div
+          className="absolute left-0 right-0 w-full bg-white shadow-lg p-6 z-10"
+          style={{ maxWidth: "100vw" }}
+        >
+          <CustomCarousel
+            className="max-w-full"
+            itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
+            contentClassName=""
+            itemsToShow={5}
+            showArrows={true}
+          >
+            {breeds.map((breed, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center w-28 group cursor-pointer relative mx-auto "
+              >
+                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200 z-10">
                   <CustomImage
-                    src={breed.hoverImg}
-                    alt={`${breed.name} Hover`}
-                    className="absolute w-32 h-36 object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -top-6 z-20"
-                    width={128}
-                    height={144}
+                    src={breed.img}
+                    alt={breed.name}
+                    className="w-full h-full object-cover"
+                    width={96}
+                    height={96}
                   />
-
-                  <p className="text-center text-sm mt-2 z-30">{breed.name}</p>
                 </div>
-              ))}
-            </div>
-          </div>
+                <CustomImage
+                  src={breed.hoverImg}
+                  alt={`${breed.name} Hover`}
+                  className="absolute w-32 h-36 object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -top-6 z-20"
+                  width={128}
+                  height={144}
+                />
+                <p className="text-center text-sm mt-2 z-30">{breed.name}</p>
+              </div>
+            ))}
+          </CustomCarousel>
         </div>
       )}
     </>
