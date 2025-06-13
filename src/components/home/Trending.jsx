@@ -23,6 +23,29 @@ const trendingItems = [
   { id: 8, image: trendingCare, label: "Care Products" },
 ];
 
+// Trending item card component
+const TrendingItemCard = ({ item }) => (
+  <div className="flex flex-col items-center group transition-all duration-200">
+    <CustomImage
+      src={item.image}
+      alt={item.label}
+      className="w-36 h-36 object-contain transition-transform duration-200 group-hover:scale-110 group-focus:scale-110"
+      width={144}
+      height={144}
+    />
+    <p
+      className="text-sm mt-2 font-medium text-[#181818] text-center transition-all duration-200 cursor-pointer hover:text-[#F59A11] focus:text-[#F59A11] hover:underline focus:underline outline-none group-hover:scale-105 group-focus:scale-105"
+      tabIndex={0}
+      onClick={() => {
+        console.log("Trending item clicked:", item.label);
+      }}
+      aria-label={`Shop ${item.label}`}
+    >
+      {item.label}
+    </p>
+  </div>
+);
+
 function Trending() {
   return (
     <div className="w-full px-4 py-6">
@@ -48,19 +71,8 @@ function Trending() {
         itemClassName="flex flex-col items-center min-w-[20%] sm:min-w-[16.66%] md:min-w-[12.5%] lg:min-w-[10%] xl:min-w-[8.33%]"
       >
         {trendingItems.map((item) => (
-          <CarouselItem key={item.id} className="flex flex-col items-center">
-            {/* Image */}
-            <CustomImage
-              src={item.image}
-              alt={item.label}
-              className="w-36 h-36 object-contain"
-              width={144}
-              height={144}
-            />
-            {/* Label */}
-            <p className="text-sm mt-2 font-medium text-[#181818] text-center">
-              {item.label}
-            </p>
+          <CarouselItem key={item.id}>
+            <TrendingItemCard item={item} />
           </CarouselItem>
         ))}
       </CustomCarousel>
