@@ -331,7 +331,7 @@ function Category() {
             className="max-w-full"
             itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
             contentClassName=""
-            itemsToShow={5}
+            // itemsToShow={5}
             showArrows={true}
           >
             {breeds.map((breed, index) => (
