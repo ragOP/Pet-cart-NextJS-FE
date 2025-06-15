@@ -1,5 +1,5 @@
 export const isDev = () => {
-  return process.env.MODE === "development";
+  return process.env.NEXT_PUBLIC_MODE === "development";
 };
 
 export const BACKEND_URL = isDev()

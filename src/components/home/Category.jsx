@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import catIcon from "@/assets/cat.png";
 import dogIcon from "@/assets/dog.png";
 import pawIcon from "@/assets/pawicon.png";
@@ -28,153 +28,71 @@ import breed8Hover from "@/assets/breed/8.8.png";
 import breed9 from "@/assets/breed/9.png";
 import breed9Hover from "@/assets/breed/9.9.png";
 
+import { fetchCategories, fetchSubCategories, fetchBrands, fetchBreeds, fetchCollections } from "@/helpers/home"
+import { Skeleton } from "../ui/skeleton";
+
 function Category() {
-  const [showCatOptions, setShowCatOptions] = useState(false);
-  const [showDogOptions, setShowDogOptions] = useState(false);
+
+  const [showShopByCategory, setShowShopByCategory] = useState(false);
   const [showShopByBreed, setShowShopByBreed] = useState(false);
 
-  const breeds = [
-    {
-      name: "German Shepherd",
-      img: breed1,
-      hoverImg: breed1Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed2,
-      hoverImg: breed2Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed3,
-      hoverImg: breed3Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed4,
-      hoverImg: breed4Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed5,
-      hoverImg: breed5Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed6,
-      hoverImg: breed6Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed7,
-      hoverImg: breed7Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed8,
-      hoverImg: breed8Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed9,
-      hoverImg: breed9Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed6,
-      hoverImg: breed6Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed7,
-      hoverImg: breed7Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed6,
-      hoverImg: breed6Hover,
-      link: "/shop-by-breed",
-    },
-    {
-      name: "German Shepherd",
-      img: breed7,
-      hoverImg: breed7Hover,
-      link: "/shop-by-breed",
-    },
-  ];
+  const paramInitialState = {
+    page: 1,
+    per_page: 50,
+    search: "",
+  };
 
-  // Dropdown section data
-  const catSections = [
-    {
-      title: "Cat Food",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Cat Litter Supplies",
-      items: ["Wet Food", "Kitten Food", "Scoopers"],
-    },
-    {
-      title: "Cat Walk & Travel Supplies",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Bowls & Feeders",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Cat Clothing",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Cat Treats",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Cat Toys",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-  ];
-  const dogSections = [
-    {
-      title: "Dog Food",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Dog Litter Supplies",
-      items: ["Wet Food", "Kitten Food", "Scoopers"],
-    },
-    {
-      title: "Dog Walk & Travel Supplies",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Bowls & Feeders",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Dog Clothing",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Dog Treats",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-    {
-      title: "Dog Toys",
-      items: ["Wet Food", "Kitten Food", "Premium Food"],
-    },
-  ];
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [breeds, setBreeds] = useState([]);
+  const [collections, setCollections] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
+
+  const getSectionsForCategory = (categoryId) => {
+    // Filter subcategories that belong to this category
+    const subs = subCategories.filter(sub => sub.categoryId === categoryId);
+
+    const result = subs.map(sub => {
+      const mappedCollections = collections
+        .filter(col => col.subCategoryId === sub._id)
+        .map(col => col.name);
+
+      return {
+        title: sub.name,
+        items: mappedCollections.length > 0 ? mappedCollections : ["No collections"]
+      };
+    });
+    console.log("result",result);
+    return result;
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchCategories(paramInitialState).then((data) => {
+      console.log(data?.categories);
+      setCategories(data?.categories);
+    });
+    fetchSubCategories(paramInitialState).then((data) => {
+      console.log(data?.data);
+      setSubCategories(data?.data);
+    });
+    fetchBrands(paramInitialState).then((data) => {
+      console.log(data?.data);
+      setBrands(data?.data);
+    });
+    fetchBreeds(paramInitialState).then((data) => {
+      console.log(data?.data);
+      setBreeds(data?.data);
+    });
+    fetchCollections(paramInitialState).then((data) => {
+      console.log(data?.data);
+      setCollections(data?.data);
+    });
+    setLoading(false);
+  }, []);
 
   function Dropdown({ icon, title, sections, onClose }) {
     // Close dropdown on outside click
@@ -239,60 +157,44 @@ function Category() {
     <>
       {/* Top Navigation */}
       <div className="bg-black text-white px-4 md:px-8 py-2 flex justify-end space-x-6 relative z-20">
-        <div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowCatOptions(!showCatOptions);
-              setShowDogOptions(false);
-              setShowShopByBreed(false);
-            }}
-            className="flex items-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] transition-colors cursor-pointer outline-none focus:underline"
-          >
-            <CustomImage
-              src={catIcon}
-              alt="Cats"
-              className="h-5 w-5"
-              width={20}
-              height={20}
-            />
-            <span>
-              Cats
-              <ChevronDown className="inline-block h-4 w-4" />
-            </span>
-          </button>
-        </div>
-
-        <div>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowDogOptions(!showDogOptions);
-              setShowCatOptions(false);
-              setShowShopByBreed(false);
-            }}
-            className="flex items-center space-x-1 mr-12 hover:text-[#F59A11] focus:text-[#F59A11] transition-colors cursor-pointer outline-none focus:underline"
-          >
-            <CustomImage
-              src={dogIcon}
-              alt="Dogs"
-              className="h-5 w-5"
-              width={20}
-              height={20}
-            />
-            <span>
-              Dogs
-              <ChevronDown className="inline-block h-4 w-4" />
-            </span>
-          </button>
-        </div>
+        {loading ? (
+          <>
+            <Skeleton className="w-24 h-6" />
+          </>
+        ) : (
+          <>
+            {categories.map((category, index) => (
+              <div key={index}>
+                <button
+                  onClick={() => {
+                    setActiveCategoryId(category._id);
+                    setShowShopByCategory(!showShopByCategory);
+                    setShowShopByBreed(false);
+                  }}
+                  className="flex items-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] transition-colors cursor-pointer outline-none"
+                >
+                  <CustomImage
+                    src={category.image}
+                    alt={category.name}
+                    className="h-5 w-5 rounded-3xl"
+                    width={20}
+                    height={20}
+                  />
+                  <span>
+                    {category.name}
+                    <ChevronDown className="inline-block h-4 w-4 ml-1" />
+                  </span>
+                </button>
+              </div>
+            ))}
+          </>
+        )}
 
         <div>
           <button
             onClick={() => {
               setShowShopByBreed(!showShopByBreed);
-              setShowCatOptions(false);
-              setShowDogOptions(false);
+              setShowShopByCategory(false);
             }}
             className="text-sm hover:text-[#F59A11] focus:text-[#F59A11] transition-colors cursor-pointer outline-none focus:underline"
           >
@@ -302,23 +204,19 @@ function Category() {
         </div>
       </div>
 
-      {/*CAT DROPDOWN */}
-      {showCatOptions && (
-        <Dropdown
-          icon={catIcon}
-          title="Cats"
-          sections={catSections}
-          onClose={() => setShowCatOptions(false)}
-        />
-      )}
-      {/*DOG DROPDOWN*/}
-      {showDogOptions && (
-        <Dropdown
-          icon={dogIcon}
-          title="Dogs"
-          sections={dogSections}
-          onClose={() => setShowDogOptions(false)}
-        />
+      {/*SHOW CATEGORIES*/}
+      {showShopByCategory && (
+        <div
+          className="absolute left-0 right-0 w-full bg-white shadow-lg p-6 z-10"
+          style={{ maxWidth: "100vw" }}
+        >
+          <Dropdown
+            icon={pawIcon}
+            title="Categories"
+            sections={getSectionsForCategory(activeCategoryId)} // ✅ corrected prop
+            onClose={() => setShowShopByCategory(false)}
+          />
+        </div>
       )}
 
       {/*SHOW BREEDS*/}
@@ -334,30 +232,31 @@ function Category() {
             // itemsToShow={5}
             showArrows={true}
           >
-            {breeds.map((breed, index) => (
-              <div
-                key={index}
-                className="flex flex-col items-center w-28 group cursor-pointer relative mx-auto "
-              >
-                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200 z-10">
-                  <CustomImage
-                    src={breed.img}
-                    alt={breed.name}
-                    className="w-full h-full object-cover"
-                    width={96}
-                    height={96}
-                  />
-                </div>
-                <CustomImage
-                  src={breed.hoverImg}
-                  alt={`${breed.name} Hover`}
-                  className="absolute w-32 h-36 object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out -top-6 z-20"
-                  width={128}
-                  height={144}
-                />
-                <p className="text-center text-sm mt-2 z-30">{breed.name}</p>
-              </div>
-            ))}
+            {loading ? (
+              <>
+                <Skeleton className="w-24 h-24" />
+                <Skeleton className="w-24 h-24" />
+                <Skeleton className="w-24 h-24" />
+                <Skeleton className="w-24 h-24" />
+                <Skeleton className="w-24 h-24" />
+                <Skeleton className="w-24 h-24" />
+              </>
+            ) : (
+              <>
+                {breeds.map((breed, index) => (
+                  <div key={index}>
+                    <CustomImage
+                      src={breed.image}
+                      alt={breed.name}
+                      className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200"
+                      width={96}
+                      height={96}
+                    />
+                    <p className="text-center text-sm mt-2">{breed.name}</p>
+                  </div>
+                ))}
+              </>
+            )}
           </CustomCarousel>
         </div>
       )}

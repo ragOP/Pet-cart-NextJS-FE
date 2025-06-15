@@ -1,28 +1,34 @@
+let encryptStorage = null;
 
-import { EncryptStorage } from "encrypt-storage";
-
-const encryptionKey = process.env.ENCRYPTION_KEY;
-
-export const encryptStorage = new EncryptStorage(encryptionKey);
+if (typeof window !== "undefined") {
+  const { EncryptStorage } = require("encrypt-storage");
+  const encryptionKey = process.env.NEXT_PUBLIC_ENCRYPTION_KEY;
+  encryptStorage = new EncryptStorage(encryptionKey);
+}
 
 export const setItem = (payload) => {
+  if (!encryptStorage) return;
+
   if (Object.keys(payload).length > 0) {
     let keys = Object.keys(payload);
-
     for (let i = 0; i < keys.length; i++) {
       encryptStorage.setItem(keys[i], payload[keys[i]]);
     }
   }
 };
 
-export const getItem = (string) => {
+export const getItem = (key) => {
+  if (!encryptStorage) return null;
+
   try {
-    return encryptStorage.getItem(string);
+    return encryptStorage.getItem(key);
   } catch (error) {
     console.error(error);
+    return null;
   }
 };
 
-export const removeItem = (string) => {
-  return encryptStorage.removeItem(string);
+export const removeItem = (key) => {
+  if (!encryptStorage) return;
+  return encryptStorage.removeItem(key);
 };
