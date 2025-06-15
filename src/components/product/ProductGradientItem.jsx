@@ -49,7 +49,7 @@ const ProductGradientItem = ({
 
       {/* Label below the card */}
       <p className="text-sm font-medium text-[#181818] text-center mt-2 transition-all underline-offset-4 decoration-2 group-hover:underline group-hover:decoration-[#F59A11] group-focus:underline group-focus:decoration-[#F59A11]">
-        {label}
+        {String(label).slice(0, 20)}
       </p>
     </div>
   );

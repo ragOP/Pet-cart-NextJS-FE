@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import pawLogo from "@/assets/essential/paws-logo.png";
 import CustomImage from "@/components/images/CustomImage";
 import "@/styles/hide-scrollbar.css";
@@ -10,21 +10,32 @@ import ProductGradientItem from "@/components/product/ProductGradientItem";
 
 // Import product images from your assets
 import prod from "@/assets/essential/prod3.png";
-
-
-// Static data array
-const essentials = [
-  { id: 1, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 2, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 3, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 4, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 5, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 6, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 7, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 8, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-];
+import { Skeleton } from "../ui/skeleton";
+import { fetchProducts } from "@/helpers/home";
 
 function NewLaunched() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const today = new Date();
+  const priorDate = new Date();
+  priorDate.setDate(today.getDate() - 30); // last 30 days
+
+  const paramInitialState = {
+    page: 1,
+    per_page: 50,
+    search: "",
+    start_date: priorDate.toISOString(), // filter from 30 days ago
+    end_date: today.toISOString(), // to today
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchProducts({ params: paramInitialState}).then((data) => {
+      setProducts(data?.data);
+      setLoading(false);
+    });
+  }, []);
   return (
     <div className="w-full px-4 py-6">
       {/* Title */}
@@ -48,20 +59,24 @@ function NewLaunched() {
         contentClassName=""
         itemClassName="flex flex-col items-center min-w-[20%] sm:min-w-[16.66%] md:min-w-[12.5%] lg:min-w-[10%] xl:min-w-[8.33%]"
       >
-        {essentials.map((item) => (
-          <CarouselItem key={item.id} className="flex flex-col items-center">
-            <div className="relative w-full">
-              <ProductGradientItem
-                image={item.image}
-                alt={item.label}
-                label={item.label}
-                tag={item.tag === "BESTSELLER" ? undefined : item.tag}
-                className="w-full"
-                chip={item.tag === "BESTSELLER" ? "BESTSELLER" : undefined}
-              />
-            </div>
-          </CarouselItem>
-        ))}
+        {loading ? (
+          <Skeleton className="w-full h-28" />
+        ) : (
+          products.map((item) => (
+            <CarouselItem key={item._id} className="flex flex-col items-center">
+              <div className="relative w-full">
+                <ProductGradientItem
+                  image={item.images[0]}
+                  alt={item.title}
+                  label={item.title}
+                  tag={item.tag === "BESTSELLER" ? undefined : item.tag}
+                  className="w-full"
+                  chip={item.tag === "BESTSELLER" ? "BESTSELLER" : undefined}
+                />
+              </div>
+            </CarouselItem>
+          ))
+        )}
       </CustomCarousel>
     </div>
   );

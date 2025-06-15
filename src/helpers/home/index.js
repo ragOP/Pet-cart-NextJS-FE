@@ -179,6 +179,7 @@ export const getCollectionById = async ({ id }) => {
 };
 
 export const fetchProducts = async ({ params }) => {
+  console.log("params", params);
   try {
     const apiResponse = await apiService({
       endpoint: endpoints.product,

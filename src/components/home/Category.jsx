@@ -72,23 +72,23 @@ function Category() {
   useEffect(() => {
     setLoading(true);
     fetchCategories(paramInitialState).then((data) => {
-      console.log(data?.categories);
+      // console.log(data?.categories);
       setCategories(data?.categories);
     });
     fetchSubCategories(paramInitialState).then((data) => {
-      console.log(data?.data);
+      // console.log(data?.data);
       setSubCategories(data?.data);
     });
     fetchBrands(paramInitialState).then((data) => {
-      console.log(data?.data);
+      // console.log(data?.data);
       setBrands(data?.data);
     });
     fetchBreeds(paramInitialState).then((data) => {
-      console.log(data?.data);
+      // console.log(data?.data);
       setBreeds(data?.data);
     });
     fetchCollections(paramInitialState).then((data) => {
-      console.log(data?.data);
+      // console.log(data?.data);
       setCollections(data?.data);
     });
     setLoading(false);

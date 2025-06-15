@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import pawLogo from "@/assets/essential/paws-logo.png";
 import CustomImage from "@/components/images/CustomImage";
 import CustomCarousel from "@/components/carousel/CustomCarousel";
@@ -17,23 +17,26 @@ import prod7 from "@/assets/essential/prod7.png";
 import prod8 from "@/assets/essential/prod8.png";
 import { CarouselItem } from "../ui/carousel";
 
-// Static data array
-const essentials = [
-  { id: 1, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 2, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 3, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 4, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 5, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 6, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 7, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 8, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 9, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 10, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 11, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 12, image: prod3, tag: "BESTSELLER", label: "Chicken Gravy" },
-];
+import { fetchProducts } from "@/helpers/home";
+import { Skeleton } from "../ui/skeleton";
 
 function Essential() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);  
+
+  const paramInitialState = {
+    page: 1,
+    per_page: 50,
+    search: "",
+  };  
+
+  useEffect(() => {
+    setLoading(true);
+     fetchProducts({ params: paramInitialState }).then((data) => {
+      setProducts(data?.data);
+      setLoading(false);
+    });
+  }, []);
   return (
     <div className="w-full px-4 py-6 hidescrollbar">
       {/* Title */}
@@ -57,15 +60,28 @@ function Essential() {
         contentClassName=""
         itemClassName="flex flex-col items-center min-w-[20%] sm:min-w-[16.66%] md:min-w-[12.5%] lg:min-w-[10%] xl:min-w-[8.33%]"
       >
-        {essentials.map((item) => (
-          <CarouselItem key={item.id} className="flex flex-col items-center">
-            <ProductItem
-              image={item.image}
-              alt={item.label}
-              label={item.label}
-            />
-          </CarouselItem>
-        ))}
+        {loading ? (
+          <>
+            <Skeleton className="w-full h-[300px]" />
+            <Skeleton className="w-full h-[300px]" />
+            <Skeleton className="w-full h-[300px]" />
+          </>
+        ) : (
+          <>
+            {products.map((item) => (
+              <CarouselItem
+                key={item._id}
+                className="flex flex-col items-center"
+              >
+                <ProductItem
+                  image={item.images[0]}
+                  alt={item.title}
+                  label={item.title}
+                />
+              </CarouselItem>
+            ))}
+          </>
+        )}
       </CustomCarousel>
     </div>
   );
