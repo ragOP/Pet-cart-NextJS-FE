@@ -15,9 +15,6 @@ export const apiService = async ({
 }) => {
   try {
     let token = null;
-    if (typeof window !== "undefined") {
-      token = localStorage.getItem("token");
-    }
 
     const requestHeaders = {
       "ngrok-skip-browser-warning": "true",

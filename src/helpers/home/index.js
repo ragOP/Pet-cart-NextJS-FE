@@ -1,5 +1,5 @@
-import { apiService } from "@/api/api_services";
-import { endpoints } from "@/api/endpoint";
+import { apiService } from "@/app/apis/apiService";
+import { endpoints } from "@/app/apis/endpoints";
 
 export const fetchCategories = async ({ params }) => {
   try {
@@ -178,11 +178,10 @@ export const getCollectionById = async ({ id }) => {
   }
 };
 
-export const fetchProducts = async ({ params }) => {
-  console.log("params", params);
+export const fetchproductss = async ({ params }) => {
   try {
     const apiResponse = await apiService({
-      endpoint: endpoints.product,
+      endpoint: endpoints.products,
       method: "GET",
       params,
     });
@@ -200,7 +199,7 @@ export const fetchProducts = async ({ params }) => {
 export const getProductById = async ({ id }) => {
   try {
     const apiResponse = await apiService({
-      endpoint: `${endpoints.product}/${id}`,
+      endpoint: `${endpoints.products}/${id}`,
     });
 
     return apiResponse;

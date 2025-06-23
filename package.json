@@ -19,7 +19,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
-    "encrypt-storage": "^2.14.6",
     "framer-motion": "^12.17.3",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.514.0",

@@ -14,6 +14,18 @@ export const endpoints = {
   // sliders
   sliders: "api/sliders/slider",
 
+  // categories
+  category: "api/category",
+
+  // sub categories
+  sub_category: "api/sub-category",
+
   // products
   products: "api/product",
+
+  // breeds
+  breed: "api/breed",
+
+  // collection
+  collection: "api/collection",
 };

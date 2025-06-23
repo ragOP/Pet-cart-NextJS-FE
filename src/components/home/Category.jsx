@@ -1,32 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import catIcon from "@/assets/cat.png";
-import dogIcon from "@/assets/dog.png";
 import pawIcon from "@/assets/pawicon.png";
 import { ChevronDown } from "lucide-react";
 import CustomImage from "@/components/images/CustomImage";
 import CustomCarousel from "@/components/carousel/CustomCarousel";
-
-// Importing breed images
-import breed1 from "@/assets/breed/1.png";
-import breed1Hover from "@/assets/breed/1.1.png";
-import breed2 from "@/assets/breed/2.png";
-import breed2Hover from "@/assets/breed/2.2.png";
-import breed3 from "@/assets/breed/3.png";
-import breed3Hover from "@/assets/breed/3.3.png";
-import breed4 from "@/assets/breed/4.png";
-import breed4Hover from "@/assets/breed/4.4.png";
-import breed5 from "@/assets/breed/5.png";
-import breed5Hover from "@/assets/breed/5.5.png";
-import breed6 from "@/assets/breed/6.png";
-import breed6Hover from "@/assets/breed/6.6.png";
-import breed7 from "@/assets/breed/7.png";
-import breed7Hover from "@/assets/breed/7.7.png";
-import breed8 from "@/assets/breed/8.png";
-import breed8Hover from "@/assets/breed/8.8.png";
-import breed9 from "@/assets/breed/9.png";
-import breed9Hover from "@/assets/breed/9.9.png";
 
 import { fetchCategories, fetchSubCategories, fetchBrands, fetchBreeds, fetchCollections } from "@/helpers/home"
 import { Skeleton } from "../ui/skeleton";
