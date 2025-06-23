@@ -11,7 +11,7 @@ import "@/styles/hide-scrollbar.css";
 import BestSellerProduct from "@/components/product/BestSellerProduct";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "@/app/apis/getProducts";
-import PrimaryLoader from "@/components/Loader/PrimaryLoader";
+import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { CarouselItem } from "../ui/carousel";
 
