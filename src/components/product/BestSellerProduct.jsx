@@ -17,8 +17,8 @@ const BestSellerProduct = ({
         </span>
         <div className="w-full h-40 pt-3 rounded-lg overflow-hidden flex items-center justify-center bg-white">
           <CustomImage
-            src={product.image}
-            alt={product.name}
+            src={product.images[0]}
+            alt={product.title}
             className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-110 group-focus:scale-110"
             width={160}
             height={160}

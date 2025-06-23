@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import pawLogo from "@/assets/essential/paws-logo.png";
 import trendingSnacks from "@/assets/trending/snacks.png";
 import trendingCatToys from "@/assets/trending/cat-toys.png";
@@ -32,8 +32,8 @@ const trendingItems = [
 const TrendingItemCard = ({ item }) => (
   <div className="flex flex-col items-center group transition-all duration-200">
     <CustomImage
-      src={item.image}
-      alt={item.label}
+      src={item.images[0]}
+      alt={item.title}
       className="w-36 h-36 object-contain transition-transform duration-200 group-hover:scale-110 group-focus:scale-110"
       width={144}
       height={144}
@@ -42,11 +42,11 @@ const TrendingItemCard = ({ item }) => (
       className="text-sm mt-2 font-medium text-[#181818] text-center transition-all duration-200 cursor-pointer hover:text-[#F59A11] focus:text-[#F59A11] hover:underline focus:underline outline-none group-hover:scale-105 group-focus:scale-105"
       tabIndex={0}
       onClick={() => {
-        console.log("Trending item clicked:", item.label);
+        console.log("Trending item clicked:", item.title);
       }}
-      aria-label={`Shop ${item.label}`}
+      aria-label={`Shop ${item.title}`}
     >
-      {item.label}
+      {String(item.title).slice(0, 20)}
     </p>
   </div>
 );

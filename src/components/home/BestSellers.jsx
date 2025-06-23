@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import offIcon from "@/assets/bestseller/off.png";
 import vegIcon from "@/assets/bestseller/veg-icon.png";
 import paswIcon from "@/assets/bestseller/paws.png";

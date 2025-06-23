@@ -13,7 +13,12 @@ import Promotions from "@/components/home/Promotions";
 import Trending from "@/components/home/Trending";
 import TreatSection from "@/components/home/TreatSection";
 
+// import { fetchCategories, fetchSubCategories, fetchBrands } from "@/helpers/home"
+
 const Home = () => {
+  // const categories = fetchCategories({});
+  // const subCategories = fetchSubCategories({});
+  // const brands = fetchBrands({});
   return (
     <div
       style={{

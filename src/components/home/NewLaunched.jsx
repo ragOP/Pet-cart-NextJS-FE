@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import pawLogo from "@/assets/essential/paws-logo.png";
 import CustomImage from "@/components/images/CustomImage";
 import "@/styles/hide-scrollbar.css";
