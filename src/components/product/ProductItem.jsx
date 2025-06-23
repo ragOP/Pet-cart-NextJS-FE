@@ -37,7 +37,7 @@ const ProductItem = ({ image, alt, label, className = "" }) => {
         />
       </div>
       {/* Label below the product */}
-      <p className="text-sm mt-2 font-medium text-[#181818] text-center mb-2">
+      <p className="text-sm mt-2 font-medium text-[#181818] text-center mb-2 break-words line-clamp-2">
         {label}
       </p>
       {/* Hover border effect */}

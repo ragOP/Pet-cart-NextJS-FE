@@ -15,7 +15,6 @@ function Header() {
   const searchInputRef = React.useRef(null);
   const menuRef = React.useRef(null);
 
-  // Cycle search suggestions
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % suggestions.length);
@@ -23,14 +22,12 @@ function Header() {
     return () => clearInterval(interval);
   }, []);
 
-  // Focus search input when menu opens (mobile)
   useEffect(() => {
     if (isMenuOpen && searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, [isMenuOpen]);
 
-  // Close menu on outside click or Escape
   useEffect(() => {
     if (!isMenuOpen) return;
     function handleClick(e) {

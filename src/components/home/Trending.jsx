@@ -11,6 +11,11 @@ import trendingCare from "@/assets/trending/care.png";
 import CustomImage from "@/components/images/CustomImage";
 import CustomCarousel from "../carousel/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";
+import ProductItem from "@/components/product/ProductItem";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/app/apis/getProducts";
+import PrimaryLoader from "@/components/loaders/PrimaryLoader";
+import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 
 const trendingItems = [
   { id: 1, image: trendingSnacks, label: "Snacks & Treat" },
@@ -47,6 +52,14 @@ const TrendingItemCard = ({ item }) => (
 );
 
 function Trending() {
+  // Fetch trending products (isAddToCart)
+  const params = { page: 1, per_page: 10, isAddToCart: true };
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["trendingProducts", params],
+    queryFn: () => getProducts(params),
+    select: (res) => res?.data?.data || [],
+  });
+
   return (
     <div className="w-full px-4 py-6">
       {/* Title */}
@@ -70,11 +83,23 @@ function Trending() {
         contentClassName=""
         itemClassName="flex flex-col items-center min-w-[20%] sm:min-w-[16.66%] md:min-w-[12.5%] lg:min-w-[10%] xl:min-w-[8.33%]"
       >
-        {trendingItems.map((item) => (
-          <CarouselItem key={item.id}>
-            <TrendingItemCard item={item} />
-          </CarouselItem>
-        ))}
+        {isLoading && <div className="flex justify-center w-full"><PrimaryLoader /></div>}
+        {isError && (
+          <div className="flex justify-center w-full"><PrimaryEmptyState title="Failed to load products." /></div>
+        )}
+        {data && data.length > 0 &&
+          data.map((item) => (
+            <CarouselItem key={item._id} className="flex flex-col items-center">
+              <ProductItem
+                image={item.images?.[0]}
+                alt={item.title}
+                label={item.title}
+              />
+            </CarouselItem>
+          ))}
+        {data && data.length === 0 && !isLoading && (
+          <div className="flex justify-center w-full"><PrimaryEmptyState title="No trending products found." /></div>
+        )}
       </CustomCarousel>
     </div>
   );

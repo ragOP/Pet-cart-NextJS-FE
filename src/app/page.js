@@ -1,3 +1,5 @@
+"use client";
+
 import Applod from "@/components/home/Applod";
 import BestSellers from "@/components/home/BestSellers";
 import Category from "@/components/home/Category";
@@ -13,7 +15,11 @@ import TreatSection from "@/components/home/TreatSection";
 
 const Home = () => {
   return (
-    <div style={{ background: 'linear-gradient(180deg, #FDF4E6 0%, #F7F5FF 100%)' }}>
+    <div
+      style={{
+        background: "linear-gradient(180deg, #FDF4E6 0%, #F7F5FF 100%)",
+      }}
+    >
       <Header />
       <Category />
       <Applod />

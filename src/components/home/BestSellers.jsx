@@ -2,76 +2,26 @@
 
 import React from "react";
 import offIcon from "@/assets/bestseller/off.png";
-import applodJar from "@/assets/bestseller/applod-jar.png";
 import vegIcon from "@/assets/bestseller/veg-icon.png";
 import paswIcon from "@/assets/bestseller/paws.png";
-import heartIcon from "@/assets/bestseller/heart.png";
 import starIcon from "@/assets/bestseller/Vector.png";
 import CustomImage from "@/components/images/CustomImage";
 import CustomCarousel from "@/components/carousel/CustomCarousel";
 import "@/styles/hide-scrollbar.css";
-import { Heart } from "lucide-react";
 import BestSellerProduct from "@/components/product/BestSellerProduct";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/app/apis/getProducts";
+import PrimaryLoader from "@/components/Loader/PrimaryLoader";
+import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
+import { CarouselItem } from "../ui/carousel";
 
 function BestSellers() {
-  const products = [
-    {
-      id: 1,
-      name: "Applod Crunch-a-Licious Gluten Free Chicken & Cheese Dog Biscuits",
-      price: 5000,
-      rating: 5.0,
-      image: applodJar,
-      discount: "70% OFF",
-    },
-    {
-      id: 2,
-      name: "Applod Crunch-a-Licious Gluten Free Chicken & Cheese Dog Biscuits",
-      price: 5000,
-      rating: 5.0,
-      image: applodJar,
-      discount: "70% OFF",
-    },
-    {
-      id: 3,
-      name: "Applod Crunch-a-Licious Gluten Free Chicken & Cheese Dog Biscuits",
-      price: 5000,
-      rating: 5.0,
-      image: applodJar,
-      discount: "70% OFF",
-    },
-    {
-      id: 4,
-      name: "Applod Crunch-a-Licious Gluten Free Chicken & Cheese Dog Biscuits",
-      price: 5000,
-      rating: 5.0,
-      image: applodJar,
-      discount: "70% OFF",
-    },
-    {
-      id: 5,
-      name: "Applod Crunch-a-Licious Gluten Free Chicken & Cheese Dog Biscuits",
-      price: 5000,
-      rating: 5.0,
-      image: applodJar,
-      discount: "70% OFF",
-    },
-    {
-      id: 6,
-      name: "Applod Crunch-a-Licious Gluten Free Chicken & Cheese Dog Biscuits",
-      price: 5000,
-      rating: 5.0,
-      image: applodJar,
-      discount: "70% OFF",
-    },
-    {
-      id: 7,
-      name: "Applod Crunch-a-Licious Gluten Free Chicken & Cheese Dog Biscuits",
-      price: 5000,
-      rating: 5.0,
-      image: applodJar,
-      discount: "70% OFF",
-    },
-  ];
+  const params = { page: 1, per_page: 10, isBestSeller: true };
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["bestsellers", params],
+    queryFn: () => getProducts(params),
+    select: (res) => res?.data?.data || [],
+  });
 
   return (
     <div className="w-full px-4 py-8 bg-white">
@@ -92,22 +42,40 @@ function BestSellers() {
 
       {/* Carousel */}
       <CustomCarousel
-        className="hide-scrollbar"
-        contentClassName="gap-4"
-        itemClassName="min-w-[250px] max-w-[250px]"
+        className="hide-scrollbar min-h-[260px] flex items-center justify-center"
+        contentClassName="gap-4 flex items-center justify-center min-h-[220px]"
+        itemClassName="min-w-[250px] max-w-[250px] flex flex-col items-center justify-center"
         showArrows={true}
       >
-        {products.map((product) => (
-          <BestSellerProduct
-            key={product.id}
-            product={{
-              ...product,
-              starIcon,
-              vegIcon,
-              offIcon,
-            }}
-          />
-        ))}
+        {isLoading && (
+          <div className="flex flex-1 justify-center items-center w-full h-full min-h-[220px]">
+            <PrimaryLoader />
+          </div>
+        )}
+        {isError && (
+          <div className="flex flex-1 justify-center items-center w-full h-full min-h-[220px]">
+            <PrimaryEmptyState title="Failed to load products." />
+          </div>
+        )}
+        {data && data.length > 0 &&
+          data.map((product) => (
+            <CarouselItem key={product._id || product.id} className="flex flex-col items-center justify-center">
+              <BestSellerProduct
+                product={{
+                  ...product,
+                  starIcon,
+                  vegIcon,
+                  offIcon,
+                  label: product.title || product.name
+                }}
+              />
+            </CarouselItem>
+          ))}
+        {data && data.length === 0 && !isLoading && (
+          <div className="flex flex-1 w-full justify-center items-center">
+            <PrimaryEmptyState title="No bestsellers found." />
+          </div>
+        )}
       </CustomCarousel>
     </div>
   );

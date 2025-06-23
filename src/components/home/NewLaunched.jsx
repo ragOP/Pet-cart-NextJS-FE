@@ -7,24 +7,20 @@ import "@/styles/hide-scrollbar.css";
 import CustomCarousel from "@/components/carousel/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";
 import ProductGradientItem from "@/components/product/ProductGradientItem";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/app/apis/getProducts";
+import PrimaryLoader from "@/components/loaders/PrimaryLoader";
+import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 
-// Import product images from your assets
-import prod from "@/assets/essential/prod3.png";
+const NewLaunched = () => {
+  const params = { page: 1, per_page: 10, newleyLaunced: true };
 
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["newlyLaunched", params],
+    queryFn: () => getProducts(params),
+    select: (res) => res?.data?.data || [],
+  });
 
-// Static data array
-const essentials = [
-  { id: 1, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 2, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 3, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 4, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 5, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 6, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 7, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-  { id: 8, image: prod, tag: "BESTSELLER", label: "Chicken Gravy" },
-];
-
-function NewLaunched() {
   return (
     <div className="w-full px-4 py-6">
       {/* Title */}
@@ -48,23 +44,29 @@ function NewLaunched() {
         contentClassName=""
         itemClassName="flex flex-col items-center min-w-[20%] sm:min-w-[16.66%] md:min-w-[12.5%] lg:min-w-[10%] xl:min-w-[8.33%]"
       >
-        {essentials.map((item) => (
-          <CarouselItem key={item.id} className="flex flex-col items-center">
-            <div className="relative w-full">
+        {isLoading && <div className="flex justify-center w-full"><PrimaryLoader /></div>}
+        {isError && (
+          <div className="flex justify-center w-full"><PrimaryEmptyState title="Failed to load products." /></div>
+        )}
+        {data && data.length > 0 &&
+          data.map((item) => (
+            <CarouselItem key={item._id} className="flex flex-col items-center">
               <ProductGradientItem
-                image={item.image}
-                alt={item.label}
-                label={item.label}
-                tag={item.tag === "BESTSELLER" ? undefined : item.tag}
-                className="w-full"
-                chip={item.tag === "BESTSELLER" ? "BESTSELLER" : undefined}
+                image={item.images?.[0]}
+                alt={item.title}
+                label={item.title}
+                tag={item.tag}
+                className="max-w-50"
+                chip={item.isBestSeller ? "BESTSELLER" : undefined}
               />
-            </div>
-          </CarouselItem>
-        ))}
+            </CarouselItem>
+          ))}
+        {data && data.length === 0 && !isLoading && (
+          <div className="flex justify-center w-full"><PrimaryEmptyState title="No newly launched products found." /></div>
+        )}
       </CustomCarousel>
     </div>
   );
-}
+};
 
 export default NewLaunched;

@@ -1,4 +1,6 @@
 import "./globals.css";
+import QueryProvider from "@/components/QueryProvider";
+import ReduxProvider from '@/store/Provider';
 
 export const metadata = {
   title: "Pet Caart",
@@ -8,7 +10,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="font-gotham-rounded">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <ReduxProvider>
+          <QueryProvider>
+            {children}
+          </QueryProvider>
+        </ReduxProvider>
+      </body>
     </html>
   );
 }

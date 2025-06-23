@@ -1,16 +1,27 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import applodLogo from "@/assets/applod/applod-brand.png";
 import CustomImage from "@/components/images/CustomImage";
-import banner1 from "@/assets/banners/banner1.png";
-import banner2 from "@/assets/banners/banner2.png";
-import banner3 from "@/assets/banners/banner3.png";
-import banner4 from "@/assets/banners/banner4.png";
 import AnimatedImage from "../images/AnimatedImage";
+import { useQuery } from "@tanstack/react-query";
+import { getBanners } from "@/app/apis/getBanner";
+import { getSliders } from "@/app/apis/getSliders";
 
 const Applod = () => {
-  const bannerImages = [banner1, banner2, banner3, banner4];
+  const { data: bannersData } = useQuery({
+    queryKey: ["banners"],
+    queryFn: getBanners,
+    select: (res) => res?.data?.data || [],
+  });
+
+  const { data: slidersData } = useQuery({
+    queryKey: ["sliders"],
+    queryFn: getSliders,
+    select: (res) => res?.data?.data?.images || [],
+  });
+
+  const bannerImages = bannersData?.map((b) => b.image) || [];
+  const sliderImages = slidersData?.map((s) => s.image) || [];
   const scrollRef = useRef(null);
   const isHovered = useRef(false);
   const animationRef = useRef();
@@ -59,16 +70,25 @@ const Applod = () => {
       el.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", updateTrackWidth);
     };
-  }, []);
+  }, [slidersData]);
 
   // Duplicate images for seamless scroll
-  const images = [...bannerImages, ...bannerImages];
-
+  const images = [...sliderImages, ...sliderImages];
+console.log("Banner Images:", bannerImages);
   return (
     <>
-      {/* Applod Logo */}
+      {/* Applod Logo (first banner image if available) */}
       <div className="w-full h-auto min-h-[150px] max-w-screen rounded-lg overflow-hidden p-2 pr-4">
-        <AnimatedImage src={applodLogo} alt="Applod Logo" />
+        {bannerImages[0] && (
+          <CustomImage
+            src={bannerImages[0]}
+            alt="Applod Logo"
+            className="w-full object-cover h-[30vh] rounded-xl"
+            width={1200}
+            height={300}
+            priority
+          />
+        )}
       </div>
 
       <div
@@ -81,7 +101,7 @@ const Applod = () => {
             <AnimatedImage
               src={img}
               key={index}
-              alt={`Promo ${(index % bannerImages.length) + 1}`}
+              alt={`Promo ${index + 1}`}
               className="object-cover w-full h-full"
               priority={index === 0}
             />

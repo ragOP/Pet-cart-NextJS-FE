@@ -10,7 +10,9 @@ const ProductGradientItem = ({
   className = "",
 }) => {
   return (
-    <div className={`w-full flex flex-col items-center cursor-pointer ${className}`}>
+    <div
+      className={`w-full flex flex-col items-center cursor-pointer ${className}`}
+    >
       {/* Chip above the card */}
       {chip && (
         <div className="flex justify-center w-full">
@@ -21,7 +23,9 @@ const ProductGradientItem = ({
       )}
 
       {/* Gradient border wrapper */}
-      <div className={`rounded-[22px] p-[1.38px] bg-gradient-to-b from-[#E1C9A7]/20 via-[#D7B27B] via-50% to-[#FFB84C] group hover:shadow-lg hover:ring-2 hover:ring-[#F59A11]`}>
+      <div
+        className={`rounded-[22px] p-[1.38px] bg-gradient-to-b from-[#E1C9A7]/20 via-[#D7B27B] via-50% to-[#FFB84C] group hover:shadow-lg hover:ring-2 hover:ring-[#F59A11]`}
+      >
         <div
           className="flex flex-col items-center p-2 rounded-[20.5px] group-hover:bg-[#fff6ea] group-hover:bg-opacity-80 transition-colors"
           style={{
@@ -48,7 +52,7 @@ const ProductGradientItem = ({
       </div>
 
       {/* Label below the card */}
-      <p className="text-sm font-medium text-[#181818] text-center mt-2 transition-all underline-offset-4 decoration-2 group-hover:underline group-hover:decoration-[#F59A11] group-focus:underline group-focus:decoration-[#F59A11]">
+      <p className="text-sm font-medium text-[#181818] text-center mt-2 transition-all underline-offset-4 decoration-2 group-hover:underline group-hover:decoration-[#F59A11] group-focus:underline group-focus:decoration-[#F59A11] break-words line-clamp-2 mb-2">
         {label}
       </p>
     </div>
