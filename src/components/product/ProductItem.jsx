@@ -37,8 +37,8 @@ const ProductItem = ({ image, alt, label, className = "" }) => {
         />
       </div>
       {/* Label below the product */}
-      <p className="text-sm mt-2 font-medium text-[#181818] text-center mb-2">
-        {String(label).slice(0, 20)}
+      <p className="text-sm mt-2 font-medium text-[#181818] text-center mb-2 break-words line-clamp-2">
+        {label}
       </p>
       {/* Hover border effect */}
       <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-[#F59A11] group-focus:border-[#F59A11] group-hover:shadow-lg group-focus:shadow-lg transition-all duration-200 pointer-events-none z-20" />

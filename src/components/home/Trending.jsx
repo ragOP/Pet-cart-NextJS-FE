@@ -11,8 +11,22 @@ import trendingCare from "@/assets/trending/care.png";
 import CustomImage from "@/components/images/CustomImage";
 import CustomCarousel from "../carousel/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";
-import { Skeleton } from "../ui/skeleton";
-import { fetchProducts } from "@/helpers/home";
+import ProductItem from "@/components/product/ProductItem";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/app/apis/getProducts";
+import PrimaryLoader from "@/components/loaders/PrimaryLoader";
+import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
+
+const trendingItems = [
+  { id: 1, image: trendingSnacks, label: "Snacks & Treat" },
+  { id: 2, image: trendingCatToys, label: "Cat Toys" },
+  { id: 3, image: trendingDogToys, label: "Dog Toys" },
+  { id: 4, image: trendingBedding, label: "Bedding" },
+  { id: 5, image: trendingDogTreats, label: "Dog Treats" },
+  { id: 6, image: trendingCare, label: "Care Products" },
+  { id: 7, image: trendingCare, label: "Care Products" },
+  { id: 8, image: trendingCare, label: "Care Products" },
+];
 
 // Trending item card component
 const TrendingItemCard = ({ item }) => (
@@ -38,23 +52,14 @@ const TrendingItemCard = ({ item }) => (
 );
 
 function Trending() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);  
-  
-    const paramInitialState = {
-      page: 1,
-      per_page: 50,
-      search: "",
-      isFeatured: true
-    };  
-  
-    useEffect(() => {
-      setLoading(true);
-      fetchProducts({params: paramInitialState}).then((data) => {
-        setProducts(data?.data);
-        setLoading(false);
-      });
-    }, []);
+  // Fetch trending products (isAddToCart)
+  const params = { page: 1, per_page: 10, isAddToCart: true };
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["trendingProducts", params],
+    queryFn: () => getProducts(params),
+    select: (res) => res?.data?.data || [],
+  });
+
   return (
     <div className="w-full px-4 py-6">
       {/* Title */}
@@ -78,22 +83,22 @@ function Trending() {
         contentClassName=""
         itemClassName="flex flex-col items-center min-w-[20%] sm:min-w-[16.66%] md:min-w-[12.5%] lg:min-w-[10%] xl:min-w-[8.33%]"
       >
-        {/* {trendingItems.map((item) => (
-          <CarouselItem key={item.id}>
-            <TrendingItemCard item={item} />
-          </CarouselItem>
-        ))} */}
-        {loading ? (
-            <>
-                <Skeleton className="w-36 h-36 object-contain" />
-                <Skeleton className="text-sm mt-2 font-medium text-[#181818] text-center" />
-            </>
-        ) : (
-            products.map((item) => (
-                <CarouselItem key={item._id}>
-                    <TrendingItemCard item={item} />
-                </CarouselItem>
-            ))
+        {isLoading && <div className="flex justify-center w-full"><PrimaryLoader /></div>}
+        {isError && (
+          <div className="flex justify-center w-full"><PrimaryEmptyState title="Failed to load products." /></div>
+        )}
+        {data && data.length > 0 &&
+          data.map((item) => (
+            <CarouselItem key={item._id} className="flex flex-col items-center">
+              <ProductItem
+                image={item.images?.[0]}
+                alt={item.title}
+                label={item.title}
+              />
+            </CarouselItem>
+          ))}
+        {data && data.length === 0 && !isLoading && (
+          <div className="flex justify-center w-full"><PrimaryEmptyState title="No trending products found." /></div>
         )}
       </CustomCarousel>
     </div>

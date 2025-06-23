@@ -1,7 +1,6 @@
 import "./globals.css";
-import Footer from "@/components/home/Footer";
-import Header from "@/components/home/Header";
-import Category from "@/components/home/Category";
+import QueryProvider from "@/components/QueryProvider";
+import ReduxProvider from '@/store/Provider';
 
 export const metadata = {
   title: "Pet Caart",
@@ -12,10 +11,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="font-gotham-rounded">
       <body className="antialiased">
-      <Header />
-      <Category />
-        {children}
-      <Footer />
+        <ReduxProvider>
+          <QueryProvider>
+            {children}
+          </QueryProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

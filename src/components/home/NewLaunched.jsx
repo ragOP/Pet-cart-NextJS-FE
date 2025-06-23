@@ -7,35 +7,20 @@ import "@/styles/hide-scrollbar.css";
 import CustomCarousel from "@/components/carousel/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";
 import ProductGradientItem from "@/components/product/ProductGradientItem";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "@/app/apis/getProducts";
+import PrimaryLoader from "@/components/loaders/PrimaryLoader";
+import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 
-// Import product images from your assets
-import prod from "@/assets/essential/prod3.png";
-import { Skeleton } from "../ui/skeleton";
-import { fetchProducts } from "@/helpers/home";
+const NewLaunched = () => {
+  const params = { page: 1, per_page: 10, newleyLaunced: true };
 
-function NewLaunched() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["newlyLaunched", params],
+    queryFn: () => getProducts(params),
+    select: (res) => res?.data?.data || [],
+  });
 
-  const today = new Date();
-  const priorDate = new Date();
-  priorDate.setDate(today.getDate() - 30); // last 30 days
-
-  const paramInitialState = {
-    page: 1,
-    per_page: 50,
-    search: "",
-    start_date: priorDate.toISOString(), // filter from 30 days ago
-    end_date: today.toISOString(), // to today
-  };
-
-  useEffect(() => {
-    setLoading(true);
-    fetchProducts({ params: paramInitialState}).then((data) => {
-      setProducts(data?.data);
-      setLoading(false);
-    });
-  }, []);
   return (
     <div className="w-full px-4 py-6">
       {/* Title */}
@@ -59,27 +44,29 @@ function NewLaunched() {
         contentClassName=""
         itemClassName="flex flex-col items-center min-w-[20%] sm:min-w-[16.66%] md:min-w-[12.5%] lg:min-w-[10%] xl:min-w-[8.33%]"
       >
-        {loading ? (
-          <Skeleton className="w-full h-28" />
-        ) : (
-          products.map((item) => (
+        {isLoading && <div className="flex justify-center w-full"><PrimaryLoader /></div>}
+        {isError && (
+          <div className="flex justify-center w-full"><PrimaryEmptyState title="Failed to load products." /></div>
+        )}
+        {data && data.length > 0 &&
+          data.map((item) => (
             <CarouselItem key={item._id} className="flex flex-col items-center">
-              <div className="relative w-full">
-                <ProductGradientItem
-                  image={item.images[0]}
-                  alt={item.title}
-                  label={item.title}
-                  tag={item.tag === "BESTSELLER" ? undefined : item.tag}
-                  className="w-full"
-                  chip={item.tag === "BESTSELLER" ? "BESTSELLER" : undefined}
-                />
-              </div>
+              <ProductGradientItem
+                image={item.images?.[0]}
+                alt={item.title}
+                label={item.title}
+                tag={item.tag}
+                className="max-w-50"
+                chip={item.isBestSeller ? "BESTSELLER" : undefined}
+              />
             </CarouselItem>
-          ))
+          ))}
+        {data && data.length === 0 && !isLoading && (
+          <div className="flex justify-center w-full"><PrimaryEmptyState title="No newly launched products found." /></div>
         )}
       </CustomCarousel>
     </div>
   );
-}
+};
 
 export default NewLaunched;
