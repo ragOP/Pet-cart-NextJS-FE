@@ -37,4 +37,7 @@ export const endpoints = {
 
   // Ad banners
   ad_banners: "api/configuration/ad-banner",
+
+  // brands
+  brands: "api/brand",
 };

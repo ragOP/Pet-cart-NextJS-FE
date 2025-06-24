@@ -9,11 +9,12 @@ import Essential from "@/components/home/Essential";
 import Footer from "@/components/home/Footer";
 import Header from "@/components/home/Header";
 import NewLaunched from "@/components/home/NewLaunched";
-import Promotions from "@/components/home/Promotions";
+import Promotions from "@/components/home/Brands";
 import Trending from "@/components/home/Trending";
 import TreatSection from "@/components/home/TreatSection";
 import { useQuery } from "@tanstack/react-query";
 import { getHeaderFooter } from "./apis/getHeaderFooter";
+import Brands from "@/components/home/Brands";
 
 const Home = () => {
   const { data, isLoading, isError } = useQuery({
@@ -34,7 +35,7 @@ const Home = () => {
       <Applod />
       <Essential />
       <Trending />
-      <Promotions />
+      <Brands />
       <NewLaunched />
       <CouponSection />
       <BestSellers />
