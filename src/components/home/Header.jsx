@@ -8,7 +8,7 @@ import truckIcon from "@/assets/truck.png";
 import petLogo from "@/assets/pet.png";
 import loginLogo from "@/assets/login.png";
 
-function Header() {
+const Header = ({ logo }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const suggestions = ["Dog Food", "Cat Food", "Helno", "Royal Canin"];
   const [index, setIndex] = useState(0);
@@ -68,11 +68,11 @@ function Header() {
               <Menu size={24} />
             </button>
             <CustomImage
-              src={petLogo}
+              src={logo || petLogo}
               alt="PetCaart Logo"
-              className="h-8 md:w-auto w-[130px]"
-              width={130}
-              height={32}
+              className="h-10 w-auto max-w-[140px] object-contain"
+              width={140}
+              height={40}
               priority
             />
           </div>
@@ -152,14 +152,14 @@ function Header() {
       </div>
 
       {/* Desktop Layout */}
-      <div className="hidden md:flex flex-wrap items-center justify-between gap-y-4">
-        <div className="flex items-center flex-shrink-0">
+      <div className="hidden md:flex items-center justify-between">
+        <div className="flex items-center space-x-4">
           <CustomImage
-            src={petLogo}
+            src={logo || petLogo}
             alt="PetCaart Logo"
             className="h-10 w-auto"
-            width={80}
-            height={40}
+            width={160}
+            height={140}
             priority
           />
         </div>

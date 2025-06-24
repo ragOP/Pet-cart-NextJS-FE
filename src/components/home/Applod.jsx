@@ -17,8 +17,10 @@ const Applod = () => {
   const { data: slidersData } = useQuery({
     queryKey: ["sliders"],
     queryFn: getSliders,
-    select: (res) => res?.data?.data?.images || [],
+    select: (res) => res?.data?.data || [],
   });
+
+  console.log(">>>", slidersData)
 
   const bannerImages = bannersData?.map((b) => b.image) || [];
   const sliderImages = slidersData?.map((s) => s.image) || [];

@@ -83,22 +83,32 @@ function Trending() {
         contentClassName=""
         itemClassName="flex flex-col items-center min-w-[20%] sm:min-w-[16.66%] md:min-w-[12.5%] lg:min-w-[10%] xl:min-w-[8.33%]"
       >
-        {isLoading && <div className="flex justify-center w-full"><PrimaryLoader /></div>}
-        {isError && (
-          <div className="flex justify-center w-full"><PrimaryEmptyState title="Failed to load products." /></div>
+        {isLoading && (
+          <div className="flex justify-center w-full">
+            <PrimaryLoader />
+          </div>
         )}
-        {data && data.length > 0 &&
+        {isError && (
+          <div className="flex justify-center w-full">
+            <PrimaryEmptyState title="Failed to load products." />
+          </div>
+        )}
+        {data &&
+          data.length > 0 &&
           data.map((item) => (
             <CarouselItem key={item._id} className="flex flex-col items-center">
               <ProductItem
                 image={item.images?.[0]}
                 alt={item.title}
                 label={item.title}
+                className="w-50"
               />
             </CarouselItem>
           ))}
         {data && data.length === 0 && !isLoading && (
-          <div className="flex justify-center w-full"><PrimaryEmptyState title="No trending products found." /></div>
+          <div className="flex justify-center w-full">
+            <PrimaryEmptyState title="No trending products found." />
+          </div>
         )}
       </CustomCarousel>
     </div>
