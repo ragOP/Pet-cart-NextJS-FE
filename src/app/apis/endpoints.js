@@ -28,4 +28,13 @@ export const endpoints = {
 
   // collection
   collection: "api/collection",
+
+  // header and footer
+  header_footer: "api/settings/header-footer/get",
+
+  // cat banners
+  cat_banners: "api/cat-life-banner/get",
+
+  // Ad banners
+  ad_banners: "api/configuration/ad-banner",
 };
