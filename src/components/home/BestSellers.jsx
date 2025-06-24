@@ -77,6 +77,7 @@ const BestSellers = () =>{
                   offIcon,
                   label: product.title || product.name,
                 }}
+                className="w-60"
               />
             </CarouselItem>
           ))}
