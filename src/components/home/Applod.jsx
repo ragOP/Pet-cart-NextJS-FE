@@ -21,8 +21,6 @@ const Applod = () => {
     select: (res) => res?.data?.data || [],
   });
 
-  console.log(">>>", slidersData);
-
   const bannerImages = bannersData?.map((b) => b.image) || [];
   const sliders = slidersData || [];
   const images = [...sliders, ...sliders];
@@ -36,7 +34,6 @@ const Applod = () => {
     let scrollStep = 1;
     let trackWidth = 0;
 
-    // Set up hover listeners
     const onEnter = () => {
       isHovered.current = true;
     };
@@ -46,11 +43,10 @@ const Applod = () => {
     el.addEventListener("mouseenter", onEnter);
     el.addEventListener("mouseleave", onLeave);
 
-    // Calculate track width after images load
     function updateTrackWidth() {
       const track = el.querySelector(".applod-banner-track");
       if (track) {
-        trackWidth = track.scrollWidth / 2; // since we duplicate images
+        trackWidth = track.scrollWidth / 2;
       }
     }
     updateTrackWidth();
@@ -76,11 +72,8 @@ const Applod = () => {
     };
   }, [slidersData]);
 
-  // Duplicate images for seamless scroll
-  console.log("Banner Images:", bannerImages);
   return (
     <>
-      {/* Applod Logo (first banner image if available) */}
       <div className="w-full h-auto min-h-[150px] max-w-screen rounded-lg overflow-hidden p-2 pr-4">
         {bannerImages[0] && (
           <CustomImage
@@ -105,6 +98,7 @@ const Applod = () => {
               item.link &&
               item.link !== "undefined" &&
               !item.link.startsWith("http");
+            const isExternal = item.link && item.link.startsWith("http");
             const imageEl = (
               <AnimatedImage
                 src={item.image}
@@ -114,13 +108,26 @@ const Applod = () => {
                 priority={index === 0}
               />
             );
-            return isInternal ? (
-              <Link href={item.link} key={index}>
-                {imageEl}
-              </Link>
-            ) : (
-              imageEl
-            );
+            if (isInternal) {
+              return (
+                <Link href={item.link} key={index}>
+                  {imageEl}
+                </Link>
+              );
+            } else if (isExternal) {
+              return (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={index}
+                >
+                  {imageEl}
+                </a>
+              );
+            } else {
+              return imageEl;
+            }
           })}
         </div>
       </div>

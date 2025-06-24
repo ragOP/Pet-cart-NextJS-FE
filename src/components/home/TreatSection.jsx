@@ -36,7 +36,7 @@ const TreatSection = () => {
           href={link}
           target="_blank"
           rel="noopener noreferrer"
-          className=" flex items-center justify-center bg-[#F59A11] text-white text-lg font-semibold mt-12 px-6 py-2 rounded-xl md:w-45 md:h-15 transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-lg focus:scale-105 focus:shadow-lg outline-none  text-center"
+          className=" flex items-center justify-center bg-[#F59A11] text-white text-lg font-semibold mt-12 px-6 py-2 rounded-xl md:w-45 md:h-15 transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-lg focus:scale-105 focus:shadow-lg outline-none text-center"
           tabIndex={0}
           aria-label="Shop now"
         >

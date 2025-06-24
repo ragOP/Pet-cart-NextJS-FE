@@ -8,6 +8,7 @@ import { getCatLifeBanners } from "@/app/apis/getCatLifeBanners";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import CatBannerCard from "../product/CatBannerCard";
+import Link from "next/link";
 
 const CatsLife = () => {
   const { data: items = [], isLoading, isError } = useQuery({
@@ -15,6 +16,7 @@ const CatsLife = () => {
     queryFn: getCatLifeBanners,
     select: (res) => res?.data?.data || [],
   });
+  
 
   return (
     <div className="w-full px-4 py-6">
@@ -40,14 +42,43 @@ const CatsLife = () => {
         <PrimaryEmptyState title="No cat life banners found!" />
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {items.map((item) => (
-            <CatBannerCard
-              key={item._id}
-              image={item.image}
-              title={item.title}
-              link={item.link}
-            />
-          ))}
+          {items.map((item) => {
+            const isInternal = item.link && item.link.startsWith("/");
+            const isExternal = item.link && item.link.startsWith("http");
+            const card = (
+              <CatBannerCard
+                key={item._id}
+                image={item.image}
+                title={item.title}
+              />
+            );
+            const shopNow = (
+              <span className="text-sm text-[#181818] mt-1 transition-colors cursor-pointer hover:text-[#F59A11] focus:text-[#F59A11] hover:underline focus:underline outline-none block font-medium">
+                Shop Now &gt;
+              </span>
+            );
+            if (isInternal) {
+              return (
+                <Link href={item.link} key={item._id} className="focus:outline-none">
+                  <div className="flex flex-col h-full">{card}{shopNow}</div>
+                </Link>
+              );
+            } else if (isExternal) {
+              return (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={item._id}
+                  className="focus:outline-none"
+                >
+                  <div className="flex flex-col h-full">{card}{shopNow}</div>
+                </a>
+              );
+            } else {
+              return <div key={item._id}>{card}</div>;
+            }
+          })}
         </div>
       )}
     </div>
