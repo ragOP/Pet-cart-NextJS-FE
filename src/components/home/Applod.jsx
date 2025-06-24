@@ -6,6 +6,7 @@ import AnimatedImage from "../images/AnimatedImage";
 import { useQuery } from "@tanstack/react-query";
 import { getBanners } from "@/app/apis/getBanner";
 import { getSliders } from "@/app/apis/getSliders";
+import Link from "next/link";
 
 const Applod = () => {
   const { data: bannersData } = useQuery({
@@ -20,10 +21,11 @@ const Applod = () => {
     select: (res) => res?.data?.data || [],
   });
 
-  console.log(">>>", slidersData)
+  console.log(">>>", slidersData);
 
   const bannerImages = bannersData?.map((b) => b.image) || [];
-  const sliderImages = slidersData?.map((s) => s.image) || [];
+  const sliders = slidersData || [];
+  const images = [...sliders, ...sliders];
   const scrollRef = useRef(null);
   const isHovered = useRef(false);
   const animationRef = useRef();
@@ -75,8 +77,7 @@ const Applod = () => {
   }, [slidersData]);
 
   // Duplicate images for seamless scroll
-  const images = [...sliderImages, ...sliderImages];
-console.log("Banner Images:", bannerImages);
+  console.log("Banner Images:", bannerImages);
   return (
     <>
       {/* Applod Logo (first banner image if available) */}
@@ -99,15 +100,28 @@ console.log("Banner Images:", bannerImages);
         style={{ whiteSpace: "nowrap" }}
       >
         <div className="flex gap-4 w-max applod-banner-track">
-          {images.map((img, index) => (
-            <AnimatedImage
-              src={img}
-              key={index}
-              alt={`Promo ${index + 1}`}
-              className="object-cover w-full h-full"
-              priority={index === 0}
-            />
-          ))}
+          {images.map((item, index) => {
+            const isInternal =
+              item.link &&
+              item.link !== "undefined" &&
+              !item.link.startsWith("http");
+            const imageEl = (
+              <AnimatedImage
+                src={item.image}
+                key={index}
+                alt={`Promo ${index + 1}`}
+                className="object-cover w-full h-full"
+                priority={index === 0}
+              />
+            );
+            return isInternal ? (
+              <Link href={item.link} key={index}>
+                {imageEl}
+              </Link>
+            ) : (
+              imageEl
+            );
+          })}
         </div>
       </div>
     </>

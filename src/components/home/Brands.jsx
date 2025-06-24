@@ -9,7 +9,7 @@ import AnimatedImage from "../images/AnimatedImage";
 
 const promoImages = [promo1, promo2, promo3];
 
-function Promotions() {
+const Brands = () => {
   const scrollRef = useRef(null);
   const isHovered = useRef(false);
   const animationRef = useRef();
@@ -92,6 +92,6 @@ function Promotions() {
       </div>
     </div>
   );
-}
+};
 
-export default Promotions;
+export default Brands;

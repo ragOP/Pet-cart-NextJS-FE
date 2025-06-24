@@ -9,7 +9,7 @@ import CustomCarousel from "@/components/carousel/CustomCarousel";
 import { fetchCategories, fetchSubCategories, fetchBrands, fetchBreeds, fetchCollections } from "@/helpers/home"
 import { Skeleton } from "../ui/skeleton";
 
-function Category() {
+const Category = () => {
 
   const [showShopByCategory, setShowShopByCategory] = useState(false);
   const [showShopByBreed, setShowShopByBreed] = useState(false);
