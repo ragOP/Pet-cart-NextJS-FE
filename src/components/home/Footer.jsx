@@ -10,6 +10,7 @@ import twitterIcon from "@/assets/footer/X.png";
 import { Mail, Phone } from "lucide-react";
 import CustomImage from "@/components/images/CustomImage";
 import Link from "next/link";
+import petLogo from "@/assets/pet.png";
 
 const Footer = ({
   logo,
@@ -178,7 +179,7 @@ const Footer = ({
           {/* LOGO */}
           <div className="flex justify-center md:justify-end">
             <CustomImage
-              src={logo }
+              src={logo || petLogo}
               alt="PetCaart"
               className="w-36 md:w-45 md:h-30"
             />

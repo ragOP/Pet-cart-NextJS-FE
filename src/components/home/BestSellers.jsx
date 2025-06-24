@@ -15,8 +15,13 @@ import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { CarouselItem } from "../ui/carousel";
 
-function BestSellers() {
-  const params = { page: 1, per_page: 10, isBestSeller: true };
+const BestSellers = () =>{
+  const params = {
+    page: 1,
+    per_page: 10,
+    // isBestSeller: true,
+    max_price: 599,
+  };
   const { data, isLoading, isError } = useQuery({
     queryKey: ["bestsellers", params],
     queryFn: () => getProducts(params),
@@ -57,16 +62,20 @@ function BestSellers() {
             <PrimaryEmptyState title="Failed to load products." />
           </div>
         )}
-        {data && data.length > 0 &&
+        {data &&
+          data.length > 0 &&
           data.map((product) => (
-            <CarouselItem key={product._id || product.id} className="flex flex-col items-center justify-center">
+            <CarouselItem
+              key={product._id || product.id}
+              className="flex flex-col items-center justify-center"
+            >
               <BestSellerProduct
                 product={{
                   ...product,
                   starIcon,
                   vegIcon,
                   offIcon,
-                  label: product.title || product.name
+                  label: product.title || product.name,
                 }}
               />
             </CarouselItem>

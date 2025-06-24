@@ -12,6 +12,9 @@ import TreatSection from "@/components/home/TreatSection";
 import { useQuery } from "@tanstack/react-query";
 import { getHeaderFooter } from "./apis/getHeaderFooter";
 import Brands from "@/components/home/Brands";
+import Category from "@/components/home/Category";
+import Header from "@/components/home/Header";
+import Footer from "@/components/home/Footer";
 
 const Home = () => {
   const { data, isLoading, isError } = useQuery({
