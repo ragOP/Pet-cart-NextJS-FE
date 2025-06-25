@@ -44,7 +44,12 @@ const Category = () => {
         fetchCollections(paramInitialState),
       ]);
 
-      setCategories(categoriesData?.categories || []);
+      console.log("categoriesData", categoriesData);
+      console.log("subCategoriesData", subCategoriesData);
+      console.log("brandsData", brandsData);
+      console.log("breedsData", breedsData);
+      console.log("collectionsData", collectionsData);
+      setCategories(categoriesData?.data?.categories || []);
       setSubCategories(subCategoriesData?.data || []);
       setBrands(brandsData?.data || []);
       setBreeds(breedsData?.data || []);
