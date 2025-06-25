@@ -5,11 +5,16 @@ import pawIcon from "@/assets/pawicon.png";
 import { ChevronDown } from "lucide-react";
 import CustomImage from "@/components/images/CustomImage";
 import CustomCarousel from "@/components/carousel/CustomCarousel";
-import { fetchCategories, fetchSubCategories, fetchBrands, fetchBreeds, fetchCollections } from "@/helpers/home";
+import {
+  fetchCategories,
+  fetchSubCategories,
+  fetchBrands,
+  fetchBreeds,
+  fetchCollections,
+} from "@/helpers/home";
 import { Skeleton } from "../ui/skeleton";
 
 const Category = () => {
-
   const [showShopByCategory, setShowShopByCategory] = useState(false);
   const [showShopByBreed, setShowShopByBreed] = useState(false);
 
@@ -43,8 +48,9 @@ const Category = () => {
         fetchBreeds(paramInitialState),
         fetchCollections(paramInitialState),
       ]);
+      console.log("Fetched data:", categoriesData);
 
-      setCategories(categoriesData?.categories || []);
+      setCategories(categoriesData?.data?.categories || []);
       setSubCategories(subCategoriesData?.data || []);
       setBrands(brandsData?.data || []);
       setBreeds(breedsData?.data || []);
@@ -63,22 +69,29 @@ const Category = () => {
   const getSectionsForCategory = useCallback(
     (categoryId) => {
       if (loading) {
-        return Array(6).fill(0).map((_, i) => ({
-          title: `Category ${i + 1}`,
-          items: Array(3).fill(0).map((_, j) => `Item ${j + 1}`),
-        }));
+        return Array(6)
+          .fill(0)
+          .map((_, i) => ({
+            title: `Category ${i + 1}`,
+            items: Array(3)
+              .fill(0)
+              .map((_, j) => `Item ${j + 1}`),
+          }));
       }
 
-      const subs = subCategories.filter(sub => sub.categoryId === categoryId);
+      const subs = subCategories.filter((sub) => sub.categoryId === categoryId);
 
-      return subs.map(sub => {
+      return subs.map((sub) => {
         const mappedCollections = collections
-          .filter(col => col.subCategoryId === sub._id)
-          .map(col => col.name);
+          .filter((col) => col.subCategoryId === sub._id)
+          .map((col) => col.name);
 
         return {
           title: sub.name,
-          items: mappedCollections.length > 0 ? mappedCollections : ["No collections"],
+          items:
+            mappedCollections.length > 0
+              ? mappedCollections
+              : ["No collections"],
         };
       });
     },
@@ -112,7 +125,9 @@ const Category = () => {
         <div className="flex flex-col md:grid md:grid-cols-6 md:gap-6 text-sm">
           {sections.map((section) => (
             <div className="mb-6 md:mb-0" key={section.title}>
-              <h3 className="uppercase mb-2 font-medium text-[16px]">{section.title}</h3>
+              <h3 className="uppercase mb-2 font-medium text-[16px]">
+                {section.title}
+              </h3>
               <div className="flex flex-col space-y-2">
                 {section.items.map((item) => (
                   <div
@@ -126,7 +141,9 @@ const Category = () => {
                       width={16}
                       height={16}
                     />
-                    <p className="text-[12px] group-hover:font-medium">{item}</p>
+                    <p className="text-[12px] group-hover:font-medium">
+                      {item}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -141,36 +158,30 @@ const Category = () => {
     <>
       {/* Top Navigation */}
       <div className="bg-black text-white px-4 md:px-8 py-2 flex justify-end space-x-6 relative z-20">
-        {loading ? (
-          Array(6).fill(0).map((_, i) => (
-            <Skeleton key={i} className="w-24 h-6" />
-          ))
-        ) : (
-          categories.map((category) => (
-            <div key={category._id}>
-              <button
-                onClick={() => {
-                  setActiveCategoryId(category._id);
-                  setShowShopByCategory(!showShopByCategory);
-                  setShowShopByBreed(false);
-                }}
-                className="flex items-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] transition-colors outline-none"
-              >
-                <CustomImage
-                  src={category.image}
-                  alt={category.name}
-                  className="h-5 w-5 rounded-3xl"
-                  width={20}
-                  height={20}
-                />
-                <span className="text-sm">
-                  {category.name}
-                  <ChevronDown className="inline-block h-4 w-4 ml-1" />
-                </span>
-              </button>
-            </div>
-          ))
-        )}
+        {categories && categories?.length > 0 && categories?.map((category) => (
+          <div key={category._id} className="flex flex-row items-center space-x-2">
+            <button
+              onClick={() => {
+                setActiveCategoryId(category._id);
+                setShowShopByCategory(!showShopByCategory);
+                setShowShopByBreed(false);
+              }}
+              className="flex items-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] transition-colors outline-none"
+            >
+              <CustomImage
+                src={category.image}
+                alt={category.name}
+                className="h-5 w-5 rounded-3xl"
+                width={20}
+                height={20}
+              />
+              <span className="text-sm">
+                {category.name}
+                <ChevronDown className="inline-block h-4 w-4 ml-1" />
+              </span>
+            </button>
+          </div>
+        ))}
 
         <div>
           <button
@@ -206,29 +217,27 @@ const Category = () => {
             itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
             showArrows={true}
           >
-            {loading ? (
-              Array(6).fill(0).map((_, i) => (
-                <Skeleton key={i} className="w-24 h-24" />
-              ))
-            ) : (
-              breeds.map((breed) => (
-                <div key={breed._id}>
-                  <CustomImage
-                    src={breed.image}
-                    alt={breed.name}
-                    className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200"
-                    width={96}
-                    height={96}
-                  />
-                  <p className="text-center text-sm mt-2">{breed.name}</p>
-                </div>
-              ))
-            )}
+            {loading
+              ? Array(6)
+                  .fill(0)
+                  .map((_, i) => <Skeleton key={i} className="w-24 h-24" />)
+              : breeds.map((breed) => (
+                  <div key={breed._id}>
+                    <CustomImage
+                      src={breed.image}
+                      alt={breed.name}
+                      className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-200"
+                      width={96}
+                      height={96}
+                    />
+                    <p className="text-center text-sm mt-2">{breed.name}</p>
+                  </div>
+                ))}
           </CustomCarousel>
         </div>
       )}
     </>
   );
-}
+};
 
 export default Category;

@@ -23,7 +23,6 @@ const Home = () => {
     select: (res) => res?.data?.data || {},
   });
 
-
   return (
     <div
       style={{
