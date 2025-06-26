@@ -14,6 +14,7 @@ import RatingReviews from "@/components/product/RatingReviews";
 import ProductAccordion from "@/components/product/ProductAccordion";
 import HandPickedProducts from "@/components/product/HandpickedProducts";
 import CategoryBanner from "@/components/category/CategoryBanner";
+import ProductReviews from "@/components/product/ProductReviews";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
@@ -141,6 +142,8 @@ const ProductPage = ({ params }) => {
       </div>
 
       <HandPickedProducts />
+
+      <ProductReviews />
     </div>
   );
 };

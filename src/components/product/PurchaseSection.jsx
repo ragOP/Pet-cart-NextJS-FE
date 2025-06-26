@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { MapPin, Truck, RefreshCw, Gift } from "lucide-react";
 import PincodeInput from "@/components/pincode/PincodeInput";
+import DeliveryIcon from "@/icons/DeliveryIcon";
+import NoReturnIcon from "@/icons/NoReturnIcon";
+import FreeIcon from "@/icons/FreeIcon";
 
-const PurchaseSection = ({
-  pincode,
-  onPincodeChange,
-  onCheckDelivery,
-}) => {
-
+const PurchaseSection = ({ pincode, onPincodeChange, onCheckDelivery }) => {
   return (
     <>
       {/* Delivery Information */}
@@ -26,19 +24,19 @@ const PurchaseSection = ({
         {/* Delivery Features */}
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <Truck className="w-5 h-5 text-orange-500" />
-            <span className="text-sm">
+            <DeliveryIcon />
+            <span className="text-base">
               Expected delivery date -{" "}
               <strong>Tomorrow (Thu Jun 12 2025 - By 9PM)</strong>
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <RefreshCw className="w-5 h-5 text-orange-500" />
-            <span className="text-sm">No Exchange & Returns</span>
+            <NoReturnIcon />
+            <span className="text-base">No Exchange & Returns</span>
           </div>
           <div className="flex items-center gap-3">
-            <Gift className="w-5 h-5 text-blue-500" />
-            <span className="text-sm">Enjoy Free Delivery above ₹699</span>
+            <FreeIcon />
+            <span className="text-base">Enjoy Free Delivery above ₹699</span>
           </div>
         </div>
       </div>

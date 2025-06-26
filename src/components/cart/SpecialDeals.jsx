@@ -53,7 +53,7 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
       <CustomCarousel
         className="hide-scrollbar min-h-[260px] flex items-center justify-center"
         contentClassName="gap-4 flex items-center justify-center min-h-[220px]"
-        itemClassName="min-w-[250px] max-w-[250px] flex flex-col items-center justify-center"
+        itemClassName="min-w-fit-content max-w-fit-content flex flex-col items-center justify-center"
         showArrows={true}
       >
         {isLoading && (
@@ -81,7 +81,7 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-60"
+                className="w-70"
               />
             </CarouselItem>
           ))}

@@ -28,7 +28,7 @@ const HandPickedProducts = () => {
   });
 
   return (
-    <div className="w-full px-4 py-8 bg-white">
+    <div className="w-full px-2 md:px-4 py-8 bg-white">
       {/* Header */}
       <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
         <CustomImage
@@ -47,7 +47,7 @@ const HandPickedProducts = () => {
       <CustomCarousel
         className="hide-scrollbar min-h-[260px] flex items-center justify-center"
         contentClassName="gap-4 flex items-center justify-center min-h-[220px]"
-        itemClassName="min-w-[250px] max-w-[250px] flex flex-col items-center justify-center"
+        itemClassName="min-w-fit-content max-w-fit-content flex flex-col items-center justify-center"
         showArrows={true}
       >
         {isLoading && (
@@ -75,7 +75,7 @@ const HandPickedProducts = () => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-60"
+                className="w-70"
               />
             </CarouselItem>
           ))}
