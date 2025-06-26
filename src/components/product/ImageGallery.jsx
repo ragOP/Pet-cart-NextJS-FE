@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import CustomImage from "@/components/images/CustomImage";
 import {
   Carousel,
@@ -10,34 +10,40 @@ import {
 import ReactImageMagnify from "react-image-magnify";
 
 const ImageGallery = ({ images, selectedImage, onSelect }) => {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
   useEffect(() => {
-    console.log("Selected Image Index:", selectedImage);
-    console.log("Selected Image URL:", images[selectedImage]);
-  }, [selectedImage, images]);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   if (!images || images.length === 0) return null;
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
   if (isMobile) {
     return (
-      <Carousel>
-        <CarouselContent>
-          {images.map((img, idx) => (
-            <CarouselItem key={idx}>
-              <CustomImage
-                src={img}
-                alt={`Product ${idx + 1}`}
-                className="w-full object-contain bg-white rounded-lg"
-                width={500}
-                height={500}
-              />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+      <div className="relative w-full overflow-hidden">
+        <Carousel className="w-full">
+          <CarouselContent className="w-full">
+            {images.map((img, idx) => (
+              <CarouselItem key={idx} className="w-full">
+                <CustomImage
+                  src={img}
+                  alt={`Product ${idx + 1}`}
+                  className="w-full h-60 object-contain bg-white rounded-lg block"
+                  style={{ width: "100%" }}
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10" />
+          <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10" />
+        </Carousel>
+      </div>
     );
   }
 
@@ -77,7 +83,7 @@ const ImageGallery = ({ images, selectedImage, onSelect }) => {
             },
             enlargedImageContainerDimensions: {
               width: "120%",
-              height: "150%", 
+              height: "150%",
             },
           }}
         />

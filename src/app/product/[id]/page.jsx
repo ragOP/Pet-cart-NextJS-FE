@@ -7,10 +7,12 @@ import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { getProductById } from "@/helpers/home";
 import ImageGallery from "@/components/product/ImageGallery";
 import Variants from "@/components/product/Variants";
-import PriceDisplay from "@/components/product/PriceDisplay";
+import PriceAndCartDisplay from "@/components/product/PriceAndCartDisplay";
 import PurchaseSection from "@/components/product/PurchaseSection";
 import ProductBreadcrumb from "@/components/product/ProductBreadcrumb";
 import RatingReviews from "@/components/product/RatingReviews";
+import ProductAccordion from "@/components/product/ProductAccordion";
+import HandPickedProducts from "@/components/product/HandpickedProducts";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
@@ -47,7 +49,6 @@ const ProductPage = ({ params }) => {
     setSelectedImage(0);
   }, [data]);
 
-
   if (isLoading)
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -57,7 +58,7 @@ const ProductPage = ({ params }) => {
   if (isError || !data) return <PrimaryEmptyState title="Product not found" />;
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-4 bg-[#FFFBF6]">
       <ProductBreadcrumb
         category={data.categoryId?.name}
         subCategory={data.subCategoryId?.name}
@@ -101,24 +102,39 @@ const ProductPage = ({ params }) => {
             onSelectVariant={(variantId) => onSelectVariant(variantId)}
           />
 
-          <PriceDisplay
+          <PriceAndCartDisplay
             price={currentVariant.price || data.price}
             salePrice={currentVariant.salePrice || data.salePrice}
           />
 
-          {/* Add to Cart & Delivery */}
           <PurchaseSection
             pincode={pincode}
             onPincodeChange={setPincode}
-            onCheckDelivery={() => {
-              /* TODO: handle check */
-            }}
-            onAddToCart={() => {
-              /* TODO: handle add to cart */
-            }}
+            onCheckDelivery={() => {}}
+            onAddToCart={() => {}}
           />
         </div>
       </div>
+
+      <ProductAccordion
+        items={[
+          {
+            title: "Product Details",
+            content: "Product details content goes here.",
+          },
+          {
+            title: "Additional Information",
+            content: "Additional information content goes here.",
+          },
+          {
+            title: "Product Details",
+            content: "Another product details section.",
+          },
+        ]}
+      />
+
+
+      <HandPickedProducts />
     </div>
   );
 };
