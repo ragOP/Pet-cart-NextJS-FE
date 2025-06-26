@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, Menu, MapPin } from "lucide-react";
+import { Search, Menu, MapPin, X, ShoppingCart } from "lucide-react";
 import CustomImage from "@/components/images/CustomImage";
 import cartIcon from "@/assets/cart.png";
 import truckIcon from "@/assets/truck.png";
@@ -10,6 +10,7 @@ import loginLogo from "@/assets/login.png";
 
 const Header = ({ logo }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const suggestions = ["Dog Food", "Cat Food", "Helno", "Royal Canin"];
   const [index, setIndex] = useState(0);
   const searchInputRef = React.useRef(null);
@@ -48,111 +49,124 @@ const Header = ({ logo }) => {
 
   const animatedPlaceholder = `Search "${suggestions[index]}"`;
 
-  return (
-    <div className="bg-[#FEF5E7] text-[#333] shadow px-4 py-4">
-      {/* Mobile Layout */}
-      <div className="md:hidden">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => setIsMenuOpen((v) => !v)}
-              className="p-2 hover:bg-gray-100 focus:bg-gray-200 rounded"
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") setIsMenuOpen((v) => !v);
-              }}
-            >
-              <Menu size={24} />
-            </button>
-            <CustomImage
-              src={logo || petLogo}
-              alt="PetCaart Logo"
-              className="h-10 w-auto max-w-[140px] object-contain"
-              width={140}
-              height={40}
-              priority
+  const MobileMenu = () => (
+    <div
+      ref={menuRef}
+      className="fixed inset-0 bg-white z-50 flex flex-col"
+      style={{ height: "100dvh" }}
+    >
+      <div className="flex items-center justify-between p-4 border-b">
+        <CustomImage
+          src={logo || petLogo}
+          alt="PetCaart Logo"
+          className="h-8 w-auto"
+          width={120}
+          height={32}
+        />
+        <button
+          onClick={() => setIsMenuOpen(false)}
+          className="p-2 hover:bg-gray-100 rounded-full"
+        >
+          <X size={24} />
+        </button>
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+        <div className="space-y-4">
+          <div className="relative">
+            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder={animatedPlaceholder}
+              className="w-full pl-10 pr-4 py-3 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            />
+          </div>
+
+          <div className="relative">
+            <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-yellow-600" />
+            <input
+              type="text"
+              placeholder="Enter PINCODE to check delivery date"
+              className="w-full pl-10 pr-4 py-3 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm"
             />
           </div>
         </div>
-        {isMenuOpen && (
-          <div
-            ref={menuRef}
-            id="mobile-menu"
-            className="fixed top-16 right-4 bg-white shadow-lg rounded-lg p-4 z-50"
-          >
-            <div className="flex flex-col space-y-4">
-              <button
-                className="flex items-center space-x-2 rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
-                aria-label="Track Order"
-                type="button"
-              >
-                <CustomImage
-                  src={truckIcon}
-                  alt="Delivery"
-                  className="h-6 w-6"
-                  width={24}
-                  height={24}
-                />
-                <span>Track Order</span>
-              </button>
-              <button
-                className="flex items-center space-x-2 rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
-                aria-label="Cart"
-                type="button"
-              >
-                <CustomImage
-                  src={cartIcon}
-                  alt="Cart"
-                  className="h-6 w-6"
-                  width={24}
-                  height={24}
-                />
-                <span>Cart</span>
-              </button>
-              <button className="bg-[#00a3ff] text-white px-4 py-2 rounded text-sm font-medium flex items-center hover:bg-[#0090e0] focus:bg-[#007bb8]" aria-label="Login">
-                <CustomImage
-                  src={loginLogo}
-                  alt="loginlogo"
-                  className="h-4 w-auto mr-2"
-                  width={20}
-                  height={20}
-                />
-                Login
-              </button>
-            </div>
-          </div>
-        )}
-        <div className="flex w-full mb-4">
-          <input
-            ref={searchInputRef}
-            type="text"
-            placeholder={animatedPlaceholder}
-            className="bg-white w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none text-sm"
-            aria-label="Search products"
-          />
-          <button className="bg-white px-4 py-2 border border-l-0 border-gray-300 rounded-r-md text-blue-500 flex items-center justify-center hover:bg-blue-50 focus:bg-blue-100" aria-label="Search">
-            <Search size={18} />
+
+        <div className="space-y-2">
+          <button className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition">
+            <CustomImage src={truckIcon} alt="Track Order" className="h-6 w-6" width={24} height={24} />
+            <span className="text-gray-700">Track Order</span>
           </button>
-        </div>
-        <div className="w-full relative">
-          <MapPin
-            size={18}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-600"
-          />
-          <input
-            type="text"
-            placeholder="Enter PINCODE to check delivery date"
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm bg-white"
-            aria-label="Enter PINCODE to check delivery date"
-          />
+          <button className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition">
+            <CustomImage src={cartIcon} alt="Cart" className="h-6 w-6" width={24} height={24} />
+            <span className="text-gray-700">Cart</span>
+          </button>
         </div>
       </div>
 
-      {/* Desktop Layout */}
-      <div className="hidden md:flex items-center justify-between">
+      <div className="p-4 border-t">
+        <button className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2">
+          <CustomImage src={loginLogo} alt="Login" className="h-4 w-auto" width={20} height={20} />
+          <span>LOGIN / SIGNUP</span>
+        </button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="bg-[#FEF5E7] text-[#333] shadow-sm sticky top-0 z-40">
+      {/* Mobile Layout */}
+      <div className="md:hidden">
+        <div className="flex items-center justify-between px-4 py-3">
+          <button
+            onClick={() => setIsMenuOpen(true)}
+            className="p-2 hover:bg-white/50 rounded-full transition"
+          >
+            <Menu size={24} />
+          </button>
+
+          <CustomImage
+            src={logo || petLogo}
+            alt="PetCaart Logo"
+            className="h-8 w-auto"
+            width={120}
+            height={32}
+          />
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShowSearch(prev => !prev)}
+              className="p-2 hover:bg-white/50 rounded-full transition"
+            >
+              <Search size={22} />
+            </button>
+            <button className="p-2 hover:bg-white/50 rounded-full transition relative">
+              <ShoppingCart size={22} />
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">2</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Collapsible Search Bar */}
+        {showSearch && (
+          <div className="px-4 pb-3 animate-in slide-in-from-top">
+            <div className="relative">
+              <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder={animatedPlaceholder}
+                className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              />
+            </div>
+          </div>
+        )}
+
+        {isMenuOpen && <MobileMenu />}
+      </div>
+
+      {/* Desktop Layout - Unchanged */}
+      <div className="hidden md:flex items-center justify-between p-4">
         <div className="flex items-center space-x-4">
           <CustomImage
             src={logo || petLogo}

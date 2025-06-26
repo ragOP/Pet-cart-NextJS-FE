@@ -19,9 +19,9 @@ const CatsLife = () => {
   
 
   return (
-    <div className="w-full px-4 py-6">
+    <div className="w-full px-2 md:px-4 py-6">
       {/* Title */}
-      <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
+      <div className="font-bold mb-4 items-center md:items-start font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
         <CustomImage
           src={pawLogo}
           alt="Paw Logo"

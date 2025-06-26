@@ -7,31 +7,30 @@ import paswIcon from "@/assets/bestseller/paws.png";
 import starIcon from "@/assets/bestseller/Vector.png";
 import CustomImage from "@/components/images/CustomImage";
 import CustomCarousel from "@/components/carousel/CustomCarousel";
-import "@/styles/hide-scrollbar.css";
 import BestSellerProduct from "@/components/product/BestSellerProduct";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "@/app/apis/getProducts";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { CarouselItem } from "../ui/carousel";
+import "@/styles/hide-scrollbar.css";
 
-const BestSellers = () =>{
+const LastMinuteAddOns = () => {
   const params = {
     page: 1,
     per_page: 10,
-    // isBestSeller: true,
-    max_price: 599,
+    handPicked: true,
   };
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["bestsellers", params],
+    queryKey: ["last_minute_add_ons", params],
     queryFn: () => getProducts(params),
     select: (res) => res?.data?.data || [],
   });
 
   return (
-    <div className="w-full px-2 md:px-4 py-8 bg-white">
+    <div className="w-full px-2 md:px-8 py-8 bg-white">
       {/* Header */}
-      <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
+      <div className=" mb-4 align-middle flex flex-row gap-2">
         <CustomImage
           src={paswIcon}
           alt="Paw Logo"
@@ -39,9 +38,8 @@ const BestSellers = () =>{
           width={50}
           height={60}
         />
-        <span className="space-x-2">
-          <span className="text-[#F59A11]">Bestsellers</span>
-          <span className="text-[#0888B1]">Under ₹599</span>
+        <span className="text-[#0888B1] font-bold text-[28px] leading-[28.5px] tracking-[0.57px] ">
+          Last Minute Add-Ons
         </span>
       </div>
 
@@ -89,6 +87,6 @@ const BestSellers = () =>{
       </CustomCarousel>
     </div>
   );
-}
+};
 
-export default BestSellers;
+export default LastMinuteAddOns;

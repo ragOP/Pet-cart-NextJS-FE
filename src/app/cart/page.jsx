@@ -6,6 +6,9 @@ import CartList from "@/components/cart/CartList";
 import CartSummary from "@/components/cart/CartSummary";
 import CartCouponSection from "@/components/cart/CartCouponSection";
 import PincodeInput from "@/components/pincode/PincodeInput";
+import SpecialDeals from "@/components/cart/SpecialDeals";
+import LastMinuteAddOns from "@/components/cart/LastMinuteAddOns";
+import CategoryBanner from "@/components/category/CategoryBanner";
 
 // Dummy data for cart items
 const cartItems = [
@@ -15,8 +18,7 @@ const cartItems = [
     img: "/assets/cart1.png",
     subtitle: "14x3Kg | 10% OFF",
     price: 5000,
-    mrp: 5000,
-    discount: 70,
+    salePrice: 4500,
     quantity: 2,
   },
   {
@@ -25,8 +27,7 @@ const cartItems = [
     img: "/assets/cart2.png",
     subtitle: "14x3Kg | 10% OFF",
     price: 5000,
-    mrp: 5000,
-    discount: 70,
+    salePrice: 4500,
     quantity: 1,
   },
   {
@@ -35,8 +36,7 @@ const cartItems = [
     img: "/assets/cart2.png",
     subtitle: "14x3Kg | 10% OFF",
     price: 5000,
-    mrp: 5000,
-    discount: 70,
+    salePrice: 4500,
     quantity: 1,
   },
 ];
@@ -47,15 +47,15 @@ const CartPage = () => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
 
   // Price calculation
-  const totalMrp = items.reduce(
-    (acc, item) => acc + item.mrp * item.quantity,
-    0
-  );
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  const totalDiscount = totalMrp - totalPrice;
+  const totalSalePrice = items.reduce(
+    (acc, item) => acc + (item.salePrice || item.price) * item.quantity,
+    0
+  );
+  const totalDiscount = totalPrice - totalSalePrice;
   const shipping = 0;
 
   const handleQtyChange = (id, delta) => {
@@ -90,7 +90,7 @@ const CartPage = () => {
           />
         </div>
         {/* Right: Summary */}
-        <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl border border-[#F59A1133]">
+        <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl h-fit border border-[#F59A1133]">
           <PincodeInput
             pincode={pincode}
             onPincodeChange={setPincode}
@@ -110,13 +110,21 @@ const CartPage = () => {
           <div className="border-b border-[#0000001A]" />
 
           <CartSummary
-            totalMrp={totalMrp}
+            totalMrp={totalPrice}
             totalDiscount={totalDiscount}
-            totalPrice={totalPrice}
+            totalPrice={totalSalePrice}
             shipping={shipping}
           />
         </div>
       </div>
+
+      <SpecialDeals />
+
+      <div className="px-4 mb-2">
+        <CategoryBanner />
+      </div>
+
+      <LastMinuteAddOns />
     </div>
   );
 };
