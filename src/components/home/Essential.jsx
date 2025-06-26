@@ -10,15 +10,21 @@ import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "@/app/apis/getProducts";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
+import { useRouter } from "next/navigation";
 
 const Essential = () => {
   const params = { page: 1, per_page: 10, isEverydayEssential: true };
+  const router = useRouter();
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["essentials", params],
     queryFn: () => getProducts(params),
     select: (res) => res?.data?.data || [],
   });
+
+  const onNavigateToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
 
   return (
     <div className="w-full px-4 py-6 hidescrollbar">
@@ -56,12 +62,16 @@ const Essential = () => {
         {data &&
           data.length > 0 &&
           data.map((item) => (
-            <CarouselItem key={item._id} className="flex flex-col items-center">
+            <CarouselItem
+              key={item._id}
+              className="flex flex-col items-center"
+              onClick={() => onNavigateToProduct(item._id)}
+            >
               <ProductItem
                 image={item.images?.[0]}
                 alt={item.title}
                 label={item.title}
-                className="w-50"
+                className="w-50 cursor-pointer"
               />
             </CarouselItem>
           ))}

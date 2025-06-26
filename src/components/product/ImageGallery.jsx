@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CustomImage from "@/components/images/CustomImage";
 import {
   Carousel,
@@ -7,8 +7,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import ReactImageMagnify from "react-image-magnify";
 
 const ImageGallery = ({ images, selectedImage, onSelect }) => {
+  useEffect(() => {
+    console.log("Selected Image Index:", selectedImage);
+    console.log("Selected Image URL:", images[selectedImage]);
+  }, [selectedImage, images]);
+
   if (!images || images.length === 0) return null;
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
@@ -22,7 +28,7 @@ const ImageGallery = ({ images, selectedImage, onSelect }) => {
               <CustomImage
                 src={img}
                 alt={`Product ${idx + 1}`}
-                className="w-full h-96 object-contain bg-white rounded-lg"
+                className="w-full object-contain bg-white rounded-lg"
                 width={500}
                 height={500}
               />
@@ -37,7 +43,7 @@ const ImageGallery = ({ images, selectedImage, onSelect }) => {
 
   return (
     <div className="flex gap-4 p-4">
-      <div className="flex flex-col gap-2 w-20">
+      <div className="flex flex-col gap-2 w-24">
         {images.map((img, idx) => (
           <button
             key={idx}
@@ -49,20 +55,31 @@ const ImageGallery = ({ images, selectedImage, onSelect }) => {
             <CustomImage
               src={img}
               alt={`Product ${idx + 1}`}
-              className="w-full h-16 object-contain bg-white"
-              width={80}
-              height={80}
+              className="w-full h-28 object-contain bg-white"
+              width={110}
+              height={110}
             />
           </button>
         ))}
       </div>
       <div className="flex-1 relative">
-        <CustomImage
-          src={images[selectedImage]}
-          alt="Main Product"
-          className="w-full h-96 object-contain bg-white rounded-lg"
-          width={500}
-          height={500}
+        <ReactImageMagnify
+          {...{
+            smallImage: {
+              alt: "Main Product",
+              isFluidWidth: true,
+              src: images[selectedImage],
+            },
+            largeImage: {
+              src: images[selectedImage],
+              width: 1000,
+              height: 1000,
+            },
+            enlargedImageContainerDimensions: {
+              width: "120%",
+              height: "150%", 
+            },
+          }}
         />
       </div>
     </div>

@@ -1,31 +1,55 @@
 import React from "react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
+import VariantBoxIcon from "@/icons/VariantBoxIcon";
 
 const Variants = ({ variants, selectedVariant, onSelectVariant }) => {
   if (!variants || variants.length === 0) return null;
 
   return (
-    <div className="space-y-2">
+    <div className="flex flex-row gap-2">
+      <VariantBoxIcon />
       <div className="flex flex-wrap gap-2">
-        {variants.map((variant, idx) => {
-          const discount = calculateDiscountPercent(variant.price, variant.salePrice);
+        {variants.map((variant, index) => {
+          const discount = calculateDiscountPercent(
+            variant.price,
+            variant.salePrice
+          );
           return (
-            <button
+            <VariantBox
               key={variant._id}
-              onClick={() => onSelectVariant(idx)}
-              className={`px-3 py-2 rounded-lg border text-sm font-medium ${
-                selectedVariant === idx
-                  ? "bg-orange-100 border-orange-400 text-orange-700"
-                  : "bg-gray-100 border-gray-300 text-gray-700"
-              }`}
-            >
-              {variant.weight} {variant.salePrice ? `| ${discount}% OFF` : null}
-            </button>
+              index={index}
+              onSelectVariant={onSelectVariant}
+              variant={variant}
+              discount={discount}
+              isSelected={selectedVariant === variant._id}
+            />
           );
         })}
       </div>
     </div>
   );
-}
+};
 
 export default Variants;
+
+export const VariantBox = ({
+  onSelectVariant,
+  variant,
+  discount,
+  isSelected,
+}) => {
+  return (
+    <div
+      onClick={() => onSelectVariant(variant?._id)}
+      className={`flex cursor-pointer items-center py-1.5 px-4 rounded-xl ${
+        isSelected
+          ? "bg-[rgba(0,78,106,0.2)] font-medium"
+          : "bg-[#6A68681A] font-normal"
+      }`}
+    >
+      <span className="text-sm">
+        {variant.weight} {variant.salePrice ? `| ${discount}% OFF` : null}
+      </span>
+    </div>
+  );
+};

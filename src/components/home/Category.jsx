@@ -113,7 +113,7 @@ const Category = () => {
           <CustomImage
             src={icon}
             alt={title}
-            className="h-6 w-6 mr-2"
+            className="h-8 w-8 mr-2"
             width={24}
             height={24}
           />
@@ -197,7 +197,7 @@ const Category = () => {
 
       {/* Shop By Category Dropdown */}
       {showShopByCategory && activeCategoryId && (
-        <div className="absolute left-0 right-0 w-full bg-white shadow-lg p-6 z-10">
+        <div className="absolute left-0 right-0 w-full bg-white shadow-lg z-10">
           <Dropdown
             icon={pawIcon}
             title="Categories"
