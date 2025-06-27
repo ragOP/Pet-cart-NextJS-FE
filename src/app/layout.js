@@ -17,7 +17,6 @@ export default async function RootLayout({ children }) {
       <body className="antialiased">
         <ReduxProvider>
           <QueryProvider>
-            {/* {children} */}
             <Wrapper headerFooterData={headerFooterData}>{children}</Wrapper>
           </QueryProvider>
         </ReduxProvider>
