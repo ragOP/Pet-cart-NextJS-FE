@@ -37,4 +37,7 @@ export const endpoints = {
 
   // brands
   brands: "api/brand",
+
+  // product banner
+  productBanner: "api/product-banner",
 };
