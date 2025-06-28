@@ -1,14 +1,114 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Search, Menu, MapPin, X, ShoppingCart } from "lucide-react";
+import { useRouter } from "next/navigation";
 import CustomImage from "@/components/images/CustomImage";
 import cartIcon from "@/assets/cart.png";
 import truckIcon from "@/assets/truck.png";
 import petLogo from "@/assets/pet.png";
 import loginLogo from "@/assets/login.png";
 
+const MobileMenu = React.memo(({ 
+  logo, 
+  animatedPlaceholder, 
+  menuRef, 
+  setIsMenuOpen, 
+  router 
+}) => (
+  <div
+    ref={menuRef}
+    className="fixed inset-0 bg-white z-50 flex flex-col"
+    style={{ height: "100dvh" }}
+  >
+    <div className="flex items-center justify-between p-4 border-b">
+      <button
+        onClick={() => {
+          router.push('/');
+          setIsMenuOpen(false);
+        }}
+        className="hover:opacity-80 transition"
+      >
+        <CustomImage
+          src={logo || petLogo}
+          alt="PetCaart Logo"
+          className="h-8 w-auto"
+          width={120}
+          height={32}
+        />
+      </button>
+      <button
+        onClick={() => setIsMenuOpen(false)}
+        className="p-2 hover:bg-gray-100 rounded-full"
+      >
+        <X size={24} />
+      </button>
+    </div>
+
+    <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
+      <div className="space-y-4">
+        <div className="relative">
+          <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            placeholder={animatedPlaceholder}
+            className="w-full pl-10 pr-4 py-3 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+          />
+        </div>
+
+        <div className="relative">
+          <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-yellow-600" />
+          <input
+            type="text"
+            placeholder="Enter PINCODE to check delivery date"
+            className="w-full pl-10 pr-4 py-3 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <button 
+          className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
+          onClick={() => {
+            router.push('/track-order');
+            setIsMenuOpen(false);
+          }}
+        >
+          <CustomImage src={truckIcon} alt="Track Order" className="h-6 w-6" width={24} height={24} />
+          <span className="text-gray-700">Track Order</span>
+        </button>
+        <button 
+          className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
+          onClick={() => {
+            router.push('/cart');
+            setIsMenuOpen(false);
+          }}
+        >
+          <CustomImage src={cartIcon} alt="Cart" className="h-6 w-6" width={24} height={24} />
+          <span className="text-gray-700">Cart</span>
+        </button>
+      </div>
+    </div>
+
+    <div className="p-4 border-t">
+      <button 
+        className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2"
+        onClick={() => {
+          router.push('/login');
+          setIsMenuOpen(false);
+        }}
+      >
+        <CustomImage src={loginLogo} alt="Login" className="h-4 w-auto" width={20} height={20} />
+        <span>LOGIN / SIGNUP</span>
+      </button>
+    </div>
+  </div>
+));
+
+MobileMenu.displayName = 'MobileMenu';
+
 const Header = ({ logo }) => {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const suggestions = ["Dog Food", "Cat Food", "Helno", "Royal Canin"];
@@ -21,7 +121,7 @@ const Header = ({ logo }) => {
       setIndex((prevIndex) => (prevIndex + 1) % suggestions.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [suggestions.length]);
 
   useEffect(() => {
     if (isMenuOpen && searchInputRef.current) {
@@ -49,70 +149,6 @@ const Header = ({ logo }) => {
 
   const animatedPlaceholder = `Search "${suggestions[index]}"`;
 
-  const MobileMenu = () => (
-    <div
-      ref={menuRef}
-      className="fixed inset-0 bg-white z-50 flex flex-col"
-      style={{ height: "100dvh" }}
-    >
-      <div className="flex items-center justify-between p-4 border-b">
-        <CustomImage
-          src={logo || petLogo}
-          alt="PetCaart Logo"
-          className="h-8 w-auto"
-          width={120}
-          height={32}
-        />
-        <button
-          onClick={() => setIsMenuOpen(false)}
-          className="p-2 hover:bg-gray-100 rounded-full"
-        >
-          <X size={24} />
-        </button>
-      </div>
-
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
-        <div className="space-y-4">
-          <div className="relative">
-            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder={animatedPlaceholder}
-              className="w-full pl-10 pr-4 py-3 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-            />
-          </div>
-
-          <div className="relative">
-            <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-yellow-600" />
-            <input
-              type="text"
-              placeholder="Enter PINCODE to check delivery date"
-              className="w-full pl-10 pr-4 py-3 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm"
-            />
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <button className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition">
-            <CustomImage src={truckIcon} alt="Track Order" className="h-6 w-6" width={24} height={24} />
-            <span className="text-gray-700">Track Order</span>
-          </button>
-          <button className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition">
-            <CustomImage src={cartIcon} alt="Cart" className="h-6 w-6" width={24} height={24} />
-            <span className="text-gray-700">Cart</span>
-          </button>
-        </div>
-      </div>
-
-      <div className="p-4 border-t">
-        <button className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2">
-          <CustomImage src={loginLogo} alt="Login" className="h-4 w-auto" width={20} height={20} />
-          <span>LOGIN / SIGNUP</span>
-        </button>
-      </div>
-    </div>
-  );
-
   return (
     <div className="bg-[#FEF5E7] text-[#333] shadow-sm sticky top-0 z-40">
       {/* Mobile Layout */}
@@ -125,13 +161,18 @@ const Header = ({ logo }) => {
             <Menu size={24} />
           </button>
 
-          <CustomImage
-            src={logo || petLogo}
-            alt="PetCaart Logo"
-            className="h-8 w-auto"
-            width={120}
-            height={32}
-          />
+          <button
+            onClick={() => router.push('/')}
+            className="hover:opacity-80 transition"
+          >
+            <CustomImage
+              src={logo || petLogo}
+              alt="PetCaart Logo"
+              className="h-8 w-auto"
+              width={120}
+              height={32}
+            />
+          </button>
 
           <div className="flex items-center gap-2">
             <button
@@ -140,7 +181,10 @@ const Header = ({ logo }) => {
             >
               <Search size={22} />
             </button>
-            <button className="p-2 hover:bg-white/50 rounded-full transition relative">
+            <button 
+              className="p-2 hover:bg-white/50 rounded-full transition relative"
+              onClick={() => router.push('/cart')}
+            >
               <ShoppingCart size={22} />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">2</span>
             </button>
@@ -162,20 +206,33 @@ const Header = ({ logo }) => {
           </div>
         )}
 
-        {isMenuOpen && <MobileMenu />}
+        {isMenuOpen && (
+          <MobileMenu 
+            logo={logo}
+            animatedPlaceholder={animatedPlaceholder}
+            menuRef={menuRef}
+            setIsMenuOpen={setIsMenuOpen}
+            router={router}
+          />
+        )}
       </div>
 
       {/* Desktop Layout - Unchanged */}
       <div className="hidden md:flex items-center justify-between p-4">
         <div className="flex items-center space-x-4">
-          <CustomImage
-            src={logo || petLogo}
-            alt="PetCaart Logo"
-            className="h-10 w-auto"
-            width={160}
-            height={140}
-            priority
-          />
+          <button
+            onClick={() => router.push('/')}
+            className="hover:opacity-80 transition"
+          >
+            <CustomImage
+              src={logo || petLogo}
+              alt="PetCaart Logo"
+              className="h-10 w-auto"
+              width={160}
+              height={140}
+              priority
+            />
+          </button>
         </div>
 
         <div className="flex flex-row flex-1 items-center justify-center gap-4 mx-8">
@@ -210,6 +267,7 @@ const Header = ({ logo }) => {
             className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
             aria-label="Track Order"
             type="button"
+            onClick={() => router.push('/track-order')}
           >
             <CustomImage
               src={truckIcon}
@@ -223,6 +281,7 @@ const Header = ({ logo }) => {
             className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
             aria-label="Cart"
             type="button"
+            onClick={() => router.push('/cart')}
           >
             <CustomImage
               src={cartIcon}
@@ -232,7 +291,11 @@ const Header = ({ logo }) => {
               height={24}
             />
           </button>
-          <button className="bg-[#0888B1] uppercase text-white px-3 py-2 rounded text-sm font-medium flex items-center hover:bg-[#066b8a] focus:bg-[#05516a]" aria-label="Login">
+          <button 
+            className="bg-[#0888B1] uppercase text-white px-3 py-2 rounded text-sm font-medium flex items-center hover:bg-[#066b8a] focus:bg-[#05516a]" 
+            aria-label="Login"
+            onClick={() => router.push('/login')}
+          >
             <CustomImage
               src={loginLogo}
               alt="loginlogo"

@@ -9,6 +9,9 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
 # testing
 /coverage
@@ -23,6 +26,19 @@
 # misc
 .DS_Store
 *.pem
+Thumbs.db
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store?
+ehthumbs.db
 
 # debug
 npm-debug.log*
@@ -32,6 +48,15 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# local database
+*.db
+*.sqlite
+*.sqlite3
 
 # vercel
 .vercel
@@ -39,3 +64,22 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Storybook build outputs
+.out
+.storybook-out
+storybook-static
+
+# PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
+
+# Sentry Config File
+.sentryclirc
+
+# Local Netlify folder
+.netlify
