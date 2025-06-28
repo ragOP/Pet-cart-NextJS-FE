@@ -62,10 +62,14 @@ const Applod = () => {
   // Handle navigation
   const handleNavigation = (link) => {
     if (!link || link === "undefined") return;
+
+
+    console.log("Navigating to:", link);
     
     if (link.startsWith("http")) {
       window.open(link, "_blank", "noopener,noreferrer");
     } else {
+      console.log("@@@@@@@")
       router.push(link);
     }
   };
@@ -124,7 +128,6 @@ const Applod = () => {
     };
   }, [slidersImages.length]);
 
-  // Render slider item
   const renderSliderItem = (item, index) => {
     const imageEl = (
       <AnimatedImage
@@ -144,13 +147,12 @@ const Applod = () => {
     <>
       {/* Dynamic Banner */}
       {bannerImage && (
-        <div className="w-full h-auto min-h-[150px] max-w-screen rounded-lg overflow-hidden p-2 pr-4">
+        <div className="w-full max-w-screen rounded-lg overflow-hidden p-2 pr-4">
           <CustomImage
+          key={bannerImage}
             src={bannerImage}
             alt={`${isMobile ? 'Mobile' : 'Web'} Banner`}
             className="w-full object-cover rounded-xl cursor-pointer"
-            width={1200}
-            height={300}
             priority
             onClick={() => handleNavigation(currentBanners[0]?.link)}
           />
