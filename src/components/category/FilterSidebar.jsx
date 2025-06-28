@@ -2,18 +2,6 @@ import React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-const filters = [
-  { label: "All Dog Food", icon: "/pet-food.png" },
-  { label: "Wet Food", icon: "/pet-food.png" },
-  { label: "Dry Food", icon: "/pet-food.png" },
-  { label: "Grain Free", icon: "/pet-food.png" },
-  { label: "Puppy Food", icon: "/pet-food.png" },
-  { label: "Hypoallergenic", icon: "/pet-food.png" },
-  { label: "Veterinary Food", icon: "/pet-food.png" },
-  { label: "Food Toppers", icon: "/pet-food.png" },
-  { label: "Chicken Free", icon: "/pet-food.png" },
-];
-
 const promoImages = [
   "/ad-banner.png",
   "/ad-banner.png",
@@ -21,32 +9,34 @@ const promoImages = [
   "/ad-banner.png",
 ];
 
-export default function FilterSidebar() {
+export default function FilterSidebar({ subCategories, onChangeFilter }) {
   return (
-    <aside className="w-[240px] p-2 space-y-4">
+    <aside className="w-[240px] p-2 space-y-4 hidden lg:block">
       {/* Filter Buttons */}
-      <div className="">
-        {filters.map((filter, index) => (
+      <div className="rounded-2xl border border-[#6A6868]">
+        {subCategories?.map((subCategory, index) => (
           <button
             key={index}
+            onClick={() => onChangeFilter({ subCategorySlug: subCategory.slug })}
             className={cn(
-              "flex items-center w-full gap-3 px-4 py-4  bg-white shadow-sm border text-sm font-medium hover:bg-gray-100"
+              `flex items-center w-full gap-3 p-4 bg-white border-b text-sm font-medium hover:bg-gray-100 ${index === 0 ? "rounded-t-2xl" : ""} ${index === subCategories.length - 1 ? "rounded-b-2xl" : ""}`
+             
             )}
           >
             <Image
-              src={filter.icon}
-              alt={filter.label}
+              src={subCategory.image}
+              alt={subCategory.name}
               width={20}
               height={20}
               className="shrink-0"
             />
-            {filter.label}
+            {subCategory.name}
           </button>
         ))}
       </div>
 
       {/* Promotional Banners */}
-      <div className="space-y-4 pt-2">
+      {/* <div className="space-y-4 pt-2">
         {promoImages.map((src, index) => (
           <div key={index} className="rounded-lg overflow-hidden shadow-md">
             <Image
@@ -59,7 +49,7 @@ export default function FilterSidebar() {
             />
           </div>
         ))}
-      </div>
+      </div> */}
     </aside>
   );
 }
