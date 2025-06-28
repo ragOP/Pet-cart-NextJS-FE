@@ -86,6 +86,10 @@ export default function CategoryPage() {
     updateFilters(updated);
   };
 
+  const handleProductClick = (productId) => {
+    router.push(`/product/${productId}`);
+  };
+
   return (
     <div className="min-h-screen bg-[#FFFBF6] px-6">
       <CategoryBreadcrumb productsCount={data?.total || 0} />
@@ -107,7 +111,12 @@ export default function CategoryPage() {
               <PrimaryEmptyState title="No products found!" />
             ) : (
               data?.data?.map((product, index) => (
-                <BestSellerProduct key={index} product={product} />
+                <BestSellerProduct
+                  className="cursor-pointer"
+                  key={index}
+                  product={product}
+                  onClick={() => handleProductClick(product._id)}
+                />
               ))
             )}
           </div>
