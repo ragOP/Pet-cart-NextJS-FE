@@ -10,11 +10,12 @@ import productBase from "@/assets/product-base.png";
  * @param {string} props.label - Label text to be displayed below the product image
  * @param {string} [props.className] - Additional classes
  */
-const ProductItem = ({ image, alt, label, className = "" }) => {
+const ProductItem = ({ image, alt, label, className = "", onClick }) => {
   return (
     <div
       className={`relative flex flex-col px-2 items-center duration-200 group ${className}`}
       tabIndex={0}
+      onClick={onClick}
     >
       {/* Product image */}
       <div className="relative z-10 flex items-center justify-center w-36 h-36 transition-all group-hover:scale-105 group-focus:scale-105">

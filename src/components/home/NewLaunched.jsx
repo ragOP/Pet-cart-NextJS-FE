@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "@/app/apis/getProducts";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
+import { useRouter } from "next/navigation";
 
 const NewLaunched = () => {
   const params = { page: 1, per_page: 10, newleyLaunced: true };
@@ -20,6 +21,12 @@ const NewLaunched = () => {
     queryFn: () => getProducts(params),
     select: (res) => res?.data?.data || [],
   });
+
+  const router = useRouter();
+
+  const onNavigateToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
 
   return (
     <div className="w-full px-2 md:px-4 py-6">
@@ -56,8 +63,9 @@ const NewLaunched = () => {
                 alt={item.title}
                 label={item.title}
                 tag={item.tag}
-                className="max-w-50"
+                className="max-w-50 cursor-pointer"
                 chip={item.isBestSeller ? "BESTSELLER" : undefined}
+                onClick={() => onNavigateToProduct(item._id)}
               />
             </CarouselItem>
           ))}
