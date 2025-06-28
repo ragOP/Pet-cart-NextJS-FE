@@ -14,6 +14,7 @@ import { getProducts } from "@/app/apis/getProducts";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { CarouselItem } from "../ui/carousel";
+import { useRouter } from "next/navigation";
 
 const BestSellers = () =>{
   const params = {
@@ -27,6 +28,12 @@ const BestSellers = () =>{
     queryFn: () => getProducts(params),
     select: (res) => res?.data?.data || [],
   });
+
+  const router = useRouter();
+
+  const onNavigateToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
 
   return (
     <div className="w-full px-2 md:px-4 py-8 bg-white">
@@ -77,7 +84,8 @@ const BestSellers = () =>{
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-70"
+                className="w-70 cursor-pointer"
+                onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>
           ))}

@@ -16,6 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "@/app/apis/getProducts";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
+import { useRouter } from "next/navigation";
 
 const trendingItems = [
   { id: 1, image: trendingSnacks, label: "Snacks & Treat" },
@@ -60,6 +61,12 @@ function Trending() {
     select: (res) => res?.data?.data || [],
   });
 
+  const router = useRouter();
+
+  const onNavigateToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
+
   return (
     <div className="w-full px-2 md:px-4 py-6">
       {/* Title */}
@@ -101,7 +108,8 @@ function Trending() {
                 image={item.images?.[0]}
                 alt={item.title}
                 label={item.title}
-                className="w-50"
+                className="w-50 cursor-pointer"
+                onClick={() => onNavigateToProduct(item._id)}
               />
             </CarouselItem>
           ))}

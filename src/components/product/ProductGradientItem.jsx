@@ -8,10 +8,12 @@ const ProductGradientItem = ({
   tag,
   chip,
   className = "",
+  onClick,
 }) => {
   return (
     <div
       className={`w-full flex flex-col items-center cursor-pointer ${className}`}
+      onClick={onClick}
     >
       {/* Chip above the card */}
       {chip && (

@@ -65,13 +65,13 @@ const Essential = () => {
             <CarouselItem
               key={item._id}
               className="flex flex-col items-center"
-              onClick={() => onNavigateToProduct(item._id)}
             >
               <ProductItem
                 image={item.images?.[0]}
                 alt={item.title}
                 label={item.title}
                 className="w-50 cursor-pointer"
+                onClick={() => onNavigateToProduct(item._id)}
               />
             </CarouselItem>
           ))}
