@@ -12,9 +12,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-export default function CategoryBreadcrumb() {
+export default function CategoryBreadcrumb({productsCount}) {
   return (
-    <div className="text-sm text-muted-foreground space-x-2 px-6 flex uppercase">
+    <div className="hidden text-sm text-muted-foreground space-x-2 px-6 lg:flex uppercase">
       <div className="border-r-2 pr-4 py-7 flex space-x-1 justify-center items-center text-xs">
         <Breadcrumb>
           <BreadcrumbList>
@@ -29,18 +29,13 @@ export default function CategoryBreadcrumb() {
                 <Link href="/category">Category</Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage >Breadcrumb</BreadcrumbPage>
-            </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      {/* <div className="h-full w-1 p-1 bg-[#C3C3C3]" /> */}
       <div className="flex items-center justify-center space-x-2"> 
         <Image src="/product-icon.png" alt="paws-logo" width={20} height={20} />
         <span className="text-xl"><span className="font-bold text-black">
-          500
+          {productsCount}
           </span> Products</span>
       </div>
     </div>
