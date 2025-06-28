@@ -117,7 +117,7 @@ export const getBreedById = async ({ id }) => {
 export const fetchBrands = async ({ params }) => {
   try {
     const apiResponse = await apiService({
-      endpoint: endpoints.brand,
+      endpoint: endpoints.brands,
       method: "GET",
       params,
     });
@@ -135,7 +135,7 @@ export const fetchBrands = async ({ params }) => {
 export const getBrandById = async ({ id }) => {
   try {
     const apiResponse = await apiService({
-      endpoint: `${endpoints.brand}/${id}`,
+      endpoint: `${endpoints.brands}/${id}`,
     });
 
     return apiResponse;

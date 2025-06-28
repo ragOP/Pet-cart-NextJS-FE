@@ -20,9 +20,6 @@ export const endpoints = {
   // sub categories
   sub_category: "api/subcategory",
 
-  // products
-  products: "api/product",
-
   // breeds
   breed: "api/breed",
 

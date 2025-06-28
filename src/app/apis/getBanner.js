@@ -1,10 +1,10 @@
 import { apiService } from "./apiService";
 import { endpoints } from "./endpoints";
 
-export const getBanners = async () => {
+export const getBanners = async ({ params }) => {
   const apiResponse = await apiService({
     endpoint: endpoints.banners,
-    params: { type: "web" },
+    params: params,
   });
   return apiResponse.response;
 };
