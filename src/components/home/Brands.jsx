@@ -18,13 +18,24 @@ const Brands = () => {
   const isHovered = useRef(false);
   const animationRef = useRef();
 
-  const { data: brands = [], isLoading, isError } = useQuery({
+  const {
+    data: brands = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["brands"],
     queryFn: getBrands,
     select: (res) => res?.data?.data || [],
   });
 
-  const brandImages = brands.length > 0 ? brands : promoImages.map((img, i) => ({ logo: img, name: `Promo ${i+1}`, _id: `promo-${i}` }));
+  const brandImages =
+    brands.length > 0
+      ? brands
+      : promoImages.map((img, i) => ({
+          logo: img,
+          name: `Promo ${i + 1}`,
+          _id: `promo-${i}`,
+        }));
   const images = [...brandImages, ...brandImages];
 
   useEffect(() => {
@@ -72,7 +83,7 @@ const Brands = () => {
   }, [images]);
 
   return (
-    <div className="w-full px-0 md:px-4 py-4 md:py-6">
+    <div className="w-full px-0 md:px-4 py-8 md:py-4">
       {isLoading ? (
         <PrimaryLoader />
       ) : isError || !brands.length ? (
@@ -83,20 +94,20 @@ const Brands = () => {
           ref={scrollRef}
           style={{ whiteSpace: "nowrap" }}
         >
-          <div className="flex gap-4 w-max promotions-banner-track">
+          <div className="flex gap-12 w-max promotions-banner-track">
             {images.map((brand, index) => (
               <div
                 key={brand._id ? `${brand._id}-${index}` : index}
-                className="flex-shrink-0 relative rounded-xl overflow-hidden w-[48vw] md:w-[14vw] max-w-xs flex flex-col items-center justify-center"
-                style={{ aspectRatio: "1.8/1" }}
+                className="flex-shrink-0 relative rounded-xl overflow-hidden flex flex-col items-center justify-center w-40 h-40 md:w-auto md:h-auto"
+                style={{ aspectRatio: window?.innerWidth >= 768 ? "1.8/1" : "1/1" }}
               >
                 <AnimatedImage
                   src={brand.logo}
                   alt={brand.name}
-                  className="object-contain w-full h-[60px] md:h-[80px]"
+                  className="object-contain w-full h-[45px] md:h-[80px]"
                   priority={index === 0}
                 />
-                <span className="block text-center text-base font-semibold mt-2 text-[#333] truncate w-full px-2">
+                <span className="block text-center text-xs md:text-base font-semibold mt-1 md:mt-2 text-[#333] truncate w-full px-2">
                   {brand.name}
                 </span>
               </div>
