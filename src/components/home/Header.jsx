@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Search, Menu, MapPin, X, ShoppingCart } from "lucide-react";
+import { Search, Menu, MapPin, X, ShoppingCart, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CustomImage from "@/components/images/CustomImage";
 import cartIcon from "@/assets/cart.png";
@@ -94,7 +94,7 @@ const MobileMenu = React.memo(({
       <button 
         className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2"
         onClick={() => {
-          router.push('/login');
+          router.push('/auth/login');
           setIsMenuOpen(false);
         }}
       >
@@ -111,6 +111,7 @@ const Header = ({ logo }) => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const suggestions = ["Dog Food", "Cat Food", "Helno", "Royal Canin"];
   const [index, setIndex] = useState(0);
   const searchInputRef = React.useRef(null);
@@ -147,10 +148,28 @@ const Header = ({ logo }) => {
     };
   }, [isMenuOpen]);
 
+  useEffect(() => {
+    // Check for token cookie on mount and on menu open
+    const checkLogin = () => {
+      if (typeof document !== "undefined") {
+        const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+          const [key, value] = cookie.trim().split('=');
+          acc[key] = value;
+          return acc;
+        }, {});
+        setIsLoggedIn(!!cookies.token);
+      }
+    };
+    checkLogin();
+    // Listen for storage events (in case of login/logout in another tab)
+    window.addEventListener('focus', checkLogin);
+    return () => window.removeEventListener('focus', checkLogin);
+  }, [isMenuOpen]);
+
   const animatedPlaceholder = `Search "${suggestions[index]}"`;
 
   return (
-    <div className="bg-[#FEF5E7] text-[#333] shadow-sm sticky top-0 z-40">
+    <div className="bg-[#FEF5E7] text-[#333] shadow-sm sticky top-0 z-40 overflow-x-hidden">
       {/* Mobile Layout */}
       <div className="md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
@@ -291,20 +310,31 @@ const Header = ({ logo }) => {
               height={24}
             />
           </button>
-          <button 
-            className="bg-[#0888B1] uppercase text-white px-3 py-2 rounded text-sm font-medium flex items-center hover:bg-[#066b8a] focus:bg-[#05516a]" 
-            aria-label="Login"
-            onClick={() => router.push('/login')}
-          >
-            <CustomImage
-              src={loginLogo}
-              alt="loginlogo"
-              className="h-4 w-auto mr-2"
-              width={20}
-              height={20}
-            />
-            Login
-          </button>
+          {isLoggedIn ? (
+            <button
+              className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
+              aria-label="Account"
+              type="button"
+              onClick={() => router.push('/account')}
+            >
+              <User size={22} />
+            </button>
+          ) : (
+            <button 
+              className="bg-[#0888B1] uppercase text-white px-3 py-2 rounded text-sm font-medium flex items-center hover:bg-[#066b8a] focus:bg-[#05516a]" 
+              aria-label="Login"
+              onClick={() => router.push('/auth/login')}
+            >
+              <CustomImage
+                src={loginLogo}
+                alt="loginlogo"
+                className="h-4 w-auto mr-2"
+                width={20}
+                height={20}
+              />
+              Login
+            </button>
+          )}
         </div>
       </div>
     </div>

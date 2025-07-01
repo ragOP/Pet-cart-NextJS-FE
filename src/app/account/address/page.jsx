@@ -5,51 +5,36 @@ import AddressList from "@/components/address/AddressList";
 import EmptyAddressState from "@/components/address/EmptyAddressState";
 import AddressFormDialog from "@/components/address/AddressFormDialog";
 import ConfirmationDialog from "@/components/dialog/ConfirmationDialog";
-
-const DUMMY_ADDRESSES = [
-  {
-    firstName: "Akash",
-    lastName: "Harchekar",
-    company: "Technocity IT Premises",
-    address1: "901, 9th Floor",
-    address2: "MIDC, Mahape Road",
-    city: "Ghansoli",
-    state: "Maharashtra",
-    country: "India",
-    postalCode: "400710",
-    phone: "9309746207",
-    isDefault: true,
-  },
-  {
-    firstName: "Raj",
-    lastName: "Sharma",
-    company: "Home",
-    address1: "Building A-5, Flat 302",
-    address2: "Sector 15, Vashi",
-    city: "Navi Mumbai",
-    state: "Maharashtra",
-    country: "India",
-    postalCode: "400703",
-    phone: "9876543210",
-    isDefault: false,
-  },
-  {
-    firstName: "Priya",
-    lastName: "Singh",
-    company: "Office",
-    address1: "Tower B, 14th Floor",
-    address2: "Bandra Kurla Complex",
-    city: "Mumbai",
-    state: "Maharashtra",
-    country: "India",
-    postalCode: "400051",
-    phone: "9123456789",
-    isDefault: false,
-  },
-];
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getAddresses } from "@/app/apis/getAddresses";
+import { createAddress } from "@/app/apis/createAddress";
+import { updateAddress } from "@/app/apis/updateAddress";
+import { deleteAddress } from "@/app/apis/deleteAddress";
+import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 
 const AddressPage = () => {
-  const [addresses, setAddresses] = useState(DUMMY_ADDRESSES);
+  const queryClient = useQueryClient();
+  const { data: addresses = [], isLoading } = useQuery({
+    queryKey: ["addresses"],
+    queryFn: getAddresses,
+    select: (data) => data?.data?.data || [],
+  });
+
+  const createMutation = useMutation({
+    mutationFn: createAddress,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["addresses"] }),
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, data }) => updateAddress(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["addresses"] }),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteAddress,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["addresses"] }),
+  });
+
   const [editingIndex, setEditingIndex] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState({
@@ -59,12 +44,10 @@ const AddressPage = () => {
   });
 
   const handleSaveAddress = (address) => {
-    if (editingIndex !== null) {
-      const updatedAddresses = [...addresses];
-      updatedAddresses[editingIndex] = address;
-      setAddresses(updatedAddresses);
+    if (editingIndex !== null && addresses[editingIndex]) {
+      updateMutation.mutate({ id: addresses[editingIndex].id, data: address });
     } else {
-      setAddresses([...addresses, address]);
+      createMutation.mutate(address);
     }
     setEditingIndex(null);
     setIsDialogOpen(false);
@@ -95,8 +78,11 @@ const AddressPage = () => {
   };
 
   const confirmDelete = () => {
-    if (deleteConfirmation.index !== null) {
-      setAddresses(addresses.filter((_, i) => i !== deleteConfirmation.index));
+    if (
+      deleteConfirmation.index !== null &&
+      addresses[deleteConfirmation.index]
+    ) {
+      deleteMutation.mutate(addresses[deleteConfirmation.index].id);
     }
     setDeleteConfirmation({ isOpen: false, index: null, addressName: "" });
   };
@@ -104,6 +90,8 @@ const AddressPage = () => {
   const cancelDelete = () => {
     setDeleteConfirmation({ isOpen: false, index: null, addressName: "" });
   };
+
+  console.log("Addresses:", addresses);
 
   return (
     <div className="border flex flex-col gap-4 border-[#F59A1180] h-full rounded-lg">
@@ -123,7 +111,9 @@ const AddressPage = () => {
           <span className="font-semibold text-base">ADD NEW ADDRESS</span>
         </button>
       </div>
-      {addresses.length === 0 ? (
+      {isLoading ? (
+        <PrimaryLoader />
+      ) : addresses.length === 0 ? (
         <EmptyAddressState onAddAddress={handleAddAddress} />
       ) : (
         <AddressList
@@ -131,11 +121,7 @@ const AddressPage = () => {
           onEdit={handleEditAddress}
           onDelete={handleDeleteAddress}
           onSetDefault={(index) => {
-            const updatedAddresses = addresses.map((address, i) => ({
-              ...address,
-              isDefault: i === index,
-            }));
-            setAddresses(updatedAddresses);
+            // You may want to implement set default logic here
           }}
         />
       )}

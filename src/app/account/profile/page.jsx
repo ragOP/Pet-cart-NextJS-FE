@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import RequireLogin from "@/components/auth/RequireLogin";
 import ProfileForm from "@/components/account/ProfileForm";
 
 const ProfilePage = () => {
@@ -9,7 +10,11 @@ const ProfilePage = () => {
     console.log(data);
   };
 
-  return <ProfileForm onSubmit={handleSubmit} />;
+  return (
+    <RequireLogin>
+      <ProfileForm onSubmit={handleSubmit} />
+    </RequireLogin>
+  );
 };
 
 export default ProfilePage;

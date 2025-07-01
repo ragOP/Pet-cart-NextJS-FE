@@ -8,6 +8,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import stateList from "@/utils/constants/stateList";
 
 const fields = [
   { name: "firstName", label: "First Name", type: "text", required: true, validate: v => v.trim().length > 0 },
@@ -16,11 +17,15 @@ const fields = [
   { name: "address1", label: "Address 1", type: "text", required: true, validate: v => v.trim().length > 0 },
   { name: "address2", label: "Address 2", type: "text", required: false },
   { name: "city", label: "City", type: "text", required: true, validate: v => v.trim().length > 0 },
-  { name: "state", label: "State/Province", type: "text", required: true, validate: v => v.trim().length > 0 },
   { name: "country", label: "Country/Region", type: "text", required: true, validate: v => v.trim().length > 0 },
   { name: "postalCode", label: "Postal/ZIP Code", type: "text", required: true, validate: v => /^[0-9A-Za-z\- ]{4,10}$/.test(v) },
   { name: "phone", label: "Phone", type: "tel", required: true, validate: v => /^\d{10}$/.test(v) },
 ];
+
+const getStateCode = (stateValue) => {
+  const found = stateList.find((s) => s.value === stateValue);
+  return found ? found.code : "";
+};
 
 const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
   const [formData, setFormData] = useState({
@@ -94,7 +99,9 @@ const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
       return;
     }
     
-    onSave(formData);
+    // Pass both state and stateCode
+    const stateCode = getStateCode(formData.state);
+    onSave({ ...formData, stateCode });
   };
 
   return (
@@ -123,6 +130,24 @@ const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
                 {errors[f.name] && <span className="text-xs text-red-600 mt-1">{errors[f.name]}</span>}
               </div>
             ))}
+            {/* State Dropdown */}
+            <div className="flex flex-col gap-1">
+              <label htmlFor="state" className="text-sm font-s text-gray-700">State/Province</label>
+              <select
+                id="state"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                required
+                className="bg-[#6A68680D] rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#F59A11]"
+              >
+                <option value="">Select State</option>
+                {stateList.map((state) => (
+                  <option key={state.code} value={state.value}>{state.label}</option>
+                ))}
+              </select>
+              {errors.state && <span className="text-xs text-red-600 mt-1">{errors.state}</span>}
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <input

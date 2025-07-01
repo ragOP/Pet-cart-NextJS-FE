@@ -2,6 +2,7 @@ export const endpoints = {
   // auth
   login: "api/auth/user/login",
   register: "api/auth/user/register",
+  update_profile: "api/auth/user/update-profile",
 
   // products
   products: "api/product",
@@ -37,4 +38,7 @@ export const endpoints = {
 
   // brands
   brands: "api/brand",
+
+  // address
+  address: "api/address",
 };

@@ -1,3 +1,4 @@
+import { getCookie } from "@/utils/cookies/getCookie";
 import axios from "axios";
 
 const BACKEND_URL = "https://pet-caart-be.onrender.com";
@@ -14,15 +15,15 @@ export const apiService = async ({
   signal,
 }) => {
   try {
-    let token = null;
+    let token = getCookie("token") || null;
 
     const requestHeaders = {
       "ngrok-skip-browser-warning": "true",
       ...headers,
     };
 
-    if (!removeToken && (token || _token)) {
-      requestHeaders.Authorization = `Bearer ${_token || token}`;
+    if (!removeToken && token) {
+      requestHeaders.Authorization = `Bearer ${token}`;
     }
 
     const requestObj = {
