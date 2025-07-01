@@ -5,33 +5,44 @@ export const convertFilterKeys = (filters) => {
     Object.entries(filters).forEach(([key, value]) => {
         switch (key) {
             case "subCategorySlug":
-                convertedFilters["Sub Category"] = value;
-                break;
+            case "IsSelectedSubCategory":
+              convertedFilters["Sub Category"] = value;
+              break;
+          
             case "categorySlug":
-                convertedFilters["Category"] = value;
-                break;
+            case "IsSelectedCategory":
+              convertedFilters["Category"] = value;
+              break;
+          
             case "brandSlug":
-                convertedFilters["Brand"] = value;
-                break;
+              convertedFilters["Brand"] = value;
+              break;
+          
             case "breedSlug":
-                convertedFilters["Breed"] = value;
-                break;
+              convertedFilters["Breed"] = value;
+              break;
+          
             case "rating":
-                convertedFilters["Rating"] = value;
-                break;
+              convertedFilters["Rating"] = value;
+              break;
+          
             case "min_price_range":
-                convertedFilters["Min Price"] = value;
-                break;
+              convertedFilters["Min Price"] = value;
+              break;
+          
             case "max_price_range":
-                convertedFilters["Max Price"] = value;
-                break;
+              convertedFilters["Max Price"] = value;
+              break;
+          
             case "sort_by":
-                const sortValue = convertFilterValues({ sort_by: value });
-                convertedFilters["Sort By"] = sortValue;
-                break;
+              const sortValue = convertFilterValues({ sort_by: value });
+              convertedFilters["Sort By"] = sortValue;
+              break;
+          
             default:
-                convertedFilters[key] = value;
-        }
+              convertedFilters[key] = value;
+          }
+          
     });
     return convertedFilters;
 }
