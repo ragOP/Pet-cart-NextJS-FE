@@ -2,6 +2,7 @@ import React from "react";
 import CustomImage from "@/components/images/CustomImage";
 import { Heart, Star } from "lucide-react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
+import { VariantBox } from "./Variants";
 
 const BestSellerProduct = ({
   product,
@@ -86,12 +87,21 @@ const BestSellerProduct = ({
       {product.variants && product.variants.length > 0 && (
         <div className="flex flex-row flex-wrap items-center">
           {product.variants.map((variant) => (
-            <div
+            // <div
+            //   key={variant._id || variant.id}
+            //   className="inline-block px-3 py-1 text-sm rounded-lg bg-[#E3EBEE] text-gray-700 font-semibold mt-2 mb-2 mr-2"
+            // >
+            //   {variant.subtitle}
+            // </div>
+            <VariantBox
               key={variant._id || variant.id}
-              className="inline-block px-3 py-1 text-sm rounded-lg bg-[#E3EBEE] text-gray-700 font-semibold mt-2 mb-2 mr-2"
-            >
-              {variant.subtitle}
-            </div>
+              variant={variant}
+              onSelectVariant={(variantId) => onSelectVariant(variantId)}
+              discount={calculateDiscountPercent(
+                variant.price,
+                variant.salePrice
+              )}
+            />
           ))}
         </div>
       )}
