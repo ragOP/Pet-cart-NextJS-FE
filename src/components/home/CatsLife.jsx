@@ -9,13 +9,29 @@ import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import CatBannerCard from "../product/CatBannerCard";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const CatsLife = () => {
+  const router = useRouter();
   const { data: items = [], isLoading, isError } = useQuery({
     queryKey: ["cat-life-banners"],
     queryFn: getCatLifeBanners,
     select: (res) => res?.data?.data || [],
   });
+
+  const handleNavigation = (link) => {
+    if (!link || link === "undefined") return;
+
+
+    console.log("Navigating to:", link);
+    
+    if (link.startsWith("http")) {
+      window.open(link, "_blank", "noopener,noreferrer");
+    } else {
+      console.log("@@@@@@@")
+      router.push(link);
+    }
+  };
   
 
   return (
@@ -50,6 +66,7 @@ const CatsLife = () => {
                 key={item._id}
                 image={item.image}
                 title={item.title}
+                onClick={() => handleNavigation(item.link)}
               />
             );
             const shopNow = (
