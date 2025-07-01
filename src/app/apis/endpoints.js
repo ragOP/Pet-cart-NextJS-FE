@@ -39,11 +39,8 @@ export const endpoints = {
   // brands
   brands: "api/brand",
 
-<<<<<<< HEAD
   // address
   address: "api/address",
-=======
   // product banner
   productBanner: "api/product-banner",
->>>>>>> 48c21cf25d7e7e672434c09f46a8accc553cc1e9
 };
