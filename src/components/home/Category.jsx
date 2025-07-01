@@ -288,6 +288,7 @@ const Category = () => {
   return (
     <>
       {/* Desktop Navigation */}
+      <div className="sticky top-[72px] z-40 overflow-x-hidden">
       <div className="hidden md:block bg-black text-white px-8 py-2 relative z-20">
         <div className="flex justify-end space-x-6">
           {categories?.map((category) => (
@@ -325,6 +326,7 @@ const Category = () => {
             <ChevronDown className="inline-block h-4 w-4" />
           </button>
         </div>
+      </div>
       </div>
 
       {/* Mobile Navigation Trigger */}

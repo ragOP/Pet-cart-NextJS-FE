@@ -40,7 +40,7 @@ const CouponSection = () => {
             <button
               type="button"
               aria-label={`Activate coupon ${index + 1}`}
-              className="w-full h-40 md:h-56 outline-none focus:outline-none bg-transparent rounded-2xl transition-all duration-200 shadow-lg hover:shadow-2xl hover:scale-105 hover:ring-2 hover:ring-[#F59A11] focus:shadow-2xl focus:scale-105 focus:ring-2 focus:ring-[#F59A11] cursor-pointer"
+              className="w-full h-40 md:h-56 outline-none focus:outline-none bg-transparent rounded-2xl transition-all duration-200 hover:scale-105 focus:scale-105 cursor-pointer"
               onClick={() => {
                 // Placeholder: replace with copy code, open modal, or show toast
                 console.log(`Coupon ${index + 1} clicked`);
@@ -49,9 +49,9 @@ const CouponSection = () => {
               <CustomImage
                 src={img}
                 alt={`Coupon ${index + 1}`}
-                className="w-full h-40 md:h-56 object-contain rounded-2xl bg-white"
-                width={400}
-                height={160}
+                className="w-full h-40 md:h-36 object-contain rounded-2xl bg-white"
+                // width={130}
+                // height={55}
               />
             </button>
           </CarouselItem>

@@ -30,7 +30,7 @@ export default function FilterSidebar({ subCategories, onChangeFilter }) {
               height={20}
               className="shrink-0"
             />
-            {subCategory.name}
+            <span className="text-start">{subCategory.name}</span>
           </button>
         ))}
       </div>

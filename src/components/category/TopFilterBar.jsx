@@ -1,44 +1,64 @@
 "use client";
 
 import React, { useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useQuery } from "@tanstack/react-query";
 import { getBrands } from "@/app/apis/getBrands";
 import { getBreeds } from "@/app/apis/getBreeds";
 import { SlidersHorizontal, X } from "lucide-react";
-import { Slider } from "@/components/ui/slider";
 import { convertFilterKeys } from "@/utils/convert_filter_keys";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
+import unslug from "@/utils/unslug";
+import { Drawer } from "../common/CustomDrawer";
+
+const BrandCard = ({ brand, selected }) => {
+  return (
+    <div className={cn("flex flex-col items-center gap-2 bg-[#E7F4F8] p-2 rounded-md cursor-pointer lg:w-32 lg:h-36", selected && "bg-[#0888B1] border-2 border-[#0888B1]")}>
+      <img src={brand.image} alt={brand.value} className="h-24" />
+      <span className="text-base font-medium">{brand.label}</span>
+    </div>
+  );
+};
 
 export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedBrand, setSelectedBrand] = useState(null);
 
-  const { data: brands = [] } = useQuery({ queryKey: ["brands"], queryFn: getBrands, select: res => res?.data?.data || [] });
-  const { data: breeds = [] } = useQuery({ queryKey: ["breeds"], queryFn: getBreeds, select: res => res?.data?.data || [] });
+  const [open, setOpen] = useState(false);
+
+  const { data: brands = [] } = useQuery({
+    queryKey: ["brands"],
+    queryFn: getBrands,
+    select: res => res?.data?.data || [],
+  });
+
+  const { data: breeds = [] } = useQuery({
+    queryKey: ["breeds"],
+    queryFn: getBreeds,
+    select: res => res?.data?.data || [],
+  });
 
   const filterTabs = [
     {
       key: "brandSlug",
       label: "Brand",
-      items: brands.map(b => ({ label: b.name, value: b.slug })),
+      items: brands.map((b) => ({
+        label: b.name,
+        value: b.slug,
+        image: b.logo,
+      })),
     },
     {
       key: "breedSlug",
       label: "Breed",
-      items: breeds.map(b => ({ label: b.name, value: b._id })),
+      items: breeds.map((b) => ({
+        label: b.name,
+        value: b._id,
+        image: b.image,
+      })),
     },
     {
       key: "rating",
@@ -50,59 +70,33 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
         { label: "4 Star", value: 4 },
         { label: "5 Star", value: 5 },
       ],
-    }
+    },
   ];
 
   const badgeLabels = convertFilterKeys(filters);
 
+  // console.log("badgeLabels", badgeLabels);
   return (
     <div className="flex flex-col gap-3 bg-white p-4 rounded-md">
+      {/* Desktop Filter Bar */}
       <div className="lg:flex flex-wrap items-center gap-3 hidden">
-        <Button variant="ghost" className="gap-2 text-black font-semibold">
-          <SlidersHorizontal className="w-4 h-4" />
-          Filters
+        <Button variant="ghost" className="gap-2 text-black text-base font-semibold">
+          <SlidersHorizontal size={24} />
+          <span className="font-bold text-xl">Filters</span>
         </Button>
 
-        {/* Price Range Slider */}
-        <div className="flex flex-col gap-1 w-[200px]">
-          <span className="text-sm font-medium text-muted-foreground">Price Range</span>
-          <Slider
-            value={[
-              Number(filters?.min_price_range) || 0,
-              Number(filters?.max_price_range) || 10000,
-            ]}
-            onValueChange={
-              (value) => onChangeFilter({
-                min_price_range: value[0],
-                max_price_range: value[1],
-              })
-            }
-          />
-        </div>
-
-        {/* Dynamic Popover Filters */}
-        {filterTabs.map((tab) => (
-          <Popover key={tab.key}>
-            <PopoverTrigger asChild>
-              <Button variant="outline" className="text-sm" >{tab.label}</Button>
-            </PopoverTrigger>
-            <PopoverContent className="p-2 w-40">
-              {tab.items.map((item) => (
-                <Button
-                  key={item.value}
-                  variant={filters?.[tab.key] === item.value ? "default" : "ghost"}
-                  onClick={() =>
-                    onChangeFilter({
-                      [tab.key]: filters?.[tab.key] === item.value ? null : item.value,
-                    })
-                  }
-                  className="w-full justify-start text-left text-sm"
-                >
-                  {item.label}
-                </Button>
-              ))}
-            </PopoverContent>
-          </Popover>
+        {/* Filter Triggers */}
+        {filterTabs.map((tab, index) => (
+          <Button
+            key={tab.key}
+            variant="outline"
+            onClick={() => {
+              setOpen(true);
+            }}
+            className="text-sm"
+          >
+            {tab.label}
+          </Button>
         ))}
 
         {/* Sort By */}
@@ -114,90 +108,122 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
             <SelectValue placeholder="Sort By" />
           </SelectTrigger>
           <SelectContent>
-            {/* <SelectItem value="relevance">Relevance</SelectItem> */}
-            <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
-            <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
-            {/* <SelectItem value="popularity">Popularity</SelectItem> */}
+            <SelectItem value="LTH">Price: Low to High</SelectItem>
+            <SelectItem value="HTL">Price: High to Low</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      {/* Selected Filter Badges */}
+      {/* Filter Badges */}
       <div className="flex flex-wrap items-center gap-2">
-        {Object.entries(badgeLabels).map(([key, value]) => (
+        {Object.entries(filters).map(([key, value]) => (
           <Badge
             key={key}
             variant="outline"
             className="text-sm flex items-center gap-1 hover:cursor-pointer"
             onClick={() => deleteFilter(key)}
           >
-            {key}: {value}
+            {Object.entries(badgeLabels).find(([k, v]) => v === value)[0]}: {unslug(value)}
             <X size={16} className="cursor-pointer" onClick={() => deleteFilter(key)} />
           </Badge>
         ))}
       </div>
 
-      <Drawer open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-        <DrawerContent className="h-[80vh]">
-          <DrawerHeader>
-            <DrawerTitle>Filters</DrawerTitle>
-          </DrawerHeader>
+      <Drawer
+        open={open}
+        onClose={() => setOpen(false)}
+        direction="right"
+        width="50%"
+        className="p-6 overflow-hidden"
+        overlayClassName="z-50"
+      >
+        <div className="flex items-center gap-2 w-[50vw] border-b-2 border-[#6A6868] pb-6">
+          <SlidersHorizontal size={24} />
+          <span className="font-bold text-xl">Filters</span>
+        </div>
 
-          {/* Two-column sidebar layout */}
-          <div className="flex h-full">
-            {/* Left Sidebar - Filter Tabs */}
-            <div className="w-1/3 border-r">
-              {filterTabs.map((tab, index) => (
+        <div className="flex h-full w-[50vw]">
+          <div className="w-full">
+            {filterTabs.map((tab, index) => (
+              <div className="flex flex-col border-b border-[#B4B3B3]">
+
+
                 <button
                   key={tab.key}
-                  className={`w-full text-left px-4 py-2 text-sm font-medium ${selectedTab === index ? "bg-gray-100 text-black" : "text-muted-foreground"
-                    }`}
-                  onClick={() => setSelectedTab(index)}
+                  className={`w-full text-left py-2 text-sm font-medium pt-6`}
+                  onClick={() => setOpen(false)}
                 >
-                  {tab.label}
+                  <span className="text-xl font-medium">{tab.label}</span>
                 </button>
-              ))}
-            </div>
+                <div className="flex space-x-2 pb-3">
+                  {["brandSlug"].includes(tab.key) ? (
+                    <div className="grid grid-cols-3 gap-3">
+                      {tab.items.map((item) => (
+                        <div
+                          key={item.value}
+                          onClick={() => {
+                            setSelectedBrand(item);
+                            onChangeFilter({
+                              [tab.key]:
+                                filters?.[tab.key] === item.value ? null : item.value,
+                            })
+                          }}
+                        >
+                          <BrandCard brand={item} selected={selectedBrand?.value === item.value} />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {tab.items.map((item) => (
+                        <Button
+                          key={item.value}
+                          variant={
+                            filters?.[tab.key] === item.value ? "default" : "ghost"
+                          }
+                          onClick={() => {
+                            onChangeFilter({
+                              [tab.key]:
+                                filters?.[tab.key] === item.value ? null : item.value,
+                            })
+                            setOpen(false)
+                          }}
+                          className={cn("w-40 flex justify-start text-left text-sm p-2 bg-[#E7F4F8] border-2 border-[#BBDEE9] hover:bg-[#0888B1] hover:border-2 hover:border-[#0888B1]", filters?.[tab.key] === item.value ? "bg-[#0888B1] border-2 border-[#0888B1]" : "")}
+                        >
+                          {item.label}
+                        </Button>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-            {/* Right Content - Filter Options */}
-            <div className="w-2/3 p-4 overflow-y-auto">
-              {filterTabs[selectedTab]?.items?.map((item) => (
-                <Button
-                  key={item.value}
-                  variant={filters?.[filterTabs[selectedTab].key] === item.value ? "default" : "ghost"}
-                  onClick={() =>
-                    onChangeFilter({
-                      [filterTabs[selectedTab].key]:
-                        filters?.[filterTabs[selectedTab].key] === item.value ? null : item.value,
-                    })
-                  }
-                  className="w-full justify-start text-left text-sm mb-2"
-                >
-                  {item.label}
-                </Button>
-              ))}
-            </div>
+              </div>
+
+            ))}
           </div>
-
-          <DrawerFooter>
-            <Button onClick={() => setIsFilterOpen(false)}>Apply</Button>
-            <DrawerClose>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-
+        </div>
       </Drawer>
 
-      {/* Mobile Filter Button */}
-      <div className="lg:hidden fixed bottom-0 right-0 z-10 w-full bg-white">
-        <Button onClick={() => setIsFilterOpen(true)} variant="outline" className="w-1/2 rounded-none ">
+      {/* Mobile Bar */}
+      <div className="lg:hidden fixed bottom-0 right-0 z-10 w-full bg-white flex">
+        <Button onClick={() => setIsFilterOpen(true)} variant="outline" className="w-1/2 rounded-none">
           Filters
         </Button>
-        <Button onClick={() => setIsFilterOpen(true)} variant="outline" className="w-1/2 rounded-none ">
-          Sort By
-        </Button>
+        <Select
+          onValueChange={(value) => onChangeFilter({ sort_by: value })}
+          defaultValue={filters?.sort_by}
+        >
+          <SelectTrigger className="w-1/2 rounded-none border-l">
+            <SelectValue placeholder="Sort By" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="LTH">Price: Low to High</SelectItem>
+            <SelectItem value="HTL">Price: High to Low</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
 }
+
+

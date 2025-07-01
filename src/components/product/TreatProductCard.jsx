@@ -3,7 +3,7 @@ import CustomImage from "@/components/images/CustomImage";
 import discountLogo from "@/assets/treats/discount.png";
 
 const TreatProductCard = ({ item, onAdd }) => (
-  <div className="group flex flex-col items-center rounded-xl p-2 transition-all duration-200 hover:scale-105 focus-within:scale-105 cursor-pointer bg-transparent">
+  <div className="group flex flex-col items-center rounded-xl p-2 transition-all duration-200 hover:scale-105 hover:ring-2 hover:ring-[#004E6A] focus-within:scale-105 cursor-pointer bg-transparent">
     <div className="relative">
       <div className="w-32 h-40 rounded-lg overflow-hidden flex items-center justify-center bg-transparent">
         <CustomImage

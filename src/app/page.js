@@ -10,7 +10,7 @@ import Promotions from "@/components/home/Brands";
 import Trending from "@/components/home/Trending";
 import TreatSection from "@/components/home/TreatSection";
 import Brands from "@/components/home/Brands";
-import Category from "@/components/home/Category";
+// import Category from "@/components/home/Category";
 
 const Home = () => {
   return (
@@ -19,7 +19,7 @@ const Home = () => {
         background: "linear-gradient(180deg, #FDF4E6 0%, #F7F5FF 100%)",
       }}
     >
-      <Category />
+      {/* <Category /> */}
       <Applod />
       <Essential />
       <Trending />

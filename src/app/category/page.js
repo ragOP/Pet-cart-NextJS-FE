@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react'
-import CategoryBanner from '@/components/category/CategoryBanner'
+// import CategoryBanner from '@/components/category/CategoryBanner'
 import FilterSidebar from '@/components/category/FilterSidebar'
 import TopFilterBar from '@/components/category/TopFilterBar'
 import BestSellerProduct from '@/components/product/BestSellerProduct'
@@ -81,10 +81,15 @@ export default function CategoryPage() {
   };
 
   const deleteFilter = (key) => {
-    const updated = { ...filters };
-    updated[key] = null;
-    updateFilters(updated);
+    const params = new URLSearchParams(searchParams);
+  
+    console.log("need to delete key:", key);
+
+    params.delete(key); // ✅ Properly remove the key from URL
+    console.log("params after delete:", params.toString());
+    router.push(`/category?${params.toString()}`);
   };
+  
 
   const handleProductClick = (productId) => {
     router.push(`/product/${productId}`);
@@ -93,7 +98,7 @@ export default function CategoryPage() {
   return (
     <div className="min-h-screen bg-[#FFFBF6]">
       <CategoryBreadcrumb productsCount={data?.total || 0} />
-      <CategoryBanner />
+      {/* <CategoryBanner /> */}
       <TopFilterBar filters={filters} onChangeFilter={updateFilters} deleteFilter={deleteFilter} />
       <div className="flex max-w-[1440px] mx-auto">
         {subCategoriesLoading ? (

@@ -14,7 +14,8 @@ import {
 
 export default function CategoryBreadcrumb({productsCount}) {
   return (
-    <div className="hidden text-sm text-muted-foreground space-x-2 px-6 lg:flex uppercase">
+<div className="sticky top-[108px] z-40 overflow-x-hidden bg-white">
+<div className="hidden text-sm text-muted-foreground space-x-2 px-6 lg:flex uppercase">
       <div className="border-r-2 pr-4 py-7 flex space-x-1 justify-center items-center text-xs">
         <Breadcrumb>
           <BreadcrumbList>
@@ -39,5 +40,6 @@ export default function CategoryBreadcrumb({productsCount}) {
           </span> Products</span>
       </div>
     </div>
+</div>
   )
 }
