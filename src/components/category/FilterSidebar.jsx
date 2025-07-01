@@ -13,13 +13,13 @@ export default function FilterSidebar({ subCategories, onChangeFilter }) {
   return (
     <aside className="w-[240px] p-2 space-y-4 hidden lg:block">
       {/* Filter Buttons */}
-      <div className="rounded-2xl border border-[#6A6868]">
+      <div className="rounded-[8px] border border-[#6A6868]">
         {subCategories?.map((subCategory, index) => (
           <button
             key={index}
             onClick={() => onChangeFilter({ subCategorySlug: subCategory.slug })}
             className={cn(
-              `flex items-center w-full gap-3 p-4 bg-white border-b text-sm font-medium hover:bg-gray-100 ${index === 0 ? "rounded-t-2xl" : ""} ${index === subCategories.length - 1 ? "rounded-b-2xl" : ""}`
+              `flex items-center w-full gap-3 p-4 bg-white border-b text-sm font-medium hover:bg-gray-100 ${index === 0 ? "rounded-t-[8px]" : ""} ${index === subCategories.length - 1 ? "rounded-b-[8px]" : ""}`
              
             )}
           >
@@ -38,7 +38,7 @@ export default function FilterSidebar({ subCategories, onChangeFilter }) {
       {/* Promotional Banners */}
       {/* <div className="space-y-4 pt-2">
         {promoImages.map((src, index) => (
-          <div key={index} className="rounded-lg overflow-hidden shadow-md">
+          <div key={index} className="rounded-lg overflow-hidden shadow-[8px]">
             <Image
               src={src}
               alt={`promo-${index}`}

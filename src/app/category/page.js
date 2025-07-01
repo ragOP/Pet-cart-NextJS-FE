@@ -91,7 +91,7 @@ export default function CategoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFBF6] px-6">
+    <div className="min-h-screen bg-[#FFFBF6]">
       <CategoryBreadcrumb productsCount={data?.total || 0} />
       <CategoryBanner />
       <TopFilterBar filters={filters} onChangeFilter={updateFilters} deleteFilter={deleteFilter} />
@@ -104,7 +104,7 @@ export default function CategoryPage() {
           <FilterSidebar subCategories={subCategories} onChangeFilter={updateFilters} deleteFilter={deleteFilter} />
         )}
         <div className="flex-1 ml-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {isLoading ? (
               <PrimaryLoader />
             ) : isError || !data?.total ? (

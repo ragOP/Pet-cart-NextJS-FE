@@ -16,7 +16,7 @@ export default function CategoryBanner() {
   });
 
   return (
-    <div className="w-full hidden lg:block">
+      <div className="w-full hidden lg:block p-1 bg-[#FFFBF6]">
       {isLoading ? (
         <PrimaryLoader />
       ) : isError || !data?.image ? (
