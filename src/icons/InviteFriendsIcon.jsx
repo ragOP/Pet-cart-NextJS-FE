@@ -1,8 +1,8 @@
 const InviteFriendsIcon = () => {
   return (
     <svg
-      width="414"
-      height="300"
+      width="300"
+      height="250"
       viewBox="0 0 414 300"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -124,8 +124,8 @@ const InviteFriendsIcon = () => {
           stroke="black"
           strokeWidth="1.47059"
           strokeMiterlimit="10"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <path
           d="M147.213 77.8234C147.816 74.8252 148.978 73.1118 150.349 74.2657C154.919 78.1118 170.226 78.0157 170.226 78.0157C171.492 78.4528 172.051 80.332 171.938 82.8146C165.481 83.6624 155.321 83.68 147.213 77.8234Z"

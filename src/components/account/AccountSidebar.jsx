@@ -33,7 +33,7 @@ const menuItems = [
   {
     title: "Invite Friends",
     icon: Users,
-    href: "/account/invite",
+    href: "/account/invite-friends",
   },
   {
     title: "My Wishlist",
@@ -43,17 +43,30 @@ const menuItems = [
   {
     title: "Contact Us",
     icon: Headphones,
-    href: "/account/contact",
+    href: "/account/contact-us",
   },
   {
     title: "Log Out",
     icon: LogOut,
-    href: "/logout",
+    action: "logout-dialog",
   },
 ];
 
+
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { deleteCookie } from "@/utils/cookies/deleteCookie";
+import { useRouter } from "next/navigation";
+
 const AccountSidebar = () => {
   const pathname = usePathname();
+  const router = useRouter();
+  const [logoutOpen, setLogoutOpen] = React.useState(false);
+
+  const handleLogout = () => {
+    deleteCookie("token");
+    setLogoutOpen(false);
+    router.push("/");
+  };
 
   return (
     <div className="flex flex-col h-full bg-white border border-[#F59A1180] rounded-lg ">
@@ -84,6 +97,20 @@ const AccountSidebar = () => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
 
+            if (item.action === "logout-dialog") {
+              return (
+                <li key={item.title} className="last:border-b-0">
+                  <button
+                    className={`flex items-center gap-3 py-3 px-4 w-full text-left transition-colors hover:bg-orange-50`}
+                    onClick={() => setLogoutOpen(true)}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span>{item.title}</span>
+                  </button>
+                </li>
+              );
+            }
+
             return (
               <li key={item.href} className="last:border-b-0">
                 <Link
@@ -100,6 +127,28 @@ const AccountSidebar = () => {
           })}
         </ul>
       </nav>
+
+      {/* Logout Dialog */}
+      <Dialog open={logoutOpen} onOpenChange={setLogoutOpen}>
+        <DialogContent className="max-w-xs rounded-2xl p-6">
+          <DialogTitle className="text-xl font-semibold mb-4">Log Out</DialogTitle>
+          <p className="text-gray-600 mb-6">Are you sure you want to log out?</p>
+          <div className="flex gap-4 justify-end">
+            <button
+              className="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-100"
+              onClick={() => setLogoutOpen(false)}
+            >
+              Cancel
+            </button>
+            <button
+              className="px-4 py-2 rounded-lg bg-[#F59A11] text-white hover:bg-[#E58A00]"
+              onClick={handleLogout}
+            >
+              Log Out
+            </button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -236,7 +236,7 @@ const Header = ({ logo }) => {
         )}
       </div>
 
-      {/* Desktop Layout - Unchanged */}
+      {/* Desktop Layout - Responsive */}
       <div className="hidden md:flex items-center justify-between p-4">
         <div className="flex items-center space-x-4">
           <button
@@ -254,30 +254,33 @@ const Header = ({ logo }) => {
           </button>
         </div>
 
-        <div className="flex flex-row flex-1 items-center justify-center gap-4 mx-8">
-          <div className="flex w-[500px]">
-            <input
-              type="text"
-              placeholder={animatedPlaceholder}
-              className="bg-white w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none text-sm"
-              aria-label="Search products"
-            />
-            <button className="bg-white px-4 py-2 border border-l-0 border-gray-300 rounded-r-md text-blue-500 flex items-center justify-center hover:bg-blue-50 focus:bg-blue-100" aria-label="Search">
-              <Search size={18} />
-            </button>
-          </div>
+        {/* Responsive search + pincode: row on xl, column on smaller screens */}
+        <div className="flex flex-1 items-center justify-center mx-8">
+          <div className="flex flex-col xl:flex-row gap-2 xl:gap-4 w-full max-w-3xl">
+            <div className="flex w-full xl:w-[360px]">
+              <input
+                type="text"
+                placeholder={animatedPlaceholder}
+                className="bg-white w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none text-sm"
+                aria-label="Search products"
+              />
+              <button className="bg-white px-4 py-2 border border-l-0 border-gray-300 rounded-r-md text-blue-500 flex items-center justify-center hover:bg-blue-50 focus:bg-blue-100" aria-label="Search">
+                <Search size={18} />
+              </button>
+            </div>
 
-          <div className="w-[420px] relative">
-            <MapPin
-              size={18}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-600"
-            />
-            <input
-              type="text"
-              placeholder="Enter PINCODE to check delivery date"
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm bg-white"
-              aria-label="Enter PINCODE to check delivery date"
-            />
+            <div className="w-full xl:w-[420px] relative">
+              <MapPin
+                size={18}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-600"
+              />
+              <input
+                type="text"
+                placeholder="Enter PINCODE to check delivery date"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md text-sm bg-white"
+                aria-label="Enter PINCODE to check delivery date"
+              />
+            </div>
           </div>
         </div>
 
@@ -286,7 +289,7 @@ const Header = ({ logo }) => {
             className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
             aria-label="Track Order"
             type="button"
-            onClick={() => router.push('/track-order')}
+            onClick={() => router.push('/account/track-order')}
           >
             <CustomImage
               src={truckIcon}
