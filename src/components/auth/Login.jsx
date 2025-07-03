@@ -8,24 +8,28 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const Login = ({ onSuccess, showTitle = true }) => {
   const [form, setForm] = useState({ phoneNumber: "", otp: "" });
   const [error, setError] = useState("");
   const [step, setStep] = useState(1);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
+  const [otpLoading, setOtpLoading] = useState(false);
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (response) => {
-      if (response?.data?.success) {
+      if (response?.success) {
         if (response?.data?.token) {
           setCookie("token", response.data.token, 7);
           toast.success("Login Successful!", {
             description: "Welcome back to PetCaart.",
             position: "top-right",
           });
-          setTimeout(() => router.push("/account"), 1200);
+          const redirectTo = searchParams.get("redirect") || "/account";
+          setTimeout(() => router.push(redirectTo), 1200);
         }
       } else {
         toast.error("Login Failed", {
@@ -54,13 +58,16 @@ const Login = ({ onSuccess, showTitle = true }) => {
       setError("Enter a valid 10-digit phone number");
       return;
     }
-
-    setForm({ ...form, otp: "" });
-    setStep(2);
-    toast.success("OTP sent!", {
-      description: `OTP has been sent to +91-${form.phoneNumber}`,
-      position: "top-right",
-    });
+    setOtpLoading(true);
+    setTimeout(() => {
+      setForm({ ...form, otp: "" });
+      setStep(2);
+      setOtpLoading(false);
+      toast.success("OTP sent!", {
+        description: `OTP has been sent to +91-${form.phoneNumber}`,
+        position: "top-right",
+      });
+    }, 1200);
   };
 
   const handleLogin = (e) => {
@@ -106,9 +113,24 @@ const Login = ({ onSuccess, showTitle = true }) => {
 
         {step === 2 && (
           <>
-            <label htmlFor="otp" className="text-sm font-medium text-gray-700">
-              OTP
-            </label>
+            <div className="flex items-center justify-between mt-2">
+              <label
+                htmlFor="otp"
+                className="text-sm font-medium text-gray-700"
+              >
+                OTP
+              </label>
+              <button
+                type="button"
+                className="text-xs text-[#F59A11] underline hover:text-[#E58A00] ml-2"
+                onClick={() => {
+                  setStep(1);
+                  setForm({ ...form, otp: "" });
+                }}
+              >
+                Edit Number
+              </button>
+            </div>
             <Input
               id="otp"
               type="text"
@@ -128,15 +150,22 @@ const Login = ({ onSuccess, showTitle = true }) => {
         <button
           type="submit"
           className="border text-white cursor-pointer border-[#F59A11] bg-[#F59A11] rounded-lg px-4 py-2 font-semibold hover:bg-[#d87f0c] hover:text-white transition-colors disabled:opacity-50"
-          disabled={mutation.isLoading}
+          disabled={mutation.isLoading || otpLoading}
         >
-          {mutation.isLoading ? (
+          {step === 1 ? (
+            otpLoading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="loader border-t-2 border-white rounded-full w-4 h-4 animate-spin" />
+                Sending OTP...
+              </span>
+            ) : (
+              "Send OTP"
+            )
+          ) : mutation.isLoading ? (
             <span className="flex items-center justify-center gap-2">
               <span className="loader border-t-2 border-white rounded-full w-4 h-4 animate-spin" />
-              {step === 1 ? "Sending OTP..." : "Logging in..."}
+              Logging in...
             </span>
-          ) : step === 1 ? (
-            "Send OTP"
           ) : (
             "Login"
           )}

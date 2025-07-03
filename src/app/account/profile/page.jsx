@@ -10,11 +10,7 @@ const ProfilePage = () => {
     console.log(data);
   };
 
-  return (
-    <RequireLogin>
-      <ProfileForm onSubmit={handleSubmit} />
-    </RequireLogin>
-  );
+  return <ProfileForm onSubmit={handleSubmit} />;
 };
 
 export default ProfilePage;
