@@ -25,7 +25,7 @@ const CartPage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: cartData } = useQuery({
+  const { data: cartData, isLoading: cartLoading } = useQuery({
     queryKey: ["cart"],
     queryFn: () => getCart(),
     select: (res) => res?.data || {},
@@ -37,7 +37,7 @@ const CartPage = () => {
     select: (res) => res?.data?.data || {},
   });
 
-  const { mutate: addToCart } = useMutation({
+  const { mutate: addToCart, isPending: addToCartPending } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: (res) => {
       if (res?.success) {
@@ -109,6 +109,8 @@ const CartPage = () => {
             onQtyChange={handleQtyChange}
             onRemove={handleRemove}
             onNavigateToProduct={onNavigateToProduct}
+            isLoading={cartLoading}
+            qtyChangeLoading={addToCartPending}
           />
         </div>
         {/* Right: Summary */}

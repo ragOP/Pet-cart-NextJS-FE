@@ -39,7 +39,6 @@ const BestSellerProduct = ({
     addToCart({ productId: product._id, variantId: null, quantity: 1 });
   };
 
-  console.log(isPending );
   return (
     <div
       onClick={onClick}

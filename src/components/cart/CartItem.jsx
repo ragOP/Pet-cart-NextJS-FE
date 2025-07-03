@@ -1,21 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import CustomImage from "@/components/images/CustomImage";
 import { Trash2 } from "lucide-react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import CircularLoader from "../loaders/CircularLoader";
 
-const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct }) => {
-  const [isLoading, setIsLoading] = useState(false);
+const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeLoading }) => {
   const discount = calculateDiscountPercent(item.price, item.discounted_price);
-
-  const handleQtyChange = (productId, variantId, quantity) => {
-    setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      onQtyChange(productId, variantId, quantity);
-      setIsLoading(false);
-    }, 1000);
-  };
 
   const productDetails = item?.productId;
   const productId = item?.productId?._id;
@@ -83,18 +73,18 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct }) => {
           {/* Quantity controls */}
           <div className="flex items-center border border-[#004E6A80] bg-[#004E6A05] rounded-[24px] overflow-hidden self-end">
             <button
-              onClick={() => handleQtyChange(productId, variantId, -1)}
-              disabled={isLoading}
+              onClick={() => onQtyChange(productId, variantId, -1)}
+              disabled={qtyChangeLoading}
               className="pr-3 pl-5 py-1 text-lg text-gray-700 border-r border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               -
             </button>
             <div className="px-4 py-1 text-base font-normal text-center min-w-[40px]">
-              {isLoading ? <CircularLoader size={16} /> : <span>{item.quantity}</span>}
+              {qtyChangeLoading ? <CircularLoader size={16} /> : <span>{item.quantity}</span>}
             </div>
             <button
-              onClick={() => handleQtyChange(productId, variantId, 1)}
-              disabled={isLoading}
+              onClick={() => onQtyChange(productId, variantId, 1)}
+              disabled={qtyChangeLoading}
               className="pr-5 pl-3 py-1 text-lg text-gray-700 border-l border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               +
