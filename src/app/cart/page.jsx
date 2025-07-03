@@ -9,6 +9,13 @@ import PincodeInput from "@/components/pincode/PincodeInput";
 import SpecialDeals from "@/components/cart/SpecialDeals";
 import LastMinuteAddOns from "@/components/cart/LastMinuteAddOns";
 import CategoryBanner from "@/components/category/CategoryBanner";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { getCookie } from "@/utils/cookies/getCookie";
+import { getCart } from "@/app/apis/getCart";
+import { addProductToCart } from "@/app/apis/addProductToCart";
+import { getCoupons } from "@/app/apis/getCoupons";
+import { validateCoupon } from "@/app/apis/validateCoupon";
+import { toast } from "sonner";
 
 // Dummy data for cart items
 const cartItems = [
@@ -46,18 +53,6 @@ const CartPage = () => {
   const [items, setItems] = useState(cartItems);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
 
-  // Price calculation
-  const totalPrice = items.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-  const totalSalePrice = items.reduce(
-    (acc, item) => acc + (item.salePrice || item.price) * item.quantity,
-    0
-  );
-  const totalDiscount = totalPrice - totalSalePrice;
-  const shipping = 0;
-
   const handleQtyChange = (id, delta) => {
     setItems((prev) =>
       prev.map((item) =>
@@ -72,10 +67,41 @@ const CartPage = () => {
     setItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const coupons = [
-    { code: "EXTR150", label: "COUPON 70% OFF" },
-    { code: "EXTR200", label: "COUPON 70% OFF" },
-  ];
+  const { data: cartData } = useQuery({
+    queryKey: ["cart"],
+    queryFn: () => getCart(),
+    select: (res) => res?.data || {},
+  });
+
+  const { data: couponsData } = useQuery({
+    queryKey: ["coupons"],
+    queryFn: () => getCoupons(),
+    select: (res) => res?.data?.data || {},
+  });
+
+  // const { mutate: validateCouponMutation } = useMutation({
+  //   mutationFn: validateCoupon,
+  //   onSuccess: (data) => {
+  //     toast.success("Coupon applied successfully");
+  //     setAppliedCoupon(code)
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.response.data.message);
+  //   },
+  // });
+
+  // const handleApplyCoupon = (code) => {
+  //   validateCouponMutation({ code });
+  // };
+
+    // Price calculation
+    const totalPrice = cartData?.total_price || 0;
+    const totalSalePrice = cartData?.items.reduce(
+      (acc, item) => acc + (item.discounted_price || item.price) * item.quantity,
+      0
+    );
+    const totalDiscount = totalPrice - totalSalePrice;
+    const shipping = cartData?.shipping || 0;
 
   return (
     <div className="bg-[#FFFBF6] min-h-screen w-full">
@@ -84,7 +110,7 @@ const CartPage = () => {
         {/* Left: Cart Items */}
         <div className="w-full lg:w-1/2 flex flex-col gap-4">
           <CartList
-            items={items}
+            items={cartData?.items || []}
             onQtyChange={handleQtyChange}
             onRemove={handleRemove}
           />
@@ -101,7 +127,7 @@ const CartPage = () => {
           <div className="border-b border-[#0000001A]" />
 
           <CartCouponSection
-            coupons={coupons}
+            coupons={couponsData || []}
             appliedCoupon={appliedCoupon}
             onApply={setAppliedCoupon}
             onRemove={() => setAppliedCoupon(null)}
