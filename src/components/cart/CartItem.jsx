@@ -4,7 +4,7 @@ import { Trash2 } from "lucide-react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import CircularLoader from "../loaders/CircularLoader";
 
-const CartItem = ({ item, onQtyChange, onRemove }) => {
+const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct }) => {
   const [isLoading, setIsLoading] = useState(false);
   const discount = calculateDiscountPercent(item.price, item.discounted_price);
 
@@ -21,7 +21,8 @@ const CartItem = ({ item, onQtyChange, onRemove }) => {
   return (
     <div className="bg-white rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-start border border-[#F59A1133] w-full">
       {/* Image - Full width on mobile, normal on desktop */}
-      <div className="w-full sm:w-36 aspect-square sm:aspect-auto">
+      <div className="w-full sm:w-36 aspect-square sm:aspect-auto cursor-pointer"
+      onClick={() => onNavigateToProduct(productDetails?._id)}>
         <CustomImage
           src={productDetails?.images[0]}
           alt={productDetails?.title}

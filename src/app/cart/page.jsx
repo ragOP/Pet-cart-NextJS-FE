@@ -16,6 +16,8 @@ import { addProductToCart } from "@/app/apis/addProductToCart";
 import { getCoupons } from "@/app/apis/getCoupons";
 import { validateCoupon } from "@/app/apis/validateCoupon";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
 
 // Dummy data for cart items
 const cartItems = [
@@ -52,6 +54,29 @@ const CartPage = () => {
   const [pincode, setPincode] = useState("");
   const [items, setItems] = useState(cartItems);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const router = useRouter();
+
+  const { data: cartData } = useQuery({
+    queryKey: ["cart"],
+    queryFn: () => getCart(),
+    select: (res) => res?.data || {},
+  });
+
+  const { data: couponsData } = useQuery({
+    queryKey: ["coupons"],
+    queryFn: () => getCoupons(),
+    select: (res) => res?.data?.data || {},
+  });
+
+  const { mutate: addProductToCartMutation } = useMutation({
+    mutationFn: addProductToCart,
+    onSuccess: (data) => {
+      toast.success("Product added to cart successfully");
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message);
+    },
+  });
 
   const handleQtyChange = (id, delta) => {
     setItems((prev) =>
@@ -67,17 +92,9 @@ const CartPage = () => {
     setItems((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const { data: cartData } = useQuery({
-    queryKey: ["cart"],
-    queryFn: () => getCart(),
-    select: (res) => res?.data || {},
-  });
-
-  const { data: couponsData } = useQuery({
-    queryKey: ["coupons"],
-    queryFn: () => getCoupons(),
-    select: (res) => res?.data?.data || {},
-  });
+  const onNavigateToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
 
   // const { mutate: validateCouponMutation } = useMutation({
   //   mutationFn: validateCoupon,
@@ -103,6 +120,7 @@ const CartPage = () => {
     const totalDiscount = totalPrice - totalSalePrice;
     const shipping = cartData?.shipping || 0;
 
+    console.log(cartData)
   return (
     <div className="bg-[#FFFBF6] min-h-screen w-full">
       <CartSavingsBanner savings={13.08} />
@@ -113,6 +131,7 @@ const CartPage = () => {
             items={cartData?.items || []}
             onQtyChange={handleQtyChange}
             onRemove={handleRemove}
+            onNavigateToProduct={onNavigateToProduct}
           />
         </div>
         {/* Right: Summary */}
