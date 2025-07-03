@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   User,
   MapPin,
@@ -12,7 +12,11 @@ import {
   Headphones,
   LogOut,
 } from "lucide-react";
+import { useSelector } from "react-redux";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import CustomImage from "../images/CustomImage";
+import { deleteCookie } from "@/utils/cookies/deleteCookie";
+import { formatMemberSince } from "@/utils/formatMemberSince";
 
 const menuItems = [
   {
@@ -52,11 +56,6 @@ const menuItems = [
   },
 ];
 
-
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { deleteCookie } from "@/utils/cookies/deleteCookie";
-import { useRouter } from "next/navigation";
-
 const AccountSidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
@@ -69,7 +68,7 @@ const AccountSidebar = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white border border-[#F59A1180] rounded-lg ">
+    <div className="flex flex-col h-full bg-white border border-[#F59A1180] rounded-lg">
       {/* User Info */}
       <div className="flex items-center gap-3 p-4">
         <div className="w-12 h-12 rounded-full bg-gray-100 overflow-hidden">
@@ -79,19 +78,13 @@ const AccountSidebar = () => {
             className="w-full h-full object-cover"
           />
         </div>
-
-        <div>
-          <h3 className="font-medium">Karan Patil</h3>
-          <p className="text-sm text-gray-500">
-            PetCaart member since Jan-2022
-          </p>
-        </div>
+        <SidebarProfileNameBlock />
       </div>
 
-      <div className=" border-b border-[#F59A1180]" />
+      <div className="border-b border-[#F59A1180]" />
 
       {/* Navigation */}
-      <nav className="">
+      <nav>
         <ul className="divide-y divide-gray-200">
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -101,7 +94,7 @@ const AccountSidebar = () => {
               return (
                 <li key={item.title} className="last:border-b-0">
                   <button
-                    className={`flex items-center gap-3 py-3 px-4 w-full text-left transition-colors hover:bg-orange-50`}
+                    className="flex items-center gap-3 py-3 px-4 w-full text-left transition-colors hover:bg-orange-50"
                     onClick={() => setLogoutOpen(true)}
                   >
                     <Icon className="w-5 h-5" />
@@ -128,11 +121,15 @@ const AccountSidebar = () => {
         </ul>
       </nav>
 
-      {/* Logout Dialog */}
+      {/* Logout Confirmation Dialog */}
       <Dialog open={logoutOpen} onOpenChange={setLogoutOpen}>
         <DialogContent className="max-w-xs rounded-2xl p-6">
-          <DialogTitle className="text-xl font-semibold mb-4">Log Out</DialogTitle>
-          <p className="text-gray-600 mb-6">Are you sure you want to log out?</p>
+          <DialogTitle className="text-xl font-semibold mb-4">
+            Log Out
+          </DialogTitle>
+          <p className="text-gray-600 mb-6">
+            Are you sure you want to log out?
+          </p>
           <div className="flex gap-4 justify-end">
             <button
               className="px-4 py-2 rounded-lg border border-gray-300 bg-white hover:bg-gray-100"
@@ -154,3 +151,19 @@ const AccountSidebar = () => {
 };
 
 export default AccountSidebar;
+
+const SidebarProfileNameBlock = () => {
+  const name = useSelector((state) => state.profile?.name || "");
+  const createdBy = useSelector((state) => state.profile?.createdBy || "");
+
+  const memberSince = formatMemberSince(createdBy) || "Jan-2022";
+
+  return (
+    <div>
+      <h3 className="font-medium">{name?.trim() || "User"}</h3>
+      <p className="text-sm text-gray-500">
+        PetCaart member since {memberSince}
+      </p>
+    </div>
+  );
+};
