@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import ReactImageMagnify from "react-image-magnify";
 
-const ImageGallery = ({ images, selectedImage, onSelect }) => {
+const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false
   );
@@ -52,7 +52,7 @@ const ImageGallery = ({ images, selectedImage, onSelect }) => {
       <div className="flex flex-col gap-2 w-24">
         {images.map((img, idx) => (
           <button
-            key={idx}
+            key={selectedVariant ? images[idx] : idx}
             onClick={() => onSelect(idx)}
             className={`border-2 rounded-lg overflow-hidden ${
               selectedImage === idx ? "border-orange-400" : "border-gray-200"

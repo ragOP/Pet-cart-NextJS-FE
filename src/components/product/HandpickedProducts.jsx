@@ -19,7 +19,7 @@ const HandPickedProducts = () => {
   const params = {
     page: 1,
     per_page: 10,
-    handPicked: true,
+    isAddToCart: true,
   };
   const { data, isLoading, isError } = useQuery({
     queryKey: ["hand_picked", params],

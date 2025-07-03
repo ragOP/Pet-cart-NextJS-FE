@@ -33,21 +33,22 @@ const ProductPage = ({ params }) => {
   });
 
   const onSelectVariant = (variantId) => {
-    setSelectedVariant(variantId);
+    // Toggle the selected variant - if clicking the same variant, set to null to show original product
+    setSelectedVariant(prevVariant => prevVariant === variantId ? null : variantId);
     setSelectedImage(0);
   };
 
   const currentVariant =
     data.variants?.find((variant) => variant._id === selectedVariant) || {};
 
-  const currentImages = [
-    ...(data.images || []),
-    ...(currentVariant.images || []),
-  ];
+    const currentImages = [
+      ...(currentVariant.images?.length ? currentVariant.images : data.images || []),
+    ];
+    
   const mainImage = currentImages[selectedImage] || currentImages[0];
 
   useEffect(() => {
-    setSelectedVariant(data.variants?.[0]?._id || null);
+    // setSelectedVariant(data.variants?.[0]?._id || null);
     setSelectedImage(0);
   }, [data]);
 
@@ -77,6 +78,7 @@ const ProductPage = ({ params }) => {
           <ImageGallery
             images={currentImages}
             selectedImage={selectedImage}
+            selectedVariant={selectedVariant}
             onSelect={(idx) => {
               setSelectedImage(idx);
             }}
@@ -87,15 +89,14 @@ const ProductPage = ({ params }) => {
         <div className="space-y-4">
           {/* Rating & Reviews */}
           <RatingReviews
-            averageRating={data.ratings?.average || "5.0"}
-            reviewCount={data.ratings?.count || "112"}
+            averageRating={data.ratings?.average}
+            reviewCount={data.ratings?.count}
           />
 
           {/* Brand */}
-
           <div className="space-y-2">
-            <div className="text-gray-600 underline">{data.brandId?.name}</div>
-            <h1 className="text-2xl font-bold text-gray-900">{data.title}</h1>
+            <div className="text-[#181818] underline">{data.brandId?.name}</div>
+            <h1 className="text-2xl font-bold text-[#181818]">{data.title}</h1>
           </div>
 
           <Variants
@@ -103,11 +104,14 @@ const ProductPage = ({ params }) => {
             selectedVariant={selectedVariant}
             onSelectVariant={(variantId) => onSelectVariant(variantId)}
           />
-
+        
           <PriceAndCartDisplay
             price={currentVariant.price || data.price}
             salePrice={currentVariant.salePrice || data.salePrice}
-          />
+            productId={data._id}
+            variantId={selectedVariant}
+            quantity={1}
+            />
 
           <PurchaseSection
             pincode={pincode}
@@ -122,16 +126,16 @@ const ProductPage = ({ params }) => {
         items={[
           {
             title: "Product Details",
-            content: "Product details content goes here.",
+            content: data.description,
           },
           {
             title: "Additional Information",
             content: "Additional information content goes here.",
           },
-          {
-            title: "Product Details",
-            content: "Another product details section.",
-          },
+          // {
+          //   title: "Product Details",
+          //   content: "Another product details section.",
+          // },
         ]}
       />
 

@@ -1,8 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addProductToCart } from "@/app/apis/addProductToCart";
+import { toast } from "sonner";
 
-const PriceAndCartDisplay = ({ price, salePrice, onAddToCart }) => {
+const PriceAndCartDisplay = ({ 
+  price, 
+  salePrice, 
+  productId, 
+  variantId = null,
+  quantity = 1 
+}) => {
+  const queryClient = useQueryClient();
+  
+  const [loading, setLoading] = useState(false);
+  const { mutate: addToCart } = useMutation({
+    mutationFn: (payload) => addProductToCart(payload),
+    onSuccess: () => {
+      toast.success('Product added to cart!');
+      queryClient.invalidateQueries({ queryKey: ['cart'] });
+      setLoading(false);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || 'Failed to add product to cart');
+      setLoading(false);
+    }
+  });
   const discount = calculateDiscountPercent(price, salePrice);
+
+  const handleAddToCart = () => {
+    setLoading(true);
+    if (variantId) {
+      addToCart({variantId, productId, quantity});
+    } else {
+      addToCart({productId, variantId: null, quantity});
+    }
+  };
+  console.log(loading)
   return (
     <div className="flex flex-col md:flex-row gap-4 w-full justify-between md:pr-4">
       <div className="flex flex-col gap w-full md:w-1/2">
@@ -24,10 +58,15 @@ const PriceAndCartDisplay = ({ price, salePrice, onAddToCart }) => {
       </div>
 
       <button
-        onClick={onAddToCart}
-        className="w-full md:w-fit h-fit bg-[#F59A11] hover:bg-[#D9820A] text-white font-bold py-4 px-12 rounded-lg text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D9820A]"
+        onClick={handleAddToCart}
+        disabled={loading}
+        className={`w-full md:w-fit h-fit ${
+          loading 
+            ? 'bg-gray-400 cursor-not-allowed' 
+            : 'bg-[#F59A11] hover:bg-[#D9820A]'
+        } text-white font-bold py-4 px-12 rounded-lg text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D9820A]`}
       >
-        ADD TO CART
+        {loading ? 'ADDING...' : 'ADD TO CART'}
       </button>
     </div>
   );

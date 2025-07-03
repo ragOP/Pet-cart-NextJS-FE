@@ -43,4 +43,7 @@ export const endpoints = {
   address: "api/address",
   // product banner
   productBanner: "api/product-banner",
+
+  // add to cart
+  addToCart: "api/cart",
 };
