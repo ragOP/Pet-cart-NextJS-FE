@@ -75,7 +75,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
 
   const badgeLabels = convertFilterKeys(filters);
 
-  // console.log("badgeLabels", badgeLabels);
+  console.log("badgeLabels", badgeLabels);
   return (
     <div className="flex flex-col gap-3 bg-white p-4 rounded-md">
       {/* Desktop Filter Bar */}
@@ -108,8 +108,8 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
             <SelectValue placeholder="Sort By" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="LTH">Price: Low to High</SelectItem>
-            <SelectItem value="HTL">Price: High to Low</SelectItem>
+            <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
+            <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
           </SelectContent>
         </Select>
       </div>

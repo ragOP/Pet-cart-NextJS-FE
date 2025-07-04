@@ -35,8 +35,8 @@ export const convertFilterKeys = (filters) => {
               break;
           
             case "sort_by":
-              const sortValue = convertFilterValues({ sort_by: value });
-              convertedFilters["Sort By"] = sortValue;
+              // const sortValue = convertFilterValues({ sort_by: value });
+              convertedFilters["Sort By"] = value;
               break;
           
             default:
