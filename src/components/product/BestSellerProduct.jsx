@@ -3,6 +3,9 @@ import CustomImage from "@/components/images/CustomImage";
 import { Heart, Star } from "lucide-react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import { VariantBox } from "./Variants";
+import { useMutation } from "@tanstack/react-query";
+import { addProductToCart } from "@/app/apis/addProductToCart";
+import { toast } from "sonner";
 
 const BestSellerProduct = ({
   product,
@@ -20,6 +23,21 @@ const BestSellerProduct = ({
 
   const discount =
     calculateDiscountPercent(product.price, product.salePrice) || 0;
+
+  const { mutate: addToCart, isPending } = useMutation({
+    mutationFn: (payload) => addProductToCart(payload),
+    onSuccess: () => {
+      toast.success("Product added to cart!");
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to add product to cart");
+    },
+  });
+
+  const handleAddtoCart = (e) => {
+    e.stopPropagation();
+    addToCart({ productId: product._id, variantId: null, quantity: 1 });
+  };
 
   return (
     <div
@@ -46,11 +64,10 @@ const BestSellerProduct = ({
               <button
                 key={index}
                 onClick={() => setSelectedImage(index)}
-                className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                  selectedImage === index
+                className={`w-1.5 h-1.5 rounded-full transition-colors ${selectedImage === index
                     ? "bg-[#F59A11]"
                     : "bg-gray-300 hover:bg-gray-400"
-                }`}
+                  }`}
               />
             ))}
           </div>
@@ -146,9 +163,10 @@ const BestSellerProduct = ({
         </button>
         <button
           className="flex-1 bg-[#F59A11] hover:bg-[#e18a0e] focus:bg-[#e18a0e] text-white py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer shadow-sm hover:shadow-md focus:shadow-md"
-          onClick={onAddToCart}
+          onClick={(e) => handleAddtoCart(e)}
+          disabled={isPending}
         >
-          ADD TO CART
+          {isPending ? "ADDING..." : "ADD TO CART"}
         </button>
       </div>
     </div>

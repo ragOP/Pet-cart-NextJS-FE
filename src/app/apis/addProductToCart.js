@@ -4,7 +4,7 @@ import { endpoints } from "./endpoints";
 
 export const addProductToCart = async ({ productId, variantId, quantity = 1 }) => {
   const apiResponse = await apiService({
-    endpoint: endpoints.addToCart,
+    endpoint: endpoints.cart,
     method: "POST",
     data: {
       product_id: productId || null,

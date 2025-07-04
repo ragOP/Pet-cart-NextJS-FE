@@ -9,73 +9,94 @@ import PincodeInput from "@/components/pincode/PincodeInput";
 import SpecialDeals from "@/components/cart/SpecialDeals";
 import LastMinuteAddOns from "@/components/cart/LastMinuteAddOns";
 import CategoryBanner from "@/components/category/CategoryBanner";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { getCart } from "@/app/apis/getCart";
+import { addProductToCart } from "@/app/apis/addProductToCart";
+import { getCoupons } from "@/app/apis/getCoupons";
+import { deleteProductFromCart } from "@/app/apis/deleteProductFromCart";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { extractTaxFromCart } from "@/utils/extract_tax_from_cart";
 
-// Dummy data for cart items
-const cartItems = [
-  {
-    id: 1,
-    title: "Royal Canin Maxi Adult Dry Dog Food",
-    img: "/assets/cart1.png",
-    subtitle: "14x3Kg | 10% OFF",
-    price: 5000,
-    salePrice: 4500,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    title: "Royal Canin Maxi Adult Dry Dog Food",
-    img: "/assets/cart2.png",
-    subtitle: "14x3Kg | 10% OFF",
-    price: 5000,
-    salePrice: 4500,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    title: "Royal Canin Maxi Adult Dry Dog Food",
-    img: "/assets/cart2.png",
-    subtitle: "14x3Kg | 10% OFF",
-    price: 5000,
-    salePrice: 4500,
-    quantity: 1,
-  },
-];
 
 const CartPage = () => {
   const [pincode, setPincode] = useState("");
-  const [items, setItems] = useState(cartItems);
   const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
-  // Price calculation
-  const totalPrice = items.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-  const totalSalePrice = items.reduce(
-    (acc, item) => acc + (item.salePrice || item.price) * item.quantity,
-    0
-  );
-  const totalDiscount = totalPrice - totalSalePrice;
-  const shipping = 0;
+  const { data: cartData, isLoading: cartLoading } = useQuery({
+    queryKey: ["cart"],
+    queryFn: () => getCart(),
+    select: (res) => res?.data || {},
+  });
 
-  const handleQtyChange = (id, delta) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
+  const { data: couponsData } = useQuery({
+    queryKey: ["coupons"],
+    queryFn: () => getCoupons(),
+    select: (res) => res?.data?.data || {},
+  });
+
+  const { mutate: addToCart, isPending: addToCartPending } = useMutation({
+    mutationFn: (payload) => addProductToCart(payload),
+    onSuccess: (res) => {
+      if (res?.success) {
+        toast.success("Product added to cart!");
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
+      } else {
+        toast.error(res?.message || "Failed to add product to cart");
+      }
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Request failed");
+    },
+  });
+
+  const { mutate: deleteProductFromCartMutation } = useMutation({
+    mutationFn: deleteProductFromCart,
+    onSuccess: () => {
+      toast.success("Product removed from cart!");
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Request failed");
+    },
+  });
+
+  const handleQtyChange = (productId, variantId, quantity) => {
+    if (variantId) {
+      let previousQuantity = cartData?.items?.find((item) => item.variantId === variantId)?.quantity || 0;
+      let newQuantity = previousQuantity + quantity;
+      addToCart({ variantId, productId, quantity: newQuantity });
+    } else {
+      let previousQuantity = cartData?.items?.find((item) => item.productId._id === productId)?.quantity || 0;
+      let newQuantity = previousQuantity + quantity;
+      addToCart({ productId, variantId: null, quantity: newQuantity });
+    }
   };
 
   const handleRemove = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+    deleteProductFromCartMutation({ id });
   };
 
-  const coupons = [
-    { code: "EXTR150", label: "COUPON 70% OFF" },
-    { code: "EXTR200", label: "COUPON 70% OFF" },
-  ];
+  const onNavigateToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
+
+  // Price calculation
+  const totalPrice = cartData?.total_price || 0;
+  const totalSalePrice = cartData?.items.reduce(
+    (acc, item) => acc + (item.discounted_price || item.price) * item.quantity,
+    0
+  );
+  const totalDiscount = totalPrice - totalSalePrice;
+  const shipping = cartData?.shipping || 0;
+
+  // Calculate tax
+  const { totalCGST, totalSGST, totalIGST, totalCESS } = extractTaxFromCart(cartData?.items || []);
+
+  // Calculate final price including tax
+  const finalPayableAmount = totalSalePrice + totalCGST + totalSGST + totalIGST + totalCESS;
 
   return (
     <div className="bg-[#FFFBF6] min-h-screen w-full">
@@ -84,9 +105,12 @@ const CartPage = () => {
         {/* Left: Cart Items */}
         <div className="w-full lg:w-1/2 flex flex-col gap-4">
           <CartList
-            items={items}
+            items={cartData?.items || []}
             onQtyChange={handleQtyChange}
             onRemove={handleRemove}
+            onNavigateToProduct={onNavigateToProduct}
+            isLoading={cartLoading}
+            qtyChangeLoading={addToCartPending}
           />
         </div>
         {/* Right: Summary */}
@@ -94,14 +118,14 @@ const CartPage = () => {
           <PincodeInput
             pincode={pincode}
             onPincodeChange={setPincode}
-            onCheckDelivery={() => {}}
+            onCheckDelivery={() => { }}
             className={"m-4"}
           />
 
           <div className="border-b border-[#0000001A]" />
 
           <CartCouponSection
-            coupons={coupons}
+            coupons={couponsData || []}
             appliedCoupon={appliedCoupon}
             onApply={setAppliedCoupon}
             onRemove={() => setAppliedCoupon(null)}
@@ -112,8 +136,9 @@ const CartPage = () => {
           <CartSummary
             totalMrp={totalPrice}
             totalDiscount={totalDiscount}
-            totalPrice={totalSalePrice}
+            totalPrice={finalPayableAmount}
             shipping={shipping}
+            taxBreakup={{ totalCGST, totalSGST, totalIGST, totalCESS }}
           />
         </div>
       </div>
