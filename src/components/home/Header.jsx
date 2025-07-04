@@ -8,6 +8,7 @@ import cartIcon from "@/assets/cart.png";
 import truckIcon from "@/assets/truck.png";
 import petLogo from "@/assets/pet.png";
 import loginLogo from "@/assets/login.png";
+import { useSelector } from "react-redux";
 
 const MobileMenu = React.memo(({ 
   logo, 
@@ -111,7 +112,8 @@ const Header = ({ logo }) => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const profile = useSelector((state) => state.profile);
+  const isLoggedIn = !!(profile && (profile.name || profile.email || profile.phoneNumber));
   const suggestions = ["Dog Food", "Cat Food", "Helno", "Royal Canin"];
   const [index, setIndex] = useState(0);
   const searchInputRef = React.useRef(null);
@@ -146,24 +148,6 @@ const Header = ({ logo }) => {
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isMenuOpen]);
-
-  useEffect(() => {
-    // Check for token cookie on mount and on menu open
-    const checkLogin = () => {
-      if (typeof document !== "undefined") {
-        const cookies = document.cookie.split(';').reduce((acc, cookie) => {
-          const [key, value] = cookie.trim().split('=');
-          acc[key] = value;
-          return acc;
-        }, {});
-        setIsLoggedIn(!!cookies.token);
-      }
-    };
-    checkLogin();
-    // Listen for storage events (in case of login/logout in another tab)
-    window.addEventListener('focus', checkLogin);
-    return () => window.removeEventListener('focus', checkLogin);
   }, [isMenuOpen]);
 
   const animatedPlaceholder = `Search "${suggestions[index]}"`;

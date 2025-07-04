@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { loginUser } from "@/app/apis/loginUser";
-import { setCookie } from "@/utils/cookies/setCookie";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setProfile } from "@/store/profileSlice";
 
 const Login = ({ onSuccess, showTitle = true }) => {
   const [form, setForm] = useState({ phoneNumber: "", otp: "" });
@@ -16,36 +15,10 @@ const Login = ({ onSuccess, showTitle = true }) => {
   const [step, setStep] = useState(1);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const dispatch = useDispatch();
 
   const [otpLoading, setOtpLoading] = useState(false);
-  const mutation = useMutation({
-    mutationFn: loginUser,
-    onSuccess: (response) => {
-      if (response?.success) {
-        if (response?.data?.token) {
-          setCookie("token", response.data.token, 7);
-          toast.success("Login Successful!", {
-            description: "Welcome back to PetCaart.",
-            position: "top-right",
-          });
-          const redirectTo = searchParams.get("redirect") || "/account";
-          setTimeout(() => router.push(redirectTo), 1200);
-        }
-      } else {
-        toast.error("Login Failed", {
-          description: response?.data?.message || "Login failed",
-          position: "top-right",
-        });
-      }
-    },
-    onError: (err) => {
-      toast.error("Login Failed", {
-        description: err?.message || "Login failed",
-        position: "top-right",
-      });
-      setError(err?.message || "Login failed");
-    },
-  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -70,14 +43,44 @@ const Login = ({ onSuccess, showTitle = true }) => {
     }, 1200);
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (!form.otp) {
       setError("Enter the OTP sent to your phone");
       return;
     }
-
-    mutation.mutate({ phoneNumber: form.phoneNumber, otp: form.otp });
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber: form.phoneNumber, otp: form.otp }),
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        dispatch(setProfile(data.data.user || {}));
+        toast.success("Login Successful!", {
+          description: "Welcome back to PetCaart.",
+          position: "top-right",
+        });
+        const redirectTo = searchParams.get("redirect") || "/account";
+        setTimeout(() => router.push(redirectTo), 1200);
+      } else {
+        toast.error("Login Failed", {
+          description: data?.message || "Login failed",
+          position: "top-right",
+        });
+        setError(data?.message || "Login failed");
+      }
+    } catch (err) {
+      toast.error("Login Failed", {
+        description: err?.message || "Login failed",
+        position: "top-right",
+      });
+      setError(err?.message || "Login failed");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -150,7 +153,7 @@ const Login = ({ onSuccess, showTitle = true }) => {
         <button
           type="submit"
           className="border text-white cursor-pointer border-[#F59A11] bg-[#F59A11] rounded-lg px-4 py-2 font-semibold hover:bg-[#d87f0c] hover:text-white transition-colors disabled:opacity-50"
-          disabled={mutation.isLoading || otpLoading}
+          disabled={isLoading || otpLoading}
         >
           {step === 1 ? (
             otpLoading ? (
@@ -161,7 +164,7 @@ const Login = ({ onSuccess, showTitle = true }) => {
             ) : (
               "Send OTP"
             )
-          ) : mutation.isLoading ? (
+          ) : isLoading ? (
             <span className="flex items-center justify-center gap-2">
               <span className="loader border-t-2 border-white rounded-full w-4 h-4 animate-spin" />
               Logging in...

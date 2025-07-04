@@ -12,11 +12,12 @@ import {
   Headphones,
   LogOut,
 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import CustomImage from "../images/CustomImage";
 import { deleteCookie } from "@/utils/cookies/deleteCookie";
 import { formatMemberSince } from "@/utils/formatMemberSince";
+import { clearProfile } from "@/store/profileSlice";
 
 const menuItems = [
   {
@@ -60,11 +61,13 @@ const AccountSidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [logoutOpen, setLogoutOpen] = React.useState(false);
+  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    deleteCookie("token");
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    dispatch(clearProfile());
     setLogoutOpen(false);
-    router.push("/");
+    router.push('/');
   };
 
   return (

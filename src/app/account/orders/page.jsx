@@ -135,11 +135,11 @@ export default function OrdersPage() {
         </button>
       </div>
 
-        {orders.length === 0 ? (
-          <EmptyOrdersState />
-        ) : (
-          <OrdersList orders={orders} onOrderClick={handleOrderClick} />
-        )}
+      {orders.length === 0 ? (
+        <EmptyOrdersState />
+      ) : (
+        <OrdersList orders={orders} onOrderClick={handleOrderClick} />
+      )}
 
       {selectedOrder && (
         <OrderDetailsDialog

@@ -2,10 +2,18 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { clearProfile } from "@/store/profileSlice";
 
 const LogoutPage = () => {
-  const handleLogout = () => {
-    // Handle logout logic
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    dispatch(clearProfile());
+    router.push("/");
   };
 
   return (

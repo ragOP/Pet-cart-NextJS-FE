@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import RequireLogin from "@/components/auth/RequireLogin";
 import ProfileForm from "@/components/account/ProfileForm";
 
 const ProfilePage = () => {
