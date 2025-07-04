@@ -157,6 +157,9 @@ const CartPage = () => {
 
   const couponDiscount = Math.max((totalPrice + cgst + sgst + igst + cess) - finalPayableAmount, 0);
 
+  console.log("cartLoading", cartLoading);
+  console.log("cartData", cartData);
+  console.log("cartError", cartError);
   return (
     <div className="bg-[#FFFBF6] min-h-screen w-full">
       {cartData && !cartLoading ? (
