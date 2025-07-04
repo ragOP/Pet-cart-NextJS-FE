@@ -82,7 +82,7 @@ const Login = ({ onSuccess, showTitle = true }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-xl p-8 flex flex-col gap-6">
+    <div className="w-full max-w-md mx-auto bg-white rounded-xl px-8 py-12 flex flex-col gap-6">
       {showTitle && (
         <h2 className="text-2xl font-bold text-[#F59A11] mb-2 text-center">
           Login to PetCaart

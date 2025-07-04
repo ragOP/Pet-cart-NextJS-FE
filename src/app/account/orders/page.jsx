@@ -5,6 +5,9 @@ import RequireAuth from "@/components/auth/RequireAuth";
 import EmptyOrdersState from "@/components/orders/EmptyOrdersState";
 import OrderDetailsDialog from "@/components/orders/OrderDetailsDialog";
 import OrdersList from "@/components/orders/OrdersList";
+import { useQuery } from "@tanstack/react-query";
+import { getOrders } from "@/app/apis/getOrders";
+import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 
 const DUMMY_ORDERS = [
   {
@@ -98,9 +101,14 @@ const DUMMY_ORDERS = [
 ];
 
 export default function OrdersPage() {
-  const [orders, setOrders] = useState(DUMMY_ORDERS);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
+
+  const { data: orders = [], isLoading, isError } = useQuery({
+    queryKey: ["orders"],
+    queryFn: getOrders,
+    select: (res) => res?.data?.data || [],
+  });
 
   const handleOrderClick = (orderIndex) => {
     setSelectedOrder(orders[orderIndex]);
@@ -137,7 +145,9 @@ export default function OrdersPage() {
           </button>
         </div>
 
-        {orders.length === 0 ? (
+        {isLoading ? (
+          <PrimaryLoader />
+        ) : orders.length === 0 ? (
           <EmptyOrdersState />
         ) : (
           <OrdersList orders={orders} onOrderClick={handleOrderClick} />

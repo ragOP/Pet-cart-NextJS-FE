@@ -49,4 +49,7 @@ export const endpoints = {
 
   // coupons
   coupons: "api/coupon",
+
+  // orders
+  orders: "api/orders/get-all-user-orders",
 };
