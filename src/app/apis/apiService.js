@@ -2,7 +2,6 @@ import { getCookie } from "@/utils/cookies/getCookie";
 import axios from "axios";
 // https://pet-caart-be.onrender.com
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-console.log(BACKEND_URL);
 
 export const apiService = async ({
   endpoint,

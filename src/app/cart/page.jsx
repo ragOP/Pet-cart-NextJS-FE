@@ -13,12 +13,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCart } from "@/app/apis/getCart";
 import { addProductToCart } from "@/app/apis/addProductToCart";
 import { getCoupons } from "@/app/apis/getCoupons";
-import { getAddresses } from "@/app/apis/getAddresses";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { extractTaxFromCart } from "@/utils/extract_tax_from_cart";
 import { getCookie } from "@/utils/cookies/getCookie";
-
 
 const CartPage = () => {
   const [pincode, setPincode] = useState("");
@@ -27,12 +24,10 @@ const CartPage = () => {
   const [deleteLoadingIds, setDeleteLoadingIds] = useState([]);
   const router = useRouter();
   const queryClient = useQueryClient();
-
-  let params = {};
-
-  if (getCookie("addressId")) {
-    params = { address_id: getCookie("addressId") };
-  }
+  const [params, setParams] = useState({
+    address_id: getCookie("addressId"),
+    coupon_id: appliedCoupon,
+  });
 
   const { data: cartData, isLoading: cartLoading, isError: cartError } = useQuery({
     queryKey: ["cart", params],
@@ -43,26 +38,17 @@ const CartPage = () => {
   const { data: couponsData } = useQuery({
     queryKey: ["coupons"],
     queryFn: () => getCoupons(),
-    select: (res) => res?.data?.data || {},
+    select: (res) => res?.data?.data || [],
   });
 
-  const { data: addressesData } = useQuery({
-    queryKey: ["addresses"],
-    queryFn: () => getAddresses(),
-    select: (res) => res?.data?.data || {},
-  });
-
-  console.log(addressesData);
-
-  const { mutate: addToCart, isPending: addToCartPending } = useMutation({
+  const { mutate: addToCart } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: (res) => {
       if (res?.success) {
-        console.log(res)
         toast.success(res?.message || "Cart updated successfully");
         queryClient.invalidateQueries({ queryKey: ["cart"] });
       } else {
-        toast.error(res?.message || "Failed to add product to cart");
+        toast.error(res?.message || "Failed to update cart");
       }
     },
     onError: (error) => {
@@ -104,39 +90,40 @@ const CartPage = () => {
     );
   };
 
-  const handleApplyCoupon = (couponCode) => {
-    // append coupon id into params 
-    params = { ...params, coupon_id: couponCode };
-    // queryClient.invalidateQueries({ queryKey: ["cart", params] });
-  }
+  const handleApplyCoupon = (couponId) => {
+    setAppliedCoupon(couponId);
+    setParams((prev) => ({ ...prev, coupon_id: couponId }));
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setParams((prev) => ({ ...prev, coupon_id: null }));
+  };
 
   const onNavigateToProduct = (id) => {
     router.push(`/product/${id}`);
   };
 
-  // Price calculation
-  const totalPrice = cartData?.items?.reduce(
-    // extract total from items from cartData
+  const totalPrice = cartData?.items?.reduce((acc, item) => acc + item.total, 0) || 0;
+  const discountPrice = cartData?.items?.reduce((acc, item) => acc + item.discount_price, 0) || 0;
+  const shipping = cartData?.shipping || 0;
+  const finalPayableAmount = cartData?.total_price || 0;
+  // const couponDiscount = Math.max(finalPayableAmount - discountPrice, 0);
+
+  const { cgst, sgst, igst, cess } = cartData?.items?.reduce(
     (acc, item) => {
-      console.log(item.total);
-      acc += item.total;
+      acc.cgst += item.cgst || 0;
+      acc.sgst += item.sgst || 0;
+      acc.igst += item.igst || 0;
+      acc.cess += item.cess || 0;
       return acc;
     },
-    0
-  ) || 0;
-  const shipping = cartData?.shipping || 0;
+    { cgst: 0, sgst: 0, igst: 0, cess: 0 }
+  ) || { cgst: 0, sgst: 0, igst: 0, cess: 0 };
 
-  // Calculate tax
-  const { cgst, sgst, igst, cess } = cartData?.items?.reduce((acc, item) => {
-    acc.cgst += item.cgst || 0;
-    acc.sgst += item.sgst || 0;
-    acc.igst += item.igst || 0;
-    acc.cess += item.cess || 0;
-    return acc;
-  }, { cgst: 0, sgst: 0, igst: 0, cess: 0 }) || { cgst: 0, sgst: 0, igst: 0, cess: 0 };
+  const couponDiscount = Math.max((totalPrice + cgst + sgst + igst + cess) - finalPayableAmount, 0);
 
-  // Calculate final price including tax
-  const finalPayableAmount =  cartData?.total_price || 0;
+  console.log(appliedCoupon);
 
   return (
     <div className="bg-[#FFFBF6] min-h-screen w-full">
@@ -145,31 +132,30 @@ const CartPage = () => {
       ) : (
         <div className="h-16 bg-white rounded-lg shadow-sm animate-pulse" />
       )}
+
       <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-6">
-        {/* Left: Cart Items */}
         <div className="w-full lg:w-1/2 flex flex-col gap-4">
           {cartLoading ? (
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-          </div>
-        ) : cartError ? (
-          <div className="text-center text-red-500 py-4">
-            Failed to load cart data. Please try refreshing the page.
-          </div>
-        ) : (
-          <CartList
-            items={cartData?.items || []}
-            onQtyChange={handleQtyChange}
-            onRemove={handleRemove}
-            onNavigateToProduct={onNavigateToProduct}
-            isLoading={cartLoading}
-            qtyChangeLoadingIds={qtyChangeLoadingIds}
-            deleteLoadingIds={deleteLoadingIds}
-          />
-        )}
-
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            </div>
+          ) : cartError ? (
+            <div className="text-center text-red-500 py-4">
+              Failed to load cart data. Please try refreshing the page.
+            </div>
+          ) : (
+            <CartList
+              items={cartData?.items || []}
+              onQtyChange={handleQtyChange}
+              onRemove={handleRemove}
+              onNavigateToProduct={onNavigateToProduct}
+              isLoading={cartLoading}
+              qtyChangeLoadingIds={qtyChangeLoadingIds}
+              deleteLoadingIds={deleteLoadingIds}
+            />
+          )}
         </div>
-        {/* Right: Summary */}
+
         <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl h-fit border border-[#F59A1133]">
           <PincodeInput
             pincode={pincode}
@@ -183,8 +169,8 @@ const CartPage = () => {
           <CartCouponSection
             coupons={couponsData || []}
             appliedCoupon={appliedCoupon}
-            onApply={setAppliedCoupon}
-            onRemove={() => setAppliedCoupon(null)}
+            onApply={handleApplyCoupon}
+            onRemove={handleRemoveCoupon}
           />
 
           <div className="border-b border-[#0000001A]" />
@@ -194,16 +180,15 @@ const CartPage = () => {
             totalPrice={finalPayableAmount}
             shipping={shipping}
             taxBreakup={{ cgst, sgst, igst, cess }}
+            couponDiscount={couponDiscount}
           />
         </div>
       </div>
 
       <SpecialDeals />
-
       <div className="px-4 mb-2">
         <CategoryBanner />
       </div>
-
       <LastMinuteAddOns />
     </div>
   );
