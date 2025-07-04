@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setProfile } from "@/store/profileSlice";
+import { setAuth, selectUser, selectToken, setUser } from "@/store/authSlice";
 import { updateProfile } from "@/app/apis/updateProfile";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -10,14 +10,21 @@ import { Input } from "@/components/ui/input";
 import { Camera } from "lucide-react";
 import CustomImage from "../images/CustomImage";
 
-const ProfileForm = ({ onSubmit, initialData = {} }) => {
+const ProfileForm = () => {
   const dispatch = useDispatch();
-  const profile = useSelector((state) => state.profile);
-  const [email, setEmail] = useState(initialData.email || profile.email || "");
-  const [phone, setPhone] = useState(initialData.phoneNumber || profile.phoneNumber || "");
+  const authUser = useSelector(selectUser) || {};
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [image, setImage] = useState(null);
-  const [name, setName] = useState(initialData.name || profile.name || "");
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  
+  // Sync form state with Redux user data
+  useEffect(() => {
+    setEmail(authUser.email || "");
+    setPhone(authUser.phoneNumber || "");
+    setName(authUser.name || "");
+  }, [authUser]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -38,8 +45,10 @@ const ProfileForm = ({ onSubmit, initialData = {} }) => {
         phoneNumber: phone,
       };
       const res = await updateProfile({ data: payload });
+      console.log(res, "res");
       if (res?.success) {
-        dispatch(setProfile(payload));
+        const updatedUser = res?.data?.data || { ...authUser, ...payload };
+        dispatch(setUser(updatedUser));
         toast.success("Profile updated successfully");
       } else {
         toast.error(res?.message || "Failed to update profile");
@@ -128,7 +137,7 @@ const ProfileForm = ({ onSubmit, initialData = {} }) => {
               type="tel"
               placeholder="Enter your phone number"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              disabled
               className="border border-[#B3B3B3] bg-[#6A68680D]"
             />
           </div>

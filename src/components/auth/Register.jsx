@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setProfile } from "@/store/profileSlice";
+import { setAuth } from "@/store/authSlice";
+import { registerUser } from "@/app/apis/registerUser";
 
 const Register = ({ onSuccess, showTitle = true }) => {
   const [form, setForm] = useState({ name: "", phoneNumber: "", otp: "" });
@@ -43,19 +44,15 @@ const Register = ({ onSuccess, showTitle = true }) => {
     }
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        dispatch(setProfile(data.data.user || {}));
+      const data = await registerUser(form);
+      if (data && data.token) {
+        dispatch(setAuth({ token: data.token, user: data.user }));
+        localStorage.setItem('token', data.token);
         toast.success("Registration Successful!", {
           description: "Welcome to PetCaart.",
           position: "top-right",
         });
-        setTimeout(() => router.push("/account"), 1200);
+        setTimeout(() => router.push("/home"), 1200);
       } else {
         toast.error("Registration Failed", {
           description: data?.message || "Registration failed",

@@ -7,7 +7,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setProfile } from "@/store/profileSlice";
+import { setAuth } from "@/store/authSlice";
+import { loginUser } from "@/app/apis/loginUser";
 
 const Login = ({ onSuccess, showTitle = true }) => {
   const [form, setForm] = useState({ phoneNumber: "", otp: "" });
@@ -51,14 +52,11 @@ const Login = ({ onSuccess, showTitle = true }) => {
     }
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phoneNumber: form.phoneNumber, otp: form.otp }),
-      });
-      const data = await res.json();
-      if (res.ok && data.success) {
-        dispatch(setProfile(data.data.user || {}));
+      const apiResponse = await loginUser({ phoneNumber: form.phoneNumber, otp: form.otp });
+      if (apiResponse.success) {
+        const data = apiResponse.data;
+        dispatch(setAuth({ token: data.token, user: data.user }));
+        localStorage.setItem('token', data.token);
         toast.success("Login Successful!", {
           description: "Welcome back to PetCaart.",
           position: "top-right",

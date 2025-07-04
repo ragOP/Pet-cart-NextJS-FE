@@ -9,6 +9,7 @@ import truckIcon from "@/assets/truck.png";
 import petLogo from "@/assets/pet.png";
 import loginLogo from "@/assets/login.png";
 import { useSelector } from "react-redux";
+import { selectToken, selectUser } from "@/store/authSlice";
 
 const MobileMenu = React.memo(({ 
   logo, 
@@ -112,8 +113,9 @@ const Header = ({ logo }) => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const profile = useSelector((state) => state.profile);
-  const isLoggedIn = !!(profile && (profile.name || profile.email || profile.phoneNumber));
+  const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
+  const isLoggedIn = !!token;
   const suggestions = ["Dog Food", "Cat Food", "Helno", "Royal Canin"];
   const [index, setIndex] = useState(0);
   const searchInputRef = React.useRef(null);

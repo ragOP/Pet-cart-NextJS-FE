@@ -1,16 +1,28 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
-import profileReducer from './profileSlice';
-
-const persistConfig = {
-  key: 'root',
-  storage,
-};
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import authReducer from "./authSlice";
+// import other reducers here as needed
 
 const rootReducer = combineReducers({
-  profile: profileReducer,
+  auth: authReducer,
+  // add more slices here
 });
+
+const persistConfig = {
+  key: "root",
+  storage,
+  whitelist: ["auth"], // add more as needed
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

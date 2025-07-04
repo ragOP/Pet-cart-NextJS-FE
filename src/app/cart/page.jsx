@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import RequireAuth from "@/components/auth/RequireAuth";
 import CartSavingsBanner from "@/components/cart/CartSavingsBanner";
 import CartList from "@/components/cart/CartList";
 import CartSummary from "@/components/cart/CartSummary";
@@ -99,58 +100,60 @@ const CartPage = () => {
   const finalPayableAmount = totalSalePrice + totalCGST + totalSGST + totalIGST + totalCESS;
 
   return (
-    <div className="bg-[#FFFBF6] min-h-screen w-full">
-      <CartSavingsBanner savings={13.08} />
-      <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-6">
-        {/* Left: Cart Items */}
-        <div className="w-full lg:w-1/2 flex flex-col gap-4">
-          <CartList
-            items={cartData?.items || []}
-            onQtyChange={handleQtyChange}
-            onRemove={handleRemove}
-            onNavigateToProduct={onNavigateToProduct}
-            isLoading={cartLoading}
-            qtyChangeLoading={addToCartPending}
-          />
+    <RequireAuth>
+      <div className="bg-[#FFFBF6] min-h-screen w-full">
+        <CartSavingsBanner savings={13.08} />
+        <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-6">
+          {/* Left: Cart Items */}
+          <div className="w-full lg:w-1/2 flex flex-col gap-4">
+            <CartList
+              items={cartData?.items || []}
+              onQtyChange={handleQtyChange}
+              onRemove={handleRemove}
+              onNavigateToProduct={onNavigateToProduct}
+              isLoading={cartLoading}
+              qtyChangeLoading={addToCartPending}
+            />
+          </div>
+          {/* Right: Summary */}
+          <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl h-fit border border-[#F59A1133]">
+            <PincodeInput
+              pincode={pincode}
+              onPincodeChange={setPincode}
+              onCheckDelivery={() => { }}
+              className={"m-4"}
+            />
+
+            <div className="border-b border-[#0000001A]" />
+
+            <CartCouponSection
+              coupons={couponsData || []}
+              appliedCoupon={appliedCoupon}
+              onApply={setAppliedCoupon}
+              onRemove={() => setAppliedCoupon(null)}
+            />
+
+            <div className="border-b border-[#0000001A]" />
+
+            <CartSummary
+              totalMrp={totalPrice}
+              totalDiscount={totalDiscount}
+              totalPrice={finalPayableAmount}
+              shipping={shipping}
+              taxBreakup={{ totalCGST, totalSGST, totalIGST, totalCESS }}
+            />
+          </div>
         </div>
-        {/* Right: Summary */}
-        <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl h-fit border border-[#F59A1133]">
-          <PincodeInput
-            pincode={pincode}
-            onPincodeChange={setPincode}
-            onCheckDelivery={() => { }}
-            className={"m-4"}
-          />
 
-          <div className="border-b border-[#0000001A]" />
+        <SpecialDeals />
 
-          <CartCouponSection
-            coupons={couponsData || []}
-            appliedCoupon={appliedCoupon}
-            onApply={setAppliedCoupon}
-            onRemove={() => setAppliedCoupon(null)}
-          />
-
-          <div className="border-b border-[#0000001A]" />
-
-          <CartSummary
-            totalMrp={totalPrice}
-            totalDiscount={totalDiscount}
-            totalPrice={finalPayableAmount}
-            shipping={shipping}
-            taxBreakup={{ totalCGST, totalSGST, totalIGST, totalCESS }}
-          />
+        <div className="px-4 mb-2">
+          <CategoryBanner />
         </div>
+
+        <LastMinuteAddOns />
       </div>
-
-      <SpecialDeals />
-
-      <div className="px-4 mb-2">
-        <CategoryBanner />
-      </div>
-
-      <LastMinuteAddOns />
-    </div>
+    </RequireAuth>
   );
 };
 

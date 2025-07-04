@@ -2,6 +2,7 @@
 
 import React from "react";
 import ProfileForm from "@/components/account/ProfileForm";
+import RequireAuth from "@/components/auth/RequireAuth";
 
 const ProfilePage = () => {
   const handleSubmit = (data) => {
@@ -9,7 +10,11 @@ const ProfilePage = () => {
     console.log(data);
   };
 
-  return <ProfileForm onSubmit={handleSubmit} />;
+  return (
+    <RequireAuth>
+      <ProfileForm onSubmit={handleSubmit} />
+    </RequireAuth>
+  );
 };
 
 export default ProfilePage;

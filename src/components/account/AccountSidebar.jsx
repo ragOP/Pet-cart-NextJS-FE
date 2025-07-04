@@ -15,9 +15,8 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import CustomImage from "../images/CustomImage";
-import { deleteCookie } from "@/utils/cookies/deleteCookie";
+import { clearAuth } from "@/store/authSlice";
 import { formatMemberSince } from "@/utils/formatMemberSince";
-import { clearProfile } from "@/store/profileSlice";
 
 const menuItems = [
   {
@@ -64,8 +63,8 @@ const AccountSidebar = () => {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    dispatch(clearProfile());
+    dispatch(clearAuth());
+    localStorage.removeItem('token');
     setLogoutOpen(false);
     router.push('/');
   };
@@ -156,8 +155,10 @@ const AccountSidebar = () => {
 export default AccountSidebar;
 
 const SidebarProfileNameBlock = () => {
-  const name = useSelector((state) => state.profile?.name || "");
-  const createdBy = useSelector((state) => state.profile?.createdBy || "");
+  const { selectUser } = require("@/store/authSlice");
+  const user = useSelector(selectUser) || {};
+  const name = user.name || "";
+  const createdBy = user.createdBy || "";
 
   const memberSince = formatMemberSince(createdBy) || "Jan-2022";
 

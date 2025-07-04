@@ -4,15 +4,15 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { clearProfile } from "@/store/profileSlice";
+import { clearAuth } from "@/store/authSlice";
 
 const LogoutPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
-    dispatch(clearProfile());
+    dispatch(clearAuth());
+    localStorage.removeItem('token');
     router.push("/");
   };
 
