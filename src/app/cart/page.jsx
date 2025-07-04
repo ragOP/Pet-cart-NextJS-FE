@@ -22,6 +22,8 @@ import { extractTaxFromCart } from "@/utils/extract_tax_from_cart";
 const CartPage = () => {
   const [pincode, setPincode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [qtyChangeLoadingIds, setQtyChangeLoadingIds] = useState([]);
+  const [deleteLoadingIds, setDeleteLoadingIds] = useState([]);
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -41,7 +43,8 @@ const CartPage = () => {
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: (res) => {
       if (res?.success) {
-        toast.success("Product added to cart!");
+        console.log(res)
+        toast.success(res?.message || "Cart updated successfully");
         queryClient.invalidateQueries({ queryKey: ["cart"] });
       } else {
         toast.error(res?.message || "Failed to add product to cart");
@@ -52,31 +55,49 @@ const CartPage = () => {
     },
   });
 
-  const { mutate: deleteProductFromCartMutation } = useMutation({
-    mutationFn: deleteProductFromCart,
-    onSuccess: () => {
-      toast.success("Product removed from cart!");
-      queryClient.invalidateQueries({ queryKey: ["cart"] });
-    },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || "Request failed");
-    },
-  });
+  // const { mutate: deleteProductFromCartMutation } = useMutation({
+  //   mutationFn: deleteProductFromCart,
+  //   onSuccess: () => {
+  //     toast.success("Product removed from cart!");
+  //     queryClient.invalidateQueries({ queryKey: ["cart"] });
+  //   },
+  //   onError: (error) => {
+  //     toast.error(error.response?.data?.message || "Request failed");
+  //   },
+  // });
 
   const handleQtyChange = (productId, variantId, quantity) => {
-    if (variantId) {
-      let previousQuantity = cartData?.items?.find((item) => item.variantId === variantId)?.quantity || 0;
-      let newQuantity = previousQuantity + quantity;
-      addToCart({ variantId, productId, quantity: newQuantity });
-    } else {
-      let previousQuantity = cartData?.items?.find((item) => item.productId._id === productId)?.quantity || 0;
-      let newQuantity = previousQuantity + quantity;
-      addToCart({ productId, variantId: null, quantity: newQuantity });
-    }
+    const id = variantId || productId;
+    setQtyChangeLoadingIds((prev) => [...prev, id]);
+
+    const prevQty = cartData?.items?.find(
+      (item) => (variantId ? item.variantId === variantId : item.productId._id === productId)
+    )?.quantity || 0;
+
+    const newQty = prevQty + quantity;
+
+    addToCart(
+      { productId, variantId, quantity: newQty },
+      {
+        onSettled: () => {
+          setQtyChangeLoadingIds((prev) => prev.filter((loadingId) => loadingId !== id));
+        },
+      }
+    );
   };
 
-  const handleRemove = (id) => {
-    deleteProductFromCartMutation({ id });
+  const handleRemove = (productId, variantId) => {
+    const id = variantId || productId;
+    setDeleteLoadingIds((prev) => [...prev, id]);
+
+    addToCart(
+      { productId, variantId, quantity: 0 },
+      {
+        onSettled: () => {
+          setDeleteLoadingIds((prev) => prev.filter((loadingId) => loadingId !== id));
+        },
+      }
+    );
   };
 
   const onNavigateToProduct = (id) => {
@@ -110,8 +131,10 @@ const CartPage = () => {
             onRemove={handleRemove}
             onNavigateToProduct={onNavigateToProduct}
             isLoading={cartLoading}
-            qtyChangeLoading={addToCartPending}
+            qtyChangeLoadingIds={qtyChangeLoadingIds}
+            deleteLoadingIds={deleteLoadingIds}
           />
+
         </div>
         {/* Right: Summary */}
         <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl h-fit border border-[#F59A1133]">
