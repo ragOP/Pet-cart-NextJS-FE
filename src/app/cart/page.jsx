@@ -123,12 +123,10 @@ const CartPage = () => {
 
   const couponDiscount = Math.max((totalPrice + cgst + sgst + igst + cess) - finalPayableAmount, 0);
 
-  console.log(appliedCoupon);
-
   return (
     <div className="bg-[#FFFBF6] min-h-screen w-full">
       {cartData && !cartLoading ? (
-        <CartSavingsBanner savings={13.08} />
+        <CartSavingsBanner savings={couponDiscount.toFixed(2)} />
       ) : (
         <div className="h-16 bg-white rounded-lg shadow-sm animate-pulse" />
       )}
