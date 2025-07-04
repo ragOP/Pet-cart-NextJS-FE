@@ -1,7 +1,7 @@
 import React from "react";
 
-const CartSummary = ({ totalMrp, totalDiscount, totalPrice, shipping, taxBreakup = {} }) => {
-  const { totalCGST = 0, totalSGST = 0, totalIGST = 0, totalCESS = 0 } = taxBreakup;
+const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {} }) => {
+  const { cgst = 0, sgst = 0, igst = 0, cess = 0 } = taxBreakup;
 
   return (
     <div className="flex flex-col h-max justify-between bg-white rounded-xl">
@@ -13,11 +13,11 @@ const CartSummary = ({ totalMrp, totalDiscount, totalPrice, shipping, taxBreakup
           <div className="flex flex-col gap-2 text-base">
             <div className="flex justify-between"><span>Total MRP Price</span><span>₹{totalMrp}</span></div>
             <div className="flex justify-between"><span>Coupon Discount</span><span>₹0</span></div>
-            <div className="flex justify-between"><span>Discount on MRP</span><span>₹{totalDiscount}</span></div>
-            <div className="flex justify-between"><span>CGST</span><span>₹{totalCGST}</span></div>
-            <div className="flex justify-between"><span>SGST</span><span>₹{totalSGST}</span></div>
-            <div className="flex justify-between"><span>IGST</span><span>₹{totalIGST}</span></div>
-            <div className="flex justify-between"><span>CESS</span><span>₹{totalCESS}</span></div>
+            {/* <div className="flex justify-between"><span>Discount on MRP</span><span>₹{totalDiscount}</span></div> */}
+            <div className="flex justify-between"><span>CGST</span><span>₹{cgst}</span></div>
+            <div className="flex justify-between"><span>SGST</span><span>₹{sgst}</span></div>
+            <div className="flex justify-between"><span>IGST</span><span>₹{igst}</span></div>
+            <div className="flex justify-between"><span>CESS</span><span>₹{cess}</span></div>
             <div className="flex justify-between items-center">
               <div className="flex flex-col">
                 <span>Shipping Charges</span>

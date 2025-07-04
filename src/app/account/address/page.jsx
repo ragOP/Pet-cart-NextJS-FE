@@ -11,28 +11,49 @@ import { createAddress } from "@/app/apis/createAddress";
 import { updateAddress } from "@/app/apis/updateAddress";
 import { deleteAddress } from "@/app/apis/deleteAddress";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
+import { toast } from "sonner";
+import { setCookie } from "@/utils/cookies/setCookie";
+import { getCookie } from "@/utils/cookies/getCookie";
 
 const AddressPage = () => {
   const queryClient = useQueryClient();
   const { data: addresses = [], isLoading } = useQuery({
     queryKey: ["addresses"],
     queryFn: getAddresses,
-    select: (data) => data?.data?.data || [],
+    select: (data) => data?.data || [],
   });
 
+  if (getCookie("addressId")) {
+    const defaultAddress = addresses.find(
+      (address) => address._id === getCookie("addressId")
+    );
+    if (defaultAddress) {
+      setCookie("addressId", defaultAddress._id);
+    }
+  }
+
   const createMutation = useMutation({
-    mutationFn: createAddress,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["addresses"] }),
+    mutationFn: ({ data }) => createAddress({ data }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["addresses"] });
+      toast.success("Address added successfully");
+    },
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => updateAddress(id, data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["addresses"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["addresses"] });
+      toast.success("Address updated successfully");
+    },
   });
 
   const deleteMutation = useMutation({
     mutationFn: deleteAddress,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["addresses"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["addresses"] });
+      toast.success("Address deleted successfully");
+    },
   });
 
   const [editingIndex, setEditingIndex] = useState(null);
@@ -47,7 +68,7 @@ const AddressPage = () => {
     if (editingIndex !== null && addresses[editingIndex]) {
       updateMutation.mutate({ id: addresses[editingIndex].id, data: address });
     } else {
-      createMutation.mutate(address);
+      createMutation.mutate({ data: address });
     }
     setEditingIndex(null);
     setIsDialogOpen(false);
@@ -90,8 +111,6 @@ const AddressPage = () => {
   const cancelDelete = () => {
     setDeleteConfirmation({ isOpen: false, index: null, addressName: "" });
   };
-
-  console.log("Addresses:", addresses);
 
   return (
     <div className="border flex flex-col gap-4 border-[#F59A1180] h-full rounded-lg">

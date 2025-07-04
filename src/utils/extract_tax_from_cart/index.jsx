@@ -8,15 +8,17 @@ export const extractTaxFromCart = (items) => {
     const rate = item.productId?.hsnCode;
     if (rate) {
       const quantity = item.quantity;
-      const unitPrice = item.discounted_price || item.price;
+      const unitPrice = item.discounted_price || item.productId?.salePrice;
 
-      totalCGST += (rate.cgst_rate / 100) * unitPrice * quantity;
-      totalSGST += (rate.sgst_rate / 100) * unitPrice * quantity;
-      totalIGST += (rate.igst_rate / 100) * unitPrice * quantity;
-      totalCESS += (rate.cess / 100) * unitPrice * quantity;
+      console.log(item.cgst, item.sgst, item.igst, item.cess);
+      // totalCGST += (item.cgst || 0) / 100 * unitPrice * quantity;
+      // totalSGST += (item.sgst || 0) / 100 * unitPrice * quantity;
+      // totalIGST += (item.igst || 0) / 100 * unitPrice * quantity;
+      // totalCESS += (item.cess || 0) / 100 * unitPrice * quantity;
     }
   }
 
+  console.log(totalCGST, totalSGST, totalIGST, totalCESS);
   return {
     totalCGST: Math.round(totalCGST),
     totalSGST: Math.round(totalSGST),

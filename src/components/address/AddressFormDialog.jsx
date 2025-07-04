@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import {
   Dialog,
@@ -13,13 +15,12 @@ import stateList from "@/utils/constants/stateList";
 const fields = [
   { name: "firstName", label: "First Name", type: "text", required: true, validate: v => v.trim().length > 0 },
   { name: "lastName", label: "Last Name", type: "text", required: true, validate: v => v.trim().length > 0 },
-  { name: "company", label: "Company/Home", type: "text", required: false },
-  { name: "address1", label: "Address 1", type: "text", required: true, validate: v => v.trim().length > 0 },
-  { name: "address2", label: "Address 2", type: "text", required: false },
+  { name: "address", label: "Address", type: "text", required: true, validate: v => v.trim().length > 0 },
   { name: "city", label: "City", type: "text", required: true, validate: v => v.trim().length > 0 },
+  { name: "zip", label: "Postal/ZIP Code", type: "text", required: true, validate: v => /^[0-9A-Za-z\- ]{4,10}$/.test(v) },
   { name: "country", label: "Country/Region", type: "text", required: true, validate: v => v.trim().length > 0 },
-  { name: "postalCode", label: "Postal/ZIP Code", type: "text", required: true, validate: v => /^[0-9A-Za-z\- ]{4,10}$/.test(v) },
   { name: "phone", label: "Phone", type: "tel", required: true, validate: v => /^\d{10}$/.test(v) },
+  { name: "type", label: "Address Type", type: "text", required: true, validate: v => ["home", "office", "other"].includes(v) },
 ];
 
 const getStateCode = (stateValue) => {
@@ -31,16 +32,16 @@ const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
   const [formData, setFormData] = useState({
     firstName: initialData.firstName || "",
     lastName: initialData.lastName || "",
-    company: initialData.company || "",
-    address1: initialData.address1 || "",
-    address2: initialData.address2 || "",
+    address: initialData.address || "",
     city: initialData.city || "",
     state: initialData.state || "",
+    zip: initialData.zip || "",
     country: initialData.country || "",
-    postalCode: initialData.postalCode || "",
     phone: initialData.phone || "",
+    type: initialData.type || "home",
     isDefault: initialData.isDefault || false,
   });
+
   const [errors, setErrors] = useState({});
   const [originalData, setOriginalData] = useState({});
 
@@ -48,14 +49,13 @@ const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
     const data = {
       firstName: initialData.firstName || "",
       lastName: initialData.lastName || "",
-      company: initialData.company || "",
-      address1: initialData.address1 || "",
-      address2: initialData.address2 || "",
+      address: initialData.address || "",
       city: initialData.city || "",
       state: initialData.state || "",
+      zip: initialData.zip || "",
       country: initialData.country || "",
-      postalCode: initialData.postalCode || "",
       phone: initialData.phone || "",
+      type: initialData.type || "home",
       isDefault: initialData.isDefault || false,
     };
     setFormData(data);
@@ -81,7 +81,7 @@ const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
     fields.forEach(f => {
       if (f.required && (!formData[f.name] || (f.validate && !f.validate(formData[f.name])))) {
         if (f.name === "phone") newErrors[f.name] = "Enter a valid 10-digit phone number.";
-        else if (f.name === "postalCode") newErrors[f.name] = "Enter a valid postal/ZIP code.";
+        else if (f.name === "zip") newErrors[f.name] = "Enter a valid postal/ZIP code.";
         else newErrors[f.name] = `${f.label} is required.`;
       }
     });
@@ -92,16 +92,14 @@ const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-    
-    // For editing, only save if there are changes
+
     if (Object.keys(originalData).length > 0 && !hasChanges()) {
       onClose();
       return;
     }
-    
-    // Pass both state and stateCode
-    const stateCode = getStateCode(formData.state);
-    onSave({ ...formData, stateCode });
+
+    const state_code = getStateCode(formData.state);
+    onSave({ ...formData, state_code });
   };
 
   return (
@@ -116,30 +114,44 @@ const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {fields.map(f => (
               <div className="flex flex-col gap-1" key={f.name}>
-                <label htmlFor={f.name} className="text-sm font-s text-gray-700">{f.label}</label>
-                <Input
-                  id={f.name}
-                  type={f.type}
-                  name={f.name}
-                  placeholder={f.label}
-                  value={formData[f.name]}
-                  onChange={handleChange}
-                  required={f.required}
-                  className="bg-[#6A68680D] placeholder:text-gray-500"
-                />
+                <label htmlFor={f.name} className="text-sm text-gray-700">{f.label}</label>
+                {f.name === "type" ? (
+                  <select
+                    id={f.name}
+                    name={f.name}
+                    value={formData[f.name]}
+                    onChange={handleChange}
+                    required={f.required}
+                    className="bg-[#6A68680D] rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700"
+                  >
+                    <option value="home">Home</option>
+                    <option value="office">Office</option>
+                    <option value="other">Other</option>
+                  </select>
+                ) : (
+                  <Input
+                    id={f.name}
+                    type={f.type}
+                    name={f.name}
+                    placeholder={f.label}
+                    value={formData[f.name]}
+                    onChange={handleChange}
+                    required={f.required}
+                    className="bg-[#6A68680D] placeholder:text-gray-500"
+                  />
+                )}
                 {errors[f.name] && <span className="text-xs text-red-600 mt-1">{errors[f.name]}</span>}
               </div>
             ))}
-            {/* State Dropdown */}
             <div className="flex flex-col gap-1">
-              <label htmlFor="state" className="text-sm font-s text-gray-700">State/Province</label>
+              <label htmlFor="state" className="text-sm text-gray-700">State/Province</label>
               <select
                 id="state"
                 name="state"
                 value={formData.state}
                 onChange={handleChange}
                 required
-                className="bg-[#6A68680D] rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#F59A11]"
+                className="bg-[#6A68680D] rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700"
               >
                 <option value="">Select State</option>
                 {stateList.map((state) => (
@@ -149,6 +161,7 @@ const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
               {errors.state && <span className="text-xs text-red-600 mt-1">{errors.state}</span>}
             </div>
           </div>
+
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -159,6 +172,7 @@ const AddressFormDialog = ({ isOpen, onClose, onSave, initialData = {} }) => {
             />
             <label htmlFor="isDefault">Set as default address</label>
           </div>
+
           <DialogFooter className="pb-4">
             <DialogClose asChild>
               <button

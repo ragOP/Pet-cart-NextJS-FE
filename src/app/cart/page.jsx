@@ -13,10 +13,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCart } from "@/app/apis/getCart";
 import { addProductToCart } from "@/app/apis/addProductToCart";
 import { getCoupons } from "@/app/apis/getCoupons";
-import { deleteProductFromCart } from "@/app/apis/deleteProductFromCart";
+import { getAddresses } from "@/app/apis/getAddresses";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { extractTaxFromCart } from "@/utils/extract_tax_from_cart";
+import { getCookie } from "@/utils/cookies/getCookie";
 
 
 const CartPage = () => {
@@ -27,10 +28,16 @@ const CartPage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: cartData, isLoading: cartLoading } = useQuery({
-    queryKey: ["cart"],
-    queryFn: () => getCart(),
-    select: (res) => res?.data || {},
+  let params = {};
+
+  if (getCookie("addressId")) {
+    params = { address_id: getCookie("addressId") };
+  }
+
+  const { data: cartData, isLoading: cartLoading, isError: cartError } = useQuery({
+    queryKey: ["cart", params],
+    queryFn: () => getCart({ params }),
+    select: (res) => res?.data || null,
   });
 
   const { data: couponsData } = useQuery({
@@ -38,6 +45,14 @@ const CartPage = () => {
     queryFn: () => getCoupons(),
     select: (res) => res?.data?.data || {},
   });
+
+  const { data: addressesData } = useQuery({
+    queryKey: ["addresses"],
+    queryFn: () => getAddresses(),
+    select: (res) => res?.data?.data || {},
+  });
+
+  console.log(addressesData);
 
   const { mutate: addToCart, isPending: addToCartPending } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
@@ -54,17 +69,6 @@ const CartPage = () => {
       toast.error(error.response?.data?.message || "Request failed");
     },
   });
-
-  // const { mutate: deleteProductFromCartMutation } = useMutation({
-  //   mutationFn: deleteProductFromCart,
-  //   onSuccess: () => {
-  //     toast.success("Product removed from cart!");
-  //     queryClient.invalidateQueries({ queryKey: ["cart"] });
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error.response?.data?.message || "Request failed");
-  //   },
-  // });
 
   const handleQtyChange = (productId, variantId, quantity) => {
     const id = variantId || productId;
@@ -100,31 +104,59 @@ const CartPage = () => {
     );
   };
 
+  const handleApplyCoupon = (couponCode) => {
+    // append coupon id into params 
+    params = { ...params, coupon_id: couponCode };
+    // queryClient.invalidateQueries({ queryKey: ["cart", params] });
+  }
+
   const onNavigateToProduct = (id) => {
     router.push(`/product/${id}`);
   };
 
   // Price calculation
-  const totalPrice = cartData?.total_price || 0;
-  const totalSalePrice = cartData?.items.reduce(
-    (acc, item) => acc + (item.discounted_price || item.price) * item.quantity,
+  const totalPrice = cartData?.items?.reduce(
+    // extract total from items from cartData
+    (acc, item) => {
+      console.log(item.total);
+      acc += item.total;
+      return acc;
+    },
     0
-  );
-  const totalDiscount = totalPrice - totalSalePrice;
+  ) || 0;
   const shipping = cartData?.shipping || 0;
 
   // Calculate tax
-  const { totalCGST, totalSGST, totalIGST, totalCESS } = extractTaxFromCart(cartData?.items || []);
+  const { cgst, sgst, igst, cess } = cartData?.items?.reduce((acc, item) => {
+    acc.cgst += item.cgst || 0;
+    acc.sgst += item.sgst || 0;
+    acc.igst += item.igst || 0;
+    acc.cess += item.cess || 0;
+    return acc;
+  }, { cgst: 0, sgst: 0, igst: 0, cess: 0 }) || { cgst: 0, sgst: 0, igst: 0, cess: 0 };
 
   // Calculate final price including tax
-  const finalPayableAmount = totalSalePrice + totalCGST + totalSGST + totalIGST + totalCESS;
+  const finalPayableAmount =  cartData?.total_price || 0;
 
   return (
     <div className="bg-[#FFFBF6] min-h-screen w-full">
-      <CartSavingsBanner savings={13.08} />
+      {cartData && !cartLoading ? (
+        <CartSavingsBanner savings={13.08} />
+      ) : (
+        <div className="h-16 bg-white rounded-lg shadow-sm animate-pulse" />
+      )}
       <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-6">
         {/* Left: Cart Items */}
         <div className="w-full lg:w-1/2 flex flex-col gap-4">
+          {cartLoading ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+          </div>
+        ) : cartError ? (
+          <div className="text-center text-red-500 py-4">
+            Failed to load cart data. Please try refreshing the page.
+          </div>
+        ) : (
           <CartList
             items={cartData?.items || []}
             onQtyChange={handleQtyChange}
@@ -134,6 +166,7 @@ const CartPage = () => {
             qtyChangeLoadingIds={qtyChangeLoadingIds}
             deleteLoadingIds={deleteLoadingIds}
           />
+        )}
 
         </div>
         {/* Right: Summary */}
@@ -158,10 +191,9 @@ const CartPage = () => {
 
           <CartSummary
             totalMrp={totalPrice}
-            totalDiscount={totalDiscount}
             totalPrice={finalPayableAmount}
             shipping={shipping}
-            taxBreakup={{ totalCGST, totalSGST, totalIGST, totalCESS }}
+            taxBreakup={{ cgst, sgst, igst, cess }}
           />
         </div>
       </div>
