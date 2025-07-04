@@ -13,15 +13,19 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCart } from "@/app/apis/getCart";
 import { addProductToCart } from "@/app/apis/addProductToCart";
 import { getCoupons } from "@/app/apis/getCoupons";
+import { getAddresses } from "@/app/apis/getAddresses";
+import { createOrder } from "@/app/apis/createOrder";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { getCookie } from "@/utils/cookies/getCookie";
+import CheckoutDialog from "@/components/cart/CheckoutDialog";
 
 const CartPage = () => {
   const [pincode, setPincode] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [qtyChangeLoadingIds, setQtyChangeLoadingIds] = useState([]);
   const [deleteLoadingIds, setDeleteLoadingIds] = useState([]);
+  const [isCheckoutDialogOpen, setIsCheckoutDialogOpen] = useState(false);
   const router = useRouter();
   const queryClient = useQueryClient();
   const [params, setParams] = useState({
@@ -41,6 +45,12 @@ const CartPage = () => {
     select: (res) => res?.data?.data || [],
   });
 
+  const { data: addressesData } = useQuery({
+    queryKey: ["addresses"],
+    queryFn: () => getAddresses(),
+    select: (data) => data?.data || [],
+  });
+
   const { mutate: addToCart } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: (res) => {
@@ -49,6 +59,21 @@ const CartPage = () => {
         queryClient.invalidateQueries({ queryKey: ["cart"] });
       } else {
         toast.error(res?.message || "Failed to update cart");
+      }
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Request failed");
+    },
+  });
+
+  const { mutate: createOrderMutation } = useMutation({
+    mutationFn: (payload) => createOrder({ data: payload }),
+    onSuccess: (res) => {
+      if (res?.success) {
+        toast.success("Order created successfully");
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
+      } else {
+        toast.error("Failed to create order");
       }
     },
     onError: (error) => {
@@ -104,8 +129,17 @@ const CartPage = () => {
     router.push(`/product/${id}`);
   };
 
+  const handleConfirmCheckout = ({ note, paymentMethod, addressId }) => {
+    createOrderMutation({
+      cartId: cartData?._id,
+      couponId: appliedCoupon,
+      addressId,
+      paymentMethod,
+      note,
+    });
+  };
+
   const totalPrice = cartData?.items?.reduce((acc, item) => acc + item.total, 0) || 0;
-  const discountPrice = cartData?.items?.reduce((acc, item) => acc + item.discount_price, 0) || 0;
   const shipping = cartData?.shipping || 0;
   const finalPayableAmount = cartData?.total_price || 0;
   // const couponDiscount = Math.max(finalPayableAmount - discountPrice, 0);
@@ -179,6 +213,7 @@ const CartPage = () => {
             shipping={shipping}
             taxBreakup={{ cgst, sgst, igst, cess }}
             couponDiscount={couponDiscount}
+            onPay={() => setIsCheckoutDialogOpen(true)}
           />
         </div>
       </div>
@@ -188,6 +223,14 @@ const CartPage = () => {
         <CategoryBanner />
       </div>
       <LastMinuteAddOns />
+
+      <CheckoutDialog
+        isOpen={isCheckoutDialogOpen}
+        onClose={() => setIsCheckoutDialogOpen(false)}
+        addresses={addressesData || []}
+        selectedAddressId={params.address_id}
+        onConfirmCheckout={handleConfirmCheckout}
+      />
     </div>
   );
 };

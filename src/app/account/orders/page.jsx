@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import EmptyOrdersState from "@/components/orders/EmptyOrdersState";
 import OrderDetailsDialog from "@/components/orders/OrderDetailsDialog";
 import OrdersList from "@/components/orders/OrdersList";
+import { getOrders } from "@/app/apis/getOrders";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 const DUMMY_ORDERS = [
   {
@@ -100,6 +102,13 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState(DUMMY_ORDERS);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data: ordersRes = [], isLoading } = useQuery({
+    queryKey: ["orders"],
+    queryFn: getOrders,
+    select: (data) => data?.data || [],
+  });
 
   const handleOrderClick = (orderIndex) => {
     setSelectedOrder(orders[orderIndex]);

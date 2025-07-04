@@ -1,6 +1,6 @@
 import React from "react";
 
-const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0 }) => {
+const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0, onPay }) => {
   const { cgst = 0, sgst = 0, igst = 0, cess = 0 } = taxBreakup;
 
   return (
@@ -39,7 +39,11 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
           <span>To Pay</span>
           <span>₹{totalPrice.toFixed(2)}</span>
         </div>
-        <button className="w-full bg-[#F59A11] cursor-pointer hover:bg-[#D9820A] text-white font-bold py-3 rounded-lg text-lg transition-colors">
+        <button 
+        onClick={() => {
+          onPay();
+        }}
+        className="w-full bg-[#F59A11] cursor-pointer hover:bg-[#D9820A] text-white font-bold py-3 rounded-lg text-lg transition-colors">
           PAY
         </button>
       </div>
