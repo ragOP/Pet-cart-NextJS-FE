@@ -44,21 +44,23 @@ const Register = ({ onSuccess, showTitle = true }) => {
     }
     setIsLoading(true);
     try {
-      const data = await registerUser(form);
-      if (data && data.token) {
+      const apiResponse = await registerUser(form);
+      if (apiResponse?.success) {
+        const data = apiResponse?.data;
         dispatch(setAuth({ token: data.token, user: data.user }));
         localStorage.setItem('token', data.token);
+        console.log(data, "data");
         toast.success("Registration Successful!", {
           description: "Welcome to PetCaart.",
           position: "top-right",
         });
-        setTimeout(() => router.push("/home"), 1200);
+        setTimeout(() => router.push("/"), 1200);
       } else {
         toast.error("Registration Failed", {
-          description: data?.message || "Registration failed",
+          description: apiResponse?.message || "Registration failed",
           position: "top-right",
         });
-        setError(data?.message || "Registration failed");
+        setError(apiResponse?.message || "Registration failed");
       }
     } catch (err) {
       toast.error("Registration Failed", {
