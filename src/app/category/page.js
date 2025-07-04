@@ -1,15 +1,15 @@
 "use client";
 
-import React from 'react'
-// import CategoryBanner from '@/components/category/CategoryBanner'
-import FilterSidebar from '@/components/category/FilterSidebar'
-import TopFilterBar from '@/components/category/TopFilterBar'
-import BestSellerProduct from '@/components/product/BestSellerProduct'
+import React from "react";
+import CategoryBanner from "@/components/category/CategoryBanner";
+import FilterSidebar from "@/components/category/FilterSidebar";
+import TopFilterBar from "@/components/category/TopFilterBar";
+import BestSellerProduct from "@/components/product/BestSellerProduct";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "@/app/apis/getProducts";
 import { getSubCategories } from "@/app/apis/getSubCategories";
-import PrimaryLoader from '@/components/loaders/PrimaryLoader';
-import PrimaryEmptyState from '@/components/empty-states/PrimaryEmptyState';
+import PrimaryLoader from "@/components/loaders/PrimaryLoader";
+import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { useRouter, useSearchParams } from "next/navigation";
 import CategoryBreadcrumb from "@/components/category/Breadcrumb";
 
@@ -25,9 +25,9 @@ export default function CategoryPage() {
   const price_range =
     filters.min_price_range || filters.max_price_range
       ? {
-        min_price_range: Number(filters.min_price_range || 0),
-        max_price_range: Number(filters.max_price_range || 10000),
-      }
+          min_price_range: Number(filters.min_price_range || 0),
+          max_price_range: Number(filters.max_price_range || 10000),
+        }
       : undefined;
 
   const params = {
@@ -38,9 +38,9 @@ export default function CategoryPage() {
   };
 
   const {
-    data,
-    isLoading,
-    isError,
+    data: productsData,
+    isLoading: isProductsLoading,
+    isError: isProductsError,
   } = useQuery({
     queryKey: ["products", params],
     queryFn: () => getProducts(params),
@@ -50,8 +50,8 @@ export default function CategoryPage() {
 
   const {
     data: subCategories,
-    isLoading: subCategoriesLoading,
-    isError: subCategoriesError,
+    isLoading: isSubCategoriesLoading,
+    isError: isSubCategoriesError,
   } = useQuery({
     queryKey: ["subCategories"],
     queryFn: () => getSubCategories(),
@@ -61,16 +61,14 @@ export default function CategoryPage() {
   const updateFilters = (newFilters) => {
     const params = new URLSearchParams();
 
-    // Existing filters from URL
     searchParams.forEach((value, key) => {
       if (!newFilters.hasOwnProperty(key)) {
         params.set(key, value);
       }
     });
 
-    // Overwrite or remove with new filters
     Object.entries(newFilters).forEach(([key, value]) => {
-      if (value === null || value === undefined || value === "") {
+      if (!value) {
         params.delete(key);
       } else {
         params.set(key, value);
@@ -82,49 +80,71 @@ export default function CategoryPage() {
 
   const deleteFilter = (key) => {
     const params = new URLSearchParams(searchParams);
-  
-    console.log("need to delete key:", key);
-
-    params.delete(key); // ✅ Properly remove the key from URL
-    console.log("params after delete:", params.toString());
+    params.delete(key);
     router.push(`/category?${params.toString()}`);
   };
-  
 
   const handleProductClick = (productId) => {
     router.push(`/product/${productId}`);
   };
 
+  const isLoading = isProductsLoading || isSubCategoriesLoading;
+  const isError = isProductsError || isSubCategoriesError;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#FFFBF6]">
+        <PrimaryLoader />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#FFFBF6]">
+        <PrimaryEmptyState title="Something went wrong!" />
+      </div>
+    );
+  }
+
+  if (!productsData?.total) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#FFFBF6]">
+        <PrimaryEmptyState title="No products found!" />
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-[#FFFBF6]">
-      <CategoryBreadcrumb productsCount={data?.total || 0} />
-      {/* <CategoryBanner /> */}
-      <TopFilterBar filters={filters} onChangeFilter={updateFilters} deleteFilter={deleteFilter} />
-      <div className="flex max-w-[1440px] mx-auto">
-        {subCategoriesLoading ? (
-          <PrimaryLoader />
-        ) : subCategoriesError ? (
-          <PrimaryEmptyState title="No subcategories found!" />
-        ) : (
-          <FilterSidebar subCategories={subCategories} onChangeFilter={updateFilters} deleteFilter={deleteFilter} />
-        )}
-        <div className="flex-1 ml-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {isLoading ? (
-              <PrimaryLoader />
-            ) : isError || !data?.total ? (
-              <PrimaryEmptyState title="No products found!" />
-            ) : (
-              data?.data?.map((product, index) => (
-                <BestSellerProduct
-                  className="cursor-pointer"
-                  key={index}
-                  product={product}
-                  onClick={() => handleProductClick(product._id)}
-                />
-              ))
-            )}
-          </div>
+    <div className="min-h-screen flex flex-col bg-[#FFFBF6]">
+      <CategoryBreadcrumb productsCount={productsData?.total || 0} />
+
+      <div className="w-full hidden lg:block p-1 my-3">
+        <CategoryBanner />
+      </div>
+
+      <TopFilterBar
+        filters={filters || {}}
+        onChangeFilter={updateFilters}
+        deleteFilter={deleteFilter}
+      />
+
+      <div className="flex-1 flex max-w-[1440px] w-full">
+        <FilterSidebar
+          subCategories={subCategories || []}
+          onChangeFilter={updateFilters}
+          deleteFilter={deleteFilter}
+        />
+
+        <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 ml-6">
+          {productsData?.data?.map((product, index) => (
+            <BestSellerProduct
+              className="cursor-pointer"
+              key={index}
+              product={product}
+              onClick={() => handleProductClick(product._id)}
+            />
+          ))}
         </div>
       </div>
     </div>
