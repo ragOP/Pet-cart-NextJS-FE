@@ -106,7 +106,7 @@ const AddressPage = () => {
       deleteConfirmation.index !== null &&
       addresses[deleteConfirmation.index]
     ) {
-      deleteMutation.mutate(addresses[deleteConfirmation.index]._id);
+      deleteMutation.mutate({id: addresses[deleteConfirmation.index]._id});
     }
     setDeleteConfirmation({ isOpen: false, index: null, addressName: "" });
   };
