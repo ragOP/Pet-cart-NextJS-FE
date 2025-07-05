@@ -22,6 +22,9 @@ const ProductPage = ({ params }) => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [pincode, setPincode] = useState("");
 
+  const width = window.innerWidth;
+  const type = width > 1024 ? "web" : (width > 768 ? "tablet" : "mobile");
+
   const {
     data = {},
     isLoading,
@@ -106,6 +109,7 @@ const ProductPage = ({ params }) => {
           />
         
           <PriceAndCartDisplay
+            stock={currentVariant.stock || data.stock}
             price={currentVariant.price || data.price}
             salePrice={currentVariant.salePrice || data.salePrice}
             productId={data._id}
@@ -142,7 +146,7 @@ const ProductPage = ({ params }) => {
       <HandPickedProducts />
 
       <div className="px-4 mb-4">
-        <CategoryBanner />
+        <CategoryBanner type={type} />
       </div>
 
       <HandPickedProducts />

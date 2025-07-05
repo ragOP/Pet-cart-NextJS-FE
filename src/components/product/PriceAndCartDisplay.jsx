@@ -10,7 +10,8 @@ const PriceAndCartDisplay = ({
   salePrice, 
   productId, 
   variantId = null,
-  quantity = 1 
+  quantity = 1,
+  stock = 0 
 }) => {
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
@@ -20,8 +21,6 @@ const PriceAndCartDisplay = ({
     queryFn: () => getCart({ params: {} }),
     select: (res) => res?.data || null,
   });
-
-  console.log(cartData);
   
   const isProductInCart = cartData?.items?.some((item) => {
     if (variantId) {
@@ -30,7 +29,7 @@ const PriceAndCartDisplay = ({
       return item.productId._id === productId;
     }
   });
-  console.log(isProductInCart);
+
   
   const { mutate: addToCart } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
@@ -76,14 +75,14 @@ const PriceAndCartDisplay = ({
 
       <button
         onClick={handleAddToCart}
-        disabled={loading || isProductInCart}
+        disabled={loading || isProductInCart || stock <= 0}
         className={`w-full md:w-fit h-fit ${
           loading 
             ? 'bg-gray-400 cursor-not-allowed' 
-            : isProductInCart ? 'bg-green-500 hover:bg-green-600 cursor-not-allowed' : 'bg-[#F59A11] hover:bg-[#D9820A]'
+            : isProductInCart ? 'bg-green-500 hover:bg-green-600 cursor-not-allowed' : stock > 0 ? 'bg-[#F59A11] hover:bg-[#D9820A]' : 'bg-gray-400 cursor-not-allowed'
         } text-white font-bold py-4 px-12 rounded-lg text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D9820A]`}
       >
-        {loading ? 'ADDING...' : isProductInCart ? 'ADDED' : 'ADD TO CART'}
+        {loading ? 'ADDING...' : isProductInCart ? 'ADDED' : stock > 0 ? 'ADD TO CART' : 'OUT OF STOCK'}
       </button>
     </div>
   );

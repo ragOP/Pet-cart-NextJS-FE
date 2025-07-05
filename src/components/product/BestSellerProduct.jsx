@@ -25,6 +25,8 @@ const BestSellerProduct = ({
   const discount =
     calculateDiscountPercent(product.price, product.salePrice) || 0;
 
+  const isOutStock = product.stock < 1 || product.variants?.some((variant) => variant.stock < 1);
+
   const { mutate: addToCart, isPending } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: (res) => {
@@ -175,11 +177,11 @@ const BestSellerProduct = ({
           />
         </button> */}
         <button
-          className="flex-1 bg-[#F59A11] hover:bg-[#e18a0e] focus:bg-[#e18a0e] text-white py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer shadow-sm hover:shadow-md focus:shadow-md"
+          className="flex-1 bg-[#F59A11] hover:bg-[#e18a0e] focus:bg-[#e18a0e] text-white py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer shadow-sm hover:shadow-md focus:shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
           onClick={(e) => handleAddtoCart(e)}
-          disabled={isPending}
+          disabled={isPending || isOutStock}
         >
-          {isPending ? "ADDING..." : "ADD TO CART"}
+          {isPending ? "ADDING..." : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
         </button>
       </div>
     </div>

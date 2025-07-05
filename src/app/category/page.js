@@ -17,6 +17,9 @@ export default function CategoryPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
+  const width = window.innerWidth;
+  const type = width > 1024 ? "web" : (width > 768 ? "tablet" : "mobile");
+
   const filters = {};
   searchParams.forEach((value, key) => {
     filters[key] = value;
@@ -120,7 +123,7 @@ export default function CategoryPage() {
       <CategoryBreadcrumb productsCount={productsData?.total || 0} />
 
       <div className="w-full hidden lg:block p-1 my-3">
-        <CategoryBanner />
+        <CategoryBanner type={type}  />
       </div>
 
       <TopFilterBar
