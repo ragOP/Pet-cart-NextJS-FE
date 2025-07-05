@@ -10,6 +10,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const CheckoutDialog = ({
   isOpen,
@@ -18,6 +19,7 @@ const CheckoutDialog = ({
   selectedAddressId,
   onConfirmCheckout,
 }) => {
+  const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [note, setNote] = useState("");
@@ -57,12 +59,19 @@ const CheckoutDialog = ({
               value={selectedAddress}
               onChange={(e) => setSelectedAddress(e.target.value)}
             >
-              {addresses.map((addr) => (
-                <option key={addr._id} value={addr._id}>
-                  {addr.firstName}, {addr.city}, {addr.state}
+              {addresses.length > 0 ? addresses.map((address) => (
+                <option key={address._id} value={address._id}>
+                  {address.firstName}, {address.city}, {address.state}
                 </option>
-              ))}
+              )) : <option value="">No addresses available</option>}
             </select>
+            <div className="w-full flex justify-end">
+            {addresses.length === 0 && (
+              <p onClick={() => router.push("/account/address")} className="text-xs text-[#F59A11] underline cursor-pointer">
+                Add address
+              </p>
+            )}
+            </div>
           </div>
 
           {/* Payment Method */}
