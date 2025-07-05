@@ -150,14 +150,7 @@ export default function CategoryPage() {
         />
 
         <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 ml-6">
-          {productsData?.data?.map((product, index) => (
-            <BestSellerProduct
-              className="cursor-pointer"
-              key={index}
-              product={product}
-              onClick={() => handleProductClick(product._id)}
-            />
-          ))}
+          {}
         </div>
       </div>
     </div>

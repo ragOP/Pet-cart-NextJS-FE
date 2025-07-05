@@ -15,7 +15,7 @@ const ProfileForm = () => {
   const authUser = useSelector(selectUser) || {};
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [image, setImage] = useState(null);
+  // const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   
@@ -26,14 +26,14 @@ const ProfileForm = () => {
     setName(authUser.name || "");
   }, [authUser]);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-      setImage(file);
-    } else {
-      alert("Please upload a valid image file (JPG or PNG).");
-    }
-  };
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+  //     setImage(file);
+  //   } else {
+  //     alert("Please upload a valid image file (JPG or PNG).");
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ const ProfileForm = () => {
         phoneNumber: phone,
       };
       const res = await updateProfile({ data: payload });
-      console.log(res, "res");
+      // console.log(res, "res");
       if (res?.success) {
         const updatedUser = res?.data?.data || { ...authUser, ...payload };
         dispatch(setUser(updatedUser));
@@ -67,7 +67,7 @@ const ProfileForm = () => {
       </div>
       <div className=" border-b border-[#F59A1180]" />
       <div className="space-y-6 p-6">
-        <div>
+        {/* <div>
           <div className="flex gap-4">
             <div className="relative">
               <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
@@ -102,7 +102,7 @@ const ProfileForm = () => {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Name */}
           <div>

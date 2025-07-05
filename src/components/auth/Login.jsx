@@ -53,7 +53,7 @@ const Login = ({ onSuccess, showTitle = true }) => {
     setIsLoading(true);
     try {
       const apiResponse = await loginUser({ phoneNumber: form.phoneNumber, otp: form.otp });
-      if (apiResponse?.data?.success) {
+      if (apiResponse?.success) {
         const data = apiResponse.data;
         dispatch(setAuth({ token: data.token, user: data.user }));
         localStorage.setItem('token', data.token);
