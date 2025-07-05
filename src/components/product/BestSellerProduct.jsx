@@ -3,7 +3,7 @@ import CustomImage from "@/components/images/CustomImage";
 import { Heart, Star } from "lucide-react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import { VariantBox } from "./Variants";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addProductToCart } from "@/app/apis/addProductToCart";
 import { toast } from "sonner";
 
@@ -15,6 +15,7 @@ const BestSellerProduct = ({
   onClick,
 }) => {
   const [selectedImage, setSelectedImage] = React.useState(0);
+  const queryClient = useQueryClient();
 
   // Handle image hover
   const handleImageHover = (index) => {
@@ -26,8 +27,13 @@ const BestSellerProduct = ({
 
   const { mutate: addToCart, isPending } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
-    onSuccess: () => {
-      toast.success("Product added to cart!");
+    onSuccess: (res) => {
+      if(res?.success){
+        toast.success("Product added to cart!");
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
+      } else{
+        toast.error(res?.message || "Failed to add product to cart");
+      }
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || "Failed to add product to cart");
