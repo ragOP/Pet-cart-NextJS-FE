@@ -24,9 +24,9 @@ const AddressPage = () => {
     select: (data) => data?.data || [],
   });
 
-  if (getCookie("addressId")) {
+  if (!getCookie("addressId")) {
     const defaultAddress = addresses.find(
-      (address) => address._id === getCookie("addressId")
+      (address) => address.isDefault === true
     );
     if (defaultAddress) {
       setCookie("addressId", defaultAddress._id);
@@ -35,7 +35,10 @@ const AddressPage = () => {
 
   const createMutation = useMutation({
     mutationFn: ({ data }) => createAddress({ data }),
-    onSuccess: () => {
+    onSuccess: (res) => {
+      if(res?.data?.isDefault){
+        setCookie("addressId", res?.data?._id);
+      }
       queryClient.invalidateQueries({ queryKey: ["addresses"] });
       toast.success("Address added successfully");
     },
@@ -144,7 +147,7 @@ const AddressPage = () => {
             onEdit={handleEditAddress}
             onDelete={handleDeleteAddress}
             onSetDefault={(index) => {
-              // You may want to implement set default logic here
+              updateMutation.mutate({ id: addresses[index]._id, data: { isDefault: true } });
             }}
           />
         )}

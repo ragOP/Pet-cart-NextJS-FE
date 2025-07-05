@@ -59,7 +59,7 @@ const CheckoutDialog = ({
             >
               {addresses.map((addr) => (
                 <option key={addr._id} value={addr._id}>
-                  {addr.firstName} {addr.lastName} - {addr.city}, {addr.state}
+                  {addr.firstName}, {addr.city}, {addr.state}
                 </option>
               ))}
             </select>
