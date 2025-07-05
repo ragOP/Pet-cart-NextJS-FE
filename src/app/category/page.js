@@ -43,7 +43,7 @@ export default function CategoryPage() {
   let subCategoryParam = searchParams.get("categorySlug");
   if (subCategoryParam) {
     subCategoryParam = {
-      search: subCategoryParam,
+      categorySlug: subCategoryParam,
     }
   }
 

@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setAuth } from "@/store/authSlice";
 import { registerUser } from "@/app/apis/registerUser";
+import { updateProfile } from "@/app/apis/updateProfile";
 
 const Register = ({ onSuccess, showTitle = true }) => {
-  const [form, setForm] = useState({ name: "", phoneNumber: "", otp: "" });
+  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phoneNumber: "", otp: "" });
   const [error, setError] = useState("");
   const [step, setStep] = useState(1);
   const router = useRouter();
@@ -26,6 +27,10 @@ const Register = ({ onSuccess, showTitle = true }) => {
     e.preventDefault();
     if (!/^\d{10}$/.test(form.phoneNumber)) {
       setError("Enter a valid 10-digit phone number");
+      return;
+    }
+    if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.email)) {
+      setError("Enter a valid email");
       return;
     }
     setForm({ ...form, otp: "" }); // Clear OTP
@@ -47,20 +52,28 @@ const Register = ({ onSuccess, showTitle = true }) => {
       const apiResponse = await registerUser(form);
       if (apiResponse?.success) {
         const data = apiResponse?.data;
-        dispatch(setAuth({ token: data.token, user: data.user }));
         localStorage.setItem('token', data.token);
-        console.log(data, "data");
-        toast.success("Registration Successful!", {
-          description: "Welcome to PetCaart.",
-          position: "top-right",
-        });
-        setTimeout(() => router.push("/"), 1200);
+        const updateProfileResponse = await updateProfile({ data: { name: `${form.firstName} ${form.lastName}`, email: form.email } });
+        if(updateProfileResponse?.success){
+          dispatch(setAuth({ token: data.token, user: updateProfileResponse?.data?.data }));
+          toast.success("Registration Successful!", {
+            description: "Welcome to PetCaart.",
+            position: "top-right",
+          });
+          setTimeout(() => router.push("/account/address"), 1200);
+        }else{
+          toast.error("Registration Failed", {
+            description: updateProfileResponse?.data?.message || "Registration failed",
+            position: "top-right",
+          });
+          setError(updateProfileResponse?.data?.message || "Registration failed");
+        }
       } else {
         toast.error("Registration Failed", {
-          description: apiResponse?.message || "Registration failed",
+          description: apiResponse?.data?.message || "Registration failed",
           position: "top-right",
         });
-        setError(apiResponse?.message || "Registration failed");
+        setError(apiResponse?.data?.message || "Registration failed");
       }
     } catch (err) {
       toast.error("Registration Failed", {
@@ -84,15 +97,43 @@ const Register = ({ onSuccess, showTitle = true }) => {
         onSubmit={step === 1 ? handleSendOtp : handleSubmit}
         className="flex flex-col gap-2"
       >
-        <label htmlFor="name" className="text-sm font-medium text-gray-700">
-          Full Name
+        <label htmlFor="firstName" className="text-sm font-medium text-gray-700">
+          First Name
         </label>
         <Input
-          id="name"
+          id="firstName"
           type="text"
-          name="name"
-          placeholder="Full Name"
-          value={form.name}
+          name="firstName"
+          placeholder="First Name"
+          value={form.firstName}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#F59A11]"
+        />
+
+        <label htmlFor="lastName" className="text-sm font-medium text-gray-700">
+          Last Name
+        </label>
+        <Input
+          id="lastName"
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={form.lastName}
+          onChange={handleChange}
+          required
+          className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#F59A11]"
+        />
+
+        <label htmlFor="email" className="text-sm font-medium text-gray-700">
+          Email
+        </label>
+        <Input
+          id="email"
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={form.email}
           onChange={handleChange}
           required
           className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#F59A11]"

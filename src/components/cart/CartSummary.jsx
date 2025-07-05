@@ -15,10 +15,10 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
             <div className="flex justify-between text-green-600 font-medium">
               <span>Coupon Discount</span><span>- ₹{couponDiscount.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between"><span>CGST</span><span>₹{cgst.toFixed(2)}</span></div>
-            <div className="flex justify-between"><span>SGST</span><span>₹{sgst.toFixed(2)}</span></div>
-            <div className="flex justify-between"><span>IGST</span><span>₹{igst.toFixed(2)}</span></div>
-            <div className="flex justify-between"><span>CESS</span><span>₹{cess.toFixed(2)}</span></div>
+            {cgst > 0 && <div className="flex justify-between"><span>CGST</span><span>₹{cgst.toFixed(2)}</span></div>}
+            {sgst > 0 && <div className="flex justify-between"><span>SGST</span><span>₹{sgst.toFixed(2)}</span></div>}
+            {igst > 0 && <div className="flex justify-between"><span>IGST</span><span>₹{igst.toFixed(2)}</span></div>}
+            {cess > 0 && <div className="flex justify-between"><span>CESS</span><span>₹{cess.toFixed(2)}</span></div>}
             <div className="flex justify-between items-center">
               <div className="flex flex-col">
                 <span>Shipping Charges</span>
