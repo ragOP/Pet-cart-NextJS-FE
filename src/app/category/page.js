@@ -40,6 +40,15 @@ export default function CategoryPage() {
     ...(price_range && { price_range }),
   };
 
+  // let subCategoryParam = {};
+  let subCategoryParam = searchParams.get("categorySlug");
+  if (subCategoryParam) {
+    subCategoryParam = {
+      categoryId: subCategoryParam,
+    }
+  }
+  // console.log(subCategoryParam);
+
   const {
     data: productsData,
     isLoading: isProductsLoading,
@@ -56,8 +65,8 @@ export default function CategoryPage() {
     isLoading: isSubCategoriesLoading,
     isError: isSubCategoriesError,
   } = useQuery({
-    queryKey: ["subCategories"],
-    queryFn: () => getSubCategories(),
+    queryKey: ["subCategories", subCategoryParam],
+    queryFn: () => getSubCategories(subCategoryParam),
     select: (res) => res?.data?.data || [],
   });
 
@@ -110,14 +119,15 @@ export default function CategoryPage() {
     );
   }
 
-  if (!productsData?.total) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FFFBF6]">
-        <PrimaryEmptyState title="No products found!" />
-      </div>
-    );
-  }
+  // if (!productsData?.total) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-[#FFFBF6]">
+  //       <PrimaryEmptyState title="No products found!" />
+  //     </div>
+  //   );
+  // }
 
+  console.log(filters);
   return (
     <div className="min-h-screen flex flex-col bg-[#FFFBF6]">
       <CategoryBreadcrumb productsCount={productsData?.total || 0} />

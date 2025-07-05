@@ -75,7 +75,6 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
 
   const badgeLabels = convertFilterKeys(filters);
 
-  console.log("badgeLabels", badgeLabels);
   return (
     <div className="flex flex-col gap-3 bg-white p-4 rounded-md">
       {/* Desktop Filter Bar */}
