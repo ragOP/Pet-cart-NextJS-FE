@@ -13,8 +13,10 @@ import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { CarouselItem } from "../ui/carousel";
 import { Progress } from "@/components/ui/progress";
 import "@/styles/hide-scrollbar.css";
+import { useRouter } from "next/navigation";
 
 const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
+  const router = useRouter();
   const params = {
     page: 1,
     per_page: 10,
@@ -26,6 +28,10 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
     queryFn: () => getProducts(params),
     select: (res) => res?.data?.data || [],
   });
+
+  const onNavigateToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
 
   const remainingAmount = Math.max(0, targetAmount - currentAmount);
   const progressPercent = Math.min(100, (currentAmount / targetAmount) * 100);
@@ -81,7 +87,8 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-70"
+                className="w-70 cursor-pointer"
+                onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>
           ))}

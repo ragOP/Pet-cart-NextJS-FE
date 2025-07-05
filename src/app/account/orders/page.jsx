@@ -103,8 +103,12 @@ const DUMMY_ORDERS = [
 export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isOrderDetailsOpen, setIsOrderDetailsOpen] = useState(false);
-
-  const { data: orders = [], isLoading, isError } = useQuery({
+  
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["orders"],
     queryFn: getOrders,
     select: (res) => res?.data?.data || [],

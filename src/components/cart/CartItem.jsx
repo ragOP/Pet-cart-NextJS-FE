@@ -4,7 +4,10 @@ import { Trash2 } from "lucide-react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import CircularLoader from "../loaders/CircularLoader";
 
-const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeLoading }) => {
+const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeLoadingIds, deleteLoadingIds }) => {
+  const isLoading = qtyChangeLoadingIds.includes(item?.variantId || item?.productId?._id);
+  const isDeleting = deleteLoadingIds.includes(item?.variantId || item?.productId?._id);
+
   const discount = calculateDiscountPercent(item.price, item.discounted_price);
 
   const productDetails = item?.productId;
@@ -37,14 +40,14 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
           <button
             onClick={() => {
               if(variantId){
-                onRemove(variantId);
+                onRemove(productId, variantId);
               }else{
                 onRemove(productId);
               }
             }}
             className="p-2 cursor-pointer rounded-full bg-white hover:bg-gray-100 text-gray-500 hover:text-red-500 flex-shrink-0"
           >
-            <Trash2 className="w-5 h-5" />
+            {isDeleting ? <CircularLoader size={16} /> : <Trash2 className="w-5 h-5" />}
           </button>
         </div>
 
@@ -74,17 +77,17 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
           <div className="flex items-center border border-[#004E6A80] bg-[#004E6A05] rounded-[24px] overflow-hidden self-end">
             <button
               onClick={() => onQtyChange(productId, variantId, -1)}
-              disabled={qtyChangeLoading}
+              disabled={isLoading}
               className="pr-3 pl-5 py-1 text-lg text-gray-700 border-r border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               -
             </button>
             <div className="px-4 py-1 text-base font-normal text-center min-w-[40px]">
-              {qtyChangeLoading ? <CircularLoader size={16} /> : <span>{item.quantity}</span>}
+              {isLoading ? <CircularLoader size={16} /> : <span>{item.quantity}</span>}
             </div>
             <button
               onClick={() => onQtyChange(productId, variantId, 1)}
-              disabled={qtyChangeLoading}
+              disabled={isLoading}
               className="pr-5 pl-3 py-1 text-lg text-gray-700 border-l border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               +

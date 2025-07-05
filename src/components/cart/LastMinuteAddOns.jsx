@@ -14,8 +14,10 @@ import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { CarouselItem } from "../ui/carousel";
 import "@/styles/hide-scrollbar.css";
+import { useRouter } from "next/navigation";
 
 const LastMinuteAddOns = () => {
+  const router = useRouter();
   const params = {
     page: 1,
     per_page: 10,
@@ -26,6 +28,10 @@ const LastMinuteAddOns = () => {
     queryFn: () => getProducts(params),
     select: (res) => res?.data?.data || [],
   });
+
+  const onNavigateToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
 
   return (
     <div className="w-full px-2 md:px-8 py-8 bg-white">
@@ -75,7 +81,8 @@ const LastMinuteAddOns = () => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-70 h-70"
+                className="w-70 h-7 cursor-pointer"
+                onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>
           ))}

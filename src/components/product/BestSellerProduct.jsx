@@ -110,15 +110,22 @@ const BestSellerProduct = ({
             // >
             //   {variant.subtitle}
             // </div>
-            <VariantBox
+            // <VariantBox
+            //   key={variant._id || variant.id}
+            //   variant={variant}
+            //   onSelectVariant={(variantId) => onSelectVariant(variantId)}
+            //   discount={calculateDiscountPercent(
+            //     variant.price,
+            //     variant.salePrice
+            //   )}
+            // />
+            <span
               key={variant._id || variant.id}
-              variant={variant}
-              onSelectVariant={(variantId) => onSelectVariant(variantId)}
-              discount={calculateDiscountPercent(
-                variant.price,
-                variant.salePrice
-              )}
-            />
+              className="inline-block px-3 py-1 text-[10px] rounded-lg bg-[#E3EBEE] text-[#181818] font-medium mr-2"
+            >
+              <span>{variant.weight}</span>{" "}
+              <span>{variant.salePrice ? `| ${calculateDiscountPercent(variant.price, variant.salePrice)}% OFF` : null}</span>
+            </span>
           ))}
         </div>
       )}
@@ -147,7 +154,7 @@ const BestSellerProduct = ({
 
       {/* Action Buttons */}
       <div className="flex items-center gap-2 mt-4">
-        <button
+        {/* <button
           className="p-[0.35rem] flex items-center justify-center border-2 rounded-[8px] cursor-pointer transition-colors duration-150 hover:bg-[#fff6ea] focus:bg-[#fff6ea]"
           style={{
             border: "2px solid var(--CANCELLED-COLOR, #F59A11)",
@@ -160,7 +167,7 @@ const BestSellerProduct = ({
             fill="none"
             strokeWidth={2.5}
           />
-        </button>
+        </button> */}
         <button
           className="flex-1 bg-[#F59A11] hover:bg-[#e18a0e] focus:bg-[#e18a0e] text-white py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer shadow-sm hover:shadow-md focus:shadow-md"
           onClick={(e) => handleAddtoCart(e)}

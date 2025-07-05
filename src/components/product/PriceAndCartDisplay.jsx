@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { addProductToCart } from "@/app/apis/addProductToCart";
 import { toast } from "sonner";
+import { getCart } from "@/app/apis/getCart";
 
 const PriceAndCartDisplay = ({ 
   price, 
@@ -12,8 +13,22 @@ const PriceAndCartDisplay = ({
   quantity = 1 
 }) => {
   const queryClient = useQueryClient();
-  
   const [loading, setLoading] = useState(false);
+
+  const { data: cartData } = useQuery({
+    queryKey: ["cart"],
+    queryFn: () => getCart(),
+    select: (res) => res?.data || {},
+  });
+
+  const isProductInCart = cartData?.items?.some((item) => {
+    if (variantId) {
+      return item.variantId === variantId;
+    } else {
+      return item.productId._id === productId;
+    }
+  });
+  
   const { mutate: addToCart } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: () => {
@@ -36,7 +51,6 @@ const PriceAndCartDisplay = ({
       addToCart({productId, variantId: null, quantity});
     }
   };
-  console.log(loading)
   return (
     <div className="flex flex-col md:flex-row gap-4 w-full justify-between md:pr-4">
       <div className="flex flex-col gap w-full md:w-1/2">
@@ -59,14 +73,14 @@ const PriceAndCartDisplay = ({
 
       <button
         onClick={handleAddToCart}
-        disabled={loading}
+        disabled={loading || isProductInCart}
         className={`w-full md:w-fit h-fit ${
           loading 
             ? 'bg-gray-400 cursor-not-allowed' 
-            : 'bg-[#F59A11] hover:bg-[#D9820A]'
+            : isProductInCart ? 'bg-green-500 hover:bg-green-600 cursor-not-allowed' : 'bg-[#F59A11] hover:bg-[#D9820A]'
         } text-white font-bold py-4 px-12 rounded-lg text-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D9820A]`}
       >
-        {loading ? 'ADDING...' : 'ADD TO CART'}
+        {loading ? 'ADDING...' : isProductInCart ? 'ADDED' : 'ADD TO CART'}
       </button>
     </div>
   );
