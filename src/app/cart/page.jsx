@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import RequireAuth from "@/components/auth/RequireAuth";
 import CartSavingsBanner from "@/components/cart/CartSavingsBanner";
 import CartList from "@/components/cart/CartList";
 import CartSummary from "@/components/cart/CartSummary";
@@ -199,7 +200,7 @@ const CartPage = () => {
             className={"m-4"}
           />
 
-          <div className="border-b border-[#0000001A]" />
+        <SpecialDeals />
 
           <CartCouponSection
             coupons={couponsData || []}
@@ -219,6 +220,8 @@ const CartPage = () => {
             onPay={() => setIsCheckoutDialogOpen(true)}
           />
         </div>
+
+        <LastMinuteAddOns />
       </div>
 
       <SpecialDeals />

@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Search, Menu, MapPin, X, ShoppingCart, User } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -8,6 +6,9 @@ import cartIcon from "@/assets/cart.png";
 import truckIcon from "@/assets/truck.png";
 import petLogo from "@/assets/pet.png";
 import loginLogo from "@/assets/login.png";
+import { useSelector } from "react-redux";
+import { selectToken, selectUser } from "@/store/authSlice";
+import HeaderUserSection from "./HeaderUserSection";
 
 const MobileMenu = React.memo(({ 
   logo, 
@@ -111,7 +112,9 @@ const Header = ({ logo }) => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
+  const isLoggedIn = !!token;
   const suggestions = ["Dog Food", "Cat Food", "Helno", "Royal Canin"];
   const [index, setIndex] = useState(0);
   const searchInputRef = React.useRef(null);
@@ -146,24 +149,6 @@ const Header = ({ logo }) => {
       document.removeEventListener("mousedown", handleClick);
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isMenuOpen]);
-
-  useEffect(() => {
-    // Check for token cookie on mount and on menu open
-    const checkLogin = () => {
-      if (typeof document !== "undefined") {
-        const cookies = document.cookie.split(';').reduce((acc, cookie) => {
-          const [key, value] = cookie.trim().split('=');
-          acc[key] = value;
-          return acc;
-        }, {});
-        setIsLoggedIn(!!cookies.token);
-      }
-    };
-    checkLogin();
-    // Listen for storage events (in case of login/logout in another tab)
-    window.addEventListener('focus', checkLogin);
-    return () => window.removeEventListener('focus', checkLogin);
   }, [isMenuOpen]);
 
   const animatedPlaceholder = `Search "${suggestions[index]}"`;
@@ -313,31 +298,7 @@ const Header = ({ logo }) => {
               height={24}
             />
           </button>
-          {isLoggedIn ? (
-            <button
-              className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
-              aria-label="Account"
-              type="button"
-              onClick={() => router.push('/account')}
-            >
-              <User size={22} />
-            </button>
-          ) : (
-            <button 
-              className="bg-[#0888B1] uppercase text-white px-3 py-2 rounded text-sm font-medium flex items-center hover:bg-[#066b8a] focus:bg-[#05516a]" 
-              aria-label="Login"
-              onClick={() => router.push('/auth/login')}
-            >
-              <CustomImage
-                src={loginLogo}
-                alt="loginlogo"
-                className="h-4 w-auto mr-2"
-                width={20}
-                height={20}
-              />
-              Login
-            </button>
-          )}
+          <HeaderUserSection />
         </div>
       </div>
     </div>

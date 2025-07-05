@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import RequireAuth from "@/components/auth/RequireAuth";
 import AddressList from "@/components/address/AddressList";
 import EmptyAddressState from "@/components/address/EmptyAddressState";
 import AddressFormDialog from "@/components/address/AddressFormDialog";
@@ -113,54 +114,56 @@ const AddressPage = () => {
   };
 
   return (
-    <div className="border flex flex-col gap-4 border-[#F59A1180] h-full rounded-lg">
-      <div
-        className={`flex justify-between items-center p-4 ${
-          addresses.length === 0
-            ? "border border-transparent"
-            : "border-b border-[#F59A1180]"
-        }`}
-      >
-        <h2 className="text-xl font-medium">Saved Addresses</h2>
-        <button
-          className="flex cursor-pointer items-center gap-2 border border-[#004E6A] hover:bg-indigo-50 px-4 py-2 text-[#004E6A]"
-          onClick={handleAddAddress}
+    <RequireAuth>
+      <div className="border flex flex-col gap-4 border-[#F59A1180] h-full rounded-lg">
+        <div
+          className={`flex justify-between items-center p-4 ${
+            addresses.length === 0
+              ? "border border-transparent"
+              : "border-b border-[#F59A1180]"
+          }`}
         >
-          <span className="text-xl">+</span>
-          <span className="font-semibold text-base">ADD NEW ADDRESS</span>
-        </button>
-      </div>
-      {isLoading ? (
-        <PrimaryLoader />
-      ) : addresses.length === 0 ? (
-        <EmptyAddressState onAddAddress={handleAddAddress} />
-      ) : (
-        <AddressList
-          addresses={addresses}
-          onEdit={handleEditAddress}
-          onDelete={handleDeleteAddress}
-          onSetDefault={(index) => {
-            // You may want to implement set default logic here
-          }}
+          <h2 className="text-xl font-medium">Saved Addresses</h2>
+          <button
+            className="flex cursor-pointer items-center gap-2 border border-[#004E6A] hover:bg-indigo-50 px-4 py-2 text-[#004E6A]"
+            onClick={handleAddAddress}
+          >
+            <span className="text-xl">+</span>
+            <span className="font-semibold text-base">ADD NEW ADDRESS</span>
+          </button>
+        </div>
+        {isLoading ? (
+          <PrimaryLoader />
+        ) : addresses.length === 0 ? (
+          <EmptyAddressState onAddAddress={handleAddAddress} />
+        ) : (
+          <AddressList
+            addresses={addresses}
+            onEdit={handleEditAddress}
+            onDelete={handleDeleteAddress}
+            onSetDefault={(index) => {
+              // You may want to implement set default logic here
+            }}
+          />
+        )}
+        <AddressFormDialog
+          isOpen={isDialogOpen}
+          onClose={handleCloseDialog}
+          onSave={handleSaveAddress}
+          initialData={editingIndex !== null ? addresses[editingIndex] : {}}
         />
-      )}
-      <AddressFormDialog
-        isOpen={isDialogOpen}
-        onClose={handleCloseDialog}
-        onSave={handleSaveAddress}
-        initialData={editingIndex !== null ? addresses[editingIndex] : {}}
-      />
-      <ConfirmationDialog
-        isOpen={deleteConfirmation.isOpen}
-        onClose={cancelDelete}
-        onConfirm={confirmDelete}
-        title="Delete Address"
-        message={`Are you sure you want to delete ${deleteConfirmation.addressName}? This action cannot be undone.`}
-        confirmText="Delete"
-        cancelText="Cancel"
-        variant="danger"
-      />
-    </div>
+        <ConfirmationDialog
+          isOpen={deleteConfirmation.isOpen}
+          onClose={cancelDelete}
+          onConfirm={confirmDelete}
+          title="Delete Address"
+          message={`Are you sure you want to delete ${deleteConfirmation.addressName}? This action cannot be undone.`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          variant="danger"
+        />
+      </div>
+    </RequireAuth>
   );
 };
 

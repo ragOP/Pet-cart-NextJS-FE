@@ -12,10 +12,10 @@ import {
   Headphones,
   LogOut,
 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import CustomImage from "../images/CustomImage";
-import { deleteCookie } from "@/utils/cookies/deleteCookie";
+import { clearAuth } from "@/store/authSlice";
 import { formatMemberSince } from "@/utils/formatMemberSince";
 
 const menuItems = [
@@ -60,11 +60,13 @@ const AccountSidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const [logoutOpen, setLogoutOpen] = React.useState(false);
+  const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    deleteCookie("token");
+  const handleLogout = async () => {
+    dispatch(clearAuth());
+    localStorage.removeItem('token');
     setLogoutOpen(false);
-    router.push("/");
+    router.push('/');
   };
 
   return (
@@ -153,8 +155,10 @@ const AccountSidebar = () => {
 export default AccountSidebar;
 
 const SidebarProfileNameBlock = () => {
-  const name = useSelector((state) => state.profile?.name || "");
-  const createdBy = useSelector((state) => state.profile?.createdBy || "");
+  const { selectUser } = require("@/store/authSlice");
+  const user = useSelector(selectUser) || {};
+  const name = user.name || "";
+  const createdBy = user.createdBy || "";
 
   const memberSince = formatMemberSince(createdBy) || "Jan-2022";
 

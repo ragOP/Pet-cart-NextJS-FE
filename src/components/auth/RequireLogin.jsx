@@ -1,20 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Login from "@/components/auth/Login";
+import { useRouter } from "next/navigation";
 import { getCookie } from "@/utils/cookies/getCookie";
 
 const RequireLogin = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
-    setIsLoggedIn(!!getCookie("token"));
-  }, []);
+    const loggedIn = !!getCookie("token");
+    setIsLoggedIn(loggedIn);
+    if (!loggedIn) {
+      router.replace("/auth/login");
+    }
+  }, [router]);
 
   if (isLoggedIn === null) return null;
-  
-  if (!isLoggedIn) {
-    return <Login showTitle={false} />;
-  }
+  if (!isLoggedIn) return null;
   return children;
 };
 

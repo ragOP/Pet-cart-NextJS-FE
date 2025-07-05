@@ -2,10 +2,18 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { clearAuth } from "@/store/authSlice";
 
 const LogoutPage = () => {
-  const handleLogout = () => {
-    // Handle logout logic
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    dispatch(clearAuth());
+    localStorage.removeItem('token');
+    router.push("/");
   };
 
   return (

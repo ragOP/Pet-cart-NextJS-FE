@@ -5,9 +5,10 @@ import FacebookIcon from "@/icons/FacebookIcon";
 import InstagramIcon from "@/icons/InstagramIcon";
 import InviteFriendsIcon from "@/icons/InviteFriendsIcon";
 import WhatsappIcon from "@/icons/WhatsappIcon";
-import { CopyIcon, Link2, Share2Icon } from "lucide-react";
+import { CopyIcon, Link2, Share2Icon, Check } from "lucide-react";
 import TermsDialog from "@/components/dialog/TermsDialog";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const InviteFriendPage = () => {
   const socialMediaLinks = [
@@ -29,6 +30,19 @@ const InviteFriendPage = () => {
   ];
 
   const [openTerms, setOpenTerms] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const inviteLink = "https://www.figma.com/design/7DssQ8nh8cM7uN840RLpTM";
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(inviteLink);
+      setCopied(true);
+      toast.success("Link copied to clipboard!");
+      setTimeout(() => setCopied(false), 3000);
+    } catch {
+      toast.error("Failed to copy link");
+    }
+  };
 
   return (
     <div className="flex flex-col h-full border border-[#F59A1180] rounded-2xl overflow-auto">
@@ -69,21 +83,21 @@ const InviteFriendPage = () => {
           <div className="overflow-x-auto">
             <Input
               className="font-mono text-xs px-4 py-4 bg-gray-50 border border-gray-400 rounded-lg"
-              value="https://www.figma.com/design/7DssQ8nh8cM7uN840RLpTM"
+              value={inviteLink}
               disabled
               readOnly
               style={{
-                width: `${Math.max(
-                  260,
-                  "https://www.figma.com/design/7DssQ8nh8cM7uN840RLpTM".length *
-                    9.2
-                )}px`,
+                width: `${Math.max(260, inviteLink.length * 9.2)}px`,
               }}
             />
           </div>
-          <button className="bg-[#F59A11] cursor-pointer text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-[#E08900] transition-colors whitespace-nowrap">
-            <CopyIcon className="h-4 w-4" />
-            COPY LINK
+          <button
+            className="bg-[#F59A11] cursor-pointer text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-[#E08900] transition-colors whitespace-nowrap"
+            onClick={handleCopy}
+            disabled={copied}
+          >
+            {copied ? <Check className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
+            {copied ? "COPIED" : "COPY LINK"}
           </button>
           <button className="bg-[#F59A11] cursor-pointer text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-[#E08900] transition-colors whitespace-nowrap">
             SHARE

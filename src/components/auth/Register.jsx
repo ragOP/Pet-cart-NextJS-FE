@@ -3,47 +3,19 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { useMutation } from "@tanstack/react-query";
-import { registerUser } from "@/app/apis/registerUser";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setAuth } from "@/store/authSlice";
+import { registerUser } from "@/app/apis/registerUser";
 
 const Register = ({ onSuccess, showTitle = true }) => {
   const [form, setForm] = useState({ name: "", phoneNumber: "", otp: "" });
   const [error, setError] = useState("");
   const [step, setStep] = useState(1);
   const router = useRouter();
-
-  const mutation = useMutation({
-    mutationFn: registerUser,
-    onSuccess: (response) => {
-      console.log("Registration response:", response);
-      if (response?.success) {
-        if (response?.data?.token) {
-          document.cookie = `token=${encodeURIComponent(
-            response.data.token
-          )}; path=/;`;
-          toast.success("Registration Successful!", {
-            description: "Welcome to PetCaart.",
-            position: "top-right",
-          });
-          setTimeout(() => router.push("/account"), 1200);
-        }
-      } else {
-        toast.error("Registration Failed", {
-          description: response?.data?.message || "Registration failed",
-          position: "top-right",
-        });
-      }
-    },
-    onError: (err) => {
-      toast.error("Registration Failed", {
-        description: err?.message || "Registration failed",
-        position: "top-right",
-      });
-      setError(err?.message || "Registration failed");
-    },
-  });
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -56,7 +28,6 @@ const Register = ({ onSuccess, showTitle = true }) => {
       setError("Enter a valid 10-digit phone number");
       return;
     }
-
     setForm({ ...form, otp: "" }); // Clear OTP
     setStep(2);
     toast.success("OTP sent!", {
@@ -65,13 +36,41 @@ const Register = ({ onSuccess, showTitle = true }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.otp) {
       setError("Enter the OTP sent to your phone");
       return;
     }
-    mutation.mutate(form);
+    setIsLoading(true);
+    try {
+      const apiResponse = await registerUser(form);
+      if (apiResponse?.success) {
+        const data = apiResponse?.data;
+        dispatch(setAuth({ token: data.token, user: data.user }));
+        localStorage.setItem('token', data.token);
+        console.log(data, "data");
+        toast.success("Registration Successful!", {
+          description: "Welcome to PetCaart.",
+          position: "top-right",
+        });
+        setTimeout(() => router.push("/"), 1200);
+      } else {
+        toast.error("Registration Failed", {
+          description: apiResponse?.message || "Registration failed",
+          position: "top-right",
+        });
+        setError(apiResponse?.message || "Registration failed");
+      }
+    } catch (err) {
+      toast.error("Registration Failed", {
+        description: err?.message || "Registration failed",
+        position: "top-right",
+      });
+      setError(err?.message || "Registration failed");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -158,9 +157,9 @@ const Register = ({ onSuccess, showTitle = true }) => {
         <button
           type="submit"
           className="bg-[#F59A11] mt-2 text-white rounded-lg px-4 py-2 font-semibold hover:bg-[#E58A00] transition-colors disabled:opacity-50"
-          disabled={mutation.isLoading}
+          disabled={isLoading}
         >
-          {mutation.isLoading ? (
+          {isLoading ? (
             <span className="flex items-center justify-center gap-2">
               <span className="loader border-t-2 border-white rounded-full w-4 h-4 animate-spin" />
               {step === 1 ? "Sending OTP..." : "Registering..."}
