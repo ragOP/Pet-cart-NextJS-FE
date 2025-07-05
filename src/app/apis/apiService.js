@@ -1,10 +1,9 @@
 import axios from "axios";
-// https://pet-caart-be.onrender.com
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 import { store } from "@/store/store";
 import { clearAuth } from "@/store/authSlice";
 
 // const BACKEND_URL = "https://pet-caart-be.onrender.com";
+process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const apiService = async ({
   endpoint,
@@ -20,7 +19,7 @@ export const apiService = async ({
   try {
     // Get token from Redux (window.__PRELOADED_STATE__ or window.store) or localStorage
     let token = _token;
-    if (!token && typeof window !== 'undefined') {
+    if (!token && typeof window !== "undefined") {
       // Try Redux store
       try {
         const state = window.__PRELOADED_STATE__ || window.store?.getState?.();
@@ -30,7 +29,7 @@ export const apiService = async ({
       } catch {}
       // Fallback to localStorage
       if (!token) {
-        token = localStorage.getItem('token');
+        token = localStorage.getItem("token");
       }
     }
     const requestHeaders = {
@@ -56,8 +55,8 @@ export const apiService = async ({
     // Auto logout on 401 Unauthorized
     if (error?.response?.status === 401) {
       store.dispatch(clearAuth());
-      if (typeof window !== 'undefined') {
-        window.location.href = '/auth/login';
+      if (typeof window !== "undefined") {
+        window.location.href = "/auth/login";
       }
     }
     console.error(error, "backend endpoint error");

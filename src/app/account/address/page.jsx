@@ -42,7 +42,7 @@ const AddressPage = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => updateAddress(id, data),
+    mutationFn: ({ id, data }) => updateAddress({ id, data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["addresses"] });
       toast.success("Address updated successfully");
@@ -67,7 +67,7 @@ const AddressPage = () => {
 
   const handleSaveAddress = (address) => {
     if (editingIndex !== null && addresses[editingIndex]) {
-      updateMutation.mutate({ id: addresses[editingIndex].id, data: address });
+      updateMutation.mutate({ id: addresses[editingIndex]._id, data: address });
     } else {
       createMutation.mutate({ data: address });
     }
@@ -95,7 +95,9 @@ const AddressPage = () => {
     setDeleteConfirmation({
       isOpen: true,
       index,
-      addressName: `${address.firstName} ${address.lastName}'s address`,
+      addressName: `${address.firstName || ""} ${
+        address.lastName || ""
+      }'s address`,
     });
   };
 
@@ -104,7 +106,7 @@ const AddressPage = () => {
       deleteConfirmation.index !== null &&
       addresses[deleteConfirmation.index]
     ) {
-      deleteMutation.mutate(addresses[deleteConfirmation.index].id);
+      deleteMutation.mutate({id: addresses[deleteConfirmation.index]._id});
     }
     setDeleteConfirmation({ isOpen: false, index: null, addressName: "" });
   };

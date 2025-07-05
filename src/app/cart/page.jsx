@@ -162,6 +162,7 @@ const CartPage = () => {
   console.log("cartData", cartData);
   console.log("cartError", cartError);
   return (
+    <RequireAuth>
     <div className="bg-[#FFFBF6] min-h-screen w-full">
       {cartData && !cartLoading ? (
         <CartSavingsBanner savings={couponDiscount.toFixed(2)} />
@@ -191,7 +192,7 @@ const CartPage = () => {
             />
           )}
         </div>
-
+        {/* Right: Summary */}
         <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl h-fit border border-[#F59A1133]">
           <PincodeInput
             pincode={pincode}
@@ -200,17 +201,12 @@ const CartPage = () => {
             className={"m-4"}
           />
 
-        <SpecialDeals />
-
           <CartCouponSection
-            coupons={couponsData || []}
             appliedCoupon={appliedCoupon}
             onApply={handleApplyCoupon}
             onRemove={handleRemoveCoupon}
           />
-
           <div className="border-b border-[#0000001A]" />
-
           <CartSummary
             totalMrp={totalPrice}
             totalPrice={finalPayableAmount}
@@ -238,6 +234,7 @@ const CartPage = () => {
         onConfirmCheckout={handleConfirmCheckout}
       />
     </div>
+    </RequireAuth>
   );
 };
 
