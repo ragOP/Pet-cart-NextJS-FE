@@ -40,14 +40,12 @@ export default function CategoryPage() {
     ...(price_range && { price_range }),
   };
 
-  // let subCategoryParam = {};
   let subCategoryParam = searchParams.get("categorySlug");
   if (subCategoryParam) {
     subCategoryParam = {
-      categoryId: subCategoryParam,
+      search: subCategoryParam,
     }
   }
-  // console.log(subCategoryParam);
 
   const {
     data: productsData,
@@ -127,7 +125,6 @@ export default function CategoryPage() {
   //   );
   // }
 
-  console.log(filters);
   return (
     <div className="min-h-screen flex flex-col bg-[#FFFBF6]">
       <CategoryBreadcrumb productsCount={productsData?.total || 0} />
@@ -150,7 +147,20 @@ export default function CategoryPage() {
         />
 
         <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 ml-6">
-          {}
+          {productsData?.data?.length < 1 ? (
+            <div className="flex-1 flex justify-center items-center col-span-4">
+              <PrimaryEmptyState title="No products found!" />
+            </div>
+          ) : (
+            productsData?.data?.map((product, index) => (
+              <BestSellerProduct
+                className="cursor-pointer"
+                key={index}
+                product={product}
+                onClick={() => handleProductClick(product._id)}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>

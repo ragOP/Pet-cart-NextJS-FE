@@ -3,7 +3,8 @@ import { store } from "@/store/store";
 import { clearAuth } from "@/store/authSlice";
 
 // const BACKEND_URL = "https://pet-caart-be.onrender.com";
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+const BACKEND_URL = "https://pet-caart-be.onrender.com";
+// process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export const apiService = async ({
   endpoint,
