@@ -53,7 +53,7 @@ const Login = ({ onSuccess, showTitle = true }) => {
     setIsLoading(true);
     try {
       const apiResponse = await loginUser({ phoneNumber: form.phoneNumber, otp: form.otp });
-      if (apiResponse.success) {
+      if (apiResponse?.data?.success) {
         const data = apiResponse.data;
         dispatch(setAuth({ token: data.token, user: data.user }));
         localStorage.setItem('token', data.token);
@@ -65,10 +65,10 @@ const Login = ({ onSuccess, showTitle = true }) => {
         setTimeout(() => router.push(redirectTo), 1200);
       } else {
         toast.error("Login Failed", {
-          description: data?.message || "Login failed",
+          description: apiResponse?.data?.message || "Login failed",
           position: "top-right",
         });
-        setError(data?.message || "Login failed");
+        setError(apiResponse?.data?.message || "Login failed");
       }
     } catch (err) {
       toast.error("Login Failed", {

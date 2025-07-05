@@ -9,8 +9,6 @@ import { toast } from "sonner";
 
 const BestSellerProduct = ({
   product,
-  onWishlist,
-  onAddToCart,
   className = "",
   onClick,
 }) => {

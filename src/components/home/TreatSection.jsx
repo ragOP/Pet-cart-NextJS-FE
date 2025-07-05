@@ -22,8 +22,6 @@ const TreatSection = () => {
     data?.description || "more protein, more crunch, more taste";
   const link = data?.link || "#";
 
-  console.log("Treat Section Data:", data);
-
   return (
     <div className="bg-[#FFF2809E] p-4 md:py-6 md:pl-8 rounded-2xl mt-6 flex flex-col md:flex-row justify-between gap-6 m-4">
       {/* Left: Text & CTA */}
@@ -55,10 +53,6 @@ const TreatSection = () => {
             <TreatProductCard
               key={item._id}
               item={item}
-              onAdd={() => {
-                // Placeholder: add to cart logic or toast
-                console.log(`Added ${item.title} to cart`);
-              }}
             />
           ))
         )}
