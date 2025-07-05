@@ -5,15 +5,18 @@ import PrimaryLoader from '../loaders/PrimaryLoader';
 import PrimaryEmptyState from '../empty-states/PrimaryEmptyState';
 import { useRouter } from "next/navigation";
 
-export default function CategoryBanner() {
+export default function CategoryBanner({ type }) {
   const router = useRouter();
+  const params = {
+    type,
+  };
   const {
     data,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["productBanner"],
-    queryFn: getProductBanner,
+    queryKey: ["productBanner", params],
+    queryFn: () => getProductBanner({ params }),
     select: (res) => res?.data?.data
   });
 

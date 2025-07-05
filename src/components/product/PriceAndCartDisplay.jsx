@@ -17,10 +17,12 @@ const PriceAndCartDisplay = ({
 
   const { data: cartData } = useQuery({
     queryKey: ["cart"],
-    queryFn: () => getCart(),
-    select: (res) => res?.data || {},
+    queryFn: () => getCart({ params: {} }),
+    select: (res) => res?.data || null,
   });
 
+  console.log(cartData);
+  
   const isProductInCart = cartData?.items?.some((item) => {
     if (variantId) {
       return item.variantId === variantId;
@@ -28,6 +30,7 @@ const PriceAndCartDisplay = ({
       return item.productId._id === productId;
     }
   });
+  console.log(isProductInCart);
   
   const { mutate: addToCart } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),

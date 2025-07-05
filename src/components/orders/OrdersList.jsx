@@ -52,8 +52,8 @@ function OrderListItem({ order, onOrderClick, index }) {
           {/* Product Image */}
           <div className="w-16 h-16 flex-shrink-0">
             <CustomImage
-              src={order.items[0]?.image || "/assets/applod/applod-jar.png"}
-              alt={order.items[0]?.name}
+              src={order.items[0]?.productId?.images[0] || "/assets/applod/applod-jar.png"}
+              alt={order.items[0]?.productId?.title}
               className="w-full h-full object-contain rounded-md"
               width={64}
               height={64}
@@ -67,21 +67,21 @@ function OrderListItem({ order, onOrderClick, index }) {
                 <p className="text-sm text-gray-600 truncate">
                   Order ID:{" "}
                   <span className="font-semibold text-blue-600">
-                    {order.id}
+                    {order.orderId}
                   </span>
                   <span className="mx-2">|</span>
-                  <span>{formatDate(order.date)}</span>
+                  <span>{formatDate(order.createdAt)}</span>
                 </p>
               </div>
               {getStatusBadge(order.status)}
             </div>
 
             <h3 className="text-base font-medium text-gray-900 mb-2 truncate">
-              {order.items[0]?.name}
+              {order.items[0]?.productId?.title}
             </h3>
 
             <p className="text-sm text-gray-600 mb-2 truncate">
-              {order.items[0]?.size} | {order.items[0]?.discount}
+              Rs. {order?.totalAmount.toFixed(2)} 
             </p>
           </div>
         </div>
@@ -98,7 +98,7 @@ const OrdersList = ({ orders, onOrderClick }) => {
     <div className="flex flex-1 flex-col gap-4 p-4 h-full max-h-full overflow-y-auto">
       {orders.map((order, index) => (
         <OrderListItem
-          key={order.id}
+          key={order._id}
           order={order}
           onOrderClick={onOrderClick}
           index={index}

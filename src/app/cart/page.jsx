@@ -33,6 +33,8 @@ const CartPage = () => {
     address_id: getCookie("addressId"),
     coupon_id: appliedCoupon,
   });
+  const width = window.innerWidth;
+  const type = width > 1024 ? "web" : (width > 768 ? "tablet" : "mobile");
 
   const { data: cartData, isLoading: cartLoading, isError: cartError } = useQuery({
     queryKey: ["cart", params],
@@ -219,7 +221,7 @@ const CartPage = () => {
 
       <SpecialDeals />
       <div className="px-4 mb-2">
-        <CategoryBanner />
+        <CategoryBanner type={type} />
       </div>
       <LastMinuteAddOns />
 
