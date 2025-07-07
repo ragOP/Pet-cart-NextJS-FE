@@ -8,6 +8,7 @@ import OrdersList from "@/components/orders/OrdersList";
 import { useQuery } from "@tanstack/react-query";
 import { getOrders } from "@/app/apis/getOrders";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
+import "@/styles/hide-scrollbar.css"
 
 export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -35,7 +36,7 @@ export default function OrdersPage() {
 
   return (
     <RequireAuth>
-      <div className="bg-white border border-[#F59A1180] h-[80vh] overflow-y-auto rounded-lg shadow-sm">
+      <div className="bg-white border border-[#F59A1180] h-[80vh] overflow-y-auto rounded-lg shadow-sm hide-scrollbar">
         <div className="px-6 py-4 flex items-center justify-between mb-6 border-b border-[#F59A1180]">
           <h1 className="text-2xl font-semibold text-gray-900">My Orders</h1>
           <button className="bg-[#F59A11] text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-[#E08900] transition-colors">

@@ -1,12 +1,14 @@
 import React from "react";
 import { X, HelpCircle } from "lucide-react";
 import CustomImage from "@/components/images/CustomImage";
+import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
+import "../../styles/hide-scrollbar.css";
 
 export default function OrderDetailsDialog({ order, isOpen, onClose }) {
   if (!isOpen || !order) return null;
 
   const formatDate = (dateString) => {
-    return dateString;
+    return new Date(dateString).toLocaleDateString();
   };
 
   const getStatusColor = (status) => {
@@ -23,16 +25,16 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/50 overflow-y-auto hide-scrollbar">
+      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto hide-scrollbar">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <div>
             <h2 className="text-lg font-semibold text-gray-900">
-              ORDER ID : {order.id}
+              ORDER ID : {order.orderId}
             </h2>
             <p className={`text-sm ${getStatusColor(order.status)} font-medium`}>
-              {order.status} | {formatDate(order.date)}
+              {order.status} | {formatDate(order.createdAt)}
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -54,11 +56,11 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
           <h3 className="text-base font-semibold text-gray-900 mb-4">ITEM DETAILS</h3>
           
           {order.items.map((item, index) => (
-            <div key={item.id} className="flex gap-4 mb-6">
+            <div key={item._id} className="flex gap-4 mb-6">
               <div className="w-16 h-16 flex-shrink-0">
                 <CustomImage
-                  src={item.image}
-                  alt={item.name}
+                  src={item.productId.images[0]}
+                  alt={item.productId.title}
                   className="w-full h-full object-contain rounded-md"
                   width={64}
                   height={64}
@@ -67,14 +69,14 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
               
               <div className="flex-1">
                 <h4 className="font-semibold text-gray-900 mb-1 text-sm">
-                  {item.name}
+                  {item.productId.title}
                 </h4>
-                <p className="text-sm text-gray-600 mb-2">{item.brand}</p>
+                <p className="text-sm text-gray-600 mb-2">{item.productId.brand}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">
-                    {item.size} | {item.discount}
-                  </span>
-                  <span className="font-semibold text-gray-900">₹{item.price}</span>
+                  {/* <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                    {item.productId.size} | {calculateDiscountPercent(item.total + item.couponDiscount, item.price)}% Off
+                  </span> */}
+                  <span className="font-semibold text-gray-900">₹{item.total}</span>
                 </div>
               </div>
             </div>
@@ -90,7 +92,7 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
           <div className="space-y-3">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Total MRP Price</span>
-              <span className="text-gray-900">₹{order.totalMrp}</span>
+              <span className="text-gray-900">₹{order.rawPrice.toFixed(2)}</span>
             </div>
             
             {order.couponDiscount > 0 && (
@@ -99,16 +101,21 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
                 <span className="text-gray-900">₹{order.couponDiscount}</span>
               </div>
             )}
+
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Other Charges</span>
+              <span className="text-gray-900">₹{(order.totalAmount.toFixed(2) - order.discountedAmountAfterCoupon.toFixed(2)).toFixed(2)}</span>
+            </div>
             
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Discount on MRP</span>
-              <span className="text-gray-900">₹{order.discountOnMrp}</span>
+              <span className="text-gray-900">₹-{order.discountedAmount.toFixed(2)}</span>
             </div>
             
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Shipping Charges</span>
               <span className="text-green-600 font-medium">
-                {order.shippingCharges === 0 ? "FREE" : `₹${order.shippingCharges}`}
+                {!order.shippingCharges ? "FREE" : `₹${order.shippingCharges}`}
               </span>
             </div>
             
@@ -119,7 +126,7 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
             <div className="border-t pt-3 mt-3">
               <div className="flex justify-between font-semibold text-lg">
                 <span className="text-gray-900">Grand Total</span>
-                <span className="text-gray-900">₹{order.grandTotal}</span>
+                <span className="text-gray-900">₹{order.totalAmount.toFixed(2)}</span>
               </div>
             </div>
           </div>

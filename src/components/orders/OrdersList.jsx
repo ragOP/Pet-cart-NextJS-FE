@@ -1,6 +1,7 @@
 import React from "react";
-import { ChevronRight, Circle } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import CustomImage from "../images/CustomImage";
+import "../../styles/hide-scrollbar.css";
 
 function OrderListItem({ order, onOrderClick, index }) {
   const getStatusBadge = (status) => {
@@ -39,7 +40,7 @@ function OrderListItem({ order, onOrderClick, index }) {
   };
 
   const formatDate = (dateString) => {
-    return dateString;
+    return new Date(dateString).toLocaleDateString();
   };
 
   return (
@@ -95,7 +96,7 @@ function OrderListItem({ order, onOrderClick, index }) {
 
 const OrdersList = ({ orders, onOrderClick }) => {
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 h-full max-h-full overflow-y-auto">
+    <div className="flex flex-1 flex-col gap-4 p-4 h-full max-h-full overflow-y-auto hide-scrollbar">
       {orders.map((order, index) => (
         <OrderListItem
           key={order._id}
