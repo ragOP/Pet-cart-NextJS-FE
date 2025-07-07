@@ -13,8 +13,10 @@ import {
   fetchCollections,
 } from "@/helpers/home";
 import { Skeleton } from "../ui/skeleton";
+import { useRouter } from "next/navigation";
 
 const Category = () => {
+  const router = useRouter();
   const [showShopByCategory, setShowShopByCategory] = useState(false);
   const [showShopByBreed, setShowShopByBreed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -82,15 +84,20 @@ const Category = () => {
       const subs = subCategories.filter((sub) => sub.categoryId === categoryId);
 
       return subs.map((sub) => {
-        const mappedCollections = collections
+        const mappedCollectionsName = collections
           .filter((col) => col.subCategoryId === sub._id)
           .map((col) => col.name);
 
+        const mappedCollectionsSlug = collections
+          .filter((col) => col.subCategoryId === sub._id)
+          .map((col) => col.slug);
+
         return {
           title: sub.name,
+          itemsSlug: mappedCollectionsSlug,
           items:
-            mappedCollections.length > 0
-              ? mappedCollections
+            mappedCollectionsName.length > 0
+              ? mappedCollectionsName
               : ["No collections"],
         };
       });
@@ -98,7 +105,7 @@ const Category = () => {
     [subCategories, collections]
   );
 
-  function MobileDropdown({ category, sections, onBack }) {
+  function MobileDropdown({ category, sections, onBack, onClick, onClose }) {
     return (
       <div className="fixed inset-0 bg-white z-50 flex flex-col">
         <div className="flex items-center justify-between p-4 border-b">
@@ -106,7 +113,7 @@ const Category = () => {
             <ChevronRight className="w-6 h-6 rotate-180" />
             <span>Back</span>
           </button>
-          <button onClick={onBack} className="p-2">
+          <button onClick={onClose} className="p-2">
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -129,6 +136,10 @@ const Category = () => {
                   <div
                     key={item}
                     className="flex items-center py-2 hover:bg-gray-50 px-2 rounded-lg"
+                    onClick={() => {
+                      onClose();
+                      onClick(section?.itemsSlug);
+                    }}
                   >
                     <CustomImage
                       src={pawIcon}
@@ -229,7 +240,7 @@ const Category = () => {
     );
   }
 
-  function Dropdown({ icon, title, sections, onClose }) {
+  function Dropdown({ icon, title, sections, onClose, onClick }) {
     useEffect(() => {
       function handleClick(e) {
         if (!e.target.closest(".petcaart-dropdown")) {
@@ -242,28 +253,32 @@ const Category = () => {
 
     return (
       <div className="absolute left-0 right-0 w-full bg-white rounded-b-lg p-4 md:p-6 text-black shadow-lg z-30 petcaart-dropdown">
-        <h2 className="uppercase flex pb-4 font-gotham-rounded font-bold text-[24px]">
+        <h2 className="uppercase flex pb-4 font-gotham-rounded font-bold text-2xl">
           <CustomImage
             src={icon}
             alt={title}
-            className="h-8 w-8 mr-2"
+            className="h-10 w-10 mr-2 rounded-full object-cover"
             width={24}
             height={24}
           />
           {title}
         </h2>
         <hr className="mb-4" />
-        <div className="flex flex-col md:grid md:grid-cols-6 md:gap-6 text-sm">
+        <div className="flex flex-col md:grid md:grid-cols-5 md:gap-6 text-sm">
           {sections.map((section) => (
             <div className="mb-6 md:mb-0" key={section.title}>
-              <h3 className="uppercase mb-2 font-medium text-[16px]">
+              <h3 className="uppercase mb-2 font-medium text-xl">
                 {section.title}
               </h3>
               <div className="flex flex-col space-y-2">
                 {section.items.map((item) => (
                   <div
                     key={`${section.title}-${item}`}
-                    className="group flex items-center space-x-2 cursor-pointer hover:translate-x-1 transition-all"
+                    className="group flex items-center space-x-2 cursor-pointer"
+                    onClick={() => {
+                      onClose();
+                      onClick(section?.itemsSlug);
+                    }}
                   >
                     <CustomImage
                       src={pawIcon}
@@ -272,7 +287,7 @@ const Category = () => {
                       width={16}
                       height={16}
                     />
-                    <p className="text-[12px] group-hover:font-medium">
+                    <p className="text-base text-nowrap group-hover:font-semibold hover:translate-x-1 transition duration-300 ease-in-out">
                       {item}
                     </p>
                   </div>
@@ -285,11 +300,15 @@ const Category = () => {
     );
   }
 
+  const handleCollectionClick = (collectionSlug) => {
+    router.push(`/category?collectionSlug=${collectionSlug}`);
+  };
+
   return (
     <>
       {/* Desktop Navigation */}
       <div className="sticky top-[72px] z-40 overflow-x-hidden">
-      <div className="hidden md:block bg-black text-white px-8 py-2 relative z-20">
+      <div className="hidden md:block bg-black text-white px-8 py-4 relative z-20">
         <div className="flex justify-end space-x-6">
           {categories?.map((category) => (
             <div key={category._id} className="flex items-center space-x-2">
@@ -305,12 +324,12 @@ const Category = () => {
                   src={category.image}
                   alt={category.name}
                   className="h-5 w-5 rounded-3xl"
-                  width={20}
-                  height={20}
+                  width={24}
+                  height={24}
                 />
-                <span className="text-sm">
+                <span className="text-lg">
                   {category.name}
-                  <ChevronDown className="inline-block h-4 w-4 ml-1" />
+                  <ChevronDown className="inline-block h-5 w-5 ml-1" />
                 </span>
               </button>
             </div>
@@ -320,7 +339,7 @@ const Category = () => {
               setShowShopByBreed(!showShopByBreed);
               setShowShopByCategory(false);
             }}
-            className="text-sm hover:text-[#F59A11] transition-colors outline-none focus:underline"
+            className="text-lg hover:text-[#F59A11] transition-colors outline-none focus:underline"
           >
             Shop By Breed
             <ChevronDown className="inline-block h-4 w-4" />
@@ -371,9 +390,14 @@ const Category = () => {
 
       {selectedMobileCategory && (
         <MobileDropdown
+          onClick={handleCollectionClick}
           category={selectedMobileCategory}
           sections={getSectionsForCategory(selectedMobileCategory._id)}
           onBack={() => setSelectedMobileCategory(null)}
+          onClose={() => {
+            setIsMobileMenuOpen(false);
+            setSelectedMobileCategory(null);
+          }}
         />
       )}
 
@@ -392,10 +416,11 @@ const Category = () => {
       {showShopByCategory && activeCategoryId && !isMobileMenuOpen && (
         <div className="hidden md:block absolute left-0 right-0 w-full bg-white shadow-lg z-10">
           <Dropdown
-            icon={pawIcon}
+            icon={categories.find((category) => category._id === activeCategoryId)?.image}
             title="Categories"
             sections={getSectionsForCategory(activeCategoryId)}
             onClose={() => setShowShopByCategory(false)}
+            onClick={handleCollectionClick}
           />
         </div>
       )}
