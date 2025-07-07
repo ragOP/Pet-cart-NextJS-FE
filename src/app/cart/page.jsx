@@ -58,14 +58,20 @@ const CartPage = () => {
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: (res) => {
       if (res?.success) {
-        toast.success(res?.message || "Cart updated successfully");
+        toast.success(res?.message || "Cart updated successfully", {
+          position: "top-right",
+        });
         queryClient.invalidateQueries({ queryKey: ["cart"] });
       } else {
-        toast.error(res?.message || "Failed to update cart");
+        toast.error(res?.message || "Failed to update cart", {
+          position: "top-right",
+        });
       }
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Request failed");
+      toast.error(error.response?.data?.message || "Request failed", {
+        position: "top-right",
+      });
     },
   });
 
@@ -73,14 +79,24 @@ const CartPage = () => {
     mutationFn: (payload) => createOrder({ data: payload }),
     onSuccess: (res) => {
       if (res?.success) {
-        toast.success("Order created successfully");
+        toast.success("Order Placed", {
+          description: "Your order has been placed successfully.",
+          position: "top-right",
+        });
+        setAppliedCoupon(null);
         queryClient.invalidateQueries({ queryKey: ["cart"] });
+        router.push(`/account/orders`);
       } else {
-        toast.error("Failed to create order");
+        toast.error("Failed to create order", {
+          description: res?.message || "Failed to create order",
+          position: "top-right",
+        });
       }
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Request failed");
+      toast.error(error.response?.data?.message || "Request failed", {
+        position: "top-right",
+      });
     },
   });
 
