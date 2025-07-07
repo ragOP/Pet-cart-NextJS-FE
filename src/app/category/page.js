@@ -1,21 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CategoryBanner from "@/components/category/CategoryBanner";
 import FilterSidebar from "@/components/category/FilterSidebar";
 import TopFilterBar from "@/components/category/TopFilterBar";
 import BestSellerProduct from "@/components/product/BestSellerProduct";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProducts } from "@/app/apis/getProducts";
 import { getSubCategories } from "@/app/apis/getSubCategories";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { useRouter, useSearchParams } from "next/navigation";
 import CategoryBreadcrumb from "@/components/category/Breadcrumb";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
 
 export default function CategoryPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const [page, setPage] = useState(1);
 
   const width = window.innerWidth;
   const type = width > 1024 ? "web" : (width > 768 ? "tablet" : "mobile");
@@ -28,13 +40,13 @@ export default function CategoryPage() {
   const price_range =
     filters.min_price_range || filters.max_price_range
       ? {
-          min_price_range: Number(filters.min_price_range || 0),
-          max_price_range: Number(filters.max_price_range || 10000),
-        }
+        min_price_range: Number(filters.min_price_range || 0),
+        max_price_range: Number(filters.max_price_range || 10000),
+      }
       : undefined;
 
   const params = {
-    page: 1,
+    page,
     per_page: 10,
     ...filters,
     ...(price_range && { price_range }),
@@ -52,7 +64,7 @@ export default function CategoryPage() {
     isLoading: isProductsLoading,
     isError: isProductsError,
   } = useQuery({
-    queryKey: ["products", params],
+    queryKey: ["products", page, params],
     queryFn: () => getProducts(params),
     select: (res) => res?.data || [],
     enabled: Object.keys(params).length > 0,
@@ -78,7 +90,7 @@ export default function CategoryPage() {
     });
 
     Object.entries(newFilters).forEach(([key, value]) => {
-      if (!value) {
+      if (!value || value === "0") {
         params.delete(key);
       } else {
         params.set(key, value);
@@ -86,12 +98,14 @@ export default function CategoryPage() {
     });
 
     router.push(`/category?${params.toString()}`);
+    queryClient.invalidateQueries({ queryKey: ["products", page, { ...params }] });
   };
 
   const deleteFilter = (key) => {
     const params = new URLSearchParams(searchParams);
     params.delete(key);
     router.push(`/category?${params.toString()}`);
+    queryClient.invalidateQueries({ queryKey: ["products", page, { ...params }] });
   };
 
   const handleProductClick = (productId) => {
@@ -125,12 +139,13 @@ export default function CategoryPage() {
   //   );
   // }
 
+  console.log(isProductsLoading);
   return (
     <div className="min-h-screen flex flex-col bg-[#FFFBF6]">
       <CategoryBreadcrumb productsCount={productsData?.total || 0} />
 
       <div className="w-full hidden lg:block p-1 my-3">
-        <CategoryBanner type={type}  />
+        <CategoryBanner type={type} />
       </div>
 
       <TopFilterBar
@@ -155,12 +170,42 @@ export default function CategoryPage() {
             productsData?.data?.map((product, index) => (
               <BestSellerProduct
                 className="cursor-pointer"
-                key={index}
+                key={product._id}
                 product={product}
                 onClick={() => handleProductClick(product._id)}
               />
             ))
           )}
+
+          <div className="w-full col-span-4 flex justify-end py-5">
+            {productsData?.total > 0 && (
+              <Pagination>
+                <PaginationContent>
+                  <PaginationPrevious
+                    onClick={() => {
+                      setPage((prev) => Math.max(1, prev - 1));
+                    }}
+                  />
+                  {Array.from({ length: Math.ceil(productsData?.total / params.per_page) }, (_, i) => (
+                    <PaginationItem key={i + 1}>
+                      <PaginationLink
+                        isActive={i + 1 === page}
+                        onClick={() => setPage(i + 1)}
+                      >
+                        {i + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationNext
+                    onClick={() => {
+                      setPage((prev) => Math.min(Math.ceil(productsData?.total / params.per_page), prev + 1));
+                    }}
+                  />
+                </PaginationContent>
+              </Pagination>
+            )}
+
+          </div>
         </div>
       </div>
     </div>

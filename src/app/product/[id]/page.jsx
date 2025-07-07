@@ -66,8 +66,8 @@ const ProductPage = ({ params }) => {
   return (
     <div className="w-full p-4 bg-[#FFFBF6]">
       <ProductBreadcrumb
-        category={data.categoryId?.name}
-        subCategory={data.subCategoryId?.name}
+        category={data.categoryId}
+        subCategory={data.subCategoryId}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
