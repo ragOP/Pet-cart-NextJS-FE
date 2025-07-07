@@ -153,7 +153,8 @@ const SidebarProfileNameBlock = () => {
   const { selectUser } = require("@/store/authSlice");
   const user = useSelector(selectUser) || {};
   const name = user.name || "";
-  const createdBy = user.createdBy || "";
+  const createdBy = user.createdAt || "";
+  console.log(user);
 
   const memberSince = formatMemberSince(createdBy) || "Jan-2022";
 
