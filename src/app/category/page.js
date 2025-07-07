@@ -15,7 +15,6 @@ import CategoryBreadcrumb from "@/components/category/Breadcrumb";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,

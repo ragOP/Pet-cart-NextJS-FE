@@ -414,7 +414,7 @@ const Category = () => {
 
       {/* Desktop Dropdowns */}
       {showShopByCategory && activeCategoryId && !isMobileMenuOpen && (
-        <div className="hidden md:block absolute left-0 right-0 w-full bg-white shadow-lg z-10">
+        <div className="hidden md:block sticky top-[132px] z-40 bg-white shadow-lg">
           <Dropdown
             icon={categories.find((category) => category._id === activeCategoryId)?.image}
             title="Categories"

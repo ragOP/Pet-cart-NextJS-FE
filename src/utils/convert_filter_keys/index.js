@@ -38,6 +38,10 @@ export const convertFilterKeys = (filters) => {
               // const sortValue = convertFilterValues({ sort_by: value });
               convertedFilters["Sort By"] = value;
               break;
+
+            case "collectionSlug":
+              convertedFilters["Collection"] = value;
+              break;
           
             default:
               convertedFilters[key] = value;
