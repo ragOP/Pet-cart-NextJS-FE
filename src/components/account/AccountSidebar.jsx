@@ -40,11 +40,6 @@ const menuItems = [
     href: "/account/invite-friends",
   },
   {
-    title: "My Wishlist",
-    icon: Heart,
-    href: "/account/wishlist",
-  },
-  {
     title: "Contact Us",
     icon: Headphones,
     href: "/account/contact-us",
