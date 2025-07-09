@@ -8,8 +8,11 @@ import { getAdBanner } from "@/app/apis/getAdBanner";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import TreatProductCard from "@/components/product/TreatProductCard";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 const TreatSection = () => {
+  const [isHovered, setIsHovered] = useState(false);
   const { data, isLoading, isError } = useQuery({
     queryKey: ["ad-banner"],
     queryFn: getAdBanner,
@@ -30,16 +33,31 @@ const TreatSection = () => {
           {title}
         </h2>
         <p className="text-[25px] text-black mt-2">{description}</p>
-        <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className=" flex items-center justify-center bg-[#F59A11] text-white text-lg font-semibold mt-12 px-6 py-2 rounded-xl md:w-45 md:h-15 transition-all duration-200 cursor-pointer hover:scale-105 hover:shadow-lg focus:scale-105 focus:shadow-lg outline-none text-center"
-          tabIndex={0}
-          aria-label="Shop now"
-        >
-          Shop now
-        </a>
+        <div className="relative mt-12 inline-block group">
+      {/* Cat GIF */}
+      <motion.img
+        src="/animation.gif"
+        alt="Cat Animation"
+        className="absolute right-2 -top-[8rem] w-24 h-32 z-0 pointer-events-none"
+        animate={isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.4 }}
+      />
+
+      {/* Button */}
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="relative z-10 flex items-center justify-center bg-[#F59A11] text-white text-lg font-semibold px-6 py-2 rounded-xl md:w-45 md:h-15 cursor-pointer hover:shadow-lg focus:shadow-lg outline-none text-center"
+        tabIndex={0}
+        aria-label="Shop now"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <span>Shop now</span>
+      </a>
+    </div>
+
       </div>
 
       {/* Right: Product Cards */}
