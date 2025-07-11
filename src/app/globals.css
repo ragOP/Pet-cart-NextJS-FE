@@ -138,9 +138,17 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Holtwood One SC';
+  src: url('../assets/fonts/HoltwoodOneSC-Regular.ttf') format('truetype');
+}
 
 .font-gotham-rounded {
   font-family: 'Gotham Rounded', Arial, sans-serif;
+}
+
+.font-holtwood {
+  font-family: 'Holtwood One SC', Arial, sans-serif;
 }
 
 @layer base {
