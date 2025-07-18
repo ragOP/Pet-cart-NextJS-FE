@@ -1,10 +1,10 @@
 import Wrapper from "@/components/layout/Wrapper";
 import "./globals.css";
-import QueryProvider from "@/components/QueryProvider";
 import ReduxProvider from "@/store/Provider";
 import { getHeaderFooter } from "./apis/getHeaderFooter";
 import { Toaster } from "sonner";
 import "@/styles/hide-scrollbar.css";
+import QueryProvider from "@/components/query/QueryProvider";
 
 export const metadata = {
   title: "Pet Caart",

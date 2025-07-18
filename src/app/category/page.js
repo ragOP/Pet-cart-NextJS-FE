@@ -138,7 +138,6 @@ export default function CategoryPage() {
   //   );
   // }
 
-  console.log(isProductsLoading);
   return (
     <div className="min-h-screen flex flex-col bg-[#FFFBF6]">
       <CategoryBreadcrumb productsCount={productsData?.total || 0} />
