@@ -70,7 +70,7 @@ const BlogRecommendations = ({ classname }) => {
     ];
 
     return (
-        <div className={`py-12 px-4 md:px-8 lg:px-16 ${classname}`} >
+        <div className={`py-2 px-4 md:px-8 lg:px-16 ${classname}`} >
             <div className="max-w-7xl mx-auto">
 
                 {/* "You May Also Like" Section */}
