@@ -9,6 +9,7 @@ export const endpoints = {
 
   // blogs
   blogs: "api/blog",
+  bannerBlogs: "api/blog?isBanner=true",
   latestBlogs: "api/blog/get-latest-blogs",
   youMayLikeBlogs: "api/blog/you-may-like",
 
