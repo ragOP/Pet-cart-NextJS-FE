@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getLatestBlogs } from "@/app/apis/getLatestBlogs";
 import PawIcon from "@/icons/PawIcon";
 import { Clock, Share2 } from "lucide-react";
+import { timeToRead } from "@/utils/timeToRead";
+import { formatCount } from "@/utils/formatCount";
 
 // Blog Card Component
 const BlogCard = ({ blog }) => {
@@ -62,18 +64,11 @@ const LatestBlogsSidebar = () => {
         })
       : "Unknown Date";
 
-    const formatCount = (count) => {
-      if (!count) return "0";
-      if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
-      if (count >= 1000) return `${(count / 1000).toFixed(0)}K`;
-      return count.toString();
-    };
-
     return {
       id: blog._id || blog.id,
       title: blog.title,
       date: date,
-      readTime: "2 minute read", // Default since not in API
+      readTime: timeToRead(blog.content),
       shares: formatCount(blog.totalViews),
       image: blog.image
     };

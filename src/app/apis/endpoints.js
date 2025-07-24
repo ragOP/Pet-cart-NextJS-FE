@@ -10,6 +10,7 @@ export const endpoints = {
   // blogs
   blogs: "api/blog",
   latestBlogs: "api/blog/get-latest-blogs",
+  youMayLikeBlogs: "api/blog/you-may-like",
 
   banners: "api/configuration/banner",
 
