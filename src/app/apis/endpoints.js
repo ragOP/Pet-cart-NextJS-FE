@@ -8,7 +8,8 @@ export const endpoints = {
   products: "api/product",
 
   // blogs
-  blogs: "api/blogs",
+  blogs: "api/blog",
+  latestBlogs: "api/blog/get-latest-blogs",
 
   banners: "api/configuration/banner",
 

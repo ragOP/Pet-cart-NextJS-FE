@@ -7,6 +7,38 @@ import NewsletterSignup from "./NewsletterSignup";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 
 const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = false }) => {
+
+  // Helper function to format data for BlogCard
+  const formatBlogData = (blog) => {
+    // Format date
+    const date = blog.createdAt
+      ? new Date(blog.createdAt).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      : "Unknown Date";
+
+    // Format views/shares count
+    const formatCount = (count) => {
+      if (!count) return "0";
+      if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
+      if (count >= 1000) return `${(count / 1000).toFixed(0)}K`;
+      return count.toString();
+    };
+
+    return {
+      id: blog._id || blog.id,
+      image: blog.image,
+      tags: blog.tags || [],
+      title: blog.title,
+      author: "Parth Panjwani", // Default author since not in API response
+      date: date,
+      shares: formatCount(blog.totalViews),
+      description: blog.description,
+    };
+  };
+
   // Loading state
   if (isLoading) {
     return (
@@ -41,7 +73,7 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
   const itemsPerRow = 4;
   const fullRows = Math.floor(blogs.length / itemsPerRow);
   const remainingItems = blogs.length % itemsPerRow;
-  
+
   // Get blogs for full rows and remaining items
   const fullRowBlogs = blogs.slice(0, fullRows * itemsPerRow);
   const remainingBlogs = blogs.slice(fullRows * itemsPerRow);
@@ -52,24 +84,27 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
         {/* Full rows with 4 blog cards each */}
         {fullRowBlogs.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            {fullRowBlogs.map((blog, index) => (
-              <div
-                key={blog.id}
-                onMouseEnter={() => onCardHover(index)}
-                onMouseLeave={onCardLeave}
-              >
-                <BlogCard
-                  image={blog.image}
-                  tags={blog.tags}
-                  title={blog.title}
-                  author={blog.author}
-                  date={blog.date}
-                  shares={blog.shares}
-                  description={blog.description}
-                  isHovered={hoveredCard === index}
-                />
-              </div>
-            ))}
+            {fullRowBlogs.map((blog, index) => {
+              const formattedBlog = formatBlogData(blog);
+              return (
+                <div
+                  key={formattedBlog.id}
+                  onMouseEnter={() => onCardHover(index)}
+                  onMouseLeave={onCardLeave}
+                >
+                  <BlogCard
+                    image={formattedBlog.image}
+                    tags={formattedBlog.tags}
+                    title={formattedBlog.title}
+                    author={formattedBlog.author}
+                    date={formattedBlog.date}
+                    shares={formattedBlog.shares}
+                    description={formattedBlog.description}
+                    isHovered={hoveredCard === index}
+                  />
+                </div>
+              );
+            })}
           </div>
         )}
 
@@ -81,33 +116,36 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
               {/* Blog cards row - responsive grid */}
               {remainingBlogs.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {remainingBlogs.map((blog, index) => (
-                    <div
-                      key={blog.id}
-                      onMouseEnter={() => onCardHover(fullRowBlogs.length + index)}
-                      onMouseLeave={onCardLeave}
-                    >
-                      <BlogCard
-                        image={blog.image}
-                        tags={blog.tags}
-                        title={blog.title}
-                        author={blog.author}
-                        date={blog.date}
-                        shares={blog.shares}
-                        description={blog.description}
-                        isHovered={hoveredCard === fullRowBlogs.length + index}
-                      />
-                    </div>
-                  ))}
+                  {remainingBlogs.map((blog, index) => {
+                    const formattedBlog = formatBlogData(blog);
+                    return (
+                      <div
+                        key={formattedBlog.id}
+                        onMouseEnter={() => onCardHover(fullRowBlogs.length + index)}
+                        onMouseLeave={onCardLeave}
+                      >
+                        <BlogCard
+                          image={formattedBlog.image}
+                          tags={formattedBlog.tags}
+                          title={formattedBlog.title}
+                          author={formattedBlog.author}
+                          date={formattedBlog.date}
+                          shares={formattedBlog.shares}
+                          description={formattedBlog.description}
+                          isHovered={hoveredCard === fullRowBlogs.length + index}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               )}
-              
+
               {/* Newsletter */}
               <div>
                 <NewsletterSignup />
               </div>
             </div>
-            
+
             {/* Right side - Sidebar */}
             <div className="w-full lg:w-1/4">
               <LatestBlogsSidebar />
@@ -119,4 +157,4 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
   );
 };
 
-export default BlogGrid; 
+export default BlogGrid;

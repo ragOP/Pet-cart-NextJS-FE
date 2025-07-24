@@ -1,9 +1,9 @@
 import { apiService } from "./apiService";
 import { endpoints } from "./endpoints";
 
-export const getBlogs = async (params = {}) => {
+export const getLatestBlogs = async (params = {}) => {
   const apiResponse = await apiService({
-    endpoint: endpoints.blogs,
+    endpoint: endpoints.latestBlogs,
     params,
   });
   return apiResponse.response;

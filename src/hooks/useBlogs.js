@@ -1,73 +1,85 @@
-import { useState, useMemo } from "react";
-import { blogData } from "@/data/blogData";
+import { useState, useEffect, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getBlogs } from "@/app/apis/getBlogs";
 
 export const useBlogs = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [relevanceFilter, setRelevanceFilter] = useState("Relevance");
-  const [categoryFilter, setCategoryFilter] = useState("Cats");
+  const [categoryFilter, setCategoryFilter] = useState("All");
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
 
-  // Filter and search blogs
-  const filteredBlogs = useMemo(() => {
-    let filtered = [...blogData];
+  // Build API parameters based on filters
+  const apiParams = useMemo(() => {
+    const params = {
+      page,
+      limit,
+    };
 
-    // Apply search filter
+    // Add search parameter if there's a search query
     if (searchQuery.trim()) {
-      filtered = filtered.filter(blog =>
-        blog.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        blog.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        blog.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
+      params.search = searchQuery.trim();
     }
 
-      // Apply category filter
-  if (categoryFilter !== "All") {
-    filtered = filtered.filter(blog => {
-      if (categoryFilter === "Cats") {
-        return blog.tags.some(tag => 
-          tag.toLowerCase().includes("cat")
-        );
-      } else if (categoryFilter === "Dogs") {
-        return blog.tags.some(tag => 
-          tag.toLowerCase().includes("dog")
-        );
-      } else if (categoryFilter === "Birds") {
-        return blog.tags.some(tag => 
-          tag.toLowerCase().includes("bird")
-        );
-      } else if (categoryFilter === "Fish") {
-        return blog.tags.some(tag => 
-          tag.toLowerCase().includes("fish")
-        );
-      }
-      return true;
-    });
-  }
+    // Add category parameter if not "All"
+    if (categoryFilter && categoryFilter !== "All") {
+      params.category = categoryFilter;
+    }
 
-    // Apply relevance filter (sorting)
+    return params;
+  }, [searchQuery, categoryFilter, page, limit]);
+
+  // Fetch blogs using React Query
+  const {
+    data: blogsData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["blogs", apiParams],
+    queryFn: () => getBlogs(apiParams),
+    select: (response) => {
+      if (response?.success && response?.data?.blogs) {
+        return {
+          blogs: response.data.blogs,
+          total: response.data.total || 0,
+        };
+      }
+      return { blogs: [], total: 0 };
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes
+  });
+
+  // Apply client-side sorting based on relevance filter
+  const sortedBlogs = useMemo(() => {
+    if (!blogsData?.blogs) return [];
+
+    let blogs = [...blogsData.blogs];
+
     switch (relevanceFilter) {
       case "Latest":
-        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        blogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         break;
       case "Popular":
-        filtered.sort((a, b) => parseInt(b.shares) - parseInt(a.shares));
+        blogs.sort((a, b) => (b.totalViews || 0) - (a.totalViews || 0));
         break;
       case "Trending":
-        // For demo purposes, we'll sort by shares
-        filtered.sort((a, b) => parseInt(b.shares) - parseInt(a.shares));
+        // Sort by views for trending (could be enhanced with other metrics)
+        blogs.sort((a, b) => (b.totalViews || 0) - (a.totalViews || 0));
         break;
       default:
-        // Relevance - keep original order
+        // Relevance - keep API order
         break;
     }
 
-    console.log('Filtered blogs:', filtered.length, 'Category filter:', categoryFilter);
-    return filtered;
-  }, [searchQuery, categoryFilter, relevanceFilter]);
+    return blogs;
+  }, [blogsData?.blogs, relevanceFilter]);
 
   const handleSearchChange = (query) => {
     setSearchQuery(query);
+    setPage(1); // Reset to first page when searching
   };
 
   const handleRelevanceChange = (filter) => {
@@ -76,6 +88,7 @@ export const useBlogs = () => {
 
   const handleCategoryChange = (category) => {
     setCategoryFilter(category);
+    setPage(1); // Reset to first page when changing category
   };
 
   const handleCardHover = (index) => {
@@ -86,17 +99,26 @@ export const useBlogs = () => {
     setHoveredCard(null);
   };
 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
   return {
-    blogs: filteredBlogs,
+    blogs: sortedBlogs,
     searchQuery,
     relevanceFilter,
     categoryFilter,
     hoveredCard,
     isLoading,
+    isError,
+    error,
+    page,
+    total: blogsData?.total || 0,
     handleSearchChange,
     handleRelevanceChange,
     handleCategoryChange,
     handleCardHover,
     handleCardLeave,
+    handlePageChange,
   };
-}; 
+};

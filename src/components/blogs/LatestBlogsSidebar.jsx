@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getLatestBlogs } from "@/app/apis/getLatestBlogs";
 import PawIcon from "@/icons/PawIcon";
 import { Clock, Share2 } from "lucide-react";
 
@@ -11,7 +13,7 @@ const BlogCard = ({ blog }) => {
       <h4 className="text-[1rem] font-[400] text-gray-900 mb-3 line-clamp-4 hover:text-blue-600 cursor-pointer transition-colors leading-tight group-hover:text-blue-600">
         {blog.title}
       </h4>
-      
+
       {/* Date and Read Time in same row with dash */}
       <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
         <span>{blog.date}</span>
@@ -21,7 +23,7 @@ const BlogCard = ({ blog }) => {
           <span>{blog.readTime}</span>
         </div>
       </div>
-      
+
       {/* Share count and View Post button in bottom row */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1 text-xs text-gray-500">
@@ -37,37 +39,53 @@ const BlogCard = ({ blog }) => {
 };
 
 const LatestBlogsSidebar = () => {
-  const latestBlogs = [
-    {
-      id: 1,
-      title: "Signs Your Dog Is Bored at Home—And How You Can Instantly Make Life More Exciting for Them",
-      date: "June 21, 2022",
-      readTime: "2 minute read",
-      shares: "14K",
-      image: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80"
+  // Fetch latest blogs from API
+  const { data: latestBlogsData, isLoading, isError } = useQuery({
+    queryKey: ["latestBlogs"],
+    queryFn: () => getLatestBlogs({ limit: 4 }),
+    select: (response) => {
+      if (response?.success && response?.data) {
+        return response.data;
+      }
+      return [];
     },
-    {
-      id: 2,
-      title: "Why Your Cat's Strange Behavior Isn't So Strange After All—What It Really Means and How to Respond",
-      date: "June 21, 2022",
-      readTime: "2 minute read",
-      shares: "14K"
-    },
-    {
-      id: 3,
-      title: "The Complete Guide to Pet Nutrition Mistakes Every Owner Makes Without Realizing It—And How to Fix Them",
-      date: "June 21, 2022",
-      readTime: "2 minute read",
-      shares: "14K"
-    },
-    {
-      id: 4,
-      title: "The Complete Guide to Pet Nutrition Mistakes Every Owner Makes Without Realizing It—And How to Fix Them",
-      date: "June 21, 2022",
-      readTime: "2 minute read",
-      shares: "14K"
-    }
-  ];
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  // Helper function to format blog data
+  const formatBlogForSidebar = (blog) => {
+    const date = blog.createdAt
+      ? new Date(blog.createdAt).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      : "Unknown Date";
+
+    const formatCount = (count) => {
+      if (!count) return "0";
+      if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
+      if (count >= 1000) return `${(count / 1000).toFixed(0)}K`;
+      return count.toString();
+    };
+
+    return {
+      id: blog._id || blog.id,
+      title: blog.title,
+      date: date,
+      readTime: "2 minute read", // Default since not in API
+      shares: formatCount(blog.totalViews),
+      image: blog.image
+    };
+  };
+
+  // Use API data
+  const blogsToDisplay = (!isLoading && !isError && latestBlogsData?.length > 0)
+    ? latestBlogsData.map(formatBlogForSidebar)
+    : [];
+
+  const heroBlog = blogsToDisplay[0];
+  const otherBlogs = blogsToDisplay.slice(1);
 
   return (
     <div className="flex flex-col gap-4">
@@ -78,32 +96,34 @@ const LatestBlogsSidebar = () => {
       </div>
 
       {/* Hero Blog Card with Image */}
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:ring-2 hover:ring-blue-500 cursor-pointer group">
-        <div className="relative h-48">
-          <img
-            src={latestBlogs[0].image}
-            alt={latestBlogs[0].title}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-          <div className="absolute bottom-4 left-4 right-4 text-white">
-            <h4 className="text-sm font-semibold mb-2 line-clamp-3 leading-tight group-hover:text-blue-200 transition-colors">
-              {latestBlogs[0].title}
-            </h4>
-            <div className="flex items-center justify-between text-xs">
-              <span>{latestBlogs[0].date}</span>
-              <div className="flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                <span>{latestBlogs[0].readTime}</span>
+      {heroBlog && (
+        <div className="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:ring-2 hover:ring-blue-500 cursor-pointer group">
+          <div className="relative h-48">
+            <img
+              src={heroBlog.image || "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"}
+              alt={heroBlog.title}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+            {/* <div className="absolute inset-0 bg-black bg-opacity-40"></div> */}
+            <div className="absolute bottom-4 left-4 right-4 text-white">
+              <h4 className="text-sm font-semibold mb-2 line-clamp-3 leading-tight group-hover:text-blue-200 transition-colors">
+                {heroBlog.title}
+              </h4>
+              <div className="flex items-center justify-between text-xs">
+                <span>{heroBlog.date}</span>
+                <div className="flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  <span>{heroBlog.readTime}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Individual Blog Cards */}
       <div className="flex flex-col gap-6 mt-2">
-        {latestBlogs.slice(1).map((blog, index) => (
+        {otherBlogs.map((blog, index) => (
           <BlogCard key={blog.id} blog={blog} />
         ))}
       </div>
@@ -111,4 +131,4 @@ const LatestBlogsSidebar = () => {
   );
 };
 
-export default LatestBlogsSidebar; 
+export default LatestBlogsSidebar;
