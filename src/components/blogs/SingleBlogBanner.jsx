@@ -33,8 +33,7 @@ const SingleBlogBanner = ({ blog }) => {
             {/* Hero Image */}
             <div className="relative w-full">
                 <CustomImage
-                    //   src={blog?.heroImage }
-                    src={"/single-blog-banner.png"}
+                    src={blog?.image || "/single-blog-banner.png"}
                     alt={blog?.title || "Blog post hero image"}
                     className="w-full h-full object-cover"
                 />

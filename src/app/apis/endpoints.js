@@ -12,6 +12,7 @@ export const endpoints = {
   bannerBlogs: "api/blog?isBanner=true",
   latestBlogs: "api/blog/get-latest-blogs",
   youMayLikeBlogs: "api/blog/you-may-like",
+  singleBlog: "api/blog/get-single-blog",
 
   banners: "api/configuration/banner",
 
