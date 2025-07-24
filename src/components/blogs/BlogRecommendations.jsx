@@ -73,7 +73,7 @@ const BlogRecommendations = ({ classname }) => {
                     image={blog.image}
                     tags={blog.tags}
                     title={blog.title}
-                    author={blog.author || "Parth Panjwani"}
+                    author={blog.author || "Admin"}
                     date={formatDate(blog.createdAt)}
                     description={blog.description}
                     isHovered={false}

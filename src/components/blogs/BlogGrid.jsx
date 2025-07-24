@@ -6,47 +6,29 @@ import BlogCard from "./BlogCard";
 import LatestBlogsSidebar from "./LatestBlogsSidebar";
 import NewsletterSignup from "./NewsletterSignup";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
+import { formatCount } from "@/utils/formatCount";
+import { formatDate } from "@/utils/formatDate";
 
 const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = false }) => {
   const router = useRouter();
 
-  // Helper function to format data for BlogCard
   const formatBlogData = (blog) => {
-    // Format date
-    const date = blog.createdAt
-      ? new Date(blog.createdAt).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })
-      : "Unknown Date";
-
-    // Format views/shares count
-    const formatCount = (count) => {
-      if (!count) return "0";
-      if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
-      if (count >= 1000) return `${(count / 1000).toFixed(0)}K`;
-      return count.toString();
-    };
-
     return {
       id: blog._id || blog.id,
       image: blog.image,
       tags: blog.tags || [],
       title: blog.title,
-      author: "Parth Panjwani", // Default author since not in API response
-      date: date,
+      author: "Admin",
+      date: formatDate(blog.createdAt),
       shares: formatCount(blog.totalViews),
       description: blog.description,
     };
   };
 
-  // Navigation handler
   const handleBlogClick = (blogId) => {
     router.push(`/blogs/${blogId}`);
   };
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="py-8 px-4 md:px-8 lg:px-16">
@@ -57,7 +39,6 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
     );
   }
 
-  // Empty state
   if (!blogs || blogs.length === 0) {
     return (
       <div className="py-8 px-4 md:px-8 lg:px-16">
@@ -76,19 +57,16 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
     );
   }
 
-  // Calculate layout
   const itemsPerRow = 4;
   const fullRows = Math.floor(blogs.length / itemsPerRow);
   const remainingItems = blogs.length % itemsPerRow;
 
-  // Get blogs for full rows and remaining items
   const fullRowBlogs = blogs.slice(0, fullRows * itemsPerRow);
   const remainingBlogs = blogs.slice(fullRows * itemsPerRow);
 
   return (
     <div className="py-8 px-4 md:px-8 lg:px-16">
       <div className="max-w-7xl mx-auto">
-        {/* Full rows with 4 blog cards each */}
         {fullRowBlogs.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             {fullRowBlogs.map((blog, index) => {

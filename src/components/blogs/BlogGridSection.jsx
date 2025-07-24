@@ -39,7 +39,7 @@ const BlogGridSection = () => {
       image: blog.image,
       tags: blog.tags || [],
       title: blog.title,
-      author: "Parth Panjwani", 
+      author: "Admin", 
       date: formatDate(blog.createdAt),
       shares: formatCount(blog.totalViews),
       description: blog.description,

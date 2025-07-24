@@ -90,7 +90,7 @@ const BlogHero = () => {
                   <div className="flex items-center gap-1">
                     <span>By</span>
                     <span className="font-semibold">
-                      {bannerBlog.author || "Parth Panjwani"}
+                      {bannerBlog.author || "Admin"}
                     </span>
                   </div>
                 )}

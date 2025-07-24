@@ -4,9 +4,6 @@ export const formatDate = (isoString) => {
     day: "numeric",
     month: "long",
     year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
   };
   return date.toLocaleString("en-IN", options);
-}
+};
