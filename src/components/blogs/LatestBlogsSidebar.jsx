@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { getLatestBlogs } from "@/app/apis/getLatestBlogs";
 import PawIcon from "@/icons/PawIcon";
@@ -9,9 +10,12 @@ import { timeToRead } from "@/utils/timeToRead";
 import { formatCount } from "@/utils/formatCount";
 
 // Blog Card Component
-const BlogCard = ({ blog }) => {
+const BlogCard = ({ blog, onClick }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:ring-2 hover:ring-blue-500 cursor-pointer group">
+    <div 
+      className="bg-white rounded-lg shadow-sm p-4 transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:ring-2 hover:ring-blue-500 cursor-pointer group"
+      onClick={onClick}
+    >
       <h4 className="text-[1rem] font-[400] text-gray-900 mb-3 line-clamp-4 hover:text-blue-600 cursor-pointer transition-colors leading-tight group-hover:text-blue-600">
         {blog.title}
       </h4>
@@ -32,7 +36,13 @@ const BlogCard = ({ blog }) => {
           <Share2 className="w-3 h-3" />
           <span>{blog.shares}</span>
         </div>
-        <button className="text-[#004E6A] text-xs font-medium hover:text-[#003D55] transition-colors underline decoration-[#B4700A] decoration-2 underline-offset-2 group-hover:decoration-[#A36609]">
+        <button 
+          className="text-[#004E6A] text-xs font-medium hover:text-[#003D55] transition-colors underline decoration-[#B4700A] decoration-2 underline-offset-2 group-hover:decoration-[#A36609]"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick && onClick();
+          }}
+        >
           View Post
         </button>
       </div>
@@ -41,6 +51,13 @@ const BlogCard = ({ blog }) => {
 };
 
 const LatestBlogsSidebar = () => {
+  const router = useRouter();
+
+  // Navigation handler
+  const handleBlogClick = (blogId) => {
+    router.push(`/blogs/${blogId}`);
+  };
+
   // Fetch latest blogs from API
   const { data: latestBlogsData, isLoading, isError } = useQuery({
     queryKey: ["latestBlogs"],
@@ -92,7 +109,10 @@ const LatestBlogsSidebar = () => {
 
       {/* Hero Blog Card with Image */}
       {heroBlog && (
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:ring-2 hover:ring-blue-500 cursor-pointer group">
+        <div 
+          className="bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] hover:ring-2 hover:ring-blue-500 cursor-pointer group"
+          onClick={() => handleBlogClick(heroBlog.id)}
+        >
           <div className="relative h-48">
             <img
               src={heroBlog.image || "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"}
@@ -119,7 +139,11 @@ const LatestBlogsSidebar = () => {
       {/* Individual Blog Cards */}
       <div className="flex flex-col gap-6 mt-2">
         {otherBlogs.map((blog, index) => (
-          <BlogCard key={blog.id} blog={blog} />
+          <BlogCard 
+            key={blog.id} 
+            blog={blog} 
+            onClick={() => handleBlogClick(blog.id)}
+          />
         ))}
       </div>
     </div>

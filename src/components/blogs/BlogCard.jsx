@@ -3,6 +3,7 @@
 import React from "react";
 
 const BlogCard = ({ 
+  id,
   image, 
   tags, 
   title, 
@@ -10,10 +11,14 @@ const BlogCard = ({
   date, 
   shares, 
   description, 
-  isHovered = false 
+  isHovered = false,
+  onClick
 }) => {
   return (
-    <div className={`group bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer ${isHovered ? 'ring-2 ring-blue-500' : ''}`}>
+    <div 
+      className={`group bg-white rounded-lg shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer ${isHovered ? 'ring-2 ring-blue-500' : ''}`}
+      onClick={onClick}
+    >
       {/* Image Container */}
       <div className="relative h-48 md:h-56 overflow-hidden">
         <img
@@ -78,7 +83,13 @@ const BlogCard = ({
 
         {/* View Post Button */}
         <div className="flex justify-end">
-          <button className="text-[#004E6A] font-medium text-sm hover:text-[#003D55] transition-colors underline decoration-[#B4700A] decoration-2 underline-offset-4 hover:decoration-[#A36609]">
+          <button 
+            className="text-[#004E6A] font-medium text-sm hover:text-[#003D55] transition-colors underline decoration-[#B4700A] decoration-2 underline-offset-4 hover:decoration-[#A36609]"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent double click when clicking the button
+              onClick && onClick();
+            }}
+          >
             View Post
           </button>
         </div>

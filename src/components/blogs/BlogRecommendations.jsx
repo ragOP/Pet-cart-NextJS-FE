@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import BlogCard from "./BlogCard";
 import PawIcon from "@/icons/PawIcon";
 import { getYouMayLikeBlogs } from "@/app/apis/getYouMayLikeBlogs";
@@ -9,9 +10,15 @@ import { formatCount } from "@/utils/formatCount";
 import { formatDate } from "@/utils/formatDate";
 
 const BlogRecommendations = ({ classname }) => {
+  const router = useRouter();
   const [recommendedBlogs, setRecommendedBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Navigation handler
+  const handleBlogClick = (blogId) => {
+    router.push(`/blogs/${blogId}`);
+  };
 
   useEffect(() => {
     const fetchYouMayLikeBlogs = async () => {
@@ -62,6 +69,7 @@ const BlogRecommendations = ({ classname }) => {
               recommendedBlogs.map((blog, index) => (
                 <div key={blog.id || index}>
                   <BlogCard
+                    id={blog._id || blog.id}
                     image={blog.image}
                     tags={blog.tags}
                     title={blog.title}
@@ -71,6 +79,7 @@ const BlogRecommendations = ({ classname }) => {
                     isHovered={false}
                     shares={formatCount(blog.totalViews)}
                     readTime={timeToRead(blog.content) || "2 minute read"}
+                    onClick={() => handleBlogClick(blog._id || blog.id)}
                   />
                 </div>
               ))

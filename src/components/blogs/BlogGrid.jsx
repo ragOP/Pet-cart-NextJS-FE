@@ -1,12 +1,14 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import BlogCard from "./BlogCard";
 import LatestBlogsSidebar from "./LatestBlogsSidebar";
 import NewsletterSignup from "./NewsletterSignup";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 
 const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = false }) => {
+  const router = useRouter();
 
   // Helper function to format data for BlogCard
   const formatBlogData = (blog) => {
@@ -37,6 +39,11 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
       shares: formatCount(blog.totalViews),
       description: blog.description,
     };
+  };
+
+  // Navigation handler
+  const handleBlogClick = (blogId) => {
+    router.push(`/blogs/${blogId}`);
   };
 
   // Loading state
@@ -93,6 +100,7 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
                   onMouseLeave={onCardLeave}
                 >
                   <BlogCard
+                    id={formattedBlog.id}
                     image={formattedBlog.image}
                     tags={formattedBlog.tags}
                     title={formattedBlog.title}
@@ -101,6 +109,7 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
                     shares={formattedBlog.shares}
                     description={formattedBlog.description}
                     isHovered={hoveredCard === index}
+                    onClick={() => handleBlogClick(formattedBlog.id)}
                   />
                 </div>
               );
@@ -125,6 +134,7 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
                         onMouseLeave={onCardLeave}
                       >
                         <BlogCard
+                          id={formattedBlog.id}
                           image={formattedBlog.image}
                           tags={formattedBlog.tags}
                           title={formattedBlog.title}
@@ -133,6 +143,7 @@ const BlogGrid = ({ blogs, hoveredCard, onCardHover, onCardLeave, isLoading = fa
                           shares={formattedBlog.shares}
                           description={formattedBlog.description}
                           isHovered={hoveredCard === fullRowBlogs.length + index}
+                          onClick={() => handleBlogClick(formattedBlog.id)}
                         />
                       </div>
                     );

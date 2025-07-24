@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { getBlogs } from "@/app/apis/getBlogs";
 import BlogCard from "./BlogCard";
 import NewsletterSignup from "./NewsletterSignup";
@@ -12,6 +13,7 @@ import { formatDate } from "@/utils/formatDate";
 
 const BlogGridSection = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const router = useRouter();
 
   const {
     data: blogsData,
@@ -122,6 +124,7 @@ const BlogGridSection = () => {
                   onMouseLeave={() => setHoveredCard(null)}
                 >
                   <BlogCard
+                    id={formattedBlog.id}
                     image={formattedBlog.image}
                     tags={formattedBlog.tags}
                     title={formattedBlog.title}
@@ -130,6 +133,7 @@ const BlogGridSection = () => {
                     shares={formattedBlog.shares}
                     description={formattedBlog.description}
                     isHovered={hoveredCard === index}
+                    onClick={() => router.push(`/blogs/${formattedBlog.id}`)}
                   />
                 </div>
               );
