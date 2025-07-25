@@ -49,7 +49,7 @@ export default function ProductCard({ product }) {
           {product.name}
         </div>
 
-        <p className="text-xs text-muted-foreground">{product.brand}</p>
+        <p className="text-xs text-muted-foreground line-clamp-2">{product.description}</p>
 
         {/* Variants */}
         <div className="flex flex-wrap gap-1 pt-1">

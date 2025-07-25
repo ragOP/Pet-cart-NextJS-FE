@@ -24,7 +24,7 @@ const BlogProductSection = () => {
   return (
     <div className="w-full px-4 md:px-8 lg:px-16 py-8 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Two Product Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Product Card 1 */}
@@ -182,4 +182,4 @@ const BlogProductSection = () => {
   );
 };
 
-export default BlogProductSection; 
+export default BlogProductSection;
