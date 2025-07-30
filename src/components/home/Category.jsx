@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
+import Link from "next/link";
 import pawIcon from "@/assets/pawicon.png";
 import { ChevronDown, ChevronRight, X } from "lucide-react";
 import CustomImage from "@/components/images/CustomImage";
@@ -184,7 +185,11 @@ const Category = () => {
                     </div>
                   ))
               : breeds.map((breed) => (
-                  <div key={breed._id} className="flex flex-col items-center">
+                  <Link
+                    key={breed._id}
+                    href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="flex flex-col items-center hover:scale-105 transition-transform cursor-pointer"
+                  >
                     <CustomImage
                       src={breed.image}
                       alt={breed.name}
@@ -195,7 +200,7 @@ const Category = () => {
                     <p className="text-center text-sm mt-2 font-medium">
                       {breed.name}
                     </p>
-                  </div>
+                  </Link>
                 ))}
           </div>
         </div>
@@ -438,7 +443,11 @@ const Category = () => {
                   .fill(0)
                   .map((_, i) => <Skeleton key={i} className="w-24 h-24" />)
               : breeds.map((breed) => (
-                  <div key={breed._id} className="text-center">
+                  <Link
+                    key={breed._id}
+                    href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="text-center hover:scale-105 transition-transform cursor-pointer"
+                  >
                     <CustomImage
                       src={breed.image}
                       alt={breed.name}
@@ -449,7 +458,7 @@ const Category = () => {
                     <p className="text-center text-sm mt-2 line-clamp-2">
                       {breed.name}
                     </p>
-                  </div>
+                  </Link>
                 ))}
           </CustomCarousel>
         </div>
