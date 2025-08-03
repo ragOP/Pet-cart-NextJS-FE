@@ -1,6 +1,6 @@
 import React from "react";
 
-const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0, onPay }) => {
+const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0, onPay, estimatedDeliveryDate }) => {
   const { cgst = 0, sgst = 0, igst = 0, cess = 0 } = taxBreakup;
 
   return (
@@ -19,15 +19,15 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
             {sgst > 0 && <div className="flex justify-between"><span>SGST</span><span>₹{sgst.toFixed(2)}</span></div>}
             {igst > 0 && <div className="flex justify-between"><span>IGST</span><span>₹{igst.toFixed(2)}</span></div>}
             {cess > 0 && <div className="flex justify-between"><span>CESS</span><span>₹{cess.toFixed(2)}</span></div>}
-            <div className="flex justify-between items-center">
+            {shipping && <div className="flex justify-between items-center">
               <div className="flex flex-col">
                 <span>Shipping Charges</span>
-                <span className="text-xs text-gray-400">To be applied at checkout</span>
+                <span className="text-xs text-gray-400">Expected Delivery By : {estimatedDeliveryDate}</span>
               </div>
               <span className="text-green-600 font-semibold">
-                {shipping === 0 ? "FREE" : `₹${shipping}`}
+                {shipping === 0 ? "FREE" : `₹${shipping.toFixed(2)}`}
               </span>
-            </div>
+            </div>}
           </div>
         </div>
 
@@ -39,7 +39,7 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
           <span>To Pay</span>
           <span>₹{totalPrice.toFixed(2)}</span>
         </div>
-        <button 
+        <button
         onClick={() => {
           onPay();
         }}

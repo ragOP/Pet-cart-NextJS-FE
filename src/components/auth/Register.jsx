@@ -9,13 +9,21 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "@/store/authSlice";
 import { registerUser } from "@/app/apis/registerUser";
 import { updateProfile } from "@/app/apis/updateProfile";
+import { sendOtp } from "@/app/apis/sendOtp";
 
 const Register = ({ onSuccess, showTitle = true }) => {
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phoneNumber: "", otp: "" });
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    otp: "",
+  });
   const [error, setError] = useState("");
   const [step, setStep] = useState(1);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [otpLoading, setOtpLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -23,7 +31,7 @@ const Register = ({ onSuccess, showTitle = true }) => {
     setError("");
   };
 
-  const handleSendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
     if (!/^\d{10}$/.test(form.phoneNumber)) {
       setError("Enter a valid 10-digit phone number");
@@ -33,12 +41,34 @@ const Register = ({ onSuccess, showTitle = true }) => {
       setError("Enter a valid email");
       return;
     }
-    setForm({ ...form, otp: "" }); // Clear OTP
-    setStep(2);
-    toast.success("OTP sent!", {
-      description: `OTP has been sent to +91-${form.phoneNumber}`,
-      position: "top-right",
-    });
+    setOtpLoading(true);
+    try {
+      const apiResponse = await sendOtp({
+        phoneNumber: form.phoneNumber,
+      });
+      if (apiResponse?.success) {
+        toast.success("OTP Sent Successfully!", {
+          description: "Please check your phone for the OTP.",
+          position: "top-right",
+        });
+        setForm({ ...form, otp: "" });
+        setStep(2);
+      } else {
+        toast.error("OTP Sending Failed", {
+          description: apiResponse?.data?.message || "OTP Sending failed",
+          position: "top-right",
+        });
+        setError(apiResponse?.data?.message || "OTP Sending failed");
+      }
+    } catch (err) {
+      toast.error("OTP Sending Failed", {
+        description: err?.message || "OTP Sending failed",
+        position: "top-right",
+      });
+      setError(err?.message || "OTP Sending failed");
+    } finally {
+      setOtpLoading(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -52,28 +82,41 @@ const Register = ({ onSuccess, showTitle = true }) => {
       const apiResponse = await registerUser(form);
       if (apiResponse?.success) {
         const data = apiResponse?.data;
-        localStorage.setItem('token', data.token);
-        const updateProfileResponse = await updateProfile({ data: { name: `${form.firstName} ${form.lastName}`, email: form.email } });
-        if(updateProfileResponse?.success){
-          dispatch(setAuth({ token: data.token, user: updateProfileResponse?.data?.data }));
+        localStorage.setItem("token", data.token);
+        const updateProfileResponse = await updateProfile({
+          data: {
+            name: `${form.firstName} ${form.lastName}`,
+            email: form.email,
+          },
+        });
+        if (updateProfileResponse?.success) {
+          dispatch(
+            setAuth({
+              token: data.token,
+              user: updateProfileResponse?.data?.data,
+            })
+          );
           toast.success("Registration Successful!", {
             description: "Welcome to PetCaart.",
             position: "top-right",
           });
           setTimeout(() => router.push("/account/address"), 1200);
-        }else{
+        } else {
           toast.error("Registration Failed", {
-            description: updateProfileResponse?.data?.message || "Registration failed",
+            description:
+              updateProfileResponse?.data?.message || "Registration failed",
             position: "top-right",
           });
-          setError(updateProfileResponse?.data?.message || "Registration failed");
+          setError(
+            updateProfileResponse?.data?.message || "Registration failed"
+          );
         }
       } else {
         toast.error("Registration Failed", {
-          description: apiResponse?.data?.message || "Registration failed",
+          description: apiResponse?.message || "Registration failed",
           position: "top-right",
         });
-        setError(apiResponse?.data?.message || "Registration failed");
+        setError(apiResponse?.message || "Registration failed");
       }
     } catch (err) {
       toast.error("Registration Failed", {
@@ -97,7 +140,10 @@ const Register = ({ onSuccess, showTitle = true }) => {
         onSubmit={step === 1 ? handleSendOtp : handleSubmit}
         className="flex flex-col gap-2"
       >
-        <label htmlFor="firstName" className="text-sm font-medium text-gray-700">
+        <label
+          htmlFor="firstName"
+          className="text-sm font-medium text-gray-700"
+        >
           First Name
         </label>
         <Input

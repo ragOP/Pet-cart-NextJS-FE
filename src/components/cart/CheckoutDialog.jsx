@@ -35,12 +35,10 @@ const CheckoutDialog = ({
     if (!selectedAddress || !paymentMethod) return;
     onConfirmCheckout({
       addressId: selectedAddress,
-      paymentMethod,
       note,
     });
     onClose();
   };
-
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -126,7 +124,7 @@ const CheckoutDialog = ({
           </DialogClose>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 rounded-lg bg-[#F59A11] text-white hover:bg-[#E58A00] cursor-pointer disabled:opacity-50" 
+            className="px-4 py-2 rounded-lg bg-[#F59A11] text-white hover:bg-[#E58A00] cursor-pointer disabled:opacity-50"
             disabled={!selectedAddress || !paymentMethod}
           >
             Place Order
