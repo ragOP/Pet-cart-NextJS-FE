@@ -52,7 +52,7 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
       <Progress
         value={progressPercent}
         className="h-2 bg-[#EEAC4933] mb-4"
-        indicatorClassName="bg-[#EEAC49]"
+        // indicatorClassName="bg-[#EEAC49]"
       />
 
       {/* Carousel */}

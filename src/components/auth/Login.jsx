@@ -9,6 +9,7 @@ import { useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setAuth } from "@/store/authSlice";
 import { loginUser } from "@/app/apis/loginUser";
+import { sendOtp } from "@/app/apis/sendOtp";
 
 const Login = ({ onSuccess, showTitle = true }) => {
   const [form, setForm] = useState({ phoneNumber: "", otp: "" });
@@ -26,22 +27,40 @@ const Login = ({ onSuccess, showTitle = true }) => {
     setError("");
   };
 
-  const handleSendOtp = (e) => {
+  const handleSendOtp = async (e) => {
     e.preventDefault();
     if (!/^\d{10}$/.test(form.phoneNumber)) {
       setError("Enter a valid 10-digit phone number");
       return;
     }
     setOtpLoading(true);
-    setTimeout(() => {
-      setForm({ ...form, otp: "" });
-      setStep(2);
-      setOtpLoading(false);
-      toast.success("OTP sent!", {
-        description: `OTP has been sent to +91-${form.phoneNumber}`,
+    try {
+      const apiResponse = await sendOtp({
+        phoneNumber: form.phoneNumber,
+      });
+      if (apiResponse?.success) {
+        toast.success("OTP Sent Successfully!", {
+          description: "Please check your phone for the OTP.",
+          position: "top-right",
+        });
+        setForm({ ...form, otp: "" });
+        setStep(2);
+      } else {
+        toast.error("OTP Sending Failed", {
+          description: apiResponse?.data?.message || "OTP Sending failed",
+          position: "top-right",
+        });
+        setError(apiResponse?.data?.message || "OTP Sending failed");
+      }
+    } catch (err) {
+      toast.error("OTP Sending Failed", {
+        description: err?.message || "OTP Sending failed",
         position: "top-right",
       });
-    }, 1200);
+      setError(err?.message || "OTP Sending failed");
+    } finally {
+      setOtpLoading(false);
+    }
   };
 
   const handleLogin = async (e) => {
@@ -52,11 +71,14 @@ const Login = ({ onSuccess, showTitle = true }) => {
     }
     setIsLoading(true);
     try {
-      const apiResponse = await loginUser({ phoneNumber: form.phoneNumber, otp: form.otp });
+      const apiResponse = await loginUser({
+        phoneNumber: form.phoneNumber,
+        otp: form.otp,
+      });
       if (apiResponse?.success) {
         const data = apiResponse.data;
         dispatch(setAuth({ token: data.token, user: data.user }));
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
         toast.success("Login Successful!", {
           description: "Welcome back to PetCaart.",
           position: "top-right",
@@ -65,10 +87,10 @@ const Login = ({ onSuccess, showTitle = true }) => {
         setTimeout(() => router.push(redirectTo), 1200);
       } else {
         toast.error("Login Failed", {
-          description: apiResponse?.data?.message || "Login failed",
+          description: apiResponse?.message || "Login failed",
           position: "top-right",
         });
-        setError(apiResponse?.data?.message || "Login failed");
+        setError(apiResponse?.message || "Login failed");
       }
     } catch (err) {
       toast.error("Login Failed", {
