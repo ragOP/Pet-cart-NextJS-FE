@@ -15,12 +15,15 @@ import ProductAccordion from "@/components/product/ProductAccordion";
 import HandPickedProducts from "@/components/product/HandpickedProducts";
 import CategoryBanner from "@/components/category/CategoryBanner";
 import ProductReviews from "@/components/product/ProductReviews";
+import { apiService } from "@/app/apis/apiService";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [pincode, setPincode] = useState("");
+  const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
+  const [deliveryLoading, setDeliveryLoading] = useState(false);
 
   const width = window.innerWidth;
   const type = width > 1024 ? "web" : (width > 768 ? "tablet" : "mobile");
@@ -35,6 +38,24 @@ const ProductPage = ({ params }) => {
     select: (res) => res?.response?.data || {},
   });
 
+  const onCheckDelivery = async () => {
+    setDeliveryLoading(true);
+    const apiResponse = await apiService({
+      endpoint: "api/delivery/check",
+      method: "POST",
+      data: {
+        pincode: pincode,
+        productId: id,
+      },
+    });
+    if (apiResponse?.response?.success) {
+      setExpectedDeliveryDate(apiResponse?.response?.data);
+    } else {
+      console.log(apiResponse, "apiResponse");
+    }
+    setDeliveryLoading(false);
+  }
+
   const onSelectVariant = (variantId) => {
     // Toggle the selected variant - if clicking the same variant, set to null to show original product
     setSelectedVariant(prevVariant => prevVariant === variantId ? null : variantId);
@@ -47,7 +68,7 @@ const ProductPage = ({ params }) => {
     const currentImages = [
       ...(currentVariant.images?.length ? currentVariant.images : data.images || []),
     ];
-    
+
   const mainImage = currentImages[selectedImage] || currentImages[0];
 
   useEffect(() => {
@@ -107,7 +128,7 @@ const ProductPage = ({ params }) => {
             selectedVariant={selectedVariant}
             onSelectVariant={(variantId) => onSelectVariant(variantId)}
           />
-        
+
           <PriceAndCartDisplay
             stock={currentVariant.stock || data.stock}
             price={currentVariant.price || data.price}
@@ -120,8 +141,10 @@ const ProductPage = ({ params }) => {
           <PurchaseSection
             pincode={pincode}
             onPincodeChange={setPincode}
-            onCheckDelivery={() => {}}
+            onCheckDelivery={onCheckDelivery}
+            expectedDeliveryDate={expectedDeliveryDate}
             onAddToCart={() => {}}
+            deliveryLoading={deliveryLoading}
           />
         </div>
       </div>

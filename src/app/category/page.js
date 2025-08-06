@@ -46,7 +46,7 @@ export default function CategoryPage() {
 
   const params = {
     page,
-    per_page: 10,
+    per_page: 12,
     ...filters,
     ...(price_range && { price_range }),
   };

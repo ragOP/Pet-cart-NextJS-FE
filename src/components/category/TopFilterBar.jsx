@@ -103,7 +103,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
           onValueChange={(value) => onChangeFilter({ sort_by: value })}
           defaultValue={filters?.sort_by}
         >
-          <SelectTrigger className="w-[150px] text-sm">
+          <SelectTrigger className="w-[200px] text-sm">
             <SelectValue placeholder="Sort By" />
           </SelectTrigger>
           <SelectContent>

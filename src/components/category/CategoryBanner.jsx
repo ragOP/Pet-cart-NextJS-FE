@@ -36,7 +36,7 @@ export default function CategoryBanner({ type }) {
           <PrimaryEmptyState title="No banner found!" />
         </div>
       ) : (
-        <div className="transition-transform duration-300 ease-in-out transform hover:-translate-y-2 mt-3 cursor-pointer">
+        <div className="mt-3 cursor-pointer">
           <img
             src={data?.image}
             alt="Category Banner"

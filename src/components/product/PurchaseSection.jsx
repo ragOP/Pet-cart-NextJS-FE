@@ -5,7 +5,8 @@ import DeliveryIcon from "@/icons/DeliveryIcon";
 import NoReturnIcon from "@/icons/NoReturnIcon";
 import FreeIcon from "@/icons/FreeIcon";
 
-const PurchaseSection = ({ pincode, onPincodeChange, onCheckDelivery }) => {
+const PurchaseSection = ({ pincode, onPincodeChange, onCheckDelivery, expectedDeliveryDate, deliveryLoading }) => {
+  console.log(expectedDeliveryDate, "expectedDeliveryDate");
   return (
     <>
       {/* Delivery Information */}
@@ -19,17 +20,23 @@ const PurchaseSection = ({ pincode, onPincodeChange, onCheckDelivery }) => {
           pincode={pincode}
           onPincodeChange={onPincodeChange}
           onCheckDelivery={onCheckDelivery}
+          deliveryLoading={deliveryLoading}
         />
 
         {/* Delivery Features */}
         <div className="space-y-3">
-          <div className="flex items-center gap-3">
+          {expectedDeliveryDate ? <div className="flex items-center gap-3">
             <DeliveryIcon />
             <span className="text-base">
               Expected delivery date -{" "}
-              <strong>Tomorrow (Thu Jun 12 2025 - By 9PM)</strong>
+              <strong>{expectedDeliveryDate}</strong>
             </span>
-          </div>
+          </div>: <div className="flex items-center gap-3">
+            <DeliveryIcon />
+            <span className="text-base">
+              Enter Pincode to check delivery date
+            </span>
+          </div>}
           <div className="flex items-center gap-3">
             <NoReturnIcon />
             <span className="text-base">No Exchange & Returns</span>

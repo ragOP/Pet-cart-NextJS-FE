@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { Search, Menu, MapPin, X, ShoppingCart, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CustomImage from "@/components/images/CustomImage";
@@ -10,12 +10,15 @@ import { useSelector } from "react-redux";
 import { selectToken, selectUser } from "@/store/authSlice";
 import HeaderUserSection from "./HeaderUserSection";
 
-const MobileMenu = React.memo(({ 
-  logo, 
-  animatedPlaceholder, 
-  menuRef, 
-  setIsMenuOpen, 
-  router 
+const MobileMenu = React.memo(({
+  logo,
+  animatedPlaceholder,
+  menuRef,
+  setIsMenuOpen,
+  router,
+  searchValue,
+  onSearchChange,
+  onSearchSubmit
 }) => (
   <div
     ref={menuRef}
@@ -48,14 +51,22 @@ const MobileMenu = React.memo(({
 
     <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
       <div className="space-y-4">
-        <div className="relative">
+        <form
+          className="relative"
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSearchSubmit();
+          }}
+        >
           <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             placeholder={animatedPlaceholder}
+            value={searchValue}
+            onChange={(e) => onSearchChange(e.target.value)}
             className="w-full pl-10 pr-4 py-3 bg-gray-50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
           />
-        </div>
+        </form>
 
         <div className="relative">
           <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-yellow-600" />
@@ -68,7 +79,7 @@ const MobileMenu = React.memo(({
       </div>
 
       <div className="space-y-2">
-        <button 
+        <button
           className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
           onClick={() => {
             router.push('/track-order');
@@ -78,7 +89,7 @@ const MobileMenu = React.memo(({
           <CustomImage src={truckIcon} alt="Track Order" className="h-6 w-6" width={24} height={24} />
           <span className="text-gray-700">Track Order</span>
         </button>
-        <button 
+        <button
           className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
           onClick={() => {
             router.push('/cart');
@@ -92,7 +103,7 @@ const MobileMenu = React.memo(({
     </div>
 
     <div className="p-4 border-t">
-      <button 
+      <button
         className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2"
         onClick={() => {
           router.push('/auth/login');
@@ -112,6 +123,7 @@ const Header = ({ logo }) => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
   const isLoggedIn = !!token;
@@ -119,6 +131,7 @@ const Header = ({ logo }) => {
   const [index, setIndex] = useState(0);
   const searchInputRef = React.useRef(null);
   const menuRef = React.useRef(null);
+  const debounceTimeoutRef = useRef(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -151,11 +164,39 @@ const Header = ({ logo }) => {
     };
   }, [isMenuOpen]);
 
+  const debouncedSearch = useCallback((searchTerm) => {
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    debounceTimeoutRef.current = setTimeout(() => {
+      if (searchTerm.trim()) {
+        router.push(`/category?search=${encodeURIComponent(searchTerm.trim())}`);
+      }
+    }, 500);
+  }, [router]);
+
+  const handleSearchChange = useCallback((value) => {
+    setSearchValue(value);
+    debouncedSearch(value);
+  }, [debouncedSearch]);
+
+  const handleSearchSubmit = useCallback(() => {
+    if (searchValue.trim()) {
+      router.push(`/category?search=${encodeURIComponent(searchValue.trim())}`);
+    }
+  }, [searchValue, router]);
+
+  const handleSearchButtonClick = useCallback(() => {
+    if (searchValue.trim()) {
+      router.push(`/category?search=${encodeURIComponent(searchValue.trim())}`);
+    }
+  }, [searchValue, router]);
+
   const animatedPlaceholder = `Search "${suggestions[index]}"`;
 
   return (
     <div className="bg-[#FEF5E7] text-[#333] shadow-sm sticky top-0 z-40 overflow-x-hidden">
-      {/* Mobile Layout */}
       <div className="md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <button
@@ -185,7 +226,7 @@ const Header = ({ logo }) => {
             >
               <Search size={22} />
             </button>
-            <button 
+            <button
               className="p-2 hover:bg-white/50 rounded-full transition relative"
               onClick={() => router.push('/cart')}
             >
@@ -198,25 +239,36 @@ const Header = ({ logo }) => {
         {/* Collapsible Search Bar */}
         {showSearch && (
           <div className="px-4 pb-3 animate-in slide-in-from-top">
-            <div className="relative">
+            <form
+              className="relative"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearchSubmit();
+              }}
+            >
               <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 ref={searchInputRef}
                 type="text"
                 placeholder={animatedPlaceholder}
+                value={searchValue}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 bg-white rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
-            </div>
+            </form>
           </div>
         )}
 
         {isMenuOpen && (
-          <MobileMenu 
+          <MobileMenu
             logo={logo}
             animatedPlaceholder={animatedPlaceholder}
             menuRef={menuRef}
             setIsMenuOpen={setIsMenuOpen}
             router={router}
+            searchValue={searchValue}
+            onSearchChange={handleSearchChange}
+            onSearchSubmit={handleSearchSubmit}
           />
         )}
       </div>
@@ -242,17 +294,30 @@ const Header = ({ logo }) => {
         {/* Responsive search + pincode: row on xl, column on smaller screens */}
         <div className="flex flex-1 items-center justify-center mx-8">
           <div className="flex flex-col xl:flex-row gap-2 xl:gap-4 w-full max-w-3xl">
-            <div className="flex w-full xl:w-[360px]">
+            <form
+              className="flex w-full xl:w-[360px]"
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearchSubmit();
+              }}
+            >
               <input
                 type="text"
                 placeholder={animatedPlaceholder}
+                value={searchValue}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 className="bg-white w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none text-sm"
                 aria-label="Search products"
               />
-              <button className="bg-white px-4 py-2 border border-l-0 border-gray-300 rounded-r-md text-blue-500 flex items-center justify-center hover:bg-blue-50 focus:bg-blue-100" aria-label="Search">
+              <button
+                type="submit"
+                className="bg-white px-4 py-2 border border-l-0 border-gray-300 rounded-r-md text-blue-500 flex items-center justify-center hover:bg-blue-50 focus:bg-blue-100"
+                aria-label="Search"
+                onClick={handleSearchButtonClick}
+              >
                 <Search size={18} />
               </button>
-            </div>
+            </form>
 
             <div className="w-full xl:w-[420px] relative">
               <MapPin

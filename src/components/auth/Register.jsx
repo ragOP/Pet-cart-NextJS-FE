@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -21,10 +21,28 @@ const Register = ({ onSuccess, showTitle = true }) => {
   });
   const [error, setError] = useState("");
   const [step, setStep] = useState(1);
+  const [countdown, setCountdown] = useState(0);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
   const dispatch = useDispatch();
+
+  // Countdown timer effect
+  useEffect(() => {
+    let timer;
+    if (countdown > 0) {
+      timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -45,6 +63,7 @@ const Register = ({ onSuccess, showTitle = true }) => {
     try {
       const apiResponse = await sendOtp({
         phoneNumber: form.phoneNumber,
+        origin: "register",
       });
       if (apiResponse?.success) {
         toast.success("OTP Sent Successfully!", {
@@ -53,6 +72,7 @@ const Register = ({ onSuccess, showTitle = true }) => {
         });
         setForm({ ...form, otp: "" });
         setStep(2);
+        setCountdown(60); // Start 60 second countdown
       } else {
         toast.error("OTP Sending Failed", {
           description: apiResponse?.data?.message || "OTP Sending failed",
@@ -191,19 +211,24 @@ const Register = ({ onSuccess, showTitle = true }) => {
         >
           Phone Number
         </label>
-        <Input
-          id="phoneNumber"
-          type="tel"
-          name="phoneNumber"
-          placeholder="Phone Number"
-          value={form.phoneNumber}
-          onChange={handleChange}
-          required
-          pattern="[0-9]{10}"
-          maxLength={10}
-          className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#F59A11]"
-          disabled={step === 2}
-        />
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <span className="text-gray-900 text-sm">+91</span>
+          </div>
+          <Input
+            id="phoneNumber"
+            type="tel"
+            name="phoneNumber"
+            placeholder="Phone Number"
+            value={form.phoneNumber}
+            onChange={handleChange}
+            required
+            pattern="[0-9]{10}"
+            maxLength={10}
+            className="border border-gray-300 rounded-lg pl-12 pr-4 py-2 focus:ring-2 focus:ring-[#F59A11]"
+            disabled={step === 2}
+          />
+        </div>
 
         {step === 2 && (
           <>
@@ -222,7 +247,7 @@ const Register = ({ onSuccess, showTitle = true }) => {
                   setStep(1);
                 }}
               >
-                Edit Number
+                Resend OTP
               </button>
             </div>
             <Input
@@ -243,16 +268,27 @@ const Register = ({ onSuccess, showTitle = true }) => {
 
         <button
           type="submit"
-          className="bg-[#F59A11] mt-2 text-white rounded-lg px-4 py-2 font-semibold hover:bg-[#E58A00] transition-colors disabled:opacity-50"
-          disabled={isLoading}
+          className="bg-[#F59A11] mt-2 text-white rounded-lg px-4 py-2 font-semibold hover:bg-[#E58A00] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isLoading || otpLoading || (step === 1 && countdown > 0)}
         >
-          {isLoading ? (
+          {step === 1 ? (
+            otpLoading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="loader border-t-2 border-white rounded-full w-4 h-4 animate-spin" />
+                Sending OTP...
+              </span>
+            ) : countdown > 0 ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="text-sm font-medium">Resend OTP in {formatTime(countdown)}</span>
+              </span>
+            ) : (
+              "Send OTP"
+            )
+          ) : isLoading ? (
             <span className="flex items-center justify-center gap-2">
               <span className="loader border-t-2 border-white rounded-full w-4 h-4 animate-spin" />
-              {step === 1 ? "Sending OTP..." : "Registering..."}
+              Registering...
             </span>
-          ) : step === 1 ? (
-            "Send OTP"
           ) : (
             "Register"
           )}
