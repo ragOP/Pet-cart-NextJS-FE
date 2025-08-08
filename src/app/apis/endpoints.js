@@ -60,4 +60,7 @@ export const endpoints = {
   featuredBlogProducts: "api/featured-blog-products/get-featured-products",
   // send otp
   sendOtp: "api/otp/send-otp",
+  // reviews
+  createReview: "api/reviews/create",
+  getReviewsByProductId: "api/reviews/get-all-reviews",
 };

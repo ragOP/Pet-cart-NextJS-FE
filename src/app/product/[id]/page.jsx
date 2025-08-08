@@ -15,7 +15,7 @@ import ProductAccordion from "@/components/product/ProductAccordion";
 import HandPickedProducts from "@/components/product/HandpickedProducts";
 import CategoryBanner from "@/components/category/CategoryBanner";
 import ProductReviews from "@/components/product/ProductReviews";
-import { apiService } from "@/app/apis/apiService";
+import { getReviewsByProductId } from "@/app/apis/getReviewsByProductId";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
@@ -35,6 +35,16 @@ const ProductPage = ({ params }) => {
   } = useQuery({
     queryKey: ["product", id],
     queryFn: () => getProductById({ id }),
+    select: (res) => res?.response?.data || {},
+  });
+
+  const {
+    data: reviewsData,
+    isLoading: reviewsLoading,
+    isError: reviewsError,
+  } = useQuery({
+    queryKey: ["reviews", id],
+    queryFn: () => getReviewsByProductId({ id }),
     select: (res) => res?.response?.data || {},
   });
 
@@ -113,8 +123,8 @@ const ProductPage = ({ params }) => {
         <div className="space-y-4">
           {/* Rating & Reviews */}
           <RatingReviews
-            averageRating={data.ratings?.average || "5.0"}
-            reviewCount={data.ratings?.count || "112"}
+            averageRating={reviewsData?.firstReview?.rating || "5.0"}
+            reviewCount={reviewsData?.totalReviews || "0"}
           />
 
           {/* Brand */}
@@ -174,7 +184,7 @@ const ProductPage = ({ params }) => {
 
       <HandPickedProducts />
 
-      <ProductReviews />
+      <ProductReviews productId={id} productName={data.title} reviews={reviewsData} />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown } from "lucide-react";
 import CustomerFeedbackIcon from "@/icons/CustomerFeedbackIcon";
+import ReviewModal from "./ReviewModal";
+import { checkIfUserBoughtProduct } from "@/app/apis/checkIfUserBoughtProduct";
 
 const StarRating = ({ filled }) => {
   return (
@@ -40,67 +42,130 @@ const RatingBar = ({ rating, percentage, count }) => (
   </div>
 );
 
-const ReviewCard = ({ review }) => (
-  <div className="border border-[#B3B3B3] rounded-lg p-4 ">
-    <div className="flex items-center gap-2 mb-2">
-      <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center uppercase font-semibold">
-        {review.name[0]}
-      </div>
-      <div>
-        <div className="flex items-center gap-2">
-          <div className="flex">
-            {[...Array(5)].map((_, i) => (
-              <StarRating key={i} filled={i < review.rating} />
-            ))}
-          </div>
-          <span className="text-sm text-gray-500">{review.date}</span>
-        </div>
-        <h4 className="font-semibold">{review.name} <span className="text-gray-600 font-normal">({review.location})</span></h4>
-      </div>
-    </div>
-    <p className="text-gray-700">{review.comment}</p>
-  </div>
-);
-
-const ProductReviews = ({ reviews = [], totalReviews = 118 }) => {
-  const [sortBy, setSortBy] = useState("Most Recent");
-
-  // Calculate rating percentages
-  const ratingCounts = {
-    5: 83,
-    4: 83,
-    3: 83,
-    2: 83,
-    1: 83,
+const ReviewCard = ({ review }) => {
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB');
   };
 
-  const sampleReviews = [
-    {
-      name: "Esuni",
-      rating: 5,
-      date: "16/05/2025",
-      verified: true,
-      location: "Mumbai, India",
-      comment:
-        "Hearty Oven-Baked Dry Food For Adult Dogs With Chicken, Duck & Brown Rice (All Breeds)",
-    },
-    {
-      name: "Arpit pandya",
-      rating: 5,
-      date: "02/05/2025",
-      verified: true,
-      location: "Ahmedabad, India",
-      comment: "Not delivered\nNo delivery has attempted",
-    },
-    {
-      name: "Jasmine",
-      rating: 4,
-      date: "02/05/2025",
-      location: "Gurugram, India",
-      comment:
-        "Comfort Food for Pets\nSo first of all - the kibble isn't just any random shape, it's heart-shaped - which is honestly so cool and thoughtful!! Perfect for busy mornings or travel days, and my dogs lick their bowls clean every single time. Everything is vet-approved too, so that's a big plus in my book.",
-    },
-  ];
+  return (
+    <div className="border border-[#B3B3B3] rounded-lg p-4 ">
+      <div className="flex items-center gap-2 mb-2">
+        <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center uppercase font-semibold">
+          {review.userId?.name?.[0] || 'U'}
+        </div>
+        <div>
+          <div className="flex items-center gap-2">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <StarRating key={i} filled={i < review.rating} />
+              ))}
+            </div>
+            <span className="text-sm text-gray-500">{formatDate(review.createdAt)}</span>
+          </div>
+          <h4 className="font-semibold">
+            {review.userId?.name || 'Anonymous'} {""}
+            <span className="text-gray-600 font-normal">
+              ({review.orderId?.address?.city}, {" "} {review.orderId?.address?.state})
+            </span>
+          </h4>
+        </div>
+      </div>
+      <p className="text-gray-700">{review.review}</p>
+    </div>
+  );
+};
+
+const ProductReviews = ({ reviews = {}, productName = "Product", productId }) => {
+  const [sortBy, setSortBy] = useState("Most Recent");
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [canWriteReview, setCanWriteReview] = useState(false);
+  const [isCheckingReviewEligibility, setIsCheckingReviewEligibility] = useState(true);
+  const [sortedReviews, setSortedReviews] = useState([]);
+
+  useEffect(() => {
+    const checkReviewEligibility = async () => {
+      if (!productId) {
+        setIsCheckingReviewEligibility(false);
+        return;
+      }
+
+      try {
+        const response = await checkIfUserBoughtProduct(productId);
+        if (response?.success) {
+          setCanWriteReview(true);
+        } else {
+          setCanWriteReview(false);
+        }
+      } catch (error) {
+        console.error("Error checking review eligibility:", error);
+        setCanWriteReview(false);
+      } finally {
+        setIsCheckingReviewEligibility(false);
+      }
+    };
+
+    checkReviewEligibility();
+  }, [productId]);
+
+  // Calculate rating statistics from actual data
+  const calculateRatingStats = () => {
+    const reviewList = reviews.reviews || [];
+    const totalReviews = reviews.totalReviews || 0;
+
+    const ratingCounts = {
+      5: reviews.totalFiveStar || 0,
+      4: reviews.totalFourStar || 0,
+      3: reviews.totalThreeStar || 0,
+      2: reviews.totalTwoStar || 0,
+      1: reviews.totalOneStar || 0,
+    };
+
+    // Calculate percentages
+    const ratingPercentages = {};
+    Object.keys(ratingCounts).forEach(rating => {
+      ratingPercentages[rating] = totalReviews > 0 ? (ratingCounts[rating] / totalReviews) * 100 : 0;
+    });
+
+    return { ratingCounts, ratingPercentages, totalReviews };
+  };
+
+  // Sort reviews based on selected option
+  useEffect(() => {
+    const reviewList = reviews.reviews || [];
+    let sorted = [...reviewList];
+
+    switch (sortBy) {
+      case "Highest Rating":
+        sorted.sort((a, b) => b.rating - a.rating);
+        break;
+      case "Lowest Rating":
+        sorted.sort((a, b) => a.rating - b.rating);
+        break;
+      case "Most Recent":
+        sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        break;
+      default:
+        // Default to most recent
+        sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        break;
+    }
+
+    setSortedReviews(sorted);
+  }, [sortBy, reviews.reviews]);
+
+  const { ratingCounts, ratingPercentages, totalReviews } = calculateRatingStats();
+
+  // Calculate average rating
+  const calculateAverageRating = () => {
+    const reviewList = reviews.reviews || [];
+    if (reviewList.length === 0) return 0;
+
+    const totalRating = reviewList.reduce((sum, review) => sum + review.rating, 0);
+    return (totalRating / reviewList.length).toFixed(1);
+  };
+
+  const averageRating = calculateAverageRating();
 
   const sortOptions = [
     "Most Recent",
@@ -111,21 +176,6 @@ const ProductReviews = ({ reviews = [], totalReviews = 118 }) => {
 
   const handleSort = (option) => {
     setSortBy(option);
-    // Add sorting logic here based on the option
-    let sortedReviews = [...sampleReviews];
-    switch (option) {
-      case "Highest Rating":
-        sortedReviews.sort((a, b) => b.rating - a.rating);
-        break;
-      case "Lowest Rating":
-        sortedReviews.sort((a, b) => a.rating - b.rating);
-        break;
-      case "Most Recent":
-        sortedReviews.sort((a, b) => new Date(b.date) - new Date(a.date));
-        break;
-      default:
-        break;
-    }
   };
 
   return (
@@ -138,10 +188,10 @@ const ProductReviews = ({ reviews = [], totalReviews = 118 }) => {
           </div>
         </div>
 
-        <div className="flex  flex-col items-center">
+        <div className="flex flex-col items-center">
           <div className="flex">
             {[...Array(5)].map((_, i) => (
-              <StarRating key={i} filled={i < 1} />
+              <StarRating key={i} filled={i < Math.floor(averageRating)} />
             ))}
           </div>
           <span className="ml-2 text-base font-normal text-gray-600">
@@ -156,19 +206,22 @@ const ProductReviews = ({ reviews = [], totalReviews = 118 }) => {
             <RatingBar
               key={rating}
               rating={rating}
-              percentage={88}
+              percentage={ratingPercentages[rating]}
               count={ratingCounts[rating]}
             />
           ))}
         </div>
 
         <div className="flex-1 flex justify-end">
-          <Button
-            variant="outline"
-            className="border-[#F59A1133] hover:bg-orange-50 hover:border-orange-300 transition-colors"
-          >
-            Write A Review
-          </Button>
+          {!isCheckingReviewEligibility && canWriteReview && (
+            <Button
+              variant="outline"
+              className="border-[#F59A1133] hover:bg-orange-50 hover:border-orange-300 transition-colors"
+              onClick={() => setIsReviewModalOpen(true)}
+            >
+              Write A Review
+            </Button>
+          )}
         </div>
       </div>
 
@@ -197,10 +250,24 @@ const ProductReviews = ({ reviews = [], totalReviews = 118 }) => {
       </div>
 
       <div className="space-y-4">
-        {sampleReviews.map((review, index) => (
-          <ReviewCard key={index} review={review} />
-        ))}
+        {sortedReviews.length > 0 ? (
+          sortedReviews.map((review, index) => (
+            <ReviewCard key={review._id || index} review={review} />
+          ))
+        ) : (
+          <div className="text-center py-8 text-gray-500">
+            No reviews yet. Be the first to review this product!
+          </div>
+        )}
       </div>
+
+      {/* Review Modal */}
+      <ReviewModal
+        productId={productId}
+        isOpen={isReviewModalOpen}
+        onClose={() => setIsReviewModalOpen(false)}
+        productName={productName}
+      />
     </div>
   );
 };
