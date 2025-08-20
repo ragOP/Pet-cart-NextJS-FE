@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,30 +10,16 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useRouter } from "next/navigation";
 
 const CheckoutDialog = ({
   isOpen,
   onClose,
-  addresses = [],
-  selectedAddressId,
   onConfirmCheckout,
 }) => {
-  const router = useRouter();
-  const [selectedAddress, setSelectedAddress] = useState("");
   const [note, setNote] = useState("");
 
-  useEffect(() => {
-    if (isOpen && addresses.length > 0) {
-      const defaultAddress = addresses.find((a) => a._id === selectedAddressId);
-      setSelectedAddress(defaultAddress ? defaultAddress._id : addresses[0]._id);
-    }
-  }, [isOpen, addresses]);
-
   const handleSubmit = () => {
-    if (!selectedAddress) return;
     onConfirmCheckout({
-      addressId: selectedAddress,
       note,
     });
     onClose();
@@ -47,32 +33,6 @@ const CheckoutDialog = ({
         </DialogHeader>
 
         <div className="p-4 flex flex-col gap-4">
-
-          {/* Address Selector */}
-          <div className="flex flex-col gap-1">
-            <label className="text-sm text-gray-700">Select Address</label>
-            <select
-              className="rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-700"
-              value={selectedAddress}
-              onChange={(e) => setSelectedAddress(e.target.value)}
-            >
-              {addresses.length > 0 ? addresses.map((address) => (
-                <option key={address._id} value={address._id}>
-                  {address.firstName}, {address.city}, {address.state}
-                </option>
-              )) : <option value="">No addresses available</option>}
-            </select>
-            <div className="w-full flex justify-end">
-            {addresses.length === 0 && (
-              <p onClick={() => router.push("/account/address")} className="text-xs text-[#F59A11] underline cursor-pointer">
-                Add address
-              </p>
-            )}
-            </div>
-          </div>
-
-
-
           {/* Note */}
           <div className="flex flex-col gap-1">
             <label className="text-sm text-gray-700">Note (Optional)</label>
@@ -98,12 +58,10 @@ const CheckoutDialog = ({
           </DialogClose>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 rounded-lg bg-[#F59A11] text-white hover:bg-[#E58A00] cursor-pointer disabled:opacity-50"
-            disabled={!selectedAddress}
+            className="px-4 py-2 rounded-lg bg-[#F59A11] text-white hover:bg-[#E58A00] cursor-pointer"
           >
             Place Order
           </button>
-
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -330,7 +330,17 @@ const CartPage = () => {
             />
 
             {/* Delivery Status Display */}
-            {expectedDeliveryDate && (
+            {deliveryLoading ? (
+              <div className="mx-4 mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="font-medium text-gray-700">Delivery Status:</span>
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                    <span className="font-semibold text-blue-600">Calculating delivery date...</span>
+                  </div>
+                </div>
+              </div>
+            ) : expectedDeliveryDate ? (
               <div className="mx-4 mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
                 <div className="flex items-center gap-2 text-sm">
                   <span className="font-medium text-gray-700">Delivery Status:</span>
@@ -345,7 +355,7 @@ const CartPage = () => {
                   </span>
                 </div>
               </div>
-            )}
+            ) : null}
 
             <CartCouponSection
               coupons={couponsData || []}
