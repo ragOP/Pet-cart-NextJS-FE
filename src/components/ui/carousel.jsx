@@ -155,13 +155,17 @@ function CarouselPrevious({
       data-slot="carousel-previous"
       variant={variant}
       size={size}
-      className={cn("absolute size-12 rounded-full bg-white", orientation === "horizontal"
-        ? "top-1/2 -left-12 -translate-y-1/2"
-        : "-top-12 left-1/2 -translate-x-1/2 rotate-90", className)}
-      disabled={!canScrollPrev}
-      onClick={scrollPrev}
+      className={cn(
+        "absolute size-12 rounded-full",
+        canScrollPrev ? "bg-white hover:bg-gray-50" : "bg-gray-200 cursor-not-allowed",
+        orientation === "horizontal"
+          ? "top-1/2 -left-12 -translate-y-1/2"
+          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+        className
+      )}
+      onClick={() => canScrollPrev && scrollPrev()}
       {...props}>
-      <ArrowLeft className="w-12 h-12 flex-shrink-0" />
+      <ArrowLeft className={`w-12 h-12 flex-shrink-0 ${canScrollPrev ? "text-[#0888B1]" : "text-gray-400"}`} />
       <span className="sr-only">Previous slide</span>
     </Button>)
   );
@@ -180,13 +184,17 @@ function CarouselNext({
       data-slot="carousel-next"
       variant={variant}
       size={size}
-      className={cn("absolute size-12 rounded-full bg-white", orientation === "horizontal"
-        ? "top-1/2 -right-12 -translate-y-1/2"
-        : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90", className)}
-      disabled={!canScrollNext}
-      onClick={scrollNext}
+      className={cn(
+        "absolute size-12 rounded-full",
+        canScrollNext ? "bg-white hover:bg-gray-50" : "bg-gray-200 cursor-not-allowed",
+        orientation === "horizontal"
+          ? "top-1/2 -right-12 -translate-y-1/2"
+          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+        className
+      )}
+      onClick={() => canScrollNext && scrollNext()}
       {...props}>
-      <ArrowRight className="w-12 h-12 flex-shrink-0" />
+      <ArrowRight className={`w-12 h-12 flex-shrink-0 ${canScrollNext ? "text-[#0888B1]" : "text-gray-400"}`} />
       <span className="sr-only">Next slide</span>
     </Button>)
   );
