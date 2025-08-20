@@ -21,7 +21,6 @@ const CheckoutDialog = ({
 }) => {
   const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [note, setNote] = useState("");
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const CheckoutDialog = ({
   }, [isOpen, addresses]);
 
   const handleSubmit = () => {
-    if (!selectedAddress || !paymentMethod) return;
+    if (!selectedAddress) return;
     onConfirmCheckout({
       addressId: selectedAddress,
       note,
@@ -72,32 +71,7 @@ const CheckoutDialog = ({
             </div>
           </div>
 
-          {/* Payment Method */}
-          <div className="flex flex-col gap-2">
-            <label className="text-sm text-gray-700">Payment Method</label>
-            <div className="flex items-center gap-4">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="cod"
-                  checked={paymentMethod === "cod"}
-                  onChange={() => setPaymentMethod("cod")}
-                />
-                Cash on Delivery
-              </label>
-              {/* <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="online"
-                  checked={paymentMethod === "online"}
-                  onChange={() => setPaymentMethod("online")}
-                />
-                Online Payment
-              </label> */}
-            </div>
-          </div>
+
 
           {/* Note */}
           <div className="flex flex-col gap-1">
@@ -125,7 +99,7 @@ const CheckoutDialog = ({
           <button
             onClick={handleSubmit}
             className="px-4 py-2 rounded-lg bg-[#F59A11] text-white hover:bg-[#E58A00] cursor-pointer disabled:opacity-50"
-            disabled={!selectedAddress || !paymentMethod}
+            disabled={!selectedAddress}
           >
             Place Order
           </button>

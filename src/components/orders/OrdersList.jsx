@@ -72,6 +72,11 @@ function OrderListItem({ order, onOrderClick, index }) {
                   </span>
                   <span className="mx-2">|</span>
                   <span>{formatDate(order.createdAt)}</span>
+                  <span className="mx-2">|</span>
+                  Quantity:{" "}
+                  <span className="font-semibold text-blue-600">
+                    {order.items.length}
+                  </span>
                 </p>
               </div>
               {getStatusBadge(order.status)}
@@ -82,7 +87,7 @@ function OrderListItem({ order, onOrderClick, index }) {
             </h3>
 
             <p className="text-sm text-gray-600 mb-2 truncate">
-              Rs. {order?.totalAmount.toFixed(2)} 
+              Rs. {order?.totalAmount.toFixed(2)}
             </p>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPer
 import VariantBoxIcon from "@/icons/VariantBoxIcon";
 
 const Variants = ({ variants, selectedVariant, onSelectVariant }) => {
+  console.log(variants, "variants");
   if (!variants || variants.length === 0) return null;
 
   return (
@@ -48,7 +49,7 @@ export const VariantBox = ({
       }`}
     >
       <span className="text-sm">
-        {variant.weight} {variant.salePrice ? `| ${discount}% OFF` : null}
+        {variant.weight}g {variant.salePrice && discount > 0 ? `| ${discount}% OFF` : null}
       </span>
     </div>
   );

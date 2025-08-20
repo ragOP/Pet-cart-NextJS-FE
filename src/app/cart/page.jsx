@@ -253,16 +253,13 @@ const CartPage = () => {
     { cgst: 0, sgst: 0, igst: 0, cess: 0 }
   ) || { cgst: 0, sgst: 0, igst: 0, cess: 0 };
 
-  const couponDiscount = Math.max(
-    totalPrice + cgst + sgst + igst + cess - finalPayableAmount,
-    0
-  );
+  const couponDiscount = cartData?.discount_amount;
 
   return (
     <RequireAuth>
       <div className="bg-[#FFFBF6] min-h-screen w-full">
         {cartData && !cartLoading ? (
-          <CartSavingsBanner savings={couponDiscount.toFixed(2)} />
+          <CartSavingsBanner savings={couponDiscount} />
         ) : (
           <div className="h-16 bg-white rounded-lg shadow-sm animate-pulse" />
         )}

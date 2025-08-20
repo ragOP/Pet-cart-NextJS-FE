@@ -23,7 +23,7 @@ const fetchPincodeFromLocation = async () => {
   });
 };
 
-const PincodeInput = ({ pincode, onPincodeChange, onCheckDelivery, className }) => {
+const PincodeInput = ({ pincode, onPincodeChange, onCheckDelivery, className, deliveryLoading }) => {
   const [loadingPin, setLoadingPin] = useState(false);
 
   const handleLocationClick = async () => {
@@ -58,7 +58,7 @@ const PincodeInput = ({ pincode, onPincodeChange, onCheckDelivery, className }) 
           onClick={onCheckDelivery}
           className="bg-[#F59A11] cursor-pointer hover:bg-[#D9820A] text-white px-3 md:px-8 py-1.5 md:py-1.5 rounded-lg font-semibold"
         >
-          CHECK
+          {deliveryLoading ? "CHECKING..." : "CHECK"}
         </button>
       </div>
     </div>
