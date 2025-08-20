@@ -11,12 +11,14 @@ import { getSliders } from "@/app/apis/getSliders";
 const Applod = () => {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   
   const webParams = { type: "web" };
   const mobileParams = { type: "app" };
 
-  // Check if mobile on client side
+  // Check if mobile on client side with proper initialization
   useEffect(() => {
+    setIsClient(true);
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -48,11 +50,11 @@ const Applod = () => {
     select: (res) => res?.data?.data || [],
   });
 
-  // Dynamic data based on screen size
-  const currentBanners = isMobile ? mobileBannersData : webBannersData;
-  const currentSliders = isMobile ? mobileSlidersData : webSlidersData;
+  // Dynamic data based on screen size - only after client-side hydration
+  const currentBanners = isClient ? (isMobile ? mobileBannersData : webBannersData) : webBannersData;
+  const currentSliders = isClient ? (isMobile ? mobileSlidersData : webSlidersData) : webSlidersData;
   const bannerImage = currentBanners?.[0]?.image;
-  const slidersImages = [...(currentSliders || []), ...(currentSliders || [])];
+  const slidersImages = currentSliders ? [...currentSliders, ...currentSliders] : [];
 
   // Refs for auto-scroll
   const scrollRef = useRef(null);
@@ -62,7 +64,6 @@ const Applod = () => {
   // Handle navigation
   const handleNavigation = (link) => {
     if (!link || link === "undefined") return;
-
 
     console.log("Navigating to:", link);
     
@@ -74,13 +75,14 @@ const Applod = () => {
     }
   };
 
-  // Auto-scroll logic
+  // Auto-scroll logic with improved error handling
   useEffect(() => {
     const el = scrollRef.current;
-    if (!el || !slidersImages.length) return;
+    if (!el || !slidersImages.length || !isClient) return;
 
     let scrollStep = 1;
     let trackWidth = 0;
+    let isAnimationRunning = true;
 
     const handleMouseEnter = () => (isHovered.current = true);
     const handleMouseLeave = () => (isHovered.current = false);
@@ -94,31 +96,53 @@ const Applod = () => {
     el.addEventListener("touchend", handleTouchEnd);
 
     const updateTrackWidth = () => {
+      try {
       const track = el.querySelector(".slider-track");
-      if (track) {
+        if (track && track.scrollWidth > 0) {
         trackWidth = track.scrollWidth / 2;
+      }
+      } catch (error) {
+        console.warn("Error updating track width:", error);
       }
     };
 
-    updateTrackWidth();
+    // Initial track width calculation with delay to ensure DOM is ready
+    const initTrackWidth = () => {
+      setTimeout(updateTrackWidth, 100);
+    };
+
+    initTrackWidth();
     window.addEventListener("resize", updateTrackWidth);
 
     const autoScroll = () => {
-      if (!isHovered.current) {
+      if (!isAnimationRunning || !el || !isClient) return;
+
+      try {
+        if (!isHovered.current && trackWidth > 0) {
         if (el.scrollLeft >= trackWidth) {
           el.scrollLeft = el.scrollLeft - trackWidth;
         } else {
           el.scrollLeft += scrollStep;
         }
       }
+      } catch (error) {
+        console.warn("Error in auto-scroll:", error);
+        isAnimationRunning = false;
+        return;
+      }
+
+      if (isAnimationRunning) {
       animationRef.current = requestAnimationFrame(autoScroll);
+      }
     };
 
     animationRef.current = requestAnimationFrame(autoScroll);
 
     return () => {
+      isAnimationRunning = false;
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
       el.removeEventListener("mouseenter", handleMouseEnter);
       el.removeEventListener("mouseleave", handleMouseLeave);
@@ -126,9 +150,11 @@ const Applod = () => {
       el.removeEventListener("touchend", handleTouchEnd);
       window.removeEventListener("resize", updateTrackWidth);
     };
-  }, [slidersImages.length]);
+  }, [slidersImages.length, isClient]);
 
   const renderSliderItem = (item, index) => {
+    if (!item?.image) return null;
+
     const imageEl = (
       <AnimatedImage
         src={item.image}

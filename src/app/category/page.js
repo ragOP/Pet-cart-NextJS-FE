@@ -19,7 +19,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination"
+} from "@/components/ui/pagination";
 
 export default function CategoryPage() {
   const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ export default function CategoryPage() {
   const [page, setPage] = useState(1);
 
   const width = window.innerWidth;
-  const type = width > 1024 ? "web" : (width > 768 ? "tablet" : "mobile");
+  const type = width > 1024 ? "web" : width > 768 ? "tablet" : "mobile";
 
   const filters = {};
   searchParams.forEach((value, key) => {
@@ -39,9 +39,9 @@ export default function CategoryPage() {
   const price_range =
     filters.min_price_range || filters.max_price_range
       ? {
-        min_price_range: Number(filters.min_price_range || 0),
-        max_price_range: Number(filters.max_price_range || 10000),
-      }
+          min_price_range: Number(filters.min_price_range || 0),
+          max_price_range: Number(filters.max_price_range || 10000),
+        }
       : undefined;
 
   const params = {
@@ -55,7 +55,7 @@ export default function CategoryPage() {
   if (subCategoryParam) {
     subCategoryParam = {
       categorySlug: subCategoryParam,
-    }
+    };
   }
 
   const {
@@ -97,14 +97,18 @@ export default function CategoryPage() {
     });
 
     router.push(`/category?${params.toString()}`);
-    queryClient.invalidateQueries({ queryKey: ["products", page, { ...params }] });
+    queryClient.invalidateQueries({
+      queryKey: ["products", page, { ...params }],
+    });
   };
 
   const deleteFilter = (key) => {
     const params = new URLSearchParams(searchParams);
     params.delete(key);
     router.push(`/category?${params.toString()}`);
-    queryClient.invalidateQueries({ queryKey: ["products", page, { ...params }] });
+    queryClient.invalidateQueries({
+      queryKey: ["products", page, { ...params }],
+    });
   };
 
   const handleProductClick = (productId) => {
@@ -142,9 +146,7 @@ export default function CategoryPage() {
     <div className="min-h-screen flex flex-col bg-[#FFFBF6]">
       <CategoryBreadcrumb productsCount={productsData?.total || 0} />
 
-      <div className="w-full hidden lg:block p-1 my-3">
-        <CategoryBanner type={type} />
-      </div>
+      <CategoryBanner type={type} />
 
       <TopFilterBar
         filters={filters || {}}
@@ -184,25 +186,34 @@ export default function CategoryPage() {
                       setPage((prev) => Math.max(1, prev - 1));
                     }}
                   />
-                  {Array.from({ length: Math.ceil(productsData?.total / params.per_page) }, (_, i) => (
-                    <PaginationItem key={i + 1}>
-                      <PaginationLink
-                        isActive={i + 1 === page}
-                        onClick={() => setPage(i + 1)}
-                      >
-                        {i + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
+                  {Array.from(
+                    {
+                      length: Math.ceil(productsData?.total / params.per_page),
+                    },
+                    (_, i) => (
+                      <PaginationItem key={i + 1}>
+                        <PaginationLink
+                          isActive={i + 1 === page}
+                          onClick={() => setPage(i + 1)}
+                        >
+                          {i + 1}
+                        </PaginationLink>
+                      </PaginationItem>
+                    )
+                  )}
                   <PaginationNext
                     onClick={() => {
-                      setPage((prev) => Math.min(Math.ceil(productsData?.total / params.per_page), prev + 1));
+                      setPage((prev) =>
+                        Math.min(
+                          Math.ceil(productsData?.total / params.per_page),
+                          prev + 1
+                        )
+                      );
                     }}
                   />
                 </PaginationContent>
               </Pagination>
             )}
-
           </div>
         </div>
       </div>

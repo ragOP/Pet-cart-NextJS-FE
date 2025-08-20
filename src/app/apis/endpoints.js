@@ -56,6 +56,10 @@ export const endpoints = {
 
   // orders
   orders: "api/orders",
+  
+  // delivery
+  delivery: "api/delivery/check",
+  
   // featured blog products
   featuredBlogProducts: "api/featured-blog-products/get-featured-products",
   // send otp

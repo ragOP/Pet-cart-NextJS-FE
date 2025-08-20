@@ -8,7 +8,7 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
   const isLoading = qtyChangeLoadingIds.includes(item?.variantId || item?.productId?._id);
   const isDeleting = deleteLoadingIds.includes(item?.variantId || item?.productId?._id);
 
-  const discount = calculateDiscountPercent(item.price, item.discounted_price);
+  const discount = calculateDiscountPercent(item.productId?.price, item.productId?.salePrice);
 
   const productDetails = item?.productId;
   const productId = item?.productId?._id;
@@ -56,14 +56,14 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
           {/* Price section */}
           <div className="flex flex-col">
             <span className="text-xl font-bold text-[#218032]">
-              ₹{item.discounted_price || item.price}
+              ₹{item.productId?.salePrice || item.productId?.price}
             </span>
-            {item.discounted_price && (
+            {item?.productId?.salePrice && (
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-sm text-gray-600 font-normal">
                   MRP{" "}
                   <span className="text-gray-500 line-through">
-                    ₹{item.price || 0}
+                    ₹{item?.productId?.price || 0}
                   </span>
                 </span>
                 <span className="text-[#218032] text-sm font-normal">

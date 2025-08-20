@@ -16,6 +16,7 @@ import HandPickedProducts from "@/components/product/HandpickedProducts";
 import CategoryBanner from "@/components/category/CategoryBanner";
 import ProductReviews from "@/components/product/ProductReviews";
 import { getReviewsByProductId } from "@/app/apis/getReviewsByProductId";
+import { checkDelivery } from "@/app/apis/checkDelivery";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
@@ -50,20 +51,24 @@ const ProductPage = ({ params }) => {
 
   const onCheckDelivery = async () => {
     setDeliveryLoading(true);
-    const apiResponse = await apiService({
-      endpoint: "api/delivery/check",
-      method: "POST",
-      data: {
+    try {
+      const response = await checkDelivery({
         pincode: pincode,
         productId: id,
-      },
-    });
-    if (apiResponse?.response?.success) {
-      setExpectedDeliveryDate(apiResponse?.response?.data);
-    } else {
-      console.log(apiResponse, "apiResponse");
+      });
+      
+      if (response?.success) {
+        setExpectedDeliveryDate(response?.data || "Available for delivery");
+      } else {
+        console.log(response, "apiResponse");
+        setExpectedDeliveryDate("Not available for delivery");
+      }
+    } catch (error) {
+      console.error("Delivery check error:", error);
+      setExpectedDeliveryDate("Error checking delivery");
+    } finally {
+      setDeliveryLoading(false);
     }
-    setDeliveryLoading(false);
   }
 
   const onSelectVariant = (variantId) => {

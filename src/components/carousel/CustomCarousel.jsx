@@ -28,7 +28,7 @@ export default function CustomCarousel({
     >
       {showArrows && (
         <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full shadow p-2 hover:bg-white transition">
-          <ChevronLeft className="w-6 h-6 text-[#0888B1]" />
+          <ChevronLeft className="w-8 h-8 text-[#0888B1]" />
         </CarouselPrevious>
       )}
       <CarouselContent className={`flex gap-4 px-8 ${contentClassName}`} style={{ height }}>
@@ -40,7 +40,7 @@ export default function CustomCarousel({
       </CarouselContent>
       {showArrows && (
         <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 rounded-full shadow p-2 hover:bg-white transition">
-          <ChevronRight className="w-6 h-6 text-[#0888B1]" />
+          <ChevronRight className="w-8 h-8 text-[#0888B1]" />
         </CarouselNext>
       )}
     </ShadCarousel>

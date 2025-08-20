@@ -312,45 +312,45 @@ const Category = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <div className="sticky top-[72px] z-40 overflow-x-hidden">
-      <div className="hidden md:block bg-black text-white px-8 py-4 relative z-20">
-        <div className="flex justify-end space-x-6">
-          {categories?.map((category) => (
-            <div key={category._id} className="flex items-center space-x-2">
-              <button
-                onClick={() => {
-                  setActiveCategoryId(category._id);
-                  setShowShopByCategory(!showShopByCategory);
-                  setShowShopByBreed(false);
-                }}
-                className="flex items-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] transition-colors outline-none"
-              >
-                <CustomImage
-                  src={category.image}
-                  alt={category.name}
-                  className="h-5 w-5 rounded-3xl"
-                  width={24}
-                  height={24}
-                />
-                <span className="text-lg">
-                  {category.name}
-                  <ChevronDown className="inline-block h-5 w-5 ml-1" />
-                </span>
-              </button>
-            </div>
-          ))}
-          <button
-            onClick={() => {
-              setShowShopByBreed(!showShopByBreed);
-              setShowShopByCategory(false);
-            }}
-            className="text-lg hover:text-[#F59A11] transition-colors outline-none focus:underline"
-          >
-            Shop By Breed
-            <ChevronDown className="inline-block h-4 w-4" />
-          </button>
+      <div className="sticky top-[72px] z-40 overflow-x-auto bg-black">
+        <div className="hidden md:block text-white px-8 py-4 relative z-20">
+          <div className="flex justify-end space-x-6 min-w-max">
+            {categories?.map((category) => (
+              <div key={category._id} className="flex items-center space-x-2">
+                <button
+                  onClick={() => {
+                    setActiveCategoryId(category._id);
+                    setShowShopByCategory(!showShopByCategory);
+                    setShowShopByBreed(false);
+                  }}
+                  className="flex items-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] cursor-pointer transition-colors outline-none"
+                >
+                  <CustomImage
+                    src={category.image}
+                    alt={category.name}
+                    className="h-5 w-5 rounded-3xl"
+                    width={24}
+                    height={24}
+                  />
+                  <span className="text-lg">
+                    {category.name}
+                    <ChevronDown className="inline-block h-5 w-5 ml-1" />
+                  </span>
+                </button>
+              </div>
+            ))}
+            <button
+              onClick={() => {
+                setShowShopByBreed(!showShopByBreed);
+                setShowShopByCategory(false);
+              }}
+              className="text-lg hover:text-[#F59A11] transition-colors outline-none focus:underline"
+            >
+              Shop By Breed
+              <ChevronDown className="inline-block h-4 w-4" />
+            </button>
+          </div>
         </div>
-      </div>
       </div>
 
       {/* Mobile Navigation Trigger */}

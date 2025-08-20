@@ -16,11 +16,14 @@ import { addProductToCart } from "@/app/apis/addProductToCart";
 import { getCoupons } from "@/app/apis/getCoupons";
 import { getAddresses } from "@/app/apis/getAddresses";
 import { createOrder } from "@/app/apis/createOrder";
+import { checkDelivery } from "@/app/apis/checkDelivery";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { getCookie } from "@/utils/cookies/getCookie";
+import { setCookie } from "@/utils/cookies/setCookie";
 import CheckoutDialog from "@/components/cart/CheckoutDialog";
 import { apiService } from "../apis/apiService";
+import AddressSelection from "@/components/cart/AddressSelection";
 
 const CartPage = () => {
   const [pincode, setPincode] = useState("");
@@ -28,6 +31,8 @@ const CartPage = () => {
   const [qtyChangeLoadingIds, setQtyChangeLoadingIds] = useState([]);
   const [deleteLoadingIds, setDeleteLoadingIds] = useState([]);
   const [isCheckoutDialogOpen, setIsCheckoutDialogOpen] = useState(false);
+  const [deliveryLoading, setDeliveryLoading] = useState(false);
+  const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
   const router = useRouter();
   const queryClient = useQueryClient();
   const [params, setParams] = useState({
@@ -157,6 +162,35 @@ const CartPage = () => {
   const handleRemoveCoupon = () => {
     setAppliedCoupon(null);
     setParams((prev) => ({ ...prev, coupon_id: null }));
+  };
+
+  const onCheckDelivery = async () => {
+    if (!pincode || pincode.length !== 6) {
+      toast.error("Please enter a valid 6-digit pincode");
+      return;
+    }
+
+    setDeliveryLoading(true);
+    try {
+      const response = await checkDelivery({
+        pincode: pincode,
+        productId: cartData?.items?.[0]?.productId?._id || null,
+      });
+      
+      if (response?.success) {
+        setExpectedDeliveryDate(response?.data || "Available for delivery");
+        toast.success("Delivery available for this pincode!");
+      } else {
+        setExpectedDeliveryDate("Not available for delivery");
+        toast.error(response?.message || "Delivery not available for this pincode");
+      }
+    } catch (error) {
+      console.error("Delivery check error:", error);
+      setExpectedDeliveryDate("Error checking delivery");
+      toast.error("Failed to check delivery. Please try again.");
+    } finally {
+      setDeliveryLoading(false);
+    }
   };
 
   const onNavigateToProduct = (id) => {
@@ -291,16 +325,45 @@ const CartPage = () => {
             <PincodeInput
               pincode={pincode}
               onPincodeChange={setPincode}
-              onCheckDelivery={() => {}}
+              onCheckDelivery={onCheckDelivery}
               className={"m-4"}
             />
+
+            {/* Delivery Status Display */}
+            {expectedDeliveryDate && (
+              <div className="mx-4 mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="flex items-center gap-2 text-sm">
+                  <span className="font-medium text-gray-700">Delivery Status:</span>
+                  <span className={`font-semibold ${
+                    expectedDeliveryDate === "Available for delivery" 
+                      ? "text-green-600" 
+                      : expectedDeliveryDate === "Not available for delivery"
+                      ? "text-red-600"
+                      : "text-blue-600"
+                  }`}>
+                    {expectedDeliveryDate}
+                  </span>
+                </div>
+              </div>
+            )}
 
             <CartCouponSection
               coupons={couponsData || []}
               appliedCoupon={appliedCoupon}
               onApply={handleApplyCoupon}
               onRemove={handleRemoveCoupon}
+              cartTotal={totalPrice}
             />
+            
+            <AddressSelection
+              addresses={addressesData || []}
+              selectedAddressId={params.address_id}
+              onAddressChange={(addressId) => {
+                setParams(prev => ({ ...prev, address_id: addressId }));
+                setCookie("addressId", addressId);
+              }}
+            />
+            
             <div className="border-b border-[#0000001A]" />
             <CartSummary
               totalMrp={totalPrice}
