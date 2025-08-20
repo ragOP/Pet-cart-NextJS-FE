@@ -30,7 +30,9 @@ const MobileMenu = React.memo(({
   isCheckingPincode,
   showPincodeResult,
   pincodeResult,
-  onClearPincodeResult
+  onClearPincodeResult,
+  isLoggedIn,
+  user
 }) => {
   return (
     <div
@@ -121,40 +123,67 @@ const MobileMenu = React.memo(({
         </div>
 
         <div className="space-y-2">
-          <button
-            className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
-            onClick={() => {
-              router.push('/track-order');
-              setIsMenuOpen(false);
-            }}
-          >
-            <CustomImage src={truckIcon} alt="Track Order" className="h-6 w-6" width={24} height={24} />
-            <span className="text-gray-700">Track Order</span>
-          </button>
-          <button
-            className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
-            onClick={() => {
-              router.push('/cart');
-              setIsMenuOpen(false);
-            }}
-          >
-            <CustomImage src={cartIcon} alt="Cart" className="h-6 w-6" width={24} height={24} />
-            <span className="text-gray-700">Cart</span>
-          </button>
+          {isLoggedIn && (
+            <>
+              <button
+                className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
+                onClick={() => {
+                  router.push('/track-order');
+                  setIsMenuOpen(false);
+                }}
+              >
+                <CustomImage src={truckIcon} alt="Track Order" className="h-6 w-6" width={24} height={24} />
+                <span className="text-gray-700">Track Order</span>
+              </button>
+              <button
+                className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
+                onClick={() => {
+                  router.push('/cart');
+                  setIsMenuOpen(false);
+                }}
+              >
+                <CustomImage src={cartIcon} alt="Cart" className="h-6 w-6" width={24} height={24} />
+                <span className="text-gray-700">Cart</span>
+              </button>
+            </>
+          )}
         </div>
       </div>
 
       <div className="p-4 border-t">
-        <button
-          className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2"
-          onClick={() => {
-            router.push('/auth/login');
-            setIsMenuOpen(false);
-          }}
-        >
-          <CustomImage src={loginLogo} alt="Login" className="h-4 w-auto" width={20} height={20} />
-          <span>LOGIN / SIGNUP</span>
-        </button>
+        {isLoggedIn ? (
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-xl">
+              <User size={20} className="text-gray-600" />
+              <div className="flex-1">
+                <div className="font-medium text-gray-900">
+                  {user?.firstName} {user?.lastName}
+                </div>
+                <div className="text-sm text-gray-600">{user?.email}</div>
+              </div>
+            </div>
+            <button
+              className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium"
+              onClick={() => {
+                router.push('/account');
+                setIsMenuOpen(false);
+              }}
+            >
+              My Account
+            </button>
+          </div>
+        ) : (
+          <button
+            className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2"
+            onClick={() => {
+              router.push('/auth/login');
+              setIsMenuOpen(false);
+            }}
+          >
+            <CustomImage src={loginLogo} alt="Login" className="h-4 w-auto" width={20} height={20} />
+            <span>LOGIN / SIGNUP</span>
+          </button>
+        )}
       </div>
     </div>
   );
@@ -420,6 +449,8 @@ const Header = ({ logo }) => {
             showPincodeResult={showPincodeResult}
             pincodeResult={pincodeResult}
             onClearPincodeResult={clearPincodeResult}
+            isLoggedIn={isLoggedIn}
+            user={user}
           />
         )}
       </div>

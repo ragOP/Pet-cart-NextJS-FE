@@ -12,6 +12,8 @@ import { ChevronDown } from "lucide-react";
 import CustomerFeedbackIcon from "@/icons/CustomerFeedbackIcon";
 import ReviewModal from "./ReviewModal";
 import { checkIfUserBoughtProduct } from "@/app/apis/checkIfUserBoughtProduct";
+import { useSelector } from "react-redux";
+import { selectToken } from "@/store/authSlice";
 
 const StarRating = ({ filled }) => {
   return (
@@ -80,16 +82,23 @@ const ProductReviews = ({ reviews = {}, productName = "Product", productId }) =>
   const [sortBy, setSortBy] = useState("Most Recent");
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [canWriteReview, setCanWriteReview] = useState(false);
-  const [isCheckingReviewEligibility, setIsCheckingReviewEligibility] = useState(true);
+  const [isCheckingReviewEligibility, setIsCheckingReviewEligibility] = useState(false);
   const [sortedReviews, setSortedReviews] = useState([]);
+  
+  // Authentication state
+  const token = useSelector(selectToken);
+  const isLoggedIn = !!token;
 
   useEffect(() => {
     const checkReviewEligibility = async () => {
-      if (!productId) {
+      // Only check eligibility if user is logged in and productId exists
+      if (!isLoggedIn || !productId) {
         setIsCheckingReviewEligibility(false);
+        setCanWriteReview(false);
         return;
       }
 
+      setIsCheckingReviewEligibility(true);
       try {
         const response = await checkIfUserBoughtProduct(productId);
         if (response?.success) {
@@ -106,7 +115,7 @@ const ProductReviews = ({ reviews = {}, productName = "Product", productId }) =>
     };
 
     checkReviewEligibility();
-  }, [productId]);
+  }, [productId, isLoggedIn]); // Added isLoggedIn to dependencies
 
   // Calculate rating statistics from actual data
   const calculateRatingStats = () => {
@@ -213,7 +222,18 @@ const ProductReviews = ({ reviews = {}, productName = "Product", productId }) =>
         </div>
 
         <div className="flex-1 flex justify-end">
-          {!isCheckingReviewEligibility && canWriteReview && (
+          {!isLoggedIn ? (
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">Login to write a review</p>
+              <Button
+                variant="outline"
+                className="border-[#F59A1133] hover:bg-orange-50 hover:border-orange-300 transition-colors"
+                onClick={() => window.location.href = '/auth/login'}
+              >
+                Login
+              </Button>
+            </div>
+          ) : !isCheckingReviewEligibility && canWriteReview ? (
             <Button
               variant="outline"
               className="border-[#F59A1133] hover:bg-orange-50 hover:border-orange-300 transition-colors"
@@ -221,6 +241,14 @@ const ProductReviews = ({ reviews = {}, productName = "Product", productId }) =>
             >
               Write A Review
             </Button>
+          ) : !isCheckingReviewEligibility && !canWriteReview ? (
+            <div className="text-center">
+              <p className="text-sm text-gray-600">Purchase this product to review</p>
+            </div>
+          ) : (
+            <div className="text-center">
+              <p className="text-sm text-gray-600">Checking eligibility...</p>
+            </div>
           )}
         </div>
       </div>

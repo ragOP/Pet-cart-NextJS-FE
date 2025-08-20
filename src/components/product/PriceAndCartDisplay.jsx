@@ -5,6 +5,8 @@ import { addProductToCart } from "@/app/apis/addProductToCart";
 import { toast } from "sonner";
 import { getCart } from "@/app/apis/getCart";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { selectToken } from "@/store/authSlice";
 
 const PriceAndCartDisplay = ({
   price,
@@ -17,10 +19,14 @@ const PriceAndCartDisplay = ({
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const token = useSelector(selectToken);
+  const isLoggedIn = !!token;
+
   const { data: cartData } = useQuery({
     queryKey: ["cart"],
     queryFn: () => getCart({ params: {} }),
     select: (res) => res?.data || null,
+    enabled: isLoggedIn, // Only fetch cart when user is logged in
   });
 
   const isProductInCart = cartData?.items?.some((item) => {
@@ -49,6 +55,12 @@ const PriceAndCartDisplay = ({
   const discount = calculateDiscountPercent(price, salePrice);
 
   const handleAddToCart = () => {
+    if (!isLoggedIn) {
+      toast.error("Please login to add products to cart");
+      router.push("/auth/login");
+      return;
+    }
+    
     setLoading(true);
     if (variantId) {
       addToCart({ variantId, productId, quantity });
