@@ -116,7 +116,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 z-50 bg-black/80" />
         <DialogContent
-          className="fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] !w-[60vw] !max-w-none h-auto border-0 p-0 shadow-2xl overflow-hidden rounded-2xl"
+          className="fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] !w-[60vw] !h-[70vh] !max-w-none border-0 p-0 shadow-2xl overflow-hidden rounded-2xl"
           showCloseButton={false}
         >
           <button
