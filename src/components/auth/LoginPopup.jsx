@@ -25,12 +25,10 @@ import { updateProfile } from "@/app/apis/updateProfile";
 
 const LoginPopup = ({ isOpen, onClose }) => {
   const [form, setForm] = useState({ phoneNumber: "", otp: "", email: "" });
-  const [error, setError] = useState("");
   const [step, setStep] = useState(1);
   const [countdown, setCountdown] = useState(0);
   const [otpLoading, setOtpLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [notifyChecked, setNotifyChecked] = useState(false);
   const [isExistingUser, setIsExistingUser] = useState(null);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -47,13 +45,14 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
-    setError("");
   };
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
     if (!/^\d{10}$/.test(form.phoneNumber)) {
-      setError("Enter a valid 10-digit phone number");
+      toast.error("Enter a valid 10-digit phone number", {
+        position: "top-right",
+      });
       return;
     }
     setOtpLoading(true);
@@ -74,14 +73,12 @@ const LoginPopup = ({ isOpen, onClose }) => {
           description: apiResponse?.data?.message || "OTP Sending failed",
           position: "top-right",
         });
-        setError(apiResponse?.data?.message || "OTP Sending failed");
       }
     } catch (err) {
       toast.error("OTP Sending Failed", {
         description: err?.message || "OTP Sending failed",
         position: "top-right",
       });
-      setError(err?.message || "OTP Sending failed");
     } finally {
       setOtpLoading(false);
     }
@@ -90,7 +87,9 @@ const LoginPopup = ({ isOpen, onClose }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!form.otp) {
-      setError("Enter the OTP sent to your phone");
+      toast.error("Enter the OTP sent to your phone", {
+        position: "top-right",
+      });
       return;
     }
     setIsLoading(true);
@@ -128,14 +127,12 @@ const LoginPopup = ({ isOpen, onClose }) => {
           description: msg,
           position: "top-right",
         });
-        setError(msg);
       }
     } catch (err) {
       toast.error("Login Failed", {
         description: err?.message || "Login failed",
         position: "top-right",
       });
-      setError(err?.message || "Login failed");
     } finally {
       setIsLoading(false);
     }
@@ -144,11 +141,15 @@ const LoginPopup = ({ isOpen, onClose }) => {
   const handleCompleteRegistration = async (e) => {
     e.preventDefault();
     if (!form.email) {
-      setError("Please enter your email address");
+      toast.error("Please enter your email address", {
+        position: "top-right",
+      });
       return;
     }
     if (!/\S+@\S+\.\S+/.test(form.email)) {
-      setError("Please enter a valid email address");
+      toast.error("Please enter a valid email address", {
+        position: "top-right",
+      });
       return;
     }
     setIsLoading(true);
@@ -157,13 +158,14 @@ const LoginPopup = ({ isOpen, onClose }) => {
         typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
       if (!token) {
-        setError("Session expired. Please try again.");
+        toast.error("Session expired. Please try again.", {
+          position: "top-right",
+        });
         return;
       }
       const apiResponse = await updateProfile({
         data: {
           email: form.email,
-          notify: notifyChecked,
         },
         token: token,
       });
@@ -190,10 +192,12 @@ const LoginPopup = ({ isOpen, onClose }) => {
           description: msg,
           position: "top-right",
         });
-        setError(msg);
       }
     } catch (err) {
-      setError(err?.message || "Registration failed");
+      toast.error("Registration Failed", {
+        description: err?.message || "Registration failed",
+        position: "top-right",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -218,14 +222,12 @@ const LoginPopup = ({ isOpen, onClose }) => {
           description: apiResponse?.data?.message || "OTP Sending failed",
           position: "top-right",
         });
-        setError(apiResponse?.data?.message || "OTP Sending failed");
       }
     } catch (err) {
       toast.error("OTP Sending Failed", {
         description: err?.message || "OTP Sending failed",
         position: "top-right",
       });
-      setError(err?.message || "OTP Sending failed");
     } finally {
       setOtpLoading(false);
     }
@@ -233,10 +235,8 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
   const resetForm = () => {
     setForm({ phoneNumber: "", otp: "", email: "" });
-    setError("");
     setStep(1);
     setCountdown(0);
-    setNotifyChecked(false);
     setIsExistingUser(null);
   };
 
@@ -250,11 +250,9 @@ const LoginPopup = ({ isOpen, onClose }) => {
     if (targetStep === 1) {
       setForm({ ...form, otp: "" });
       setCountdown(0);
-      setError("");
     }
     if (targetStep === 2) {
       setForm({ ...form, email: "" });
-      setError("");
     }
     setStep(targetStep);
   };
@@ -476,31 +474,6 @@ const LoginPopup = ({ isOpen, onClose }) => {
                       <p className="text-[10px] text-gray-500 mt-1 text-center">
                         We'll use this to send you exclusive & offers.
                       </p>
-                    </div>
-                  )}
-
-                  <div className="flex items-center">
-                    <button
-                      type="button"
-                      onClick={() => setNotifyChecked(!notifyChecked)}
-                      className={`flex items-center justify-center w-4 h-4 border-2 rounded mr-2 transition-colors ${
-                        notifyChecked
-                          ? "border-[#1F5163] bg-[#1F5163]"
-                          : "border-gray-300 hover:border-[#1F5163]"
-                      }`}
-                    >
-                      {notifyChecked && (
-                        <Check size={11} className="text-white" />
-                      )}
-                    </button>
-                    <span className="text-[11px] text-gray-700">
-                      Notify me for any updates & offers
-                    </span>
-                  </div>
-
-                  {error && (
-                    <div className="text-red-500 text-xs bg-red-50 p-2.5 rounded-lg border border-red-200">
-                      {error}
                     </div>
                   )}
 
