@@ -58,7 +58,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
     setOtpLoading(true);
     try {
       const apiResponse = await sendOtp({
-        phoneNumber: form.phoneNumber,
+        phoneNumber: form.phoneNumber
       });
       if (apiResponse?.success) {
         toast.success("OTP Sent Successfully!", {
@@ -208,8 +208,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
     setOtpLoading(true);
     try {
       const apiResponse = await sendOtp({
-        phoneNumber: form.phoneNumber,
-        origin: "login",
+        phoneNumber: form.phoneNumber
       });
       if (apiResponse?.success) {
         toast.success("OTP Resent", {
@@ -481,7 +480,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     type="submit"
                     className="w-full bg-[#1F5163] text-white py-1.5 rounded-lg font-medium hover:bg-[#1F516] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg cursor-pointer"
                     disabled={
-                      isLoading || otpLoading || (step === 1 && countdown > 0)
+                      isLoading || otpLoading
                     }
                   >
                     {step === 1 ? (
@@ -490,8 +489,6 @@ const LoginPopup = ({ isOpen, onClose }) => {
                           <span className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                           Sending OTP...
                         </span>
-                      ) : countdown > 0 ? (
-                        `Resend OTP in ${countdown}s`
                       ) : (
                         "Send OTP"
                       )
@@ -513,6 +510,19 @@ const LoginPopup = ({ isOpen, onClose }) => {
                       "Complete Registration"
                     )}
                   </button>
+
+                  {step === 2 && (
+                    <div className="text-center">
+                      <button
+                        type="button"
+                        onClick={handleResendOtp}
+                        disabled={countdown > 0 || otpLoading}
+                        className="text-[#1F5163] text-xs hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {countdown > 0 ? `Resend OTP in ${countdown}s` : "Resend OTP"}
+                      </button>
+                    </div>
+                  )}
 
                   <div className="text-center text-[11px] text-gray-500 mt-1">
                     By continuing, you agree to our{" "}
