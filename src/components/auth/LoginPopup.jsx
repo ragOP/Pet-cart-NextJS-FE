@@ -16,6 +16,12 @@ import easyPng from "@/assets/easy.png";
 import firstPng from "@/assets/first.png";
 import curatedPng from "@/assets/curated.png";
 import petPng from "@/assets/pet.png";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { setAuth } from "@/store/authSlice";
+import { sendOtp } from "@/app/apis/sendOtp";
+import { loginUser } from "@/app/apis/loginUser";
+import { updateProfile } from "@/app/apis/updateProfile";
 
 const LoginPopup = ({ isOpen, onClose }) => {
   const [form, setForm] = useState({ phoneNumber: "", otp: "", email: "" });
@@ -26,6 +32,8 @@ const LoginPopup = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [notifyChecked, setNotifyChecked] = useState(false);
   const [isExistingUser, setIsExistingUser] = useState(null);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   React.useEffect(() => {
     let timer;
@@ -50,8 +58,24 @@ const LoginPopup = ({ isOpen, onClose }) => {
     }
     setOtpLoading(true);
     try {
-      setStep(2);
-      setCountdown(60);
+      const apiResponse = await sendOtp({
+        phoneNumber: form.phoneNumber,
+      });
+      if (apiResponse?.success) {
+        toast.success("OTP Sent Successfully!", {
+          description: "Please check your phone for the OTP.",
+          position: "top-right",
+        });
+        setForm({ ...form, otp: "" });
+        setStep(2);
+        setCountdown(60);
+      } else {
+        toast.error("OTP Sending Failed", {
+          description: apiResponse?.data?.message || "OTP Sending failed",
+          position: "top-right",
+        });
+        setError(apiResponse?.data?.message || "OTP Sending failed");
+      }
     } catch (err) {
       toast.error("OTP Sending Failed", {
         description: err?.message || "OTP Sending failed",
@@ -71,7 +95,41 @@ const LoginPopup = ({ isOpen, onClose }) => {
     }
     setIsLoading(true);
     try {
-      setStep(3);
+      const apiResponse = await loginUser({
+        phoneNumber: form.phoneNumber,
+        otp: form.otp,
+      });
+      if (apiResponse?.success) {
+        const data = apiResponse.data;
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem("token", data.token);
+        }
+
+        if (data.isExisitinguser === true) {
+          dispatch(setAuth({ token: data.token, user: data.user }));
+          toast.success("Login Successful!", {
+            description: "Welcome back to PetCaart.",
+            position: "top-right",
+          });
+          setIsExistingUser(true);
+          setTimeout(() => {
+            router.push("/");
+            onClose?.();
+          }, 1000);
+        } else {
+          setIsExistingUser(false);
+          setStep(3);
+        }
+      } else {
+        const msg =
+          apiResponse?.message || apiResponse?.data?.message || "Login failed";
+        toast.error("Login Failed", {
+          description: msg,
+          position: "top-right",
+        });
+        setError(msg);
+      }
     } catch (err) {
       toast.error("Login Failed", {
         description: err?.message || "Login failed",
@@ -95,10 +153,81 @@ const LoginPopup = ({ isOpen, onClose }) => {
     }
     setIsLoading(true);
     try {
+      const token =
+        typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
+      if (!token) {
+        setError("Session expired. Please try again.");
+        return;
+      }
+      const apiResponse = await updateProfile({
+        data: {
+          email: form.email,
+          notify: notifyChecked,
+        },
+        token: token,
+      });
+
+      if (apiResponse?.success) {
+        const userData = apiResponse.data?.data || apiResponse.data;
+
+        dispatch(setAuth({ token: token, user: userData }));
+
+        toast.success("Account Created!", {
+          description: "Welcome to PetCaart.",
+          position: "top-right",
+        });
+        setTimeout(() => {
+          router.push("/");
+          onClose?.();
+        }, 1000);
+      } else {
+        const msg =
+          apiResponse?.message ||
+          apiResponse?.data?.message ||
+          "Registration failed";
+        toast.error("Registration Failed", {
+          description: msg,
+          position: "top-right",
+        });
+        setError(msg);
+      }
     } catch (err) {
       setError(err?.message || "Registration failed");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (countdown > 0 || otpLoading) return;
+    setOtpLoading(true);
+    try {
+      const apiResponse = await sendOtp({
+        phoneNumber: form.phoneNumber,
+        origin: "login",
+      });
+      if (apiResponse?.success) {
+        toast.success("OTP Resent", {
+          description: "Please check your phone for the OTP.",
+          position: "top-right",
+        });
+        setCountdown(60);
+      } else {
+        toast.error("OTP Sending Failed", {
+          description: apiResponse?.data?.message || "OTP Sending failed",
+          position: "top-right",
+        });
+        setError(apiResponse?.data?.message || "OTP Sending failed");
+      }
+    } catch (err) {
+      toast.error("OTP Sending Failed", {
+        description: err?.message || "OTP Sending failed",
+        position: "top-right",
+      });
+      setError(err?.message || "OTP Sending failed");
+    } finally {
+      setOtpLoading(false);
     }
   };
 
@@ -117,7 +246,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
   };
 
   const handleStepClick = (targetStep) => {
-    if (targetStep >= step) return; // only allow moving back
+    if (targetStep >= step) return;
     if (targetStep === 1) {
       setForm({ ...form, otp: "" });
       setCountdown(0);
@@ -135,7 +264,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 z-50 bg-black/80" />
         <DialogContent
-          className="fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] w-[95vw] lg:!w-[70vw] h-[70vh] lg:!h-[70vh] !max-w-none border-0 p-0 shadow-2xl overflow-hidden rounded-2xl bg-[#1F5163]"
+          className="fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] w-[95vw] lg:!w-[70vw] h-[57vh] lg:!h-[70vh] !max-w-none border-0 p-0 shadow-2xl overflow-hidden rounded-2xl bg-[#1F5163]"
           showCloseButton={false}
         >
           <button
@@ -168,7 +297,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     </div>
                     <div className="mt-3 text-center">
                       <div className="font-semibold">Curated Care</div>
-                      <div className="text-[11px] text-gray-600 leading-snug mt-1">
+                      <div className="text-[11px] text-[#f49911] leading-snug mt-1">
                         Handpicked essentials tailored to every pet’s need.
                       </div>
                     </div>
@@ -185,7 +314,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     </div>
                     <div className="mt-3 text-center">
                       <div className="font-semibold">Pet First</div>
-                      <div className="text-[11px] text-gray-600 leading-snug mt-1">
+                      <div className="text-[11px] text-[#f49911] leading-snug mt-1">
                         Every choice designed for pets from heart.
                       </div>
                     </div>
@@ -202,7 +331,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     </div>
                     <div className="mt-3 text-center">
                       <div className="font-semibold">Easy Shop</div>
-                      <div className="text-[11px] text-gray-600 leading-snug mt-1">
+                      <div className="text-[11px] text-[#f49911] leading-snug mt-1">
                         Quick, simple, and seamless pet shopping anytime.
                       </div>
                     </div>

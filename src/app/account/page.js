@@ -11,7 +11,7 @@ export default function AccountPage() {
 
   useEffect(() => {
     if (!token) {
-      router.replace("/auth/login");
+      router.replace("/");
     } else {
       router.replace("/account/profile");
     }
