@@ -11,6 +11,7 @@ import { selectToken, selectUser } from "@/store/authSlice";
 import HeaderUserSection from "./HeaderUserSection";
 import { checkDelivery } from "@/app/apis/checkDelivery";
 import { toast } from "sonner";
+import LoginPopup from "@/components/auth/LoginPopup";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +33,8 @@ const MobileMenu = React.memo(({
   pincodeResult,
   onClearPincodeResult,
   isLoggedIn,
-  user
+  user,
+  onLoginClick
 }) => {
   return (
     <div
@@ -89,7 +91,7 @@ const MobileMenu = React.memo(({
               )}
             </button>
           </div>
-          
+
           {/* Pincode Result Display */}
           {showPincodeResult && pincodeResult && (
             <div className="bg-white border border-gray-200 rounded-lg p-3 shadow-lg">
@@ -176,7 +178,7 @@ const MobileMenu = React.memo(({
           <button
             className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2"
             onClick={() => {
-              router.push('/auth/login');
+              onLoginClick && onLoginClick();
               setIsMenuOpen(false);
             }}
           >
@@ -212,6 +214,7 @@ const Header = ({ logo }) => {
   const searchInputRef = React.useRef(null);
   const menuRef = React.useRef(null);
   const debounceTimeoutRef = useRef(null);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -261,20 +264,20 @@ const Header = ({ logo }) => {
 
     setIsCheckingPincode(true);
     setShowPincodeResult(false);
-    
+
     try {
-      const result = await checkDelivery({ 
-        pincode: pincodeValue, 
+      const result = await checkDelivery({
+        pincode: pincodeValue,
         productId: "general" // Using a general product ID for pincode validation
       });
       setPincodeResult(result);
       setShowPincodeResult(true);
-      
+
       // Auto-hide result after 5 seconds
       setTimeout(() => {
         setShowPincodeResult(false);
       }, 5000);
-      
+
     } catch (error) {
       console.error("Pincode check failed:", error);
       toast.error(error.message || "Failed to check pincode. Please try again.");
@@ -302,18 +305,18 @@ const Header = ({ logo }) => {
     }
 
     setIsCheckingPincode(true);
-    
+
     try {
-      const result = await checkDelivery({ 
-        pincode: dialogPincodeValue, 
+      const result = await checkDelivery({
+        pincode: dialogPincodeValue,
         productId: "general"
       });
       setDialogPincodeResult(result);
       setShowDialogPincodeResult(true);
-      
+
       // Don't auto-close immediately, let user see the results
       // User can manually close the dialog when ready
-      
+
     } catch (error) {
       console.error("Pincode check failed:", error);
       toast.error(error.message || "Failed to check pincode. Please try again.");
@@ -338,12 +341,12 @@ const Header = ({ logo }) => {
   const handleSearchChange = useCallback((value) => {
     // Update the search value immediately for the input display
     setSearchValue(value);
-    
+
     // Clear any existing timeout
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
     }
-    
+
     // Always redirect, even for empty searches
     debounceTimeoutRef.current = setTimeout(() => {
       if (value.trim()) {
@@ -451,6 +454,7 @@ const Header = ({ logo }) => {
             onClearPincodeResult={clearPincodeResult}
             isLoggedIn={isLoggedIn}
             user={user}
+            onLoginClick={() => setShowLoginPopup(true)}
           />
         )}
       </div>
@@ -561,7 +565,7 @@ const Header = ({ logo }) => {
           <DialogHeader>
             <DialogTitle className="text-lg font-medium">Check Delivery by Pincode</DialogTitle>
           </DialogHeader>
-          
+
           <div className="space-y-4">
             <div className="relative">
               <MapPin size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-600" />
@@ -575,7 +579,7 @@ const Header = ({ logo }) => {
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-base"
               />
             </div>
-            
+
             <button
               onClick={handleDialogPincodeCheck}
               disabled={isCheckingPincode || dialogPincodeValue.length !== 6}
@@ -590,7 +594,7 @@ const Header = ({ logo }) => {
                 "Check Delivery"
               )}
             </button>
-            
+
             {showDialogPincodeResult && dialogPincodeResult && (
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                 <div className="text-center">
@@ -622,6 +626,7 @@ const Header = ({ logo }) => {
           </div>
         </DialogContent>
       </Dialog>
+      <LoginPopup isOpen={showLoginPopup} onClose={() => setShowLoginPopup(false)} />
     </div>
   );
 }

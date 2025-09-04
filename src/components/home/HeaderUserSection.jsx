@@ -19,12 +19,7 @@ export default function HeaderUserSection() {
 
   const handleLoginClick = () => {
     if (!isClient) return;
-
-    if (isDesktop) {
-      setShowLoginPopup(true);
-    } else {
-      router.push('/auth/login');
-    }
+    setShowLoginPopup(true);
   };
 
   return (
