@@ -16,6 +16,7 @@ import easyPng from "@/assets/easy.png";
 import firstPng from "@/assets/first.png";
 import curatedPng from "@/assets/curated.png";
 import petPng from "@/assets/pet.png";
+import paw from "@/assets/paw.png";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setAuth } from "@/store/authSlice";
@@ -58,7 +59,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
     setOtpLoading(true);
     try {
       const apiResponse = await sendOtp({
-        phoneNumber: form.phoneNumber
+        phoneNumber: form.phoneNumber,
       });
       if (apiResponse?.success) {
         toast.success("OTP Sent Successfully!", {
@@ -208,7 +209,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
     setOtpLoading(true);
     try {
       const apiResponse = await sendOtp({
-        phoneNumber: form.phoneNumber
+        phoneNumber: form.phoneNumber,
       });
       if (apiResponse?.success) {
         toast.success("OTP Resent", {
@@ -284,7 +285,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                   {/* Card 1 */}
-                  <div className="bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
+                  <div className="relative pb-5 bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
                     <div className="w-full rounded-lg overflow-hidden">
                       <Image
                         src={curatedPng}
@@ -293,15 +294,22 @@ const LoginPopup = ({ isOpen, onClose }) => {
                       />
                     </div>
                     <div className="mt-3 text-center">
-                      <div className="font-semibold">Curated Care</div>
+                      <div className="font-semibold text-sm">Curated Care</div>
                       <div className="text-[11px] text-[#f49911] leading-snug mt-1">
                         Handpicked essentials tailored to every pet’s need.
                       </div>
                     </div>
+                    <div className="absolute bottom-2 right-3">
+                      <Image
+                        src={paw}
+                        alt="Curated Care"
+                        className="w-full h-[20px] object-cover"
+                      />
+                    </div>
                   </div>
 
                   {/* Card 2 */}
-                  <div className="bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
+                  <div className="relative pb-5 bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
                     <div className="w-full rounded-lg overflow-hidden">
                       <Image
                         src={firstPng}
@@ -310,15 +318,22 @@ const LoginPopup = ({ isOpen, onClose }) => {
                       />
                     </div>
                     <div className="mt-3 text-center">
-                      <div className="font-semibold">Pet First</div>
+                      <div className="font-semibold text-sm">Pet First</div>
                       <div className="text-[11px] text-[#f49911] leading-snug mt-1">
                         Every choice designed for pets from heart.
                       </div>
                     </div>
+                    <div className="absolute bottom-2 right-3">
+                      <Image
+                        src={paw}
+                        alt="Curated Care"
+                        className="w-full h-[20px] object-cover"
+                      />
+                    </div>
                   </div>
 
                   {/* Card 3 */}
-                  <div className="bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
+                  <div className="relative pb-5 bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
                     <div className="w-full rounded-lg overflow-hidden">
                       <Image
                         src={easyPng}
@@ -327,10 +342,17 @@ const LoginPopup = ({ isOpen, onClose }) => {
                       />
                     </div>
                     <div className="mt-3 text-center">
-                      <div className="font-semibold">Easy Shop</div>
+                      <div className="font-semibold text-sm">Easy Shop</div>
                       <div className="text-[11px] text-[#f49911] leading-snug mt-1">
                         Quick, simple, and seamless pet shopping anytime.
                       </div>
+                    </div>
+                    <div className="absolute bottom-2 right-3">
+                      <Image
+                        src={paw}
+                        alt="Curated Care"
+                        className="w-full h-[20px] object-cover"
+                      />
                     </div>
                   </div>
                 </div>
@@ -479,9 +501,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                   <button
                     type="submit"
                     className="w-full bg-[#1F5163] text-white py-1.5 rounded-lg font-medium hover:bg-[#1F516] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg cursor-pointer"
-                    disabled={
-                      isLoading || otpLoading
-                    }
+                    disabled={isLoading || otpLoading}
                   >
                     {step === 1 ? (
                       otpLoading ? (
@@ -519,7 +539,9 @@ const LoginPopup = ({ isOpen, onClose }) => {
                         disabled={countdown > 0 || otpLoading}
                         className="text-[#1F5163] text-xs hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {countdown > 0 ? `Resend OTP in ${countdown}s` : "Resend OTP"}
+                        {countdown > 0
+                          ? `Resend OTP in ${countdown}s`
+                          : "Resend OTP"}
                       </button>
                     </div>
                   )}
