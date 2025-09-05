@@ -12,8 +12,10 @@ import { ChevronDown } from "lucide-react";
 import CustomerFeedbackIcon from "@/icons/CustomerFeedbackIcon";
 import ReviewModal from "./ReviewModal";
 import { checkIfUserBoughtProduct } from "@/app/apis/checkIfUserBoughtProduct";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "@/store/authSlice";
+import { openLoginPopup, setLoginRedirectUrl } from "@/store/uiSlice";
+import { useRouter } from "next/navigation";
 
 const StarRating = ({ filled }) => {
   return (
@@ -84,10 +86,12 @@ const ProductReviews = ({ reviews = {}, productName = "Product", productId }) =>
   const [canWriteReview, setCanWriteReview] = useState(false);
   const [isCheckingReviewEligibility, setIsCheckingReviewEligibility] = useState(false);
   const [sortedReviews, setSortedReviews] = useState([]);
-  
+
   // Authentication state
   const token = useSelector(selectToken);
   const isLoggedIn = !!token;
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const checkReviewEligibility = async () => {
@@ -228,7 +232,14 @@ const ProductReviews = ({ reviews = {}, productName = "Product", productId }) =>
               <Button
                 variant="outline"
                 className="border-[#F59A1133] hover:bg-orange-50 hover:border-orange-300 transition-colors"
-                onClick={() => window.location.href = '/auth/login'}
+                onClick={() => {
+                  try {
+                    const currentPath = window.location.pathname + window.location.search + window.location.hash;
+                    dispatch(setLoginRedirectUrl(currentPath));
+                  } catch (_) {}
+                  router.push('/');
+                  dispatch(openLoginPopup({}));
+                }}
               >
                 Login
               </Button>

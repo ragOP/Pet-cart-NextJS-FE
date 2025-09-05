@@ -1,9 +1,10 @@
 import axios from "axios";
 import { store } from "@/store/store";
 import { clearAuth } from "@/store/authSlice";
+import { openLoginPopup } from "@/store/uiSlice";
 
-// const BACKEND_URL = "https://pet-caart-be.onrender.com";
-const BACKEND_URL = "http://localhost:4000";
+const BACKEND_URL = "https://pet-caart-be.onrender.com";
+// const BACKEND_URL = "http://localhost:4000";
 
 // process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -58,7 +59,10 @@ export const apiService = async ({
     if (error?.response?.status === 401) {
       store.dispatch(clearAuth());
       if (typeof window !== "undefined") {
-        window.location.href = "/auth/login";
+        window.location.href = "/";
+        setTimeout(() => {
+          store.dispatch(openLoginPopup({}));
+        }, 100);
       }
     }
     console.error(error, "backend endpoint error");

@@ -17,9 +17,10 @@ import firstPng from "@/assets/first.png";
 import curatedPng from "@/assets/curated.png";
 import petPng from "@/assets/pet.png";
 import paw from "@/assets/paw.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setAuth } from "@/store/authSlice";
+import { selectLoginRedirectUrl, setLoginRedirectUrl, closeLoginPopup } from "@/store/uiSlice";
 import { sendOtp } from "@/app/apis/sendOtp";
 import { loginUser } from "@/app/apis/loginUser";
 import { updateProfile } from "@/app/apis/updateProfile";
@@ -32,6 +33,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isExistingUser, setIsExistingUser] = useState(null);
   const dispatch = useDispatch();
+  const redirectUrl = useSelector(selectLoginRedirectUrl);
   const router = useRouter();
 
   React.useEffect(() => {
@@ -114,7 +116,10 @@ const LoginPopup = ({ isOpen, onClose }) => {
           });
           setIsExistingUser(true);
           setTimeout(() => {
-            router.push("/");
+            const goto = redirectUrl || "/";
+            router.push(goto);
+            dispatch(setLoginRedirectUrl(null));
+            dispatch(closeLoginPopup());
             onClose?.();
             resetForm();
           }, 1000);
@@ -182,7 +187,10 @@ const LoginPopup = ({ isOpen, onClose }) => {
           position: "top-right",
         });
         setTimeout(() => {
-          router.push("/");
+          const goto = redirectUrl || "/";
+          router.push(goto);
+          dispatch(setLoginRedirectUrl(null));
+          dispatch(closeLoginPopup());
           onClose?.();
           resetForm();
         }, 1000);

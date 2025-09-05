@@ -6,8 +6,9 @@ import cartIcon from "@/assets/cart.png";
 import truckIcon from "@/assets/truck.png";
 import petLogo from "@/assets/pet.png";
 import loginLogo from "@/assets/login.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectToken, selectUser } from "@/store/authSlice";
+import { selectLoginPopupOpen, openLoginPopup, closeLoginPopup } from "@/store/uiSlice";
 import HeaderUserSection from "./HeaderUserSection";
 import { checkDelivery } from "@/app/apis/checkDelivery";
 import { toast } from "sonner";
@@ -195,6 +196,7 @@ MobileMenu.displayName = 'MobileMenu';
 
 const Header = ({ logo }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -214,7 +216,7 @@ const Header = ({ logo }) => {
   const searchInputRef = React.useRef(null);
   const menuRef = React.useRef(null);
   const debounceTimeoutRef = useRef(null);
-  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const showLoginPopup = useSelector(selectLoginPopupOpen);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -454,7 +456,7 @@ const Header = ({ logo }) => {
             onClearPincodeResult={clearPincodeResult}
             isLoggedIn={isLoggedIn}
             user={user}
-            onLoginClick={() => setShowLoginPopup(true)}
+            onLoginClick={() => dispatch(openLoginPopup({}))}
           />
         )}
       </div>
@@ -626,7 +628,7 @@ const Header = ({ logo }) => {
           </div>
         </DialogContent>
       </Dialog>
-      <LoginPopup isOpen={showLoginPopup} onClose={() => setShowLoginPopup(false)} />
+      <LoginPopup isOpen={showLoginPopup} onClose={() => dispatch(closeLoginPopup())} />
     </div>
   );
 }

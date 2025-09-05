@@ -5,8 +5,9 @@ import { addProductToCart } from "@/app/apis/addProductToCart";
 import { toast } from "sonner";
 import { getCart } from "@/app/apis/getCart";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "@/store/authSlice";
+import { openLoginPopup, setLoginRedirectUrl } from "@/store/uiSlice";
 
 const PriceAndCartDisplay = ({
   price,
@@ -19,6 +20,7 @@ const PriceAndCartDisplay = ({
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const isLoggedIn = !!token;
 
@@ -57,10 +59,15 @@ const PriceAndCartDisplay = ({
   const handleAddToCart = () => {
     if (!isLoggedIn) {
       toast.error("Please login to add products to cart");
-      router.push("/auth/login");
+      try {
+        const currentPath = window.location.pathname + window.location.search + window.location.hash;
+        dispatch(setLoginRedirectUrl(currentPath));
+      } catch (_) {}
+      router.push("/");
+      dispatch(openLoginPopup({}));
       return;
     }
-    
+
     setLoading(true);
     if (variantId) {
       addToCart({ variantId, productId, quantity });

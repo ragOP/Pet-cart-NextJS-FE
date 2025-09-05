@@ -1,6 +1,6 @@
 "use client";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,18 +8,18 @@ import CustomImage from "@/components/images/CustomImage";
 import loginLogo from "@/assets/login.png";
 import { User } from "lucide-react";
 import { useDeviceDetection } from "@/hooks/useDeviceDetection";
-import LoginPopup from "@/components/auth/LoginPopup";
+import { openLoginPopup } from "@/store/uiSlice";
 
 export default function HeaderUserSection() {
   const token = useSelector(selectToken);
   const isLoggedIn = !!token;
   const router = useRouter();
   const { isDesktop, isClient } = useDeviceDetection();
-  const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const dispatch = useDispatch();
 
   const handleLoginClick = () => {
     if (!isClient) return;
-    setShowLoginPopup(true);
+    dispatch(openLoginPopup({}));
   };
 
   return (
@@ -50,10 +50,7 @@ export default function HeaderUserSection() {
         </button>
       )}
 
-      <LoginPopup
-        isOpen={showLoginPopup}
-        onClose={() => setShowLoginPopup(false)}
-      />
+      {/* LoginPopup is rendered in Header; we trigger it globally via Redux */}
     </>
   );
 }

@@ -11,17 +11,19 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import authReducer from "./authSlice";
+import uiReducer from "./uiSlice";
 // import other reducers here as needed
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  ui: uiReducer,
   // add more slices here
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"], // add more as needed
+  whitelist: ["auth"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
