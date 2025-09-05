@@ -262,28 +262,28 @@ const LoginPopup = ({ isOpen, onClose }) => {
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 z-50 bg-black/80" />
         <DialogContent
-          className="fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] w-[95vw] lg:!w-[70vw] h-[57vh] lg:!h-[70vh] !max-w-none border-0 p-0 shadow-2xl overflow-hidden rounded-2xl bg-[#1F5163]"
+          className="fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] w-[95vw] max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl h-[50vh] lg:h-auto max-h-[80vh] border-0 p-0 shadow-2xl overflow-hidden rounded-2xl bg-[#1F5163]"
           showCloseButton={false}
         >
           <button
             onClick={handleClose}
-            className="absolute top-4 right-4 z-10 p-2 text-gray-600 hover:text-gray-800 transition-colors bg-white/80 rounded-full backdrop-blur-sm"
+            className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 z-10 p-1.5 sm:p-2 text-gray-600 hover:text-gray-800 transition-colors bg-white/80 rounded-full backdrop-blur-sm"
           >
-            <X size={20} />
+            <X size={16} className="sm:w-5 sm:h-5" />
           </button>
 
-          <div className="flex h-full">
+          <div className="flex flex-col lg:flex-row h-full">
             <div className="hidden lg:flex lg:w-[65%] h-full bg-[#1F5163] text-white relative overflow-hidden p-6 flex-col justify-center items-center">
               <div className="max-w-[520px] mx-auto w-full">
-                <h1 className="text-2xl md:text-2xl lg:text-3xl font-bold leading-tight text-center">
+                <h1 className="text-2xl lg:text-3xl font-bold leading-tight text-center">
                   Welcome to PetCaart
                 </h1>
-                <p className="text-lg md:text-xl lg:text-2xl font-semibold text-center mt-2">
-                  Your Pet’s Happiness, Our Mission
+                <p className="text-lg lg:text-xl font-semibold text-center mt-2">
+                  Your Pet's Happiness, Our Mission
                   <span className="ml-1">🧡</span>
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
                   {/* Card 1 */}
                   <div className="relative pb-5 bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
                     <div className="w-full rounded-lg overflow-hidden">
@@ -296,7 +296,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     <div className="mt-3 text-center">
                       <div className="font-semibold text-sm">Curated Care</div>
                       <div className="text-[11px] text-[#f49911] leading-snug mt-1">
-                        Handpicked essentials tailored to every pet’s need.
+                        Handpicked essentials tailored to every pet's need.
                       </div>
                     </div>
                     <div className="absolute bottom-2 right-3">
@@ -326,7 +326,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     <div className="absolute bottom-2 right-3">
                       <Image
                         src={paw}
-                        alt="Curated Care"
+                        alt="Pet First"
                         className="w-full h-[20px] object-cover"
                       />
                     </div>
@@ -350,7 +350,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     <div className="absolute bottom-2 right-3">
                       <Image
                         src={paw}
-                        alt="Curated Care"
+                        alt="Easy Shop"
                         className="w-full h-[20px] object-cover"
                       />
                     </div>
@@ -358,7 +358,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                 </div>
               </div>
             </div>
-            <div className="w-full lg:w-[35%] h[100%] bg-white lg:m-5 m-2 px-7 py-5 flex flex-col justify-center font-gotham-rounded relative rounded-2xl">
+            <div className="w-full lg:w-[35%] lg:h-[95%] h-full bg-white lg:m-2 px-7 py-5 flex flex-col justify-center font-gotham-rounded relative rounded-2xl">
               <div className="absolute top-5 left-0 right-0 flex justify-center">
                 <div className="inline-flex items-center gap-2">
                   <CustomImage
@@ -370,16 +370,6 @@ const LoginPopup = ({ isOpen, onClose }) => {
                 </div>
               </div>
               <div className="max-w-sm mx-auto w-full">
-                {/* <div className="text-center mb-5 md:mb-6">
-                  {/* <h2 className="text-sm md:text-base lg:text-lg font-bold text-gray-800">
-                    Login / Signup
-                  </h2> */}
-                {/* {step === 3 && (
-                    <p className="text-xs text-gray-600 mt-1.5 md:mt-2">
-                      We need your email to complete your registration
-                    </p>
-                  )}
-                </div> */}
                 <div className="flex items-center justify-center mb-5">
                   <div className="flex items-center space-x-2">
                     {[1, 2, 3].map((stepNum) => (
@@ -472,9 +462,9 @@ const LoginPopup = ({ isOpen, onClose }) => {
                         maxLength={6}
                         className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-2.5 text-center text-base tracking-widest"
                       />
-                      <p className="text-[10px] text-gray-500 mt-1 text-center">
+                      {/* <p className="text-[10px] text-gray-500 mt-1 text-center">
                         Didn't receive the code? Check your SMS
-                      </p>
+                      </p> */}
                     </div>
                   )}
 
@@ -500,7 +490,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                   <button
                     type="submit"
-                    className="w-full bg-[#1F5163] text-white py-1.5 rounded-lg font-medium hover:bg-[#1F516] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg cursor-pointer"
+                    className="w-full bg-[#1F5163] text-white py-1.5 mb-0 rounded-lg font-medium hover:bg-[#1F516] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg cursor-pointer"
                     disabled={isLoading || otpLoading}
                   >
                     {step === 1 ? (
@@ -532,12 +522,12 @@ const LoginPopup = ({ isOpen, onClose }) => {
                   </button>
 
                   {step === 2 && (
-                    <div className="text-center">
+                    <div className="text-center my-2">
                       <button
                         type="button"
                         onClick={handleResendOtp}
                         disabled={countdown > 0 || otpLoading}
-                        className="text-[#1F5163] text-xs hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="text-[#1F5163] text-[10px] hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {countdown > 0
                           ? `Resend OTP in ${countdown}s`
