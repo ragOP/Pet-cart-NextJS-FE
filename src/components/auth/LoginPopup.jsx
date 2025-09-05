@@ -248,6 +248,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
   };
 
   const handleStepClick = (targetStep) => {
+    if (step === 3) return;
     if (targetStep >= step) return;
     if (targetStep === 1) {
       setForm({ ...form, otp: "" });
@@ -377,14 +378,15 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     {[1, 2, 3].map((stepNum) => (
                       <React.Fragment key={stepNum}>
                         <div
-                          onClick={() => handleStepClick(stepNum)}
-                          onKeyDown={(e) => {
+                          onClick={step === 3 ? undefined : () => handleStepClick(stepNum)}
+                          onKeyDown={step === 3 ? undefined : (e) => {
                             if (e.key === "Enter" || e.key === " ") {
                               handleStepClick(stepNum);
                             }
                           }}
                           role="button"
-                          tabIndex={0}
+                          tabIndex={step === 3 && stepNum < step ? -1 : 0}
+                          aria-disabled={step === 3 && stepNum < step}
                           className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-semibold shadow-sm ${
                             stepNum <= step
                               ? "bg-[#1F5163] text-white"
@@ -393,7 +395,9 @@ const LoginPopup = ({ isOpen, onClose }) => {
                               : "bg-gray-100 text-gray-400"
                           } ${
                             stepNum < step
-                              ? "cursor-pointer hover:opacity-90"
+                              ? (step === 3
+                                  ? "cursor-default pointer-events-none"
+                                  : "cursor-pointer hover:opacity-90")
                               : "cursor-default"
                           }`}
                         >
