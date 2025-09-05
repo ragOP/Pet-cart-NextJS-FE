@@ -116,6 +116,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
           setTimeout(() => {
             router.push("/");
             onClose?.();
+            resetForm();
           }, 1000);
         } else {
           setIsExistingUser(false);
@@ -183,6 +184,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
         setTimeout(() => {
           router.push("/");
           onClose?.();
+          resetForm();
         }, 1000);
       } else {
         const msg =
