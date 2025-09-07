@@ -67,4 +67,6 @@ export const endpoints = {
   // reviews
   createReview: "api/reviews/create",
   getReviewsByProductId: "api/reviews/get-all-reviews",
+
+  gridConfig: "api/home-config/get-all-grid",
 };

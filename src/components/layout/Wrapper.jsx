@@ -29,8 +29,8 @@ const Wrapper = ({ children }) => {
 
   return (
     <>
-      <Header logo={headerFooterData?.logo} />
-      <Category />
+      <Header logo={headerFooterData?.logo} isLoading={isLoading} />
+      <Category isLoading={isLoading} />
       {children}
       <Footer
         logo={headerFooterData?.logo}
@@ -46,5 +46,5 @@ const Wrapper = ({ children }) => {
     </>
   );
 };
-
 export default Wrapper;
+
