@@ -17,13 +17,16 @@ import CustomGridLayout from "@/components/common/CustomGridLayout";
 // import Category from "@/components/home/Category";
 
 const Home = () => {
+  const homeGridConfigParams = {
+    keyword: "home",
+  };
   const {
     data: gridData,
     isLoading: gridLoading,
     isError: gridError,
   } = useQuery({
     queryKey: ["homeGridConfig"],
-    queryFn: getHomeGridConfig,
+    queryFn: () => getHomeGridConfig({ params: homeGridConfigParams }),
     select: (response) => {
       if (response?.success && response?.data) {
         return response.data;
