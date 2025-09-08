@@ -49,6 +49,9 @@ const Home = () => {
 
       <Trending />
       <Brands />
+      {gridData && gridData.length > 0 && (
+        <CustomGridLayout gridData={gridData?.[0]} isLoading={gridLoading} />
+      )}
       <NewLaunched />
       <CouponSection />
       <BestSellers />
