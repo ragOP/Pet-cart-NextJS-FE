@@ -32,7 +32,10 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
 
   // Handle single grid section
   const { grid, title, contentItems, backgroundImage, bannerImage } = gridData;
-  const { columns, rows } = grid;
+  const { columns, rows, mobileColumns, mobileRows } = grid;
+
+  // Check if we're on mobile (you can adjust this breakpoint)
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (
     <div className="w-full">
@@ -57,8 +60,8 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
         <div
           className="grid gap-4 p-4 rounded-lg"
           style={{
-            gridTemplateColumns: `repeat(${columns}, 1fr)`,
-            gridTemplateRows: `repeat(${rows}, 1fr)`,
+            gridTemplateColumns: `repeat(${isMobile ? (mobileColumns || columns) : columns}, 1fr)`,
+            gridTemplateRows: `repeat(${isMobile ? (mobileRows || rows) : rows}, 1fr)`,
             backgroundImage: backgroundImage ? `url(${backgroundImage})` : "none",
             backgroundSize: "cover",
             backgroundPosition: "center",

@@ -1,6 +1,8 @@
 import React from "react";
 
-const GridSkeleton = ({ columns = 2 }) => {
+const GridSkeleton = ({ columns = 2, mobileColumns }) => {
+  const skeletonColumns = mobileColumns || columns;
+  
   return (
     <div className="w-full animate-pulse">
       <div className="mb-8">
@@ -11,13 +13,15 @@ const GridSkeleton = ({ columns = 2 }) => {
 
         {/* Grid Container Skeleton */}
         <div 
-          className="grid gap-4 p-4 rounded-lg bg-gray-100"
+          className="grid gap-4 p-4 rounded-lg bg-gray-100 md:[grid-template-columns:repeat(var(--desktop-cols),1fr)]"
           style={{
-            gridTemplateColumns: `repeat(${columns}, 1fr)`,
+            '--mobile-cols': skeletonColumns,
+            '--desktop-cols': columns,
+            gridTemplateColumns: `repeat(var(--mobile-cols), 1fr)`,
           }}
         >
-          {/* Generate skeleton items based on columns */}
-          {Array.from({ length: columns }, (_, itemIndex) => (
+          {/* Generate skeleton items based on mobile columns */}
+          {Array.from({ length: skeletonColumns }, (_, itemIndex) => (
             <div
               key={itemIndex}
               className="bg-gray-300 rounded-lg h-48 animate-pulse"
