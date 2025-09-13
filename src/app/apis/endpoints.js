@@ -69,4 +69,5 @@ export const endpoints = {
   getReviewsByProductId: "api/reviews/get-all-reviews",
 
   gridConfig: "api/home-config/get-all-grid",
+  pageConfig: "api/page-config/get-page-config-by-key",
 };

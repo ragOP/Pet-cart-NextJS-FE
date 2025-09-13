@@ -17,15 +17,15 @@ const Wrapper = ({ children }) => {
     },
   });
 
-  if (isLoading) {
-    return (
-      <>
-        <div className="h-16 w-full bg-gray-100 animate-pulse" />
-        {children}
-        <div className="h-64 w-full bg-gray-100 animate-pulse mt-8" />
-      </>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <>
+  //       <div className="h-16 w-full bg-gray-100 animate-pulse" />
+  //       {children}
+  //       <div className="h-64 w-full bg-gray-100 animate-pulse mt-8" />
+  //     </>
+  //   );
+  // }
 
   return (
     <>
