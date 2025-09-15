@@ -43,9 +43,10 @@ const Home = () => {
     coupons: CouponSection,
     best_sellers: BestSellers,
     day_in_cats_life: CatsLife,
-    product_banner_ads: NewLaunched,
+    // product_banner_ads: NewLaunched,
     trending: Trending,
     treats: TreatSection,
+    product_banner_ads: TreatSection,
   };
 
   // Render a section based on its type and key
