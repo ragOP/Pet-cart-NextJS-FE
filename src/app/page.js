@@ -103,7 +103,8 @@ const Home = () => {
   return (
     <div
       style={{
-        background: "linear-gradient(180deg, #FDF4E6 0%, #F7F5FF 100%)",
+        // background: "linear-gradient(180deg, #FDF4E6 0%, #F7F5FF 100%)",
+        background: "#fff"
       }}
     >
       {sortedSections.map((section) => renderSection(section))}

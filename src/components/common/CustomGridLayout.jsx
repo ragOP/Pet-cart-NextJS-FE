@@ -58,7 +58,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
 
         {/* Grid Container */}
         <div
-          className="grid gap-4 p-4 rounded-lg"
+          className="grid gap-8 px-6 py-4 rounded-lg"
           style={{
             gridTemplateColumns: `repeat(${isMobile ? (mobileColumns || columns) : columns}, 1fr)`,
             gridTemplateRows: `repeat(${isMobile ? (mobileRows || rows) : rows}, 1fr)`,
