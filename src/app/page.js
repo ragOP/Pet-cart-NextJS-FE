@@ -38,11 +38,11 @@ const Home = () => {
   // Component mapping for static sections
   const staticComponents = {
     main_banner: Applod,
-    slider: Essential,
-    brands: Brands,
+    // slider: Essential,
+    // brands: Brands,
     coupons: CouponSection,
     best_sellers: BestSellers,
-    day_in_cats_life: CatsLife,
+    // day_in_cats_life: CatsLife,
     // product_banner_ads: NewLaunched,
     trending: Trending,
     treats: TreatSection,

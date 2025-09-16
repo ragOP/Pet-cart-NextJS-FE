@@ -10,8 +10,7 @@ const AnimatedImage = ({ className = "", ...props }) => {
     <div
       ref={imgRef}
       className={
-        "w-full h-full rounded-md overflow-hidden transition-all duration-300 ease-out " +
-        "hover:scale-105 hover:shadow-xl " +
+        "w-full h-full rounded-md overflow-hidden " +
         className
       }
     >
