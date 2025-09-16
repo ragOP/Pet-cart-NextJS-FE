@@ -76,81 +76,81 @@ const Applod = () => {
   };
 
   // Auto-scroll logic with improved error handling
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el || !slidersImages.length || !isClient) return;
+  // useEffect(() => {
+  //   const el = scrollRef.current;
+  //   if (!el || !slidersImages.length || !isClient) return;
 
-    let scrollStep = 1;
-    let trackWidth = 0;
-    let isAnimationRunning = true;
+  //   let scrollStep = 1;
+  //   let trackWidth = 0;
+  //   let isAnimationRunning = true;
 
-    const handleMouseEnter = () => (isHovered.current = true);
-    const handleMouseLeave = () => (isHovered.current = false);
-    const handleTouchStart = () => (isHovered.current = true);
-    const handleTouchEnd = () => (isHovered.current = false);
+  //   const handleMouseEnter = () => (isHovered.current = true);
+  //   const handleMouseLeave = () => (isHovered.current = false);
+  //   const handleTouchStart = () => (isHovered.current = true);
+  //   const handleTouchEnd = () => (isHovered.current = false);
 
-    // Add event listeners
-    el.addEventListener("mouseenter", handleMouseEnter);
-    el.addEventListener("mouseleave", handleMouseLeave);
-    el.addEventListener("touchstart", handleTouchStart);
-    el.addEventListener("touchend", handleTouchEnd);
+  //   // Add event listeners
+  //   el.addEventListener("mouseenter", handleMouseEnter);
+  //   el.addEventListener("mouseleave", handleMouseLeave);
+  //   el.addEventListener("touchstart", handleTouchStart);
+  //   el.addEventListener("touchend", handleTouchEnd);
 
-    const updateTrackWidth = () => {
-      try {
-      const track = el.querySelector(".slider-track");
-        if (track && track.scrollWidth > 0) {
-        trackWidth = track.scrollWidth / 2;
-      }
-      } catch (error) {
-        console.warn("Error updating track width:", error);
-      }
-    };
+  //   const updateTrackWidth = () => {
+  //     try {
+  //     const track = el.querySelector(".slider-track");
+  //       if (track && track.scrollWidth > 0) {
+  //       trackWidth = track.scrollWidth / 2;
+  //     }
+  //     } catch (error) {
+  //       console.warn("Error updating track width:", error);
+  //     }
+  //   };
 
-    // Initial track width calculation with delay to ensure DOM is ready
-    const initTrackWidth = () => {
-      setTimeout(updateTrackWidth, 100);
-    };
+  //   // Initial track width calculation with delay to ensure DOM is ready
+  //   const initTrackWidth = () => {
+  //     setTimeout(updateTrackWidth, 100);
+  //   };
 
-    initTrackWidth();
-    window.addEventListener("resize", updateTrackWidth);
+  //   initTrackWidth();
+  //   window.addEventListener("resize", updateTrackWidth);
 
-    const autoScroll = () => {
-      if (!isAnimationRunning || !el || !isClient) return;
+  //   const autoScroll = () => {
+  //     if (!isAnimationRunning || !el || !isClient) return;
 
-      try {
-        if (!isHovered.current && trackWidth > 0) {
-        if (el.scrollLeft >= trackWidth) {
-          el.scrollLeft = el.scrollLeft - trackWidth;
-        } else {
-          el.scrollLeft += scrollStep;
-        }
-      }
-      } catch (error) {
-        console.warn("Error in auto-scroll:", error);
-        isAnimationRunning = false;
-        return;
-      }
+  //     try {
+  //       if (!isHovered.current && trackWidth > 0) {
+  //       if (el.scrollLeft >= trackWidth) {
+  //         el.scrollLeft = el.scrollLeft - trackWidth;
+  //       } else {
+  //         el.scrollLeft += scrollStep;
+  //       }
+  //     }
+  //     } catch (error) {
+  //       console.warn("Error in auto-scroll:", error);
+  //       isAnimationRunning = false;
+  //       return;
+  //     }
 
-      if (isAnimationRunning) {
-      animationRef.current = requestAnimationFrame(autoScroll);
-      }
-    };
+  //     if (isAnimationRunning) {
+  //     animationRef.current = requestAnimationFrame(autoScroll);
+  //     }
+  //   };
 
-    animationRef.current = requestAnimationFrame(autoScroll);
+  //   animationRef.current = requestAnimationFrame(autoScroll);
 
-    return () => {
-      isAnimationRunning = false;
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = null;
-      }
-      el.removeEventListener("mouseenter", handleMouseEnter);
-      el.removeEventListener("mouseleave", handleMouseLeave);
-      el.removeEventListener("touchstart", handleTouchStart);
-      el.removeEventListener("touchend", handleTouchEnd);
-      window.removeEventListener("resize", updateTrackWidth);
-    };
-  }, [slidersImages.length, isClient]);
+  //   return () => {
+  //     isAnimationRunning = false;
+  //     if (animationRef.current) {
+  //       cancelAnimationFrame(animationRef.current);
+  //       animationRef.current = null;
+  //     }
+  //     el.removeEventListener("mouseenter", handleMouseEnter);
+  //     el.removeEventListener("mouseleave", handleMouseLeave);
+  //     el.removeEventListener("touchstart", handleTouchStart);
+  //     el.removeEventListener("touchend", handleTouchEnd);
+  //     window.removeEventListener("resize", updateTrackWidth);
+  //   };
+  // }, [slidersImages.length, isClient]);
 
   const renderSliderItem = (item, index) => {
     if (!item?.image) return null;
