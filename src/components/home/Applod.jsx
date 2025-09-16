@@ -12,7 +12,7 @@ const Applod = () => {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  
+
   const webParams = { type: "web" };
   const mobileParams = { type: "app" };
 
@@ -66,7 +66,7 @@ const Applod = () => {
     if (!link || link === "undefined") return;
 
     console.log("Navigating to:", link);
-    
+
     if (link.startsWith("http")) {
       window.open(link, "_blank", "noopener,noreferrer");
     } else {
@@ -155,18 +155,20 @@ const Applod = () => {
   const renderSliderItem = (item, index) => {
     if (!item?.image) return null;
 
-    const imageEl = (
-      <AnimatedImage
-        src={item.image}
+    return (
+      <div
         key={`slider-${index}`}
-        alt={`${isMobile ? 'Mobile' : 'Web'} Promo ${index + 1}`}
-        className="object-cover w-full h-full cursor-pointer"
-        priority={index === 0}
-        onClick={() => handleNavigation(item.link)}
-      />
+        className="basis-[40%] lg:basis-[25%] shrink-0 grow-0 min-w-[40%] lg:min-w-[25%] max-w-[40%] lg:max-w-[25%] px-1"
+     >
+        <AnimatedImage
+          src={item.image}
+          alt={`${isMobile ? 'Mobile' : 'Web'} Promo ${index + 1}`}
+          className="object-cover w-full h-full cursor-pointer"
+          priority={index === 0}
+          onClick={() => handleNavigation(item.link)}
+        />
+      </div>
     );
-
-    return imageEl;
   };
 
   return (
@@ -192,7 +194,7 @@ const Applod = () => {
           ref={scrollRef}
           style={{ whiteSpace: "nowrap" }}
         >
-          <div className="flex gap-4 w-max slider-track">
+          <div className="flex flex-nowrap gap-0 w-full slider-track">
             {slidersImages.map(renderSliderItem)}
           </div>
         </div>
