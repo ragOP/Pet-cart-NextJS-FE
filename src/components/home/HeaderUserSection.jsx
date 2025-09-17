@@ -46,7 +46,7 @@ export default function HeaderUserSection() {
             width={20}
             height={20}
           />
-          Login
+          Login / Signup
         </button>
       )}
 

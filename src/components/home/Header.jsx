@@ -54,7 +54,7 @@ const MobileMenu = React.memo(({
           <CustomImage
             src={logo || petLogo}
             alt="PetCaart Logo"
-            className="h-8 w-auto"
+            className="h-10 w-auto"
             width={120}
             height={32}
           />
@@ -377,7 +377,7 @@ const Header = ({ logo }) => {
   const animatedPlaceholder = `Search "${suggestions[index]}"`;
 
   return (
-    <div className="bg-[#FEF5E7] text-[#333] shadow-sm sticky top-0 z-40 overflow-x-hidden">
+    <div className="bg-[#FEF5E7] text-[#333] shadow-sm sticky top-0 z-40 overflow-x-hidden lg:px-[3%] px-[0%]">
       <div className="md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <button
@@ -394,7 +394,7 @@ const Header = ({ logo }) => {
             <CustomImage
               src={logo || petLogo}
               alt="PetCaart Logo"
-              className="h-8 w-auto"
+              className="h-10 w-auto"
               width={120}
               height={32}
             />
@@ -471,7 +471,7 @@ const Header = ({ logo }) => {
             <CustomImage
               src={logo || petLogo}
               alt="PetCaart Logo"
-              className="h-10 w-auto"
+              className="h-13 w-auto"
               width={160}
               height={140}
               priority
@@ -481,9 +481,9 @@ const Header = ({ logo }) => {
 
         {/* Responsive search + pincode: row on xl, column on smaller screens */}
         <div className="flex flex-1 items-center justify-center mx-8">
-          <div className="flex flex-col xl:flex-row gap-2 xl:gap-4 w-full max-w-3xl">
+          <div className="flex flex-col xl:flex-row items-center justify-center gap-2 xl:gap-4 w-full max-w-3xl mx-auto">
             <form
-              className="flex w-full xl:w-[360px]"
+              className="flex w-full xl:w-[560px] mx-auto"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSearchSubmit();
@@ -494,7 +494,7 @@ const Header = ({ logo }) => {
                 placeholder={animatedPlaceholder}
                 value={searchValue}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="bg-white w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none text-sm"
+                className="bg-white w-full px-4 py-3 border border-gray-300 rounded-l-md focus:outline-none text-sm"
                 aria-label="Search products"
               />
               <button
@@ -506,29 +506,18 @@ const Header = ({ logo }) => {
                 <Search size={18} />
               </button>
             </form>
-
-            <div className="w-full xl:w-[420px] relative">
-              <MapPin
-                size={18}
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-yellow-600"
-              />
-              <input
-                type="text"
-                placeholder="Enter PINCODE to check delivery date"
-                onClick={openPincodeDialog}
-                readOnly
-                className="w-full pl-10 pr-12 py-2 bg-white border border-gray-300 rounded-l-md text-sm cursor-pointer hover:border-blue-500 transition-colors"
-                aria-label="Click to check delivery by pincode"
-              />
-              <Search
-                size={18}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              />
-            </div>
           </div>
         </div>
 
-        <div className="flex items-center space-x-4 flex-shrink-0">
+        <div className="flex items-center space-x-2 flex-shrink-0">
+          <button
+            className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
+            aria-label="Pincode"
+            type="button"
+            onClick={openPincodeDialog}
+          >
+            <MapPin size={20} className="text-yellow-600" />
+          </button>
           <button
             className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
             aria-label="Track Order"
