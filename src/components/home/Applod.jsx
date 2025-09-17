@@ -175,7 +175,7 @@ const Applod = () => {
     <>
       {/* Dynamic Banner */}
       {bannerImage && (
-        <div className="w-full max-w-screen rounded-lg overflow-hidden p-2 pr-4">
+        <div className="w-full max-w-screen rounded-lg overflow-hidden p-2">
           <CustomImage
           key={bannerImage}
             src={bannerImage}

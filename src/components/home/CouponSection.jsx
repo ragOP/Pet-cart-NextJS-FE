@@ -1,12 +1,7 @@
 'use client';
 
 import React from 'react'
-import heartLogo from '@/assets/coupon/HEART.png'
-import coupon1 from '@/assets/coupon/coupon1.png'
-import coupon2 from '@/assets/coupon/coupon2.png'
-import coupon3 from '@/assets/coupon/coupon3.png'
-import pawLogo from '@/assets/trending/care.png'
-import petCaartLogo from "@/assets/petcart.jpg"
+import pawLogo from '@/assets/essential/paws-logo.png'
 import CustomImage from '@/components/images/CustomImage';
 import CustomCarousel from '@/components/carousel/CustomCarousel';
 import { CarouselItem } from '../ui/carousel';
@@ -32,9 +27,9 @@ const  CouponSection = () => {
   };
 
   return (
-    <div className="w-full px-2 md:px-4 py-6">
+    <div className="w-full md:px-4 pt-6 lg:px-[4%] px-[1%]">
       {/* Title */}
-      <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
+      <div className="font-bold font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
         <CustomImage
           src={pawLogo}
           alt="Paw Logo"
@@ -43,8 +38,8 @@ const  CouponSection = () => {
           height={60}
         />
         <span>
-          <span className="text-[#F59A11]">Coupons You'll </span>
-          <span className="text-[#F73518]">Love ❤️</span>
+          <span className="text-[#F59A11] text-2xl md:text-3xl font-bold">Coupons You'll </span>
+          <span className="text-[#F73518] text-2xl md:text-3xl font-bold">Love ❤️</span>
         </span>
       </div>
 
@@ -64,7 +59,7 @@ const  CouponSection = () => {
             }}
           >
             {/* Background Image */}
-            {/* <div 
+            {/* <div
               className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat rounded-2xl shrink-0 grow-0 basis-full min-w-[20vw]"
               style={{ backgroundImage: `url('/coupon-bg.svg')` }}
             /> */}
@@ -75,9 +70,9 @@ const  CouponSection = () => {
               width={450}
               height={180}
             />
-            
+
             {/* Coupon Content */}
-            <div className="py-4 pl-2 pr-4 relative z-10 flex w-full h-full">
+            <div className="py-1 pl-2 pr-4 relative z-10 flex w-full h-full">
               <div className="flex flex-col items-center justify-center space-y-1 w-4/6 px-2">
                 <div className="px-2 pb-1 flex flex-col items-center justify-center text-[#684A00] text-[20px] md:text-[28px] tracking-0 font-holtwood leading-[100%] font-[400]">
                   <span>DISCOUNT</span>
@@ -85,10 +80,9 @@ const  CouponSection = () => {
                 </div>
                 <div className="flex items-center justify-center gap-2 font-bold text-[10px] md:text-xs text-[#181818] tracking-0 leading-[100%]">
                   <span>VALID TILL {formatDate(coupon?.endDate)}</span>
-                  {/* <img src={petCaartLogo} alt="Paw Logo" className="w-4 h-4 md:w-6 md:h-6" /> */}
                 </div>
               </div>
-              
+
               <div className="ml-5  flex flex-col items-center justify-evenly py-5 text-[#684A00] font-gotham-rounded font-bold">
                 <span className="text-[10px] md:text-xs mb-1 font-medium text-[#323232]">VOUCHER</span>
                 <div className="flex flex-col items-center tracking-0 leading-[100%] space-y-1 font-holtwood font-[400]">

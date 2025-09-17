@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import CustomImage from "../images/CustomImage";
 import GridSkeleton from "./GridSkeleton";
+import pawLogo from "../../assets/essential/paws-logo.png";
 
 const CustomGridLayout = ({ gridData, isLoading }) => {
   const router = useRouter();
@@ -35,22 +36,24 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
   const { columns, rows, mobileColumns, mobileRows } = grid;
 
   // Check if we're on mobile (you can adjust this breakpoint)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
-    <div className="w-full">
+    <div className="w-full lg:px-[4%] px-[1%] mb-4">
       <div className="mb-8">
-
-        {bannerImage && <CustomImage
-          src={bannerImage}
-          alt={'grid-banner'}
-          className="w-full h-full object-cover"
-        />}
+        {bannerImage && (
+          <CustomImage
+            src={bannerImage}
+            alt={"grid-banner"}
+            className="w-full h-full object-cover"
+          />
+        )}
 
         {/* Section Title */}
         {title && (
-          <div className="mb-4 mt-4 px-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+          <div className="mt-4 flex gap-2">
+            <CustomImage src={pawLogo} alt="paw-logo" className="w-16 h-8 object-cover" />
+            <h2 className="text-2xl md:text-3xl font-bold text-[#F59A11]">
               {title}
             </h2>
           </div>
@@ -58,11 +61,17 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
 
         {/* Grid Container */}
         <div
-          className="grid gap-8 px-6 py-4 rounded-lg"
+          className="grid gap-2 lg:py-3 py-2"
           style={{
-            gridTemplateColumns: `repeat(${isMobile ? (mobileColumns || columns) : columns}, 1fr)`,
-            gridTemplateRows: `repeat(${isMobile ? (mobileRows || rows) : rows}, 1fr)`,
-            backgroundImage: backgroundImage ? `url(${backgroundImage})` : "none",
+            gridTemplateColumns: `repeat(${
+              isMobile ? mobileColumns || columns : columns
+            }, 1fr)`,
+            gridTemplateRows: `repeat(${
+              isMobile ? mobileRows || rows : rows
+            }, 1fr)`,
+            backgroundImage: backgroundImage
+              ? `url(${backgroundImage})`
+              : "none",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
@@ -71,7 +80,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
           {contentItems?.map((item, itemIndex) => (
             <div
               key={item._id || itemIndex}
-              className="relative group cursor-pointer overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform"
+              className="relative group cursor-pointer overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform"
               onClick={() => handleItemClick(item)}
             >
               <CustomImage

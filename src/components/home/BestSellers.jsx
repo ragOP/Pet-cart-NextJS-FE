@@ -36,7 +36,7 @@ const BestSellers = () =>{
   };
 
   return (
-    <div className="w-full px-2 md:px-4 py-8 bg-white">
+    <div className="w-full md:px-4 py-8 bg-white lg:px-[4%] px-[1%]">
       {/* Header */}
       <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
         <CustomImage
@@ -47,8 +47,8 @@ const BestSellers = () =>{
           height={60}
         />
         <span className="space-x-2">
-          <span className="text-[#F59A11]">Bestsellers</span>
-          <span className="text-[#0888B1]">Under ₹599</span>
+          <span className="text-[#F59A11] text-2xl md:text-3xl font-bold">Bestsellers</span>
+          <span className="text-[#0888B1] text-2xl md:text-3xl font-bold">Under ₹599</span>
         </span>
       </div>
 

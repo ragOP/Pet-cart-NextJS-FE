@@ -26,7 +26,7 @@ const TreatSection = () => {
   const link = data?.link || "#";
 
   return (
-    <div className="bg-[#FFF2809E] p-4 md:py-6 md:pl-8 rounded-2xl mt-6 flex flex-col md:flex-row justify-between gap-6 m-4">
+    <div className="bg-[#FFF2809E] p-2 md:py-6 md:pl-8 rounded-2xl mt-6 flex flex-col md:flex-row justify-between gap-6 m-2">
       {/* Left: Text & CTA */}
       <div className="flex-1 max-w-md  justify-between">
         <h2 className="text-[40px] font-bold text-[#814E00] leading-tight font-holtwood uppercase">
