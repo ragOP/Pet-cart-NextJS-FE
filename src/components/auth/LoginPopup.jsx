@@ -308,10 +308,10 @@ const LoginPopup = ({ isOpen, onClose }) => {
                       className="rounded-lg object-cover"
                     />
                     <div className="text-center">
-                      <div className="font-semibold text-[10px] sm:text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-base">
+                      <div className="font-semibold text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-base">
                         Curated Care
                       </div>
-                      <div className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-[#f49911] leading-snug mt-1">
+                      <div className="text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm text-[#f49911] leading-snug mt-1">
                         Handpicked essentials tailored to every pet's need.
                       </div>
                     </div>
@@ -331,8 +331,8 @@ const LoginPopup = ({ isOpen, onClose }) => {
                       className="rounded-lg object-cover"
                     />
                     <div className="text-center">
-                      <div className="font-semibold text-[10px] sm:text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-base">Pet First</div>
-                      <div className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-[#f49911] leading-snug mt-1">
+                      <div className="font-semibold text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-base">Pet First</div>
+                      <div className="text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm text-[#f49911] leading-snug mt-1">
                         Every choice designed for pets from heart.
                       </div>
                     </div>
@@ -352,8 +352,8 @@ const LoginPopup = ({ isOpen, onClose }) => {
                       className=" object-cover"
                     />
                     <div className="text-center">
-                      <div className="font-semibold text-[10px] sm:text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-base">Easy Shop</div>
-                      <div className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-[#f49911] leading-snug mt-1">
+                      <div className="font-semibold text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-base">Easy Shop</div>
+                      <div className="text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm text-[#f49911] leading-snug mt-1">
                         Quick, simple, and seamless pet shopping anytime.
                       </div>
                     </div>
@@ -374,7 +374,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                   <CustomImage
                     src={petPng}
                     alt="PetCaart Logo"
-                    className="h-28 md:h-18 lg:h-14 2xl:h-20 w-auto"
+                    className="h-24 md:h-18 lg:h-14 2xl:h-20 w-auto"
                     priority
                   />
                 </div>
@@ -402,7 +402,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                           role="button"
                           tabIndex={step === 3 && stepNum < step ? -1 : 0}
                           aria-disabled={step === 3 && stepNum < step}
-                          className={`w-8 h-8 md:w-7 md:h-7 rounded-full flex items-center justify-center text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-semibold shadow-sm ${
+                          className={`w-8 h-8 md:w-7 md:h-7 rounded-full flex items-center justify-center text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm font-semibold shadow-sm ${
                             stepNum <= step
                               ? "bg-[#1F5163] text-white"
                               : stepNum === step + 1 && isExistingUser === false
@@ -442,13 +442,13 @@ const LoginPopup = ({ isOpen, onClose }) => {
                 >
                   {step === 1 && (
                     <div>
-                      <label className="block text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
                         Enter Mobile Number
                       </label>
                       <div className="flex">
                         <div className="flex items-center px-3 py-2.5 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50">
                           <span className="flex items-center">
-                            <span className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700">
+                            <span className="text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700">
                               +91
                             </span>
                           </span>
@@ -462,7 +462,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                           required
                           pattern="[0-9]{10}"
                           maxLength={10}
-                          className="flex-1 text-[10px] sm:text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base border-l-0 rounded-l-none focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-r-lg py-6"
+                          className="flex-1 text-sm sm:text-sm md:text-sm lg:text-sm xl:text-sm 2xl:text-base border-l-0 rounded-l-none focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-r-lg py-6"
                         />
                       </div>
                     </div>
@@ -470,7 +470,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                   {step === 2 && (
                     <div>
-                      <label className="block text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
                         Enter OTP sent to +91 {form.phoneNumber}
                       </label>
                       <Input
@@ -481,7 +481,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         required
                         maxLength={6}
-                        className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-3 text-center text-[10px] sm:text-xs md:text-xs lg:text-sm xl:text-base 2xl:text-lg tracking-widest"
+                        className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-3 text-center text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-lg tracking-widest"
                       />
                       {/* <p className="text-[10px] text-gray-500 mt-1 text-center">
                         Didn't receive the code? Check your SMS
@@ -491,7 +491,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                   {step === 3 && (
                     <div>
-                      <label className="block text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
                         Email Address
                       </label>
                       <Input
@@ -501,9 +501,9 @@ const LoginPopup = ({ isOpen, onClose }) => {
                         value={form.email}
                         onChange={handleChange}
                         required
-                        className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-3 text-[10px] sm:text-xs md:text-xs lg:text-sm xl:text-base 2xl:text-lg cursor-pointer"
+                        className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-3 text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-lg cursor-pointer"
                       />
-                      <p className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-gray-500 mt-1 text-center">
+                      <p className="text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm text-gray-500 mt-1 text-center">
                         We'll use this to send you exclusive & offers.
                       </p>
                     </div>
@@ -511,7 +511,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                   <button
                     type="submit"
-                    className="w-full bg-[#1F5163] text-white py-3 mb-0 rounded-lg font-semibold text-[10px] sm:text-xs md:text-xs lg:text-sm xl:text-base 2xl:text-lg hover:bg-[#1F5163]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg cursor-pointer"
+                    className="w-full bg-[#1F5163] text-white py-3 mb-0 rounded-lg font-semibold text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-lg hover:bg-[#1F5163]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg cursor-pointer"
                     disabled={isLoading || otpLoading}
                   >
                     {step === 1 ? (
@@ -548,7 +548,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                         type="button"
                         onClick={handleResendOtp}
                         disabled={countdown > 0 || otpLoading}
-                        className="text-[#1F5163] text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="text-[#1F5163] text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {countdown > 0
                           ? `Resend OTP in ${countdown}s`
@@ -557,7 +557,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     </div>
                   )}
 
-                  <div className="text-center text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-gray-500 mt-1">
+                  <div className="text-center text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm text-gray-500 mt-1">
                     By continuing, you agree to our{" "}
                     <a href="#" className="text-[#1F5163] hover:underline">
                       Terms of Service
