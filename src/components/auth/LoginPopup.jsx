@@ -278,7 +278,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 z-50 bg-black/80" />
         <DialogContent
-          className="min-w-[70vw] min-h-[60vh] border-0 p-0 shadow-2xl bg-[#1F5163]"
+          className="min-w-[70vw] min-h-[50vh] border-0 p-0 shadow-2xl bg-[#1F5163]"
           showCloseButton={false}
         >
           <DialogTitle className="sr-only">Login to PetCaart</DialogTitle>

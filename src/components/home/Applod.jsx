@@ -89,7 +89,6 @@ const Applod = () => {
     setActivePage((prev) => Math.min(prev, totalPages - 1));
   }, [slidersImages?.length]);
 
-  // Drag/Swipe handlers
   const handlePointerDown = (e) => {
     if (containerRef.current) {
       containerRef.current.setPointerCapture?.(e.pointerId ?? 1);
