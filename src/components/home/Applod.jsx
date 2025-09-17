@@ -54,12 +54,10 @@ const Applod = () => {
   const currentBanners = isClient ? (isMobile ? mobileBannersData : webBannersData) : webBannersData;
   const currentSliders = isClient ? (isMobile ? mobileSlidersData : webSlidersData) : webSlidersData;
   const bannerImage = currentBanners?.[0]?.image;
-  const slidersImages = currentSliders ? [...currentSliders, ...currentSliders] : [];
+  const slidersImages = currentSliders || [];
 
-  // Refs for auto-scroll
-  const scrollRef = useRef(null);
-  const isHovered = useRef(false);
-  const animationRef = useRef();
+  // Carousel state
+  const [activePage, setActivePage] = useState(0);
 
   // Handle navigation
   const handleNavigation = (link) => {
@@ -75,82 +73,12 @@ const Applod = () => {
     }
   };
 
-  // Auto-scroll logic with improved error handling
-  // useEffect(() => {
-  //   const el = scrollRef.current;
-  //   if (!el || !slidersImages.length || !isClient) return;
-
-  //   let scrollStep = 1;
-  //   let trackWidth = 0;
-  //   let isAnimationRunning = true;
-
-  //   const handleMouseEnter = () => (isHovered.current = true);
-  //   const handleMouseLeave = () => (isHovered.current = false);
-  //   const handleTouchStart = () => (isHovered.current = true);
-  //   const handleTouchEnd = () => (isHovered.current = false);
-
-  //   // Add event listeners
-  //   el.addEventListener("mouseenter", handleMouseEnter);
-  //   el.addEventListener("mouseleave", handleMouseLeave);
-  //   el.addEventListener("touchstart", handleTouchStart);
-  //   el.addEventListener("touchend", handleTouchEnd);
-
-  //   const updateTrackWidth = () => {
-  //     try {
-  //     const track = el.querySelector(".slider-track");
-  //       if (track && track.scrollWidth > 0) {
-  //       trackWidth = track.scrollWidth / 2;
-  //     }
-  //     } catch (error) {
-  //       console.warn("Error updating track width:", error);
-  //     }
-  //   };
-
-  //   // Initial track width calculation with delay to ensure DOM is ready
-  //   const initTrackWidth = () => {
-  //     setTimeout(updateTrackWidth, 100);
-  //   };
-
-  //   initTrackWidth();
-  //   window.addEventListener("resize", updateTrackWidth);
-
-  //   const autoScroll = () => {
-  //     if (!isAnimationRunning || !el || !isClient) return;
-
-  //     try {
-  //       if (!isHovered.current && trackWidth > 0) {
-  //       if (el.scrollLeft >= trackWidth) {
-  //         el.scrollLeft = el.scrollLeft - trackWidth;
-  //       } else {
-  //         el.scrollLeft += scrollStep;
-  //       }
-  //     }
-  //     } catch (error) {
-  //       console.warn("Error in auto-scroll:", error);
-  //       isAnimationRunning = false;
-  //       return;
-  //     }
-
-  //     if (isAnimationRunning) {
-  //     animationRef.current = requestAnimationFrame(autoScroll);
-  //     }
-  //   };
-
-  //   animationRef.current = requestAnimationFrame(autoScroll);
-
-  //   return () => {
-  //     isAnimationRunning = false;
-  //     if (animationRef.current) {
-  //       cancelAnimationFrame(animationRef.current);
-  //       animationRef.current = null;
-  //     }
-  //     el.removeEventListener("mouseenter", handleMouseEnter);
-  //     el.removeEventListener("mouseleave", handleMouseLeave);
-  //     el.removeEventListener("touchstart", handleTouchStart);
-  //     el.removeEventListener("touchend", handleTouchEnd);
-  //     window.removeEventListener("resize", updateTrackWidth);
-  //   };
-  // }, [slidersImages.length, isClient]);
+  useEffect(() => {
+    if (!slidersImages?.length) return;
+    const itemsPerPage = isMobile ? 2 : 4;
+    const totalPages = Math.max(1, Math.ceil(slidersImages.length / itemsPerPage));
+    setActivePage((prev) => Math.min(prev, totalPages - 1));
+  }, [slidersImages?.length]);
 
   const renderSliderItem = (item, index) => {
     if (!item?.image) return null;
@@ -158,15 +86,17 @@ const Applod = () => {
     return (
       <div
         key={`slider-${index}`}
-        className="basis-[40%] lg:basis-[25%] shrink-0 grow-0 min-w-[40%] lg:min-w-[25%] max-w-[40%] lg:max-w-[25%] px-1"
-     >
-        <AnimatedImage
-          src={item.image}
-          alt={`${isMobile ? 'Mobile' : 'Web'} Promo ${index + 1}`}
-          className="object-cover w-full h-full cursor-pointer"
-          priority={index === 0}
-          onClick={() => handleNavigation(item.link)}
-        />
+        className="basis-1/2 lg:basis-1/4 shrink-0 grow-0 min-w-1/2 lg:min-w-1/4 max-w-1/2 lg:max-w-1/4 px-1"
+      >
+        <div className="w-full overflow-hidden rounded-xl aspect-[3/2] lg:aspect-[16/9]">
+          <AnimatedImage
+            src={item.image}
+            alt={`${isMobile ? 'Mobile' : 'Web'} Promo ${index + 1}`}
+            className="object-cover w-full h-full cursor-pointer"
+            priority={index === 0}
+            onClick={() => handleNavigation(item.link)}
+          />
+        </div>
       </div>
     );
   };
@@ -187,15 +117,33 @@ const Applod = () => {
         </div>
       )}
 
-      {/* Dynamic Sliders */}
+      {/* Carousel with dots (manual only), multi-card layout */}
       {slidersImages.length > 0 && (
-        <div
-          className="w-full mt-1 overflow-x-auto px-2 hide-scrollbar"
-          ref={scrollRef}
-          style={{ whiteSpace: "nowrap" }}
-        >
-          <div className="flex flex-nowrap gap-0 w-full slider-track">
-            {slidersImages.map(renderSliderItem)}
+        <div className="w-full mt-1">
+          <div className="relative w-full overflow-hidden">
+            <div
+              className="flex flex-nowrap transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(-${activePage * 100}%)` }}
+            >
+              {slidersImages.map(renderSliderItem)}
+            </div>
+          </div>
+
+          {/* Dots */}
+          <div className="flex items-center justify-center gap-2 mt-3">
+            {Array.from({ length: Math.max(1, Math.ceil(slidersImages.length / (isMobile ? 2 : 4))) }).map((_, idx) => {
+              const isActive = activePage === idx;
+              return (
+                <button
+                  key={`dot-${idx}`}
+                  aria-label={`Go to page ${idx + 1}`}
+                  onClick={() => setActivePage(idx)}
+                  className={`h-2.5 rounded-full transition-all ${
+                    isActive ? 'w-6 bg-black/80' : 'w-2.5 bg-black/30 hover:bg-black/60'
+                  }`}
+                />
+              );
+            })}
           </div>
         </div>
       )}

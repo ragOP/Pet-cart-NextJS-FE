@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogOverlay,
   DialogPortal,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { X, Check } from "lucide-react";
 import CustomImage from "@/components/images/CustomImage";
@@ -20,7 +21,11 @@ import paw from "@/assets/paw.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setAuth } from "@/store/authSlice";
-import { selectLoginRedirectUrl, setLoginRedirectUrl, closeLoginPopup } from "@/store/uiSlice";
+import {
+  selectLoginRedirectUrl,
+  setLoginRedirectUrl,
+  closeLoginPopup,
+} from "@/store/uiSlice";
 import { sendOtp } from "@/app/apis/sendOtp";
 import { loginUser } from "@/app/apis/loginUser";
 import { updateProfile } from "@/app/apis/updateProfile";
@@ -273,9 +278,10 @@ const LoginPopup = ({ isOpen, onClose }) => {
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 z-50 bg-black/80" />
         <DialogContent
-          className="fixed top-[50%] left-[50%] z-50 translate-x-[-50%] translate-y-[-50%] w-[95vw] max-w-md sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl h-[50vh] lg:h-auto max-h-[80vh] border-0 p-0 shadow-2xl overflow-hidden rounded-2xl bg-[#1F5163]"
+          className="min-w-[70vw] min-h-[60vh] border-0 p-0 shadow-2xl bg-[#1F5163]"
           showCloseButton={false}
         >
+          <DialogTitle className="sr-only">Login to PetCaart</DialogTitle>
           <button
             onClick={handleClose}
             className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 z-10 p-1.5 sm:p-2 text-gray-600 hover:text-gray-800 transition-colors bg-white/80 rounded-full backdrop-blur-sm"
@@ -283,30 +289,29 @@ const LoginPopup = ({ isOpen, onClose }) => {
             <X size={16} className="sm:w-5 sm:h-5" />
           </button>
 
-          <div className="flex flex-col lg:flex-row h-full">
-            <div className="hidden lg:flex lg:w-[65%] h-full bg-[#1F5163] text-white relative overflow-hidden p-6 flex-col justify-center items-center">
-              <div className="max-w-[520px] mx-auto w-full">
-                <h1 className="text-2xl lg:text-3xl font-bold leading-tight text-center">
+          <div className="flex flex-col lg:flex-row">
+            <div className="hidden lg:flex lg:w-[70%] h-full bg-[#1F5163] text-white relative overflow-hidden p-6 flex-col justify-center items-center rounded-2xl">
+              <div className="w-full">
+                <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl font-bold leading-tight text-center">
                   Welcome to PetCaart
                 </h1>
-                <p className="text-lg lg:text-xl font-semibold text-center mt-2">
+                <p className="text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg 2xl:text-lg font-semibold text-center mt-2">
                   Your Pet's Happiness, Our Mission
                   <span className="ml-1">🧡</span>
                 </p>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
-                  {/* Card 1 */}
-                  <div className="relative pb-5 bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
-                    <div className="w-full rounded-lg overflow-hidden">
-                      <Image
-                        src={curatedPng}
-                        alt="Curated Care"
-                        className="w-full h-[120px] object-cover"
-                      />
-                    </div>
-                    <div className="mt-3 text-center">
-                      <div className="font-semibold text-sm">Curated Care</div>
-                      <div className="text-[11px] text-[#f49911] leading-snug mt-1">
+                  <div className="relative pb-8 bg-white/95 text-gray-900 rounded-xl shadow-xl pt-0 px-2 flex flex-col items-center justify-end">
+                    <Image
+                      src={curatedPng}
+                      alt="Curated Care"
+                      className="rounded-lg object-cover"
+                    />
+                    <div className="text-center">
+                      <div className="font-semibold text-[10px] sm:text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-base">
+                        Curated Care
+                      </div>
+                      <div className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-[#f49911] leading-snug mt-1">
                         Handpicked essentials tailored to every pet's need.
                       </div>
                     </div>
@@ -319,18 +324,15 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     </div>
                   </div>
 
-                  {/* Card 2 */}
-                  <div className="relative pb-5 bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
-                    <div className="w-full rounded-lg overflow-hidden">
-                      <Image
-                        src={firstPng}
-                        alt="Pet First"
-                        className="w-full h-[120px] object-cover"
-                      />
-                    </div>
-                    <div className="mt-3 text-center">
-                      <div className="font-semibold text-sm">Pet First</div>
-                      <div className="text-[11px] text-[#f49911] leading-snug mt-1">
+                  <div className="relative pb-8 bg-white/95 text-gray-900 rounded-xl shadow-xl flex pt-0 px-2 flex-col items-center justify-end">
+                    <Image
+                      src={firstPng}
+                      alt="Pet First"
+                      className="rounded-lg object-cover"
+                    />
+                    <div className="text-center">
+                      <div className="font-semibold text-[10px] sm:text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-base">Pet First</div>
+                      <div className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-[#f49911] leading-snug mt-1">
                         Every choice designed for pets from heart.
                       </div>
                     </div>
@@ -343,18 +345,15 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     </div>
                   </div>
 
-                  {/* Card 3 */}
-                  <div className="relative pb-5 bg-white/95 text-gray-900 rounded-xl shadow-xl p-3 flex flex-col items-center">
-                    <div className="w-full rounded-lg overflow-hidden">
-                      <Image
-                        src={easyPng}
-                        alt="Easy Shop"
-                        className="w-full h-[120px] object-cover"
-                      />
-                    </div>
-                    <div className="mt-3 text-center">
-                      <div className="font-semibold text-sm">Easy Shop</div>
-                      <div className="text-[11px] text-[#f49911] leading-snug mt-1">
+                  <div className="relative pb-8 bg-white/95 text-gray-900 rounded-xl shadow-xl pt-0 px-2 flex flex-col items-center justify-end">
+                    <Image
+                      src={easyPng}
+                      alt="Easy Shop"
+                      className=" object-cover"
+                    />
+                    <div className="text-center">
+                      <div className="font-semibold text-[10px] sm:text-xs md:text-sm lg:text-sm xl:text-base 2xl:text-base">Easy Shop</div>
+                      <div className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-[#f49911] leading-snug mt-1">
                         Quick, simple, and seamless pet shopping anytime.
                       </div>
                     </div>
@@ -369,33 +368,41 @@ const LoginPopup = ({ isOpen, onClose }) => {
                 </div>
               </div>
             </div>
-            <div className="w-full lg:w-[35%] lg:h-[95%] h-full bg-white lg:m-2 px-7 py-5 flex flex-col justify-center font-gotham-rounded relative rounded-2xl">
+            <div className="w-full lg:w-[30%] lg:h-[95%] h-full bg-white lg:m-2 px-8 pt-28 md:pt-24 lg:pt-10 pb-6 flex flex-col justify-center font-gotham-rounded relative rounded-2xl">
               <div className="absolute top-5 left-0 right-0 flex justify-center">
                 <div className="inline-flex items-center gap-2">
                   <CustomImage
                     src={petPng}
                     alt="PetCaart Logo"
-                    className="h-12 w-auto"
+                    className="h-28 md:h-18 lg:h-14 2xl:h-20 w-auto"
                     priority
                   />
                 </div>
               </div>
               <div className="max-w-sm mx-auto w-full">
-                <div className="flex items-center justify-center mb-5">
+                <div className="flex items-center justify-center mb-6">
                   <div className="flex items-center space-x-2">
                     {[1, 2, 3].map((stepNum) => (
                       <React.Fragment key={stepNum}>
                         <div
-                          onClick={step === 3 ? undefined : () => handleStepClick(stepNum)}
-                          onKeyDown={step === 3 ? undefined : (e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                              handleStepClick(stepNum);
-                            }
-                          }}
+                          onClick={
+                            step === 3
+                              ? undefined
+                              : () => handleStepClick(stepNum)
+                          }
+                          onKeyDown={
+                            step === 3
+                              ? undefined
+                              : (e) => {
+                                  if (e.key === "Enter" || e.key === " ") {
+                                    handleStepClick(stepNum);
+                                  }
+                                }
+                          }
                           role="button"
                           tabIndex={step === 3 && stepNum < step ? -1 : 0}
                           aria-disabled={step === 3 && stepNum < step}
-                          className={`w-6 h-6 rounded-full flex items-center justify-center text-[8px] font-semibold shadow-sm ${
+                          className={`w-8 h-8 md:w-7 md:h-7 rounded-full flex items-center justify-center text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-semibold shadow-sm ${
                             stepNum <= step
                               ? "bg-[#1F5163] text-white"
                               : stepNum === step + 1 && isExistingUser === false
@@ -403,9 +410,9 @@ const LoginPopup = ({ isOpen, onClose }) => {
                               : "bg-gray-100 text-gray-400"
                           } ${
                             stepNum < step
-                              ? (step === 3
-                                  ? "cursor-default pointer-events-none"
-                                  : "cursor-pointer hover:opacity-90")
+                              ? step === 3
+                                ? "cursor-default pointer-events-none"
+                                : "cursor-pointer hover:opacity-90"
                               : "cursor-default"
                           }`}
                         >
@@ -413,7 +420,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                         </div>
                         {stepNum < 3 && (
                           <div
-                            className={`w-9 h-[4px] rounded ${
+                            className={`w-12 md:w-10 h-[4px] rounded ${
                               stepNum < step ? "bg-[#1F5163]" : "bg-gray-200"
                             }`}
                           ></div>
@@ -431,17 +438,17 @@ const LoginPopup = ({ isOpen, onClose }) => {
                       ? handleLogin
                       : handleCompleteRegistration
                   }
-                  className="space-y-5"
+                  className="space-y-6"
                 >
                   {step === 1 && (
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                      <label className="block text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
                         Enter Mobile Number
                       </label>
                       <div className="flex">
-                        <div className="flex items-center px-3 py-2 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50">
+                        <div className="flex items-center px-3 py-2.5 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50">
                           <span className="flex items-center">
-                            <span className="text-xs font-medium text-gray-700">
+                            <span className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700">
                               +91
                             </span>
                           </span>
@@ -455,7 +462,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                           required
                           pattern="[0-9]{10}"
                           maxLength={10}
-                          className="flex-1 border-l-0 rounded-l-none focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-r-lg py-4"
+                          className="flex-1 text-[10px] sm:text-xs md:text-xs lg:text-sm xl:text-sm 2xl:text-base border-l-0 rounded-l-none focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-r-lg py-6"
                         />
                       </div>
                     </div>
@@ -463,7 +470,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                   {step === 2 && (
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-2">
+                      <label className="block text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
                         Enter OTP sent to +91 {form.phoneNumber}
                       </label>
                       <Input
@@ -474,7 +481,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                         onChange={handleChange}
                         required
                         maxLength={6}
-                        className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-2.5 text-center text-base tracking-widest"
+                        className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-3 text-center text-[10px] sm:text-xs md:text-xs lg:text-sm xl:text-base 2xl:text-lg tracking-widest"
                       />
                       {/* <p className="text-[10px] text-gray-500 mt-1 text-center">
                         Didn't receive the code? Check your SMS
@@ -484,7 +491,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                   {step === 3 && (
                     <div>
-                      <label className="block text-xs font-medium text-gray-700 mb-2">
+                      <label className="block text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
                         Email Address
                       </label>
                       <Input
@@ -494,9 +501,9 @@ const LoginPopup = ({ isOpen, onClose }) => {
                         value={form.email}
                         onChange={handleChange}
                         required
-                        className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-2.5 cursor-pointer"
+                        className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-3 text-[10px] sm:text-xs md:text-xs lg:text-sm xl:text-base 2xl:text-lg cursor-pointer"
                       />
-                      <p className="text-[10px] text-gray-500 mt-1 text-center">
+                      <p className="text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-gray-500 mt-1 text-center">
                         We'll use this to send you exclusive & offers.
                       </p>
                     </div>
@@ -504,7 +511,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                   <button
                     type="submit"
-                    className="w-full bg-[#1F5163] text-white py-1.5 mb-0 rounded-lg font-medium hover:bg-[#1F516] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg cursor-pointer"
+                    className="w-full bg-[#1F5163] text-white py-3 mb-0 rounded-lg font-semibold text-[10px] sm:text-xs md:text-xs lg:text-sm xl:text-base 2xl:text-lg hover:bg-[#1F5163]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg cursor-pointer"
                     disabled={isLoading || otpLoading}
                   >
                     {step === 1 ? (
@@ -541,7 +548,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                         type="button"
                         onClick={handleResendOtp}
                         disabled={countdown > 0 || otpLoading}
-                        className="text-[#1F5163] text-[10px] hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="text-[#1F5163] text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm hover:underline disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {countdown > 0
                           ? `Resend OTP in ${countdown}s`
@@ -550,7 +557,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
                     </div>
                   )}
 
-                  <div className="text-center text-[11px] text-gray-500 mt-1">
+                  <div className="text-center text-[10px] sm:text-[10px] md:text-[10px] lg:text-xs xl:text-xs 2xl:text-sm text-gray-500 mt-1">
                     By continuing, you agree to our{" "}
                     <a href="#" className="text-[#1F5163] hover:underline">
                       Terms of Service
