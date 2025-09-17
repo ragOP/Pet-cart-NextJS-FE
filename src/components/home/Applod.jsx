@@ -12,6 +12,15 @@ const Applod = () => {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const containerRef = useRef(null);
+  const trackRef = useRef(null);
+  const isPointerDown = useRef(false);
+  const startXRef = useRef(0);
+  const deltaXRef = useRef(0);
+  const didDragRef = useRef(false);
+  const startTimeRef = useRef(0);
+  const rafIdRef = useRef(null);
+  const pendingPercentRef = useRef(0);
 
   const webParams = { type: "web" };
   const mobileParams = { type: "app" };
@@ -58,6 +67,8 @@ const Applod = () => {
 
   // Carousel state
   const [activePage, setActivePage] = useState(0);
+  const itemsPerPage = isMobile ? 2 : 4;
+  const totalPages = Math.max(1, Math.ceil(slidersImages.length / itemsPerPage));
 
   // Handle navigation
   const handleNavigation = (link) => {
@@ -75,10 +86,65 @@ const Applod = () => {
 
   useEffect(() => {
     if (!slidersImages?.length) return;
-    const itemsPerPage = isMobile ? 2 : 4;
-    const totalPages = Math.max(1, Math.ceil(slidersImages.length / itemsPerPage));
     setActivePage((prev) => Math.min(prev, totalPages - 1));
   }, [slidersImages?.length]);
+
+  // Drag/Swipe handlers
+  const handlePointerDown = (e) => {
+    if (containerRef.current) {
+      containerRef.current.setPointerCapture?.(e.pointerId ?? 1);
+    }
+    isPointerDown.current = true;
+    startXRef.current = e.clientX ?? (e.touches ? e.touches[0].clientX : 0);
+    deltaXRef.current = 0;
+    didDragRef.current = false;
+    startTimeRef.current = performance.now();
+    try { window.getSelection?.().removeAllRanges?.(); } catch {}
+    e.preventDefault?.();
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isPointerDown.current || !trackRef.current || !containerRef.current) return;
+    const clientX = e.clientX ?? (e.touches ? e.touches[0].clientX : 0);
+    deltaXRef.current = clientX - startXRef.current;
+    if (Math.abs(deltaXRef.current) > 5) didDragRef.current = true;
+    const containerWidth = containerRef.current.offsetWidth || 1;
+    const percent = (deltaXRef.current / containerWidth) * 100;
+    pendingPercentRef.current = percent;
+    if (rafIdRef.current == null) {
+      rafIdRef.current = requestAnimationFrame(() => {
+        rafIdRef.current = null;
+        if (!trackRef.current) return;
+        trackRef.current.style.transition = 'none';
+        trackRef.current.style.transform = `translateX(calc(-${activePage * 100}% + ${pendingPercentRef.current}%))`;
+      });
+    }
+    e.preventDefault?.();
+  };
+
+  const endDrag = (e) => {
+    if (!isPointerDown.current) return;
+    isPointerDown.current = false;
+    const moved = deltaXRef.current;
+    const containerWidth = containerRef.current?.offsetWidth || 1;
+    const pxThreshold = Math.min(80, containerWidth * 0.12);
+    const elapsedMs = Math.max(1, performance.now() - startTimeRef.current);
+    const velocity = moved / elapsedMs; // px per ms
+    let next = activePage;
+    const isFlick = Math.abs(velocity) > 0.6; // fast swipe
+    if (moved > pxThreshold || (isFlick && moved > 10)) next = Math.max(0, activePage - 1);
+    else if (moved < -pxThreshold || (isFlick && moved < -10)) next = Math.min(totalPages - 1, activePage + 1);
+    setActivePage(next);
+    if (trackRef.current) {
+      trackRef.current.style.transition = '';
+      trackRef.current.style.transform = `translateX(-${next * 100}%)`;
+    }
+    deltaXRef.current = 0;
+    pendingPercentRef.current = 0;
+    if (containerRef.current && e?.pointerId != null) {
+      try { containerRef.current.releasePointerCapture(e.pointerId); } catch {}
+    }
+  };
 
   const renderSliderItem = (item, index) => {
     if (!item?.image) return null;
@@ -94,7 +160,7 @@ const Applod = () => {
             alt={`${isMobile ? 'Mobile' : 'Web'} Promo ${index + 1}`}
             className="object-cover w-full h-full cursor-pointer"
             priority={index === 0}
-            onClick={() => handleNavigation(item.link)}
+            onClick={() => { if (!didDragRef.current) handleNavigation(item.link); }}
           />
         </div>
       </div>
@@ -120,10 +186,19 @@ const Applod = () => {
       {/* Carousel with dots (manual only), multi-card layout */}
       {slidersImages.length > 0 && (
         <div className="w-full mt-1">
-          <div className="relative w-full overflow-hidden">
+          <div
+            className="relative w-full overflow-hidden"
+            ref={containerRef}
+            style={{ touchAction: 'pan-y' }}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+          >
             <div
-              className="flex flex-nowrap transition-transform duration-500 ease-out"
+              className="flex flex-nowrap transition-transform duration-500 ease-out select-none cursor-grab active:cursor-grabbing"
               style={{ transform: `translateX(-${activePage * 100}%)` }}
+              ref={trackRef}
             >
               {slidersImages.map(renderSliderItem)}
             </div>
@@ -131,7 +206,7 @@ const Applod = () => {
 
           {/* Dots */}
           <div className="flex items-center justify-center gap-2 mt-3">
-            {Array.from({ length: Math.max(1, Math.ceil(slidersImages.length / (isMobile ? 2 : 4))) }).map((_, idx) => {
+            {Array.from({ length: totalPages }).map((_, idx) => {
               const isActive = activePage === idx;
               return (
                 <button
