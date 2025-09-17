@@ -35,6 +35,14 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
   const { grid, title, contentItems, backgroundImage, bannerImage } = gridData;
   const { columns, rows, mobileColumns, mobileRows } = grid;
 
+  // Prepare split title parts based on the first space
+  const trimmedTitle = typeof title === "string" ? title.trim() : "";
+  const hasSpaceInTitle = trimmedTitle.includes(" ");
+  const [firstWord, ...remainingWords] = trimmedTitle
+    ? trimmedTitle.split(/\s+/)
+    : [];
+  const remainingTitle = remainingWords.join(" ");
+
   // Check if we're on mobile (you can adjust this breakpoint)
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
@@ -50,12 +58,29 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
         )}
 
         {/* Section Title */}
-        {title && (
+        {trimmedTitle && (
           <div className="mt-4 flex gap-2">
-            <CustomImage src={pawLogo} alt="paw-logo" className="w-16 h-8 object-cover" />
-            <h2 className="text-2xl md:text-3xl font-bold text-[#F59A11]">
-              {title}
-            </h2>
+            <CustomImage
+              src={pawLogo}
+              alt="Paw Logo"
+              className="inline-block mr-0 h-6"
+              width={50}
+              height={60}
+            />
+            {!hasSpaceInTitle ? (
+              <h2 className="text-2xl md:text-3xl font-bold text-[#F59A11]">
+                {trimmedTitle}
+              </h2>
+            ) : (
+              <>
+                <h2 className="text-2xl md:text-3xl font-bold text-[#F59A11]">
+                  {firstWord}
+                </h2>
+                <h2 className="text-2xl md:text-3xl font-bold text-[#0888B1]">
+                  {remainingTitle}
+                </h2>
+              </>
+            )}
           </div>
         )}
 
