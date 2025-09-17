@@ -377,7 +377,7 @@ const Header = ({ logo }) => {
   const animatedPlaceholder = `Search "${suggestions[index]}"`;
 
   return (
-    <div className="bg-[#FEF5E7] text-[#333] shadow-sm sticky top-0 z-40 overflow-x-hidden lg:px-[3%] px-[0%]">
+    <div className="bg-[#FFF] text-[#333] shadow-sm sticky top-0 z-40 overflow-x-hidden lg:px-[3%] px-[0%]">
       <div className="md:hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <button
@@ -471,8 +471,8 @@ const Header = ({ logo }) => {
             <CustomImage
               src={logo || petLogo}
               alt="PetCaart Logo"
-              className="h-13 w-auto"
-              width={160}
+              className="h-12 w-auto"
+              width={190}
               height={140}
               priority
             />
@@ -511,12 +511,12 @@ const Header = ({ logo }) => {
 
         <div className="flex items-center space-x-2 flex-shrink-0">
           <button
-            className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
+            className="rounded-full p-2 bg- hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
             aria-label="Pincode"
             type="button"
             onClick={openPincodeDialog}
           >
-            <MapPin size={20} className="text-yellow-600" />
+            <MapPin size={20} className="text-gray-800" />
           </button>
           <button
             className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
