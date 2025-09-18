@@ -29,6 +29,7 @@ import {
 import { sendOtp } from "@/app/apis/sendOtp";
 import { loginUser } from "@/app/apis/loginUser";
 import { updateProfile } from "@/app/apis/updateProfile";
+import heart from "@/assets/heart.png";
 
 const LoginPopup = ({ isOpen, onClose }) => {
   const [form, setForm] = useState({ phoneNumber: "", otp: "", email: "" });
@@ -278,7 +279,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 z-50 bg-black/80" />
         <DialogContent
-          className="min-w-[70vw] min-h-[50vh] border-0 p-0 shadow-2xl bg-[#1F5163]"
+          className="min-w-[70vw] min-h-[52vh] border-0 p-0 shadow-2xl bg-[#1F5163]"
           showCloseButton={false}
         >
           <DialogTitle className="sr-only">Login to PetCaart</DialogTitle>
@@ -295,10 +296,16 @@ const LoginPopup = ({ isOpen, onClose }) => {
                 <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl font-bold leading-tight text-center">
                   Welcome to PetCaart
                 </h1>
-                <p className="text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg 2xl:text-lg font-semibold text-center mt-2">
-                  Your Pet's Happiness, Our Mission
-                  <span className="ml-1">🧡</span>
-                </p>
+                <div className="flex items-center justify-center">
+                  <span className="text-[10px] sm:text-xs md:text-sm lg:text-base xl:text-lg 2xl:text-lg font-semibold text-center mt-2">
+                    Your Pet's Happiness, Our Mission
+                  </span>
+                    <CustomImage
+                      src={heart}
+                      alt="Heart"
+                      className="w-auto h-5 object-cover ml-1 mt-2"
+                    />
+                </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-8">
                   <div className="relative pb-8 bg-white/95 text-gray-900 rounded-xl shadow-xl pt-0 px-2 flex flex-col items-center justify-end">

@@ -323,12 +323,12 @@ const Category = () => {
                     setShowShopByCategory(!showShopByCategory);
                     setShowShopByBreed(false);
                   }}
-                  className="flex items-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] cursor-pointer transition-colors outline-none"
+                  className="flex items-center justify-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] cursor-pointer transition-colors outline-none"
                 >
                   <CustomImage
                     src={category.image}
                     alt={category.name}
-                    className="h-5 w-5 rounded-3xl"
+                    className={`${category.name === "Dogs" ? "h-7" : "h-6.5"} w-auto rounded-3xl`}
                     width={24}
                     height={24}
                   />
@@ -344,10 +344,10 @@ const Category = () => {
                 setShowShopByBreed(!showShopByBreed);
                 setShowShopByCategory(false);
               }}
-              className="text-lg hover:text-[#F59A11] transition-colors outline-none focus:underline"
+              className="text-lg hover:text-[#F59A11] transition-colors outline-none focus:text-[#F59A11] flex items-center justify-center space-x-1 cursor-pointer"
             >
-              Shop By Breed
-              <ChevronDown className="inline-block h-4 w-4" />
+              <span className="text-lg">Shop By Breed</span>
+              <ChevronDown className="inline-block h-5 w-5 ml-1" />
             </button>
           </div>
         </div>
