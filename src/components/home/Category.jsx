@@ -311,16 +311,24 @@ const Category = () => {
 
   return (
     <>
-      {/* Desktop Navigation */}
-      <div className="sticky top-[80px] z-40 overflow-x-auto bg-black">
-        <div className="hidden md:block text-white px-8 py-2 relative z-20">
-          <div className="flex justify-end space-x-6 min-w-max">
+      {/* Desktop Container (handles hover leave to close dropdowns) */}
+      <div
+        className="md:block relative"
+        onMouseLeave={() => {
+          setShowShopByBreed(false);
+          setShowShopByCategory(false);
+        }}
+      >
+        {/* Desktop Navigation */}
+        <div className="lg:fixed top-[80px] left-0 right-0 z-40 overflow-x-auto bg-black hidden md:block">
+          <div className="text-white px-8 py-2 relative z-20">
+            <div className="flex justify-end space-x-6 min-w-max">
             {categories?.map((category) => (
               <div key={category._id} className="flex items-center space-x-2">
                 <button
-                  onClick={() => {
+                  onMouseEnter={() => {
                     setActiveCategoryId(category._id);
-                    setShowShopByCategory(!showShopByCategory);
+                    setShowShopByCategory(true);
                     setShowShopByBreed(false);
                   }}
                   className="flex items-center justify-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] cursor-pointer transition-colors outline-none"
@@ -339,19 +347,21 @@ const Category = () => {
                 </button>
               </div>
             ))}
-            <button
-              onClick={() => {
-                setShowShopByBreed(!showShopByBreed);
-                setShowShopByCategory(false);
-              }}
-              className="text-lg hover:text-[#F59A11] transition-colors outline-none focus:text-[#F59A11] flex items-center justify-center space-x-1 cursor-pointer"
-            >
-              <span className="text-lg">Shop By Breed</span>
-              <ChevronDown className="inline-block h-5 w-5 ml-1" />
-            </button>
+              <button
+                onMouseEnter={() => {
+                  setShowShopByBreed(true);
+                  setShowShopByCategory(false);
+                }}
+                className="text-lg hover:text-[#F59A11] transition-colors outline-none focus:text-[#F59A11] flex items-center justify-center space-x-1 cursor-pointer"
+              >
+                <span className="text-lg">Shop By Breed</span>
+                <ChevronDown className="inline-block h-5 w-5 ml-1" />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+        {/* Spacer to prevent content jump due to fixed nav (desktop only) */}
+        <div className="hidden md:block h-12" />
 
       {/* Mobile Navigation Trigger */}
       <div className="md:hidden bg-black text-white px-4 py-3">
@@ -417,52 +427,53 @@ const Category = () => {
         </div>
       )}
 
-      {/* Desktop Dropdowns */}
-      {showShopByCategory && activeCategoryId && !isMobileMenuOpen && (
-        <div className="hidden md:block sticky top-[122px] z-40 bg-white shadow-lg">
-          <Dropdown
-            icon={categories.find((category) => category._id === activeCategoryId)?.image}
-            title="Categories"
-            sections={getSectionsForCategory(activeCategoryId)}
-            onClose={() => setShowShopByCategory(false)}
-            onClick={handleCollectionClick}
-          />
-        </div>
-      )}
+        {/* Desktop Dropdowns */}
+        {showShopByCategory && activeCategoryId && !isMobileMenuOpen && (
+          <div className="fixed top-[122px] left-0 right-0 z-40 bg-white shadow-lg">
+            <Dropdown
+              icon={categories.find((category) => category._id === activeCategoryId)?.image}
+              title="Categories"
+              sections={getSectionsForCategory(activeCategoryId)}
+              onClose={() => setShowShopByCategory(false)}
+              onClick={handleCollectionClick}
+            />
+          </div>
+        )}
 
-      {/* Shop By Breed - Desktop */}
-      {showShopByBreed && (
-        <div className="hidden md:block absolute left-0 right-0 w-full bg-white shadow-lg p-4 md:p-6 z-10">
-          <CustomCarousel
-            className="max-w-full"
-            itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
-            showArrows={true}
-          >
-            {loading
-              ? Array(6)
-                  .fill(0)
-                  .map((_, i) => <Skeleton key={i} className="w-24 h-24" />)
-              : breeds.map((breed) => (
-                  <Link
-                    key={breed._id}
-                    href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="text-center hover:scale-105 transition-transform cursor-pointer"
-                  >
-                    <CustomImage
-                      src={breed.image}
-                      alt={breed.name}
-                      className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-gray-200 mx-auto"
-                      width={96}
-                      height={96}
-                    />
-                    <p className="text-center text-sm mt-2 line-clamp-2">
-                      {breed.name}
-                    </p>
-                  </Link>
-                ))}
-          </CustomCarousel>
-        </div>
-      )}
+        {/* Shop By Breed - Desktop */}
+        {showShopByBreed && (
+          <div className="absolute left-0 right-0 w-full bg-white shadow-lg p-4 md:p-6 z-10">
+            <CustomCarousel
+              className="max-w-full"
+              itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
+              showArrows={true}
+            >
+              {loading
+                ? Array(6)
+                    .fill(0)
+                    .map((_, i) => <Skeleton key={i} className="w-24 h-24" />)
+                : breeds.map((breed) => (
+                    <Link
+                      key={breed._id}
+                      href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
+                      className="text-center hover:scale-105 transition-transform cursor-pointer"
+                    >
+                      <CustomImage
+                        src={breed.image}
+                        alt={breed.name}
+                        className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-gray-200 mx-auto"
+                        width={96}
+                        height={96}
+                      />
+                      <p className="text-center text-sm mt-2 line-clamp-2">
+                        {breed.name}
+                      </p>
+                    </Link>
+                  ))}
+            </CustomCarousel>
+          </div>
+        )}
+      </div>
     </>
   );
 };
