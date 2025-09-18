@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from "react";
-import { Search, Menu, MapPin, X, ShoppingCart, User, Phone, Mail } from "lucide-react";
+import { Search, Menu, MapPin, X, ShoppingCart, User, Phone, Mail, User2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import CustomImage from "@/components/images/CustomImage";
 import cartIcon from "@/assets/cart.png";
 import truckIcon from "@/assets/truck.png";
 import petLogo from "@/assets/pet.png";
-import loginLogo from "@/assets/login.png";
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken, selectUser } from "@/store/authSlice";
 import { selectLoginPopupOpen, openLoginPopup, closeLoginPopup } from "@/store/uiSlice";
@@ -177,13 +176,13 @@ const MobileMenu = React.memo(({
           </div>
         ) : (
           <button
-            className="bg-[#0888B1] w-full text-white py-3 rounded-xl text-sm font-medium flex items-center justify-center space-x-2"
+            className="bg-[#0888B1] w-full text-white py-3 rounded-xl flex items-center justify-center space-x-2"
             onClick={() => {
               onLoginClick && onLoginClick();
               setIsMenuOpen(false);
             }}
           >
-            <CustomImage src={loginLogo} alt="Login" className="h-4 w-auto" width={20} height={20} />
+            <User2Icon size={18} />
             <span>LOGIN / SIGNUP</span>
           </button>
         )}

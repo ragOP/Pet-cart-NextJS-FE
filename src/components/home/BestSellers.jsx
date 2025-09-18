@@ -38,17 +38,15 @@ const BestSellers = () =>{
   return (
     <div className="w-full md:px-4 py-8 bg-white lg:px-[4%] px-[1%]">
       {/* Header */}
-      <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
+      <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2 items-center">
         <CustomImage
           src={paswIcon}
           alt="Paw Logo"
-          className="inline-block mr-0 h-6"
-          width={50}
-          height={60}
+          className="inline-block mr-0 lg:h-7 w-auto h-4 lg:mb-2 mb-0"
         />
         <span className="space-x-2">
-          <span className="text-[#F59A11] text-2xl md:text-3xl font-bold">Bestsellers</span>
-          <span className="text-[#0888B1] text-2xl md:text-3xl font-bold">Under ₹599</span>
+          <span className="text-[#F59A11] text-xl md:text-3xl font-bold">Bestsellers</span>
+          <span className="text-[#0888B1] text-xl md:text-3xl font-bold">Under ₹599</span>
         </span>
       </div>
 

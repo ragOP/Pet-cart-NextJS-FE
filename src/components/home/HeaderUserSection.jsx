@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CustomImage from "@/components/images/CustomImage";
 import loginLogo from "@/assets/login.png";
-import { User } from "lucide-react";
+import { User, User2Icon } from "lucide-react";
 import { useDeviceDetection } from "@/hooks/useDeviceDetection";
 import { openLoginPopup } from "@/store/uiSlice";
 
@@ -35,18 +35,12 @@ export default function HeaderUserSection() {
         </button>
       ) : (
         <button
-          className="bg-[#0888B1] uppercase text-white px-3 py-2 rounded text-sm font-medium flex items-center hover:bg-[#066b8a] focus:bg-[#05516a]"
+          className="bg-[#0888B1] uppercase text-white px-3 py-2 rounded text-sm  flex items-center justify-center hover:bg-[#066b8a] focus:bg-[#05516a] space-x-2"
           aria-label="Login"
           onClick={handleLoginClick}
         >
-          <CustomImage
-            src={loginLogo}
-            alt="loginlogo"
-            className="h-4 w-auto mr-2"
-            width={20}
-            height={20}
-          />
-          Login / Signup
+          <User2Icon size={16} />
+          <span>LOGIN / SIGNUP</span>
         </button>
       )}
 

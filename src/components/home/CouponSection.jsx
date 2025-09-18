@@ -29,17 +29,15 @@ const  CouponSection = () => {
   return (
     <div className="w-full md:px-4 pt-6 lg:px-[4%] px-[1%]">
       {/* Title */}
-      <div className="font-bold font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
+      <div className="font-bold font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2 items-center">
         <CustomImage
           src={pawLogo}
           alt="Paw Logo"
-          className="inline-block mr-0 h-6"
-          width={50}
-          height={60}
+          className="inline-block mr-0 lg:h-7 w-auto h-4 lg:mb-2 mb-0"
         />
         <span>
-          <span className="text-[#F59A11] text-2xl md:text-3xl font-bold">Coupons You'll </span>
-          <span className="text-[#F73518] text-2xl md:text-3xl font-bold">Love ❤️</span>
+          <span className="text-[#F59A11] text-xl md:text-3xl font-bold">Coupons You'll </span>
+          <span className="text-[#F73518] text-xl md:text-3xl font-bold">Love ❤️</span>
         </span>
       </div>
 

@@ -59,24 +59,22 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
 
         {/* Section Title */}
         {trimmedTitle && (
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex gap-2 items-center">
             <CustomImage
               src={pawLogo}
               alt="Paw Logo"
-              className="inline-block mr-0 h-6"
-              width={50}
-              height={60}
+              className="inline-block mr-0 lg:h-7 w-auto h-4 lg:mb-2 mb-0"
             />
             {!hasSpaceInTitle ? (
-              <h2 className="text-2xl md:text-3xl font-bold text-[#F59A11]">
+              <h2 className="text-xl md:text-3xl font-bold text-[#F59A11]">
                 {trimmedTitle}
               </h2>
             ) : (
               <>
-                <h2 className="text-2xl md:text-3xl font-bold text-[#F59A11]">
+                <h2 className="text-xl md:text-3xl font-bold text-[#F59A11]">
                   {firstWord}
                 </h2>
-                <h2 className="text-2xl md:text-3xl font-bold text-[#0888B1]">
+                <h2 className="text-xl md:text-3xl font-bold text-[#0888B1]">
                   {remainingTitle}
                 </h2>
               </>
