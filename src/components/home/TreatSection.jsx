@@ -26,19 +26,19 @@ const TreatSection = () => {
   const link = data?.link || "#";
 
   return (
-    <div className="bg-[#FFF2809E] p-2 md:py-6 md:pl-8 rounded-2xl mt-6 flex flex-col md:flex-row justify-between gap-6 m-2">
+    <div className="bg-[#FFF2809E] p-5 md:py-6 md:px-8 rounded-2xl mt-4 md:mt-6 flex flex-col md:flex-row justify-between gap-5 md:gap-6 m-2">
       {/* Left: Text & CTA */}
       <div className="flex-1 max-w-md  justify-between">
-        <h2 className="text-[40px] font-bold text-[#814E00] leading-tight font-holtwood uppercase">
+        <h2 className="text-2xl md:text-[40px] font-bold text-[#814E00] leading-tight font-holtwood uppercase">
           {title}
         </h2>
-        <p className="text-[25px] text-black mt-2">{description}</p>
-        <div className="relative mt-12 inline-block group">
+        <p className="text-sm md:text-[25px] text-black mt-2">{description}</p>
+        <div className="relative mt-6 md:mt-12 inline-block group">
       {/* Cat GIF */}
       <motion.img
         src="/animation.gif"
         alt="Cat Animation"
-        className="absolute right-2 -top-[8rem] w-24 h-32 z-0 pointer-events-none"
+        className="absolute right-2 -top-24 md:-top-[8rem] w-16 h-20 md:w-24 md:h-32 z-0 pointer-events-none"
         animate={isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.4 }}
       />
@@ -48,7 +48,7 @@ const TreatSection = () => {
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="relative z-10 flex items-center justify-center bg-[#F59A11] text-white text-lg font-semibold px-6 py-2 rounded-xl md:w-45 md:h-15 cursor-pointer hover:shadow-lg focus:shadow-lg outline-none text-center"
+        className="relative z-10 flex items-center justify-center bg-[#F59A11] text-white text-sm md:text-lg font-semibold px-5 md:px-6 py-2 rounded-xl md:w-45 md:h-15 cursor-pointer hover:shadow-lg focus:shadow-lg outline-none text-center"
         tabIndex={0}
         aria-label="Shop now"
         onMouseEnter={() => setIsHovered(true)}
@@ -61,7 +61,7 @@ const TreatSection = () => {
       </div>
 
       {/* Right: Product Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-1">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 flex-1">
         {isLoading ? (
           <PrimaryLoader />
         ) : isError || !products.length ? (
