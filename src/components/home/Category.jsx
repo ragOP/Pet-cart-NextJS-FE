@@ -270,12 +270,12 @@ const Category = () => {
         </h2> */}
         {/* <hr className="mb-4" /> */}
         <div className="flex flex-col md:grid md:grid-cols-5 md:gap-6 text-sm">
-          {sections.map((section) => (
+          {sections.map((section, index) => (
             <div className="mb-6 md:mb-0" key={section.title}>
-              <h3 className="uppercase mb-2 font-medium text-xl">
+              <h3 className="uppercase mb-2 font-bold text-xl leading-[22.5px] tracking-[0.57px]">
                 {section.title}
               </h3>
-              <div className="flex flex-col space-y-2">
+              <div className="flex flex-col space-y-0">
                 {section.items.map((item) => (
                   <div
                     key={`${section.title}-${item}`}
@@ -298,6 +298,9 @@ const Category = () => {
                   </div>
                 ))}
               </div>
+              {index < sections.length - ((sections.length % 5) || 5) && (
+                <hr className="mt-2" />
+              )}
             </div>
           ))}
         </div>
