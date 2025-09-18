@@ -60,7 +60,7 @@ const BestSellerProduct = ({
   return (
     <div
       onClick={onClick}
-      className={`p-4 my-2 rounded-lg bg-white flex flex-col h-[30rem] group transition-all duration-200 ${className} hover:shadow-xl hover:scale-[1.025] hover:ring-2 hover:ring-[#F59A11] focus-within:shadow-xl focus-within:scale-[1.025] focus-within:ring-2 focus-within:ring-[#F59A11] justify-between`}
+      className={`p-2 my-2 rounded-lg bg-white flex flex-col h-[30rem] group transition-all duration-200 ${className} hover:shadow-xl hover:scale-[1.025] hover:ring-2 hover:ring-[#F59A11] focus-within:shadow-xl focus-within:scale-[1.025] focus-within:ring-2 focus-within:ring-[#F59A11] justify-between`}
     >
       {/* Product Image and Badge */}
       <div className="relative mb-3 flex items-center justify-center">

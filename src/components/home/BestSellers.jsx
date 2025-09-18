@@ -36,7 +36,7 @@ const BestSellers = () =>{
   };
 
   return (
-    <div className="w-full md:px-4 py-8 bg-white px-[4%]">
+    <div className="w-full md:px-4 py-3 bg-white lg:px-[4%] px-[4%] -mt-4">
       {/* Header */}
       <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2 items-center">
         <CustomImage
@@ -53,7 +53,7 @@ const BestSellers = () =>{
       {/* Carousel */}
       <CustomCarousel
         className="hide-scrollbar min-h-[260px] flex items-center justify-center"
-        contentClassName="gap-4 flex items-center justify-center min-h-[220px]"
+        contentClassName="gap-0 flex items-center justify-center min-h-[220px]"
         itemClassName="min-w-fit-content max-w-fit-content flex flex-col items-center justify-center"
         showArrows={true}
       >

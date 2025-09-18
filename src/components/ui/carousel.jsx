@@ -156,7 +156,7 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        "absolute size-12 rounded-full",
+        "absolute lg:size-12 size-8 rounded-full",
         canScrollPrev ? "bg-white hover:bg-gray-50" : "bg-gray-200 cursor-not-allowed",
         orientation === "horizontal"
           ? "top-1/2 -left-12 -translate-y-1/2"
@@ -185,7 +185,7 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        "absolute size-12 rounded-full",
+        "absolute lg:size-12 size-8 rounded-full",
         canScrollNext ? "bg-white hover:bg-gray-50" : "bg-gray-200 cursor-not-allowed",
         orientation === "horizontal"
           ? "top-1/2 -right-12 -translate-y-1/2"
