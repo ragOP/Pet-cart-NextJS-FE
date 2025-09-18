@@ -47,7 +47,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
-    <div className="w-full px-[4%] mb-4">
+    <div className="w-full mb-4">
       <div className="mb-8">
         {bannerImage && (
           <CustomImage
@@ -59,7 +59,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
 
         {/* Section Title */}
         {trimmedTitle && (
-          <div className="mt-4 flex gap-2 items-center">
+          <div className="mt-4 flex gap-2 items-center px-[4%]">
             <CustomImage
               src={pawLogo}
               alt="Paw Logo"
@@ -84,7 +84,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
 
         {/* Grid Container */}
         <div
-          className="grid gap-4 lg:py-3 py-2"
+          className="grid gap-4 lg:py-3 py-2 px-[4%] "
           style={{
             gridTemplateColumns: `repeat(${
               isMobile ? mobileColumns || columns : columns
