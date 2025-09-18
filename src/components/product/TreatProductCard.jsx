@@ -7,20 +7,29 @@ import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 
 const TreatProductCard = ({ item }) => {
-  
+
     const queryClient = useQueryClient();
     const { mutate: addToCart, isPending } = useMutation({
       mutationFn: (payload) => addProductToCart(payload),
       onSuccess: (res) => {
         if(res?.success){
-          toast.success("Product added to cart!");
+          toast.success("Product added to cart!", {
+            duration: 1500,
+            autoClose: 1500,
+          });
           queryClient.invalidateQueries({ queryKey: ["cart"] });
         } else{
-          toast.error(res?.message || "Failed to add product to cart");
+          toast.error(res?.message || "Failed to add product to cart", {
+            duration: 1500,
+            autoClose: 1500,
+          });
         }
       },
       onError: (error) => {
-        toast.error(error.response?.data?.message || "Failed to add product to cart");
+          toast.error(error.response?.data?.message || "Failed to add product to cart", {
+          duration: 1500,
+          autoClose: 1500,
+        });
       },
     });
 

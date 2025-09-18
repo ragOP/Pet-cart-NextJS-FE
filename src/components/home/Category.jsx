@@ -361,7 +361,7 @@ const Category = () => {
           </div>
         </div>
         {/* Spacer to prevent content jump due to fixed nav (desktop only) */}
-        <div className="hidden md:block h-12" />
+        <div className="hidden md:block h-10" />
 
       {/* Mobile Navigation Trigger */}
       <div className="md:hidden bg-black text-white px-4 py-3">

@@ -42,14 +42,21 @@ const PriceAndCartDisplay = ({
   const { mutate: addToCart } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: () => {
-      toast.success("Product added to cart!");
+      toast.success("Product added to cart!", {
+        duration: 1500,
+        autoClose: 1500,
+      });
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       router.push("/cart");
       setLoading(false);
     },
     onError: (error) => {
       toast.error(
-        error.response?.data?.message || "Failed to add product to cart"
+        error.response?.data?.message || "Failed to add product to cart",
+        {
+          duration: 1500,
+          autoClose: 1500,
+        }
       );
       setLoading(false);
     },
@@ -58,7 +65,10 @@ const PriceAndCartDisplay = ({
 
   const handleAddToCart = () => {
     if (!isLoggedIn) {
-      toast.error("Please login to add products to cart");
+      toast.error("Please login to add products to cart", {
+        duration: 1500,
+        autoClose: 1500,
+      });
       try {
         const currentPath = window.location.pathname + window.location.search + window.location.hash;
         dispatch(setLoginRedirectUrl(currentPath));

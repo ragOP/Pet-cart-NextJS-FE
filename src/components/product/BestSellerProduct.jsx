@@ -31,17 +31,23 @@ const BestSellerProduct = ({
       if(res?.success){
         toast.success("Product added to cart!", {
           position: "top-right",
+          duration: 1500,
+          autoClose: 1500,
         });
         queryClient.invalidateQueries({ queryKey: ["cart"] });
       } else{
         toast.error(res?.message || "Failed to add product to cart", {
           position: "top-right",
+          duration: 1500,
+          autoClose: 1500,
         });
       }
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || "Failed to add product to cart", {
         position: "top-right",
+        duration: 1500,
+        autoClose: 1500,
       });
     },
   });
