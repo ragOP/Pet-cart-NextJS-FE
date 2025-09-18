@@ -36,7 +36,7 @@ const BestSellers = () =>{
   };
 
   return (
-    <div className="w-full md:px-4 py-8 bg-white lg:px-[4%] px-[1%]">
+    <div className="w-full md:px-4 py-8 bg-white px-[4%]">
       {/* Header */}
       <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2 items-center">
         <CustomImage

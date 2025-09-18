@@ -378,36 +378,40 @@ const Header = ({ logo }) => {
   return (
     <div className="bg-[#FFF] text-[#333] shadow-sm sticky top-0 z-40 overflow-x-hidden lg:px-[3%] px-[0%]">
       <div className="md:hidden">
-        <div className="flex items-center justify-between px-4 py-3">
-          <button
-            onClick={() => setIsMenuOpen(true)}
-            className="p-2 hover:bg-white/50 rounded-full transition"
-          >
-            <Menu size={24} />
-          </button>
+        <div className="grid grid-cols-3 items-center px-4 py-1">
+          <div className="justify-self-start">
+            <button
+              onClick={() => setIsMenuOpen(true)}
+              className="p-2 hover:bg-white/50 rounded-full transition"
+            >
+              <Menu size={24} />
+            </button>
+          </div>
 
-          <button
-            onClick={() => router.push('/')}
-            className="hover:opacity-80 transition"
-          >
-            <CustomImage
-              src={logo || petLogo}
-              alt="PetCaart Logo"
-              className="h-10 w-auto"
-              width={120}
-              height={32}
-            />
-          </button>
+          <div className="justify-self-center">
+            <button
+              onClick={() => router.push('/')}
+              className="hover:opacity-80 transition"
+            >
+              <CustomImage
+                src={logo || petLogo}
+                alt="PetCaart Logo"
+                className="h-14 w-auto"
+                width={120}
+                height={32}
+              />
+            </button>
+          </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 justify-self-end">
             <button
               onClick={() => setShowSearch(prev => !prev)}
-              className="p-2 hover:bg-white/50 rounded-full transition"
+              className="p-1 hover:bg-white/50 rounded-full transition"
             >
               <Search size={22} />
             </button>
             <button
-              className="p-2 hover:bg-white/50 rounded-full transition relative"
+              className="p-1 hover:bg-white/50 rounded-full transition relative"
               onClick={() => router.push('/cart')}
             >
               <ShoppingCart size={22} />
