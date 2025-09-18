@@ -32,7 +32,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
   }
 
   // Handle single grid section
-  const { grid, title, contentItems, backgroundImage, bannerImage } = gridData;
+  const { grid, title, contentItems, backgroundImage, bannerImage, isTitleShow } = gridData;
   const { columns, rows, mobileColumns, mobileRows } = grid;
 
   // Prepare split title parts based on the first space
@@ -58,7 +58,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
         )}
 
         {/* Section Title */}
-        {trimmedTitle && (
+        {trimmedTitle && isTitleShow && (
           <div className="mt-4 flex gap-2 items-center px-[4%]">
             <CustomImage
               src={pawLogo}

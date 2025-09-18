@@ -69,6 +69,7 @@ const Home = () => {
         contentItems: id.contentItems,
         backgroundImage: id.backgroundImage,
         bannerImage: id.bannerImage,
+        isTitleShow: id.isTitleShow,
       };
 
       return (
