@@ -258,7 +258,7 @@ const Category = () => {
 
     return (
       <div className="absolute left-0 right-0 w-full bg-white rounded-b-lg p-4 md:p-6 text-black shadow-lg z-30 petcaart-dropdown">
-        <h2 className="uppercase flex pb-4 font-gotham-rounded font-bold text-2xl">
+        {/* <h2 className="uppercase flex pb-4 font-gotham-rounded font-bold text-2xl">
           <CustomImage
             src={icon}
             alt={title}
@@ -267,8 +267,8 @@ const Category = () => {
             height={24}
           />
           {title}
-        </h2>
-        <hr className="mb-4" />
+        </h2> */}
+        {/* <hr className="mb-4" /> */}
         <div className="flex flex-col md:grid md:grid-cols-5 md:gap-6 text-sm">
           {sections.map((section) => (
             <div className="mb-6 md:mb-0" key={section.title}>
@@ -312,8 +312,8 @@ const Category = () => {
   return (
     <>
       {/* Desktop Navigation */}
-      <div className="sticky top-[72px] z-40 overflow-x-auto bg-black">
-        <div className="hidden md:block text-white px-8 py-4 relative z-20">
+      <div className="sticky top-[80px] z-40 overflow-x-auto bg-black">
+        <div className="hidden md:block text-white px-8 py-2 relative z-20">
           <div className="flex justify-end space-x-6 min-w-max">
             {categories?.map((category) => (
               <div key={category._id} className="flex items-center space-x-2">
@@ -419,7 +419,7 @@ const Category = () => {
 
       {/* Desktop Dropdowns */}
       {showShopByCategory && activeCategoryId && !isMobileMenuOpen && (
-        <div className="hidden md:block sticky top-[132px] z-40 bg-white shadow-lg">
+        <div className="hidden md:block sticky top-[122px] z-40 bg-white shadow-lg">
           <Dropdown
             icon={categories.find((category) => category._id === activeCategoryId)?.image}
             title="Categories"

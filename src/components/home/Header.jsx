@@ -461,7 +461,7 @@ const Header = ({ logo }) => {
       </div>
 
       {/* Desktop Layout - Responsive */}
-      <div className="hidden md:flex items-center justify-between p-4">
+      <div className="hidden md:flex items-center justify-between p-2">
         <div className="flex items-center space-x-4">
           <button
             onClick={() => router.push('/')}
@@ -470,7 +470,7 @@ const Header = ({ logo }) => {
             <CustomImage
               src={logo || petLogo}
               alt="PetCaart Logo"
-              className="h-12 w-auto"
+              className="h-16 w-auto"
               width={190}
               height={140}
               priority
