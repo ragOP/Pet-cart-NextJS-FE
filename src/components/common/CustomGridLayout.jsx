@@ -83,7 +83,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
         )}
 
         {/* Grid Container */}
-        <div
+        {contentItems?.length > 0 && <div
           className="grid gap-4 lg:py-3 py-2 px-[4%] "
           style={{
             gridTemplateColumns: `repeat(${
@@ -113,7 +113,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
               />
             </div>
           ))}
-        </div>
+        </div>}
       </div>
     </div>
   );
