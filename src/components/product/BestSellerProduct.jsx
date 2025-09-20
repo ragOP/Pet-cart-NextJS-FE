@@ -141,7 +141,7 @@ const BestSellerProduct = ({
               key={variant._id || variant.id}
               className="inline-block px-3 py-1 text-[10px] rounded-lg bg-[#E3EBEE] text-[#181818] font-medium mr-2"
             >
-              <span>{variant.weight}</span>{" "}
+              <span>{variant.weight > 1000 ? `${(variant.weight / 1000) % 1 === 0 ? (variant.weight / 1000) : (variant.weight / 1000).toFixed(2)}kg` : `${variant.weight % 1 === 0 ? variant.weight : variant.weight.toFixed(2)}g`}</span>{" "}
               <span>{variant.salePrice ? `| ${calculateDiscountPercent(variant.price, variant.salePrice)}% OFF` : null}</span>
             </span>
           ))}
