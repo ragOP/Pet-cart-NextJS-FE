@@ -14,28 +14,29 @@ import {
 
 export default function CategoryBreadcrumb({ productsCount }) {
   return (
-    <div className="sticky top-[132px] z-30 overflow-x-hidden bg-white h-full">
-      <div className="hidden text-sm text-muted-foreground space-x-2 px-6 lg:flex uppercase h-full">
-        <div className="border-r-2 pr-4 py-4 flex space-x-1 justify-center items-center text-xs">
+    <div className="overflow-x-hidden h-full">
+      <div className="hidden text-sm text-muted-foreground px-6 lg:flex uppercase">
+        <div className="pr-4 py-4 flex space-x-1 justify-center items-center text-xs">
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink className="text-[#6A6868]" asChild>
+                <BreadcrumbLink className="text-[#6A6868] text-sm" asChild>
                   <Link href="/">Home</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink className="text-[#6A6868]" asChild>
+                <BreadcrumbLink className="text-[#6A6868] text-sm" asChild>
                   <Link href="/category">Category</Link>
                 </BreadcrumbLink>
               </BreadcrumbItem>
+            <BreadcrumbSeparator />
             </BreadcrumbList>
           </Breadcrumb>
         </div>
         <div className="flex items-center justify-center space-x-2">
           <Image src="/product-icon.png" alt="paws-logo" width={20} height={20} />
-          <span className="text-xl"><span className="font-bold text-black">
+          <span className="text-sm"><span className="font-bold text-black text-sm">
             {productsCount}
           </span> Products</span>
         </div>

@@ -71,6 +71,45 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
         { label: "5 Star", value: 5 },
       ],
     },
+    {
+      key: "isVeg",
+      label: "Diet Type",
+      type: "slider",
+      items: [
+        { label: "Non-Veg", value: false, color: "#ef4444" },
+        { label: "Veg", value: true, color: "#22c55e" },
+      ],
+    },
+    {
+      key: "lifeStage",
+      label: "Life Stage",
+      items: [
+        { label: "Puppy", value: "Puppy" },
+        { label: "Adult", value: "Adult" },
+        { label: "Starter", value: "Starter" },
+        { label: "Kitten", value: "Kitten" },
+      ],
+    },
+    {
+      key: "breedSize",
+      label: "Breed Size",
+      items: [
+        { label: "Mini", value: "Mini" },
+        { label: "Medium", value: "Medium" },
+        { label: "Large", value: "Large" },
+        { label: "Giant", value: "Giant" },
+      ],
+    },
+    {
+      key: "productType",
+      label: "Product Type",
+      items: [
+        { label: "Wet Food", value: "Wet Food" },
+        { label: "Dry Food", value: "Dry Food" },
+        { label: "Food Toppers", value: "Food Toppers" },
+        { label: "Treat", value: "Treat" },
+      ],
+    },
   ];
 
   const badgeLabels = convertFilterKeys(filters);
@@ -113,27 +152,12 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
         </Select>
       </div>
 
-      {/* Filter Badges */}
-      <div className="flex flex-wrap items-center gap-2">
-        {Object.entries(filters).map(([key, value]) => (
-          <Badge
-            key={key}
-            variant="outline"
-            className="text-sm flex items-center gap-1 hover:cursor-pointer"
-            onClick={() => deleteFilter(key)}
-          >
-            {Object.entries(badgeLabels).find(([k, v]) => v === value)[0]}: {unslug(value)}
-            <X size={16} className="cursor-pointer" onClick={() => deleteFilter(key)} />
-          </Badge>
-        ))}
-      </div>
-
       <Drawer
         open={open}
         onClose={() => setOpen(false)}
         direction="right"
         width="50%"
-        className="p-6 overflow-hidden"
+        className="p-6 flex flex-col h-full overflow-hidden"
         overlayClassName="z-50"
       >
         <div className="flex items-center gap-2 w-[50vw] border-b-2 border-[#6A6868] pb-6">
@@ -141,12 +165,10 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
           <span className="font-bold text-xl">Filters</span>
         </div>
 
-        <div className="flex h-full w-[50vw]">
+        <div className="w-[50vw] flex-1 overflow-y-auto pr-2">
           <div className="w-full">
             {filterTabs.map((tab, index) => (
               <div className="flex flex-col border-b border-[#B4B3B3]">
-
-
                 <button
                   key={tab.key}
                   className={`w-full text-left py-2 text-sm font-medium pt-6`}
@@ -156,7 +178,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
                 </button>
                 <div className="flex space-x-2 pb-3">
                   {["brandSlug"].includes(tab.key) ? (
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-3 cursor-pointer">
                       {tab.items.map((item) => (
                         <div
                           key={item.value}
@@ -187,7 +209,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
                             })
                             setOpen(false)
                           }}
-                          className={cn("w-40 flex justify-start text-left text-sm p-2 bg-[#E7F4F8] border-2 border-[#BBDEE9] hover:bg-[#0888B1] hover:border-2 hover:border-[#0888B1]", filters?.[tab.key] === item.value ? "bg-[#0888B1] border-2 border-[#0888B1]" : "")}
+                          className={cn("w-28 cursor-pointer flex justify-start text-left text-sm p-2 bg-[#E7F4F8] border-2 border-[#BBDEE9] hover:bg-[#0888B1] hover:border-2 hover:border-[#0888B1]", filters?.[tab.key] === item.value ? "bg-[#0888B1] border-2 border-[#0888B1]" : "")}
                         >
                           {item.label}
                         </Button>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
@@ -26,8 +26,6 @@ const ProductPage = ({ params }) => {
   const [pincode, setPincode] = useState("");
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
   const [deliveryLoading, setDeliveryLoading] = useState(false);
-  const [additionalInformation, setAdditionalInformation] = useState(null);
-
   const { deviceType, isClient } = useDeviceDetection();
   const type = deviceType === "desktop" ? "web" : (deviceType === "tablet" ? "tablet" : "mobile");
 
@@ -41,9 +39,10 @@ const ProductPage = ({ params }) => {
     select: (res) => res?.response?.data || {},
   });
 
+  const additionalInformation = useMemo(() => {
+    if (!data?.title) return null;
 
-  useEffect(() => {
-    setAdditionalInformation({
+    return {
       productName: data?.title,
       productType: data?.productType,
       brand: data?.brandId?.name,
@@ -57,8 +56,20 @@ const ProductPage = ({ params }) => {
       category: data?.categoryId?.name,
       lifeStage: data?.lifeStage,
       disclaimer: "All Images are for representation purpose only, You are advised to read the batch details, manufacturer details, expiry date and other details mentioned on the product.",
-    });
-  }, [data]);
+    };
+  }, [
+    data?.title,
+    data?.productType,
+    data?.brandId?.name,
+    data?.weight,
+    data?.importedBy,
+    data?.countryOfOrigin,
+    data?.price,
+    data?.salePrice,
+    data?.subCategoryId?.name,
+    data?.categoryId?.name,
+    data?.lifeStage,
+  ]);
 
   const {
     data: reviewsData,

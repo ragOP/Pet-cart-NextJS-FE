@@ -35,7 +35,20 @@ const ProductAccordion = ({ items }) => {
           open={openIndex === idx}
           onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
         >
-          {item.content}
+          {typeof item.content === 'object' && item.content !== null ? (
+            <div className="space-2">
+              {Object.entries(item.content).map(([key, value]) =>
+                value ? (
+                  <div key={key} className="flex flex-col py-1 sm:flex-row gap-2">
+                    <span className="font-medium capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}:{" "}</span>
+                    <span>{value}</span>
+                  </div>
+                ) : null
+              )}
+            </div>
+          ) : (
+            item.content
+          )}
         </AccordionItem>
       ))}
     </div>
