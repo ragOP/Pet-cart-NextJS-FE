@@ -17,6 +17,7 @@ import CategoryBanner from "@/components/category/CategoryBanner";
 import ProductReviews from "@/components/product/ProductReviews";
 import { getReviewsByProductId } from "@/app/apis/getReviewsByProductId";
 import { checkDelivery } from "@/app/apis/checkDelivery";
+import { useDeviceDetection } from "@/hooks/useDeviceDetection";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
@@ -25,9 +26,10 @@ const ProductPage = ({ params }) => {
   const [pincode, setPincode] = useState("");
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
   const [deliveryLoading, setDeliveryLoading] = useState(false);
+  const [additionalInformation, setAdditionalInformation] = useState(null);
 
-  const width = window.innerWidth;
-  const type = width > 1024 ? "web" : (width > 768 ? "tablet" : "mobile");
+  const { deviceType, isClient } = useDeviceDetection();
+  const type = deviceType === "desktop" ? "web" : (deviceType === "tablet" ? "tablet" : "mobile");
 
   const {
     data = {},
@@ -38,6 +40,25 @@ const ProductPage = ({ params }) => {
     queryFn: () => getProductById({ id }),
     select: (res) => res?.response?.data || {},
   });
+
+
+  useEffect(() => {
+    setAdditionalInformation({
+      productName: data?.title,
+      productType: data?.productType,
+      brand: data?.brandId?.name,
+      netWeight: `${data?.weight}gm`,
+      importedAndMarketedBy: data?.importedBy,
+      origin: data?.countryOfOrigin,
+      price: `₹${data?.price}`,
+      discount: `${(((data?.price - data?.salePrice) / data?.price) * 100).toFixed(2)}%`,
+      platform: "Pet Caart",
+      subCategory: data?.subCategoryId?.name,
+      category: data?.categoryId?.name,
+      lifeStage: data?.lifeStage,
+      disclaimer: "All Images are for representation purpose only, You are advised to read the batch details, manufacturer details, expiry date and other details mentioned on the product.",
+    });
+  }, [data]);
 
   const {
     data: reviewsData,
@@ -56,7 +77,7 @@ const ProductPage = ({ params }) => {
         pincode: pincode,
         productId: id,
       });
-      
+
       if (response?.success) {
         setExpectedDeliveryDate(response?.data || "Available for delivery");
       } else {
@@ -172,7 +193,7 @@ const ProductPage = ({ params }) => {
           },
           {
             title: "Additional Information",
-            content: "Additional information content goes here.",
+            content: additionalInformation,
           },
           // {
           //   title: "Product Details",
@@ -183,9 +204,11 @@ const ProductPage = ({ params }) => {
 
       <HandPickedProducts />
 
-      <div className="px-4 mb-4">
-        <CategoryBanner type={type} />
-      </div>
+      {isClient && (
+        <div className="px-4 mb-4">
+          <CategoryBanner type={type} />
+        </div>
+      )}
 
       <HandPickedProducts />
 
