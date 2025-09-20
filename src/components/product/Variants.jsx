@@ -49,7 +49,18 @@ export const VariantBox = ({
       }`}
     >
       <span className="text-sm">
-        {variant.weight}g {variant.salePrice && discount > 0 ? `| ${discount}% OFF` : null}
+        {variant.weight > 1000
+          ? `${
+              (variant.weight / 1000) % 1 === 0
+                ? variant.weight / 1000
+                : (variant.weight / 1000).toFixed(2)
+            }kg`
+          : `${
+              variant.weight % 1 === 0
+                ? variant.weight
+                : variant.weight.toFixed(2)
+            }g`}
+        {" "}{variant.salePrice && discount > 0 ? `| ${discount}% OFF` : null}
       </span>
     </div>
   );
