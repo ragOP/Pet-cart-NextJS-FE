@@ -6,6 +6,7 @@ import { VariantBox } from "./Variants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addProductToCart } from "@/app/apis/addProductToCart";
 import { toast } from "sonner";
+import PrimaryLoader from "../loaders/PrimaryLoader";
 
 const BestSellerProduct = ({
   product,
@@ -65,9 +66,9 @@ const BestSellerProduct = ({
     >
       {/* Product Image and Badge */}
       <div className="relative mb-4">
-        <span className="absolute z-10 top-3 left-3 bg-gradient-to-r from-[#1C83A8] via-[#48BDE6] to-[#13789D] text-white text-xs font-bold px-2 py-1 rounded">
+        {product.isBestSeller && <span className="absolute z-10 top-3 left-3 bg-gradient-to-r from-[#1C83A8] via-[#48BDE6] to-[#13789D] text-white text-xs font-bold px-2 py-1 rounded">
           BESTSELLER
-        </span>
+        </span>}
         {/* Expand/Fullscreen icons */}
         <div className="absolute z-10 top-3 right-3 flex flex-col gap-2">
           <button className="w-7 h-7 bg-white rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50">
@@ -131,9 +132,12 @@ const BestSellerProduct = ({
             {product.brandId?.name || 'Brand'}
           </p>
         </div>
-        <div className="flex items-center justify-center w-4 h-4 border-2 border-green-600 rounded-sm bg-white ml-2">
+        {product.isVeg === true && <div className="flex items-center justify-center w-4 h-4 border-2 border-green-600 rounded-sm bg-white ml-2">
           <div className="w-1.5 h-1.5 bg-green-600 rounded-full"></div>
-        </div>
+        </div>}
+        {product.isVeg === false && <div className="flex items-center justify-center w-4 h-4 border-2 border-red-600 rounded-sm bg-white ml-2">
+          <div className="w-1.5 h-1.5 bg-red-600 rounded-full"></div>
+        </div>}
       </div>
 
       {/* Variants */}
@@ -179,15 +183,15 @@ const BestSellerProduct = ({
               </p>
             )}
           </div>
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end mt-5">
             {discount > 0 && (
               <div className="bg-[#004E6A] text-white px-2 py-0.5 rounded font-bold text-xs mb-2">
                 {Math.round(discount)}% OFF
               </div>
             )}
-              <div className="flex items-center text-[10px] text-gray-600">
+              <div className="flex items-center text-xs text-gray-600">
                 <span className="text-yellow-500 mr-1">⚡</span>
-                <span className="font-medium italic">17 OCT 2025</span>
+                <span className="font-bold italic">17 OCT 2025</span>
               </div>
           </div>
         </div>
@@ -199,7 +203,7 @@ const BestSellerProduct = ({
         onClick={(e) => handleAddtoCart(e)}
         disabled={isPending || isOutStock}
       >
-        {isPending ? "ADDING..." : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
+        {isPending ? <PrimaryLoader  isButton={true}/> : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
       </button>
     </div>
   );

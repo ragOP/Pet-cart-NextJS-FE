@@ -10,7 +10,35 @@ const pawPrint = (
   </svg>
 );
 
-const PrimaryLoader = () => {
+const PrimaryLoader = ({ isButton = false }) => {
+  const pawPrintSmall = (
+    <svg width="16" height="16" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="16" cy="28" rx="6" ry="3" fill="#F59A11"/>
+      <ellipse cx="7" cy="19" rx="3" ry="5" fill="#F59A11"/>
+      <ellipse cx="25" cy="19" rx="3" ry="5" fill="#F59A11"/>
+      <ellipse cx="11" cy="11" rx="2.5" ry="3.5" fill="#F59A11"/>
+      <ellipse cx="21" cy="11" rx="2.5" ry="3.5" fill="#F59A11"/>
+    </svg>
+  );
+
+  if (isButton) {
+    return (
+      <div className="flex items-center justify-center">
+        <div className="flex space-x-1">
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              className={`inline-block animate-bounce paw-bounce paw-bounce-${i}`}
+              style={{ animationDelay: `${i * 0.15}s` }}
+            >
+              {pawPrintSmall}
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-full py-8 animate-fade-in">
       <div className="flex space-x-2">
