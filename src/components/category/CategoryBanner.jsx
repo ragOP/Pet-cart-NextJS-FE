@@ -26,24 +26,23 @@ export default function CategoryBanner({ type }) {
   };
 
   return (
-      <div className="w-full h-full hidden lg:block p-1 bg-[#FFFBF6]">
+    <div className="w-full h-full p-1 sm:p-2 lg:p-1 bg-[#FFFBF6]">
       {isLoading ? (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-24 sm:h-32 lg:h-full flex items-center justify-center">
           <PrimaryLoader />
         </div>
       ) : isError || !data?.image ? (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-24 sm:h-32 lg:h-full flex items-center justify-center">
           <PrimaryEmptyState title="No banner found!" />
         </div>
       ) : (
-        <div className="mt-3 cursor-pointer">
+        <div className="mt-1 sm:mt-2 lg:mt-3 cursor-pointer">
           <img
             src={data?.image}
             alt="Category Banner"
-            // Move upward a litle on hover for showing selected product
-            className="w-full object-cover rounded-md"
+            className="w-full h-24 sm:h-32 md:h-40 lg:h-auto object-cover rounded-md hover:scale-[1.02] transition-transform duration-200"
             onClick={onNavigateToProduct}
-        />
+          />
         </div>
       )}
     </div>

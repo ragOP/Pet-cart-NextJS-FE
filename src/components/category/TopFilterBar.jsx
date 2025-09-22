@@ -15,9 +15,9 @@ import { Drawer } from "../common/CustomDrawer";
 
 const BrandCard = ({ brand, selected }) => {
   return (
-    <div className={cn("flex flex-col items-center gap-2 bg-[#E7F4F8] p-2 rounded-md cursor-pointer lg:w-32 lg:h-36", selected && "bg-[#0888B1] border-2 border-[#0888B1]")}>
-      <img src={brand.image} alt={brand.value} className="h-24" />
-      <span className="text-base font-medium">{brand.label}</span>
+    <div className={cn("flex flex-col items-center gap-1 sm:gap-2 bg-[#E7F4F8] p-2 rounded-md cursor-pointer w-full h-24 sm:h-28 lg:w-32 lg:h-36 transition-colors", selected && "bg-[#0888B1] border-2 border-[#0888B1]")}>
+      <img src={brand.image} alt={brand.value} className="h-12 sm:h-16 lg:h-24 object-contain" />
+      <span className="text-xs sm:text-sm lg:text-base font-medium text-center line-clamp-2">{brand.label}</span>
     </div>
   );
 };
@@ -115,7 +115,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
   const badgeLabels = convertFilterKeys(filters);
 
   return (
-    <div className="flex flex-col gap-3 bg-white p-4 rounded-md">
+    <div className="flex flex-col gap-3 bg-white p-2 sm:p-4 rounded-md mx-2 sm:mx-0">
       {/* Desktop Filter Bar */}
       <div className="lg:flex flex-wrap items-center gap-3 hidden">
         <Button variant="ghost" className="gap-2 text-black text-base font-semibold">
@@ -156,16 +156,16 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
         open={open}
         onClose={() => setOpen(false)}
         direction="right"
-        width="50%"
-        className="p-6 flex flex-col h-full overflow-hidden"
+        width={typeof window !== 'undefined' && window.innerWidth < 768 ? "90%" : "50%"}
+        className="p-4 sm:p-6 flex flex-col h-full overflow-hidden"
         overlayClassName="z-50"
       >
-        <div className="flex items-center gap-2 w-[50vw] border-b-2 border-[#6A6868] pb-6">
-          <SlidersHorizontal size={24} />
-          <span className="font-bold text-xl">Filters</span>
+        <div className="flex items-center gap-2 w-full border-b-2 border-[#6A6868] pb-4 sm:pb-6">
+          <SlidersHorizontal className="w-5 h-5 sm:w-6 sm:h-6" />
+          <span className="font-bold text-lg sm:text-xl">Filters</span>
         </div>
 
-        <div className="w-[50vw] flex-1 overflow-y-auto pr-2">
+        <div className="w-full flex-1 overflow-y-auto pr-2">
           <div className="w-full">
             {filterTabs.map((tab, index) => (
               <div className="flex flex-col border-b border-[#B4B3B3]">
@@ -178,7 +178,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
                 </button>
                 <div className="flex space-x-2 pb-3">
                   {["brandSlug"].includes(tab.key) ? (
-                    <div className="grid grid-cols-3 gap-3 cursor-pointer">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 cursor-pointer">
                       {tab.items.map((item) => (
                         <div
                           key={item.value}
@@ -209,7 +209,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
                             })
                             setOpen(false)
                           }}
-                          className={cn("w-28 cursor-pointer flex justify-start text-left text-sm p-2 bg-[#E7F4F8] border-2 border-[#BBDEE9] hover:bg-[#0888B1] hover:border-2 hover:border-[#0888B1]", filters?.[tab.key] === item.value ? "bg-[#0888B1] border-2 border-[#0888B1]" : "")}
+                          className={cn("w-auto min-w-[100px] sm:w-28 cursor-pointer flex justify-center text-center text-xs sm:text-sm p-2 bg-[#E7F4F8] border-2 border-[#BBDEE9] hover:bg-[#0888B1] hover:border-2 hover:border-[#0888B1]", filters?.[tab.key] === item.value ? "bg-[#0888B1] border-2 border-[#0888B1]" : "")}
                         >
                           {item.label}
                         </Button>
@@ -225,21 +225,53 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
         </div>
       </Drawer>
 
-      {/* Mobile Bar */}
-      <div className="lg:hidden fixed bottom-0 right-0 z-10 w-full bg-white flex">
-        <Button onClick={() => setIsFilterOpen(true)} variant="outline" className="w-1/2 rounded-none">
+      {/* Mobile/Tablet Filter Bar */}
+      <div className="lg:hidden flex items-center gap-2 overflow-x-auto pb-2">
+        <Button
+          onClick={() => setOpen(true)}
+          variant="outline"
+          size="sm"
+          className="whitespace-nowrap flex-shrink-0"
+        >
+          <SlidersHorizontal size={16} className="mr-2" />
           Filters
         </Button>
+
         <Select
           onValueChange={(value) => onChangeFilter({ sort_by: value })}
           defaultValue={filters?.sort_by}
         >
-          <SelectTrigger className="w-1/2 rounded-none border-l">
+          <SelectTrigger className="w-[140px] flex-shrink-0 text-sm">
             <SelectValue placeholder="Sort By" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="LTH">Price: Low to High</SelectItem>
-            <SelectItem value="HTL">Price: High to Low</SelectItem>
+            <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
+            <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Fixed Mobile Filter Bar at Bottom */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 p-3 flex gap-2">
+        <Button
+          onClick={() => setOpen(true)}
+          variant="outline"
+          className="flex-1 text-sm"
+        >
+          <SlidersHorizontal size={16} className="mr-2" />
+          Filters
+        </Button>
+
+        <Select
+          onValueChange={(value) => onChangeFilter({ sort_by: value })}
+          defaultValue={filters?.sort_by}
+        >
+          <SelectTrigger className="flex-1 text-sm">
+            <SelectValue placeholder="Sort By" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
+            <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
           </SelectContent>
         </Select>
       </div>

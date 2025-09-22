@@ -28,8 +28,14 @@ export default function CategoryPage() {
 
   const [page, setPage] = useState(1);
 
-  const width = window.innerWidth;
+  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const type = width > 1024 ? "web" : width > 768 ? "tablet" : "mobile";
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const filters = {};
   searchParams.forEach((value, key) => {
@@ -143,7 +149,7 @@ export default function CategoryPage() {
   // }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFFBF6]">
+    <div className="min-h-screen flex flex-col bg-[#FFFBF6] pb-20 lg:pb-0">
       <CategoryBreadcrumb productsCount={productsData?.total || 0} />
 
       <CategoryBanner type={type} />
@@ -154,14 +160,14 @@ export default function CategoryPage() {
         deleteFilter={deleteFilter}
       />
 
-      <div className="flex-1 flex max-w-[1440px] w-full">
+      <div className="flex-1 flex max-w-full w-full px-2 sm:px-4">
         <FilterSidebar
           subCategories={subCategories || []}
           onChangeFilter={updateFilters}
           deleteFilter={deleteFilter}
         />
 
-        <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 ml-6">
+        <div className="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 lg:ml-6">
           {productsData?.data?.length < 1 ? (
             <div className="flex-1 flex justify-center items-center col-span-4">
               <PrimaryEmptyState title="No products found!" />
@@ -177,29 +183,48 @@ export default function CategoryPage() {
             ))
           )}
 
-          <div className="w-full col-span-4 flex justify-end py-5">
+          <div className="w-full col-span-2 sm:col-span-2 md:col-span-3 lg:col-span-4 flex justify-center lg:justify-end py-5 pb-20 lg:pb-5">
             {productsData?.total > 0 && (
               <Pagination>
-                <PaginationContent>
+                <PaginationContent className="flex-wrap gap-1">
                   <PaginationPrevious
                     onClick={() => {
                       setPage((prev) => Math.max(1, prev - 1));
                     }}
+                    className="text-xs sm:text-sm"
                   />
                   {Array.from(
                     {
-                      length: Math.ceil(productsData?.total / params.per_page),
+                      length: Math.min(5, Math.ceil(productsData?.total / params.per_page)),
                     },
-                    (_, i) => (
-                      <PaginationItem key={i + 1}>
-                        <PaginationLink
-                          isActive={i + 1 === page}
-                          onClick={() => setPage(i + 1)}
-                        >
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    )
+                    (_, i) => {
+                      const totalPages = Math.ceil(productsData?.total / params.per_page);
+                      let pageNumber;
+
+                      if (totalPages <= 5) {
+                        pageNumber = i + 1;
+                      } else {
+                        if (page <= 3) {
+                          pageNumber = i + 1;
+                        } else if (page >= totalPages - 2) {
+                          pageNumber = totalPages - 4 + i;
+                        } else {
+                          pageNumber = page - 2 + i;
+                        }
+                      }
+
+                      return (
+                        <PaginationItem key={pageNumber}>
+                          <PaginationLink
+                            isActive={pageNumber === page}
+                            onClick={() => setPage(pageNumber)}
+                            className="text-xs sm:text-sm w-8 h-8 sm:w-10 sm:h-10"
+                          >
+                            {pageNumber}
+                          </PaginationLink>
+                        </PaginationItem>
+                      );
+                    }
                   )}
                   <PaginationNext
                     onClick={() => {
@@ -210,6 +235,7 @@ export default function CategoryPage() {
                         )
                       );
                     }}
+                    className="text-xs sm:text-sm"
                   />
                 </PaginationContent>
               </Pagination>
