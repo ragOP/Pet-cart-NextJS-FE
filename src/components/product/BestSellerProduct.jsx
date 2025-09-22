@@ -65,11 +65,11 @@ const BestSellerProduct = ({
     >
       {/* Product Image and Badge */}
       <div className="relative mb-2 sm:mb-4">
-        {product.isBestSeller && <span className="absolute z-10 top-2 sm:top-3 left-2 sm:left-3 bg-gradient-to-r from-[#1C83A8] via-[#48BDE6] to-[#13789D] text-white text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
+        {product.isBestSeller && <span className="absolute z-5 top-2 sm:top-3 left-2 sm:left-3 bg-gradient-to-r from-[#1C83A8] via-[#48BDE6] to-[#13789D] text-white text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
           BESTSELLER
         </span>}
         {/* Expand/Fullscreen icons */}
-        <div className="absolute z-10 top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 sm:gap-2">
+        <div className="absolute z-5 top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 sm:gap-2">
           <button className="w-6 h-6 sm:w-7 sm:h-7 bg-white rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50">
             <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />

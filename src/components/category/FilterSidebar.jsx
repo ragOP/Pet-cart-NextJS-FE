@@ -56,7 +56,7 @@ export default function FilterSidebar({ subCategories, onChangeFilter }) {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="w-[240px] space-y-4 hidden lg:block">
+      <aside className="w-[240px] space-y-4 hidden lg:block sticky top-[180px] self-start">
         <FilterContent />
       </aside>
 

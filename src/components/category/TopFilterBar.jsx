@@ -26,7 +26,6 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedBrand, setSelectedBrand] = useState(null);
-
   const [open, setOpen] = useState(false);
 
   const { data: brands = [] } = useQuery({
@@ -115,41 +114,68 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
   const badgeLabels = convertFilterKeys(filters);
 
   return (
-    <div className="flex flex-col gap-3 bg-white p-2 sm:p-4 rounded-md mx-2 sm:mx-0">
-      {/* Desktop Filter Bar */}
-      <div className="lg:flex flex-wrap items-center gap-3 hidden">
-        <Button variant="ghost" className="gap-2 text-black text-base font-semibold">
-          <SlidersHorizontal size={24} />
-          <span className="font-bold text-xl">Filters</span>
-        </Button>
-
-        {/* Filter Triggers */}
-        {filterTabs.map((tab, index) => (
-          <Button
-            key={tab.key}
-            variant="outline"
-            onClick={() => {
-              setOpen(true);
-            }}
-            className="text-sm"
-          >
-            {tab.label}
+    <>
+      <div className="sticky top-[120px] z-10 flex-col gap-3 bg-transparent lg:bg-white p-2 sm:p-4 rounded-md mx-2 sm:mx-0 mb-5 ">
+        {/* Desktop Filter Bar */}
+        <div className="lg:flex flex-wrap items-center gap-3 hidden">
+          <Button variant="ghost" className="gap-2 text-black text-base font-semibold">
+            <SlidersHorizontal size={24} />
+            <span className="font-bold text-xl">Filters</span>
           </Button>
-        ))}
 
-        {/* Sort By */}
-        <Select
-          onValueChange={(value) => onChangeFilter({ sort_by: value })}
-          defaultValue={filters?.sort_by}
-        >
-          <SelectTrigger className="w-[200px] text-sm">
-            <SelectValue placeholder="Sort By" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
-            <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
-          </SelectContent>
-        </Select>
+          {/* Filter Triggers */}
+          {filterTabs.map((tab, index) => (
+            <Button
+              key={tab.key}
+              variant="outline"
+              onClick={() => {
+                setOpen(true);
+              }}
+              className="text-sm"
+            >
+              {tab.label}
+            </Button>
+          ))}
+
+          {/* Sort By */}
+          <Select
+            onValueChange={(value) => onChangeFilter({ sort_by: value })}
+            defaultValue={filters?.sort_by}
+          >
+            <SelectTrigger className="w-[200px] text-sm">
+              <SelectValue placeholder="Sort By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
+              <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Fixed Mobile Filter Bar at Bottom */}
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 p-3 flex gap-2">
+          <Button
+            onClick={() => setOpen(true)}
+            variant="outline"
+            className="flex-1 text-sm"
+          >
+            <SlidersHorizontal size={16} className="mr-2" />
+            Filters
+          </Button>
+
+          <Select
+            onValueChange={(value) => onChangeFilter({ sort_by: value })}
+            defaultValue={filters?.sort_by}
+          >
+            <SelectTrigger className="flex-1 text-sm">
+              <SelectValue placeholder="Sort By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
+              <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       <Drawer
@@ -168,9 +194,8 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
         <div className="w-full flex-1 overflow-y-auto pr-2">
           <div className="w-full">
             {filterTabs.map((tab, index) => (
-              <div className="flex flex-col border-b border-[#B4B3B3]">
+              <div key={tab.key} className="flex flex-col border-b border-[#B4B3B3]">
                 <button
-                  key={tab.key}
                   className={`w-full text-left py-2 text-sm font-medium pt-6`}
                   onClick={() => setOpen(false)}
                 >
@@ -217,65 +242,12 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
                     </div>
                   )}
                 </div>
-
               </div>
-
             ))}
           </div>
         </div>
       </Drawer>
-
-      {/* Mobile/Tablet Filter Bar */}
-      <div className="lg:hidden flex items-center gap-2 overflow-x-auto pb-2">
-        <Button
-          onClick={() => setOpen(true)}
-          variant="outline"
-          size="sm"
-          className="whitespace-nowrap flex-shrink-0"
-        >
-          <SlidersHorizontal size={16} className="mr-2" />
-          Filters
-        </Button>
-
-        <Select
-          onValueChange={(value) => onChangeFilter({ sort_by: value })}
-          defaultValue={filters?.sort_by}
-        >
-          <SelectTrigger className="w-[140px] flex-shrink-0 text-sm">
-            <SelectValue placeholder="Sort By" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
-            <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Fixed Mobile Filter Bar at Bottom */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 p-3 flex gap-2">
-        <Button
-          onClick={() => setOpen(true)}
-          variant="outline"
-          className="flex-1 text-sm"
-        >
-          <SlidersHorizontal size={16} className="mr-2" />
-          Filters
-        </Button>
-
-        <Select
-          onValueChange={(value) => onChangeFilter({ sort_by: value })}
-          defaultValue={filters?.sort_by}
-        >
-          <SelectTrigger className="flex-1 text-sm">
-            <SelectValue placeholder="Sort By" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
-            <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-    </div>
+    </>
   );
 }
 

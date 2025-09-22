@@ -149,7 +149,7 @@ export default function CategoryPage() {
   // }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FFFBF6] pb-20 lg:pb-0">
+    <div className="min-h-screen flex flex-col bg-[#fff] pb-20 lg:pb-0">
       <CategoryBreadcrumb productsCount={productsData?.total || 0} />
 
       <CategoryBanner type={type} />
