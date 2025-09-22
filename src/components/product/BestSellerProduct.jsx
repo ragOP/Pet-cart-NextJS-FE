@@ -60,140 +60,147 @@ const BestSellerProduct = ({
   return (
     <div
       onClick={onClick}
-      className={`p-2 my-2 rounded-lg bg-white flex flex-col h-[30rem] group transition-all duration-200 ${className} hover:shadow-xl hover:scale-[1.025] hover:ring-2 hover:ring-[#F59A11] focus-within:shadow-xl focus-within:scale-[1.025] focus-within:ring-2 focus-within:ring-[#F59A11] justify-between`}
+      className={`p-4 rounded-3xl bg-white flex flex-col group transition-all duration-200 ${className} hover:shadow-lg border-3 border-[#F59A11] relative max-w-sm`}
+      style={{ borderWidth: '3px', borderColor: '#F59A11' }}
     >
       {/* Product Image and Badge */}
-      <div className="relative mb-3 flex items-center justify-center">
-        <span className="absolute z-1 top-0 left-0 bg-gradient-to-r from-[#1C83A8] via-[#48BDE6] to-[#13789D] text-white text-xs font-bold px-2 py-0.5 rounded">
+      <div className="relative mb-4">
+        <span className="absolute z-10 top-3 left-3 bg-gradient-to-r from-[#1C83A8] via-[#48BDE6] to-[#13789D] text-white text-xs font-bold px-2 py-1 rounded">
           BESTSELLER
         </span>
-        <div className="w-full h-48 pt-4 pb-8 px-4 rounded-lg overflow-hidden relative bg-[#F6F6F6]">
+        {/* Expand/Fullscreen icons */}
+        <div className="absolute z-10 top-3 right-3 flex flex-col gap-2">
+          <button className="w-7 h-7 bg-white rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+            </svg>
+          </button>
+          <button className="w-7 h-7 bg-white rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+          </button>
+        </div>
+        <div className="w-full h-64 pt-8 pb-6 px-4 rounded-lg relative bg-[#F6F6F6]">
           <CustomImage
             key={selectedImage}
             src={product.images[selectedImage]}
             alt={product.title}
-            className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-110 group-focus:scale-110"
-            width={160}
-            height={160}
+            className="w-full h-full object-contain"
+            width={200}
+            height={200}
           />
-          {/* Centered Dots */}
-          <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex items-center gap-1">
-            {product.images.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={`w-1.5 h-1.5 rounded-full transition-colors ${selectedImage === index
-                    ? "bg-[#F59A11]"
-                    : "bg-gray-300 hover:bg-gray-400"
+          {/* Rating at bottom left */}
+          {product.ratings?.average > 0 && (
+            <div className="absolute bottom-3 left-3 flex items-center gap-1">
+              <Star className="h-3 w-3 fill-amber-400 stroke-amber-400" />
+              <span className="text-xs font-medium text-gray-700">
+                {product.ratings.average.toFixed(1)}
+              </span>
+            </div>
+          )}
+          {/* Dots at bottom center */}
+          {product.images && product.images.length > 1 && (
+            <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex items-center gap-1">
+              {product.images.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-2 h-2 rounded-full cursor-pointer ${
+                    index === selectedImage ? 'bg-[#F59A11]' : 'bg-gray-300'
                   }`}
-              />
-            ))}
-          </div>
-          {/* Rating */}
-          <div className="absolute bottom-1 left-2 flex items-center gap-1">
-            <Star className="h-3 w-3 fill-amber-400 stroke-amber-400" />
-            <span className="mt-[2px] text-xs">
-              {(product.rating || 1).toFixed(1)}
-            </span>
-          </div>
+                  onMouseEnter={() => handleImageHover(index)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Name and Veg */}
-      <div className="flex justify-between items-start mb-2">
-        <div className="space-y-1">
-          <p className="text-[13px] font-medium leading-tight w-[80%] line-clamp-3 display-webkit-box webkit-line-clamp-3 webkit-box-orient-vertical overflow-hidden">
-            {product.title}
-          </p>
-          <p className="text-[13px] text-[#6A6868] font-medium leading-tight w-full">
-            {product.brandId?.name}
+      {/* Product Title and Veg Icon */}
+      <div className="flex justify-between items-start mb-3">
+        <div className="flex-1 pr-2">
+          <h3 className="text-sm font-semibold leading-tight text-black mb-1">
+            {(() => {
+              if (product.title.length <= 40) {
+                return product.title;
+              }
+              return product.title.slice(0, 40) + '...';
+            })()}
+          </h3>
+          <p className="text-[#F59A11] font-bold text-sm">
+            {product.brandId?.name || 'Brand'}
           </p>
         </div>
-
-        <CustomImage
-          src={product.vegIcon}
-          alt="Veg"
-          className="w-4 h-6 mt-1"
-          width={16}
-          height={24}
-        />
+        <div className="flex items-center justify-center w-4 h-4 border-2 border-green-600 rounded-sm bg-white ml-2">
+          <div className="w-1.5 h-1.5 bg-green-600 rounded-full"></div>
+        </div>
       </div>
 
+      {/* Variants */}
       {product.variants && product.variants.length > 0 && (
-        <div className="flex flex-row flex-wrap items-center">
-          {product.variants.map((variant) => (
-            // <div
-            //   key={variant._id || variant.id}
-            //   className="inline-block px-3 py-1 text-sm rounded-lg bg-[#E3EBEE] text-gray-700 font-semibold mt-2 mb-2 mr-2"
-            // >
-            //   {variant.subtitle}
-            // </div>
-            // <VariantBox
-            //   key={variant._id || variant.id}
-            //   variant={variant}
-            //   onSelectVariant={(variantId) => onSelectVariant(variantId)}
-            //   discount={calculateDiscountPercent(
-            //     variant.price,
-            //     variant.salePrice
-            //   )}
-            // />
-            <span
-              key={variant._id || variant.id}
-              className="inline-block px-3 py-1 text-[10px] rounded-lg bg-[#E3EBEE] text-[#181818] font-medium mr-2"
-            >
-              <span>{variant.weight > 1000 ? `${(variant.weight / 1000) % 1 === 0 ? (variant.weight / 1000) : (variant.weight / 1000).toFixed(2)}kg` : `${variant.weight % 1 === 0 ? variant.weight : variant.weight.toFixed(2)}g`}</span>{" "}
-              <span>{variant.salePrice ? `| ${calculateDiscountPercent(variant.price, variant.salePrice)}% OFF` : null}</span>
-            </span>
-          ))}
+        <div className="flex flex-wrap gap-1 mb-2">
+          {product.variants.slice(0, 3).map((variant, index) => {
+            const variantDiscount = calculateDiscountPercent(variant.price, variant.salePrice) || 0;
+            return (
+              <div key={index} className="rounded border border-[#004E6A] overflow-hidden bg-white">
+                <div className="bg-[#004E6A] text-white text-center py-0.5 px-1">
+                  <div className="text-[8px] font-medium">
+                    10KG (2x5KG)
+                  </div>
+                </div>
+                <div className="bg-white text-center py-0.5 px-1">
+                  <div className="flex items-center justify-center gap-0.5">
+                    <span className="text-[8px] font-bold text-[#004E6A]">₹ {variant.salePrice || variant.price}</span>
+                    {variantDiscount > 0 && (
+                      <span className="text-[7px] text-green-600 font-bold">{Math.round(variantDiscount)}% OFF</span>
+                    )}
+                  </div>
+                  {variant.price !== variant.salePrice && (
+                    <div className="text-[7px] text-gray-500 line-through">MRP {variant.price}</div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
 
-      {/* Price and Discount */}
-      <div className="flex justify-between items-center text-sm font-semibold">
-        <div>
-          <p className="text-xs font-normal text-gray-500">PRICE</p>
-          <p className="text-[#218032] text-[18px] font-bold">
-            ₹{product?.salePrice || product.price}
-          </p>
-          <span className="text-gray-500 font-normal">
-            MRP <span className="line-through"> ₹{product.price}</span>
-          </span>
-        </div>
-
-        <div className="flex flex-col justify-end items-end">
-          {discount > 0 && (
-            <span className="text-[12px] flex justify-end px-2 py-0.5 rounded-md font-bold">
-              {`${discount || 0}% OFF`}
-            </span>
-          )}
-          <span className="text-xs font-normal text-black italic">FRIDAY, 13th JUNE</span>
+      {/* Price Section */}
+      <div className="mb-4">
+        <div className="flex justify-between items-start">
+          <div className="flex-1">
+            <p className="text-[10px] font-medium text-gray-500 mb-1">PRICE</p>
+            <p className="text-[#218032] text-2xl font-bold mb-1">
+              ₹{product.salePrice || product.price}
+            </p>
+            {product.price !== product.salePrice && (
+              <p className="text-gray-500 font-medium text-xs">
+                MRP <span className="line-through">₹{product.price}</span>
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col items-end">
+            {discount > 0 && (
+              <div className="bg-[#004E6A] text-white px-2 py-0.5 rounded font-bold text-xs mb-2">
+                {Math.round(discount)}% OFF
+              </div>
+            )}
+              <div className="flex items-center text-[10px] text-gray-600">
+                <span className="text-yellow-500 mr-1">⚡</span>
+                <span className="font-medium italic">17 OCT 2025</span>
+              </div>
+          </div>
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div className="flex items-center gap-2 mt-4">
-        {/* <button
-          className="p-[0.35rem] flex items-center justify-center border-2 rounded-[8px] cursor-pointer transition-colors duration-150 hover:bg-[#fff6ea] focus:bg-[#fff6ea]"
-          style={{
-            border: "2px solid var(--CANCELLED-COLOR, #F59A11)",
-            borderRadius: "8px",
-          }}
-          onClick={onWishlist}
-        >
-          <Heart
-            className="w-5 h-5 text-[#F59A11]"
-            fill="none"
-            strokeWidth={2.5}
-          />
-        </button> */}
-        <button
-          className="flex-1 bg-[#F59A11] hover:bg-[#e18a0e] focus:bg-[#e18a0e] text-white py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer shadow-sm hover:shadow-md focus:shadow-md disabled:bg-gray-400 disabled:cursor-not-allowed"
-          onClick={(e) => handleAddtoCart(e)}
-          disabled={isPending || isOutStock}
-        >
-          {isPending ? "ADDING..." : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
-        </button>
-      </div>
+      {/* Add to Cart Button */}
+      <button
+        className="w-full bg-[#F59A11] hover:bg-[#e18a0e] text-white py-3 rounded-lg text-sm font-bold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+        onClick={(e) => handleAddtoCart(e)}
+        disabled={isPending || isOutStock}
+      >
+        {isPending ? "ADDING..." : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
+      </button>
     </div>
   );
 };
