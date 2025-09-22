@@ -146,22 +146,24 @@ const BestSellerProduct = ({
           {product.variants.slice(0, 3).map((variant, index) => {
             const variantDiscount = calculateDiscountPercent(variant.price, variant.salePrice) || 0;
             return (
-              <div key={index} className="rounded border border-[#004E6A] overflow-hidden bg-white">
+              <div key={index} className="rounded-lg border border-[#004E6A] overflow-hidden bg-white">
                 <div className="bg-[#004E6A] text-white text-center py-0.5 px-1">
-                  <div className="text-[8px] font-medium">
+                  <div className="text-[8px] font-bold">
                     10KG (2x5KG)
                   </div>
                 </div>
                 <div className="bg-white text-center py-0.5 px-1">
-                  <div className="flex items-center justify-center gap-0.5">
-                    <span className="text-[8px] font-bold text-[#004E6A]">₹ {variant.salePrice || variant.price}</span>
-                    {variantDiscount > 0 && (
-                      <span className="text-[7px] text-green-600 font-bold">{Math.round(variantDiscount)}% OFF</span>
-                    )}
-                  </div>
-                  {variant.price !== variant.salePrice && (
+                  <div className="flex items-center justify-center space-x-2">
+                    <span className="text-[10px] font-bold text-[#004E6A]">₹ {variant.salePrice || variant.price}</span>
+                    {variant.price !== variant.salePrice && (
                     <div className="text-[7px] text-gray-500 line-through">MRP {variant.price}</div>
                   )}
+                  </div>
+                  <div className="flex items-center justify-center space-x-2">
+                  {variantDiscount > 0 && (
+                      <span className="text-[7px] text-green-600 font-extrabold">{Math.round(variantDiscount)}% OFF</span>
+                    )}
+                  </div>
                 </div>
               </div>
             );
@@ -185,7 +187,7 @@ const BestSellerProduct = ({
           </div>
           <div className="flex flex-col items-end mt-5">
             {discount > 0 && (
-              <div className="bg-[#004E6A] text-white px-2 py-0.5 rounded font-bold text-xs mb-2">
+              <div className="relative bg-[#004E6A] text-white px-5 py-1 font-bold text-xs mb-2 coupon-badge">
                 {Math.round(discount)}% OFF
               </div>
             )}

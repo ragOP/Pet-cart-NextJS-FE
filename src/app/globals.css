@@ -288,3 +288,57 @@
   padding: 0;
   color: inherit;
 }
+
+/* Coupon Badge Styles */
+.coupon-badge {
+  position: relative;
+  clip-path: polygon(
+    0% 0%,
+    calc(100% - 5px) 0%,
+    100% 6%,
+    calc(100% - 5px) 12%,
+    100% 18%,
+    calc(100% - 5px) 24%,
+    100% 30%,
+    calc(100% - 5px) 36%,
+    100% 42%,
+    calc(100% - 5px) 48%,
+    100% 54%,
+    calc(100% - 5px) 60%,
+    100% 66%,
+    calc(100% - 5px) 72%,
+    100% 78%,
+    calc(100% - 5px) 84%,
+    100% 90%,
+    calc(100% - 5px) 96%,
+    100% 100%,
+    5px 100%,
+    0% 96%,
+    5px 90%,
+    0% 84%,
+    5px 78%,
+    0% 72%,
+    5px 66%,
+    0% 60%,
+    5px 54%,
+    0% 48%,
+    5px 42%,
+    0% 36%,
+    5px 30%,
+    0% 24%,
+    5px 18%,
+    0% 12%,
+    5px 6%
+  );
+}
+
+.coupon-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  z-index: -1;
+}
