@@ -35,7 +35,7 @@ const PincodeInput = ({ pincode, onPincodeChange, onCheckDelivery, className, de
 
   return (
     <div className={`flex gap-2 ${className}`}>
-      <div className="flex-1 flex gap-2 items-center border p-1 md:p-1.5 bg-white border-gray-300 rounded-lg ">
+      <div className="flex-1 flex gap-2 items-center border p-1 md:p-1.5 bg-gray-50 border-gray-300 rounded-lg ">
         <div
           className="border-r h-full pl-2 flex items-center cursor-pointer"
           onClick={handleLocationClick}

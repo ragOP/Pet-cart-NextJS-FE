@@ -11,6 +11,10 @@ import PincodeInput from "@/components/pincode/PincodeInput";
 import SpecialDeals from "@/components/cart/SpecialDeals";
 import LastMinuteAddOns from "@/components/cart/LastMinuteAddOns";
 import CategoryBanner from "@/components/category/CategoryBanner";
+import UnlockSpecialDeals from "@/components/cart/UnlockSpecialDeals";
+import GSTNumberSection from "@/components/cart/GSTNumberSection";
+import AvailableCoupons from "@/components/cart/AvailableCoupons";
+import AvailableCouponsNew from "@/components/cart/AvailableCouponsNew";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getCart } from "@/app/apis/getCart";
 import { addProductToCart } from "@/app/apis/addProductToCart";
@@ -177,7 +181,7 @@ const CartPage = () => {
         pincode: pincode,
         productId: cartData?.items?.[0]?.productId?._id || null,
       });
-      
+
       if (response?.success) {
         setExpectedDeliveryDate(response?.data || "Available for delivery");
         toast.success("Delivery available for this pincode!");
@@ -302,10 +306,10 @@ const CartPage = () => {
 
         {/* Progress Bar */}
         <div className="px-4 md:px-8 mt-2">
-          <CartProgressBar progress={75} />
+          <CartProgressBar cartTotal={totalPrice} />
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-6">
+        <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-9">
           <div className="w-full lg:w-1/2 flex flex-col gap-4">
             {cartLoading ? (
               <div className="flex items-center justify-center h-64">
@@ -329,49 +333,57 @@ const CartPage = () => {
           </div>
           {/* Right: Summary */}
           <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl h-fit border border-[#f59a10]">
-            <PincodeInput
-              pincode={pincode}
-              onPincodeChange={setPincode}
-              onCheckDelivery={onCheckDelivery}
-              className={"m-4"}
-            />
+            {/* Unlock Special Deals Section */}
+            <div className="border-b border-[#f59a10]">
+              <UnlockSpecialDeals />
 
-            {/* Delivery Status Display */}
-            {deliveryLoading ? (
-              <div className="mx-4 mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="font-medium text-gray-700">Delivery Status:</span>
-                  <div className="flex items-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
-                    <span className="font-semibold text-blue-600">Calculating delivery date...</span>
+              <PincodeInput
+                pincode={pincode}
+                onPincodeChange={setPincode}
+                onCheckDelivery={onCheckDelivery}
+                className={"m-4"}
+              />
+
+              {/* Delivery Status Display */}
+              {deliveryLoading ? (
+                <div className="mx-4 mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="font-medium text-gray-700">Delivery Status:</span>
+                    <div className="flex items-center gap-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                      <span className="font-semibold text-blue-600">Calculating delivery date...</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : expectedDeliveryDate ? (
-              <div className="mx-4 mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="font-medium text-gray-700">Delivery Status:</span>
-                  <span className={`font-semibold ${
-                    expectedDeliveryDate === "Available for delivery" 
-                      ? "text-green-600" 
+              ) : expectedDeliveryDate ? (
+                <div className="mx-4 mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="font-medium text-gray-700">Delivery Status:</span>
+                    <span className={`font-semibold ${expectedDeliveryDate === "Available for delivery"
+                      ? "text-green-600"
                       : expectedDeliveryDate === "Not available for delivery"
-                      ? "text-red-600"
-                      : "text-blue-600"
-                  }`}>
-                    {expectedDeliveryDate}
-                  </span>
+                        ? "text-red-600"
+                        : "text-blue-600"
+                      }`}>
+                      {expectedDeliveryDate}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ) : null}
+              ) : null}
+            </div>
 
-            <CartCouponSection
-              coupons={couponsData || []}
-              appliedCoupon={appliedCoupon}
-              onApply={handleApplyCoupon}
-              onRemove={handleRemoveCoupon}
-              cartTotal={totalPrice}
-            />
-            
+            {/* GST Number Section */}
+            <div className="border-b border-[#f59a10] px-4 py-4">
+              <GSTNumberSection />
+
+              <AvailableCouponsNew
+                coupons={couponsData || []}
+                appliedCoupon={appliedCoupon}
+                onApply={handleApplyCoupon}
+                onRemove={handleRemoveCoupon}
+              />
+            </div>
+
             <AddressSelection
               addresses={addressesData || []}
               selectedAddressId={params.address_id}
@@ -380,7 +392,7 @@ const CartPage = () => {
                 setCookie("addressId", addressId);
               }}
             />
-            
+
             <div className="border-b border-[#f59a10]" />
             <CartSummary
               totalMrp={totalPrice}
@@ -394,10 +406,10 @@ const CartPage = () => {
           </div>
         </div>
 
-        <SpecialDeals />
+        {/* <SpecialDeals />
         <div className="px-4 mb-2">
           <CategoryBanner type={type} />
-        </div>
+        </div> */}
         <LastMinuteAddOns />
 
         <CheckoutDialog

@@ -176,7 +176,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                           e.stopPropagation();
                           deleteFilter(badge.key);
                         }}
-                        className="flex items-center justify-center w-4 h-4 rounded-full border border-red-500 text-red-500 hover:bg-red-200 hover:text-white transition-colors"
+                        className="flex items-center justify-center w-4 h-4 rounded-full border border-gray-500 text-gray-500 hover:bg-gray-600 hover:text-white transition-colors"
                       >
                         <X className="h-3 w-3" />
                       </button>
@@ -231,7 +231,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                 {selectedSubCategory?.name || "Select Category"}
               </span>
             </div>
-            
+
             {/* Mobile Veg/Non-Veg Toggle */}
             <div className="flex items-center gap-2 pr-2">
               <span className={`text-sm font-semibold transition-colors ${filters?.isVeg !== "true" ? "text-gray-900" : "text-green-600"
@@ -251,7 +251,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
               />
             </div>
           </div>
-          
+
           {/* Mobile Selected Filter Chips */}
           {badgeLabels.length > 0 && (
             <div className="flex flex-wrap gap-2 px-4 pb-3">
@@ -274,7 +274,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                 return (
                   <div
                     key={index}
-                    className="flex items-center gap-2 bg-gray-200 text-gray-800 px-3 py-1.5 rounded-full text-sm font-medium hover:bg-gray-300 cursor-pointer transition-colors"
+                    className="flex items-center gap-2 bg-gray-200 text-gray-800 px-3 py-1.5 rounded-sm text-sm font-medium hover:bg-gray-300 cursor-pointer transition-colors"
                   >
                     <span>{displayLabel}</span>
                     <button
@@ -282,7 +282,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                         e.stopPropagation();
                         deleteFilter(badge.key);
                       }}
-                      className="flex items-center justify-center w-4 h-4 rounded-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                      className="flex items-center justify-center w-4 h-4 rounded-full border border-gray-500 text-gray-500 hover:bg-gray-600 hover:text-white transition-colors"
                     >
                       <X className="h-3 w-3" />
                     </button>

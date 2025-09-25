@@ -71,17 +71,17 @@ const AddressSelection = ({
                             <div className="flex-1 text-sm">
 
                                 <div className="font-medium text-gray-800 mb-1">
-                                    {selectedAddressDetails.firstName || ""} {selectedAddressDetails.lastName || ""}
+                                    {selectedAddressDetails.firstName || ""} {selectedAddressDetails.lastName || ""} -
+                                    {selectedAddressDetails.phone && (
+                                        <span className="text-gray-600 text-sm ml-2">
+                                            {selectedAddressDetails.phone} 
+                                        </span>
+                                    )}
                                 </div>
                                 <div className="text-gray-600">
                                     {selectedAddressDetails.address || ""}
                                     {`, ${selectedAddressDetails.city || ""}, ${selectedAddressDetails.state || ""} - ${selectedAddressDetails.zip || ""}`}
                                 </div>
-                                {selectedAddressDetails.phone && (
-                                    <div className="text-gray-600 text-sm mb-1">
-                                        Phone: {selectedAddressDetails.phone}
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </div>
@@ -110,8 +110,8 @@ const AddressSelection = ({
                                     <div
                                         key={address._id}
                                         className={`p-3 border rounded-lg cursor-pointer transition-colors ${selectedAddress === address._id
-                                                ? "border-[#F59A11] bg-[#FFF7E6]"
-                                                : "border-gray-200 hover:border-gray-300"
+                                            ? "border-[#F59A11] bg-[#FFF7E6]"
+                                            : "border-gray-200 hover:border-gray-300"
                                             }`}
                                         onClick={() => handleAddressChange(address._id)}
                                     >
@@ -125,6 +125,11 @@ const AddressSelection = ({
                                                 }`} />
                                             <div className="flex-1">
                                                 <div className="font-medium text-gray-800 mb-1">
+                                                    {address.phone && (
+                                                        <span className="text-gray-600 text-sm mr-2">
+                                                            {address.phone} -
+                                                        </span>
+                                                    )}
                                                     {address.firstName} {address.lastName}
                                                 </div>
                                                 <div className="text-sm text-gray-600 space-y-1">
@@ -132,9 +137,6 @@ const AddressSelection = ({
                                                     <div>
                                                         {address.city}, {address.state} - {address.zip}
                                                     </div>
-                                                    {address.phone && (
-                                                        <div>Phone: {address.phone}</div>
-                                                    )}
                                                 </div>
                                             </div>
                                         </div>
