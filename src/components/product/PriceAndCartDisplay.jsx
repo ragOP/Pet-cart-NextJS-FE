@@ -17,6 +17,7 @@ const PriceAndCartDisplay = ({
   variantId = null,
   quantity: initialQuantity = 1,
   stock = 0,
+  quantityVariant = "default", // "default" or "new"
 }) => {
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
@@ -118,39 +119,63 @@ const PriceAndCartDisplay = ({
       {/* Quantity Selector and Add to Cart Button */}
       <div className="flex items-center gap-4 sm:gap-8 lg:gap-12">
         {/* Quantity Selector */}
-        <div className="flex items-center border border-[#004E6A80] bg-[#004E6A05] rounded-[24px] overflow-hidden">
-          <button
-            onClick={() => handleQuantityChange(-1)}
-            disabled={quantity <= 1 || loading}
-            className="pr-3 pl-5 py-1.5 text-lg text-gray-700 border-r border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            -
-          </button>
-          <div className="px-4 py-1.5 text-base font-normal text-center min-w-[40px]">
-            {loading ? <CircularLoader size={16} /> : <span>{quantity}</span>}
+        {quantityVariant === "new" ? (
+          // New Design - Orange border with clean layout
+          <div className="flex items-center border border-[#f19813] bg-white rounded-lg overflow-hidden">
+            <button
+              onClick={() => handleQuantityChange(-1)}
+              disabled={quantity <= 1 || loading}
+              className="px-4 py-2 text-lg text-[#f19813] border-r border-gray-300 cursor-pointer hover:bg-orange-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              -
+            </button>
+            <div className="px-4 py-2 text-base font-normal text-center min-w-[40px] border-r border-gray-300">
+              {loading ? <CircularLoader size={16} /> : <span className="text-black">{quantity}</span>}
+            </div>
+            <button
+              onClick={() => handleQuantityChange(1)}
+              disabled={quantity >= stock || loading}
+              className="px-4 py-2 text-lg text-[#f19813] cursor-pointer hover:bg-orange-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              +
+            </button>
           </div>
-          <button
-            onClick={() => handleQuantityChange(1)}
-            disabled={quantity >= stock || loading}
-            className="pr-5 pl-3 py-1.5 text-lg text-gray-700 border-l border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            +
-          </button>
-        </div>
+        ) : (
+          // Default Design - Original blue theme
+          <div className="flex items-center border border-[#004E6A80] bg-[#004E6A05] rounded-[24px] overflow-hidden">
+            <button
+              onClick={() => handleQuantityChange(-1)}
+              disabled={quantity <= 1 || loading}
+              className="pr-3 pl-5 py-1.5 text-lg text-gray-700 border-r border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              -
+            </button>
+            <div className="px-4 py-1.5 text-base font-normal text-center min-w-[40px]">
+              {loading ? <CircularLoader size={16} /> : <span>{quantity}</span>}
+            </div>
+            <button
+              onClick={() => handleQuantityChange(1)}
+              disabled={quantity >= stock || loading}
+              className="pr-5 pl-3 py-1.5 text-lg text-gray-700 border-l border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              +
+            </button>
+          </div>
+        )}
 
         {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
           disabled={loading || isProductInCart || stock <= 0}
-          className={`min-w-fit w-32 sm:w-40 lg:w-48 ${
+          className={`min-w-fit ${
             loading
               ? "bg-gray-400 cursor-not-allowed"
               : isProductInCart
-              ? "bg-yellow-500 hover:bg-yellow-600 cursor-not-allowed"
+              ? "bg-[#f19813] hover:bg-[#d9820a] cursor-not-allowed"
               : stock > 0
-              ? "bg-yellow-500 hover:bg-yellow-600 "
+              ? "bg-[#f19813] hover:bg-[#d9820a]"
               : "bg-gray-400 cursor-not-allowed"
-          } whitespace-nowrap text-white font-bold py-3 px-10 rounded-lg text-base transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D9820A]`}
+          } whitespace-nowrap text-white font-bold py-2 px-8 rounded-lg text-xl transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f19813]`}
         >
           {loading
             ? "ADDING..."

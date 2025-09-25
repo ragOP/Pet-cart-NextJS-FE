@@ -31,7 +31,7 @@ export default function CustomCarousel({
           <ChevronLeft className="w-12 h-12 text-[#0888B1] flex-shrink-0" />
         </CarouselPrevious>
       )}
-      <CarouselContent className={`flex gap-4 px-8 ${contentClassName}`} style={{ height }}>
+      <CarouselContent className={`flex gap-4 px-6 ${contentClassName}`} style={{ height }}>
         {React.Children.map(children, (child) =>
           React.isValidElement(child)
             ? React.cloneElement(child, { className: `!basis-auto ${itemClassName} ${child.props.className || ''}` })

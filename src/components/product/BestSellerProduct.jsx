@@ -163,7 +163,7 @@ const BestSellerProduct = ({
               </div>
             )}
             <div className="flex items-center text-[10px] sm:text-xs text-gray-600">
-              <span className="text-yellow-500 mr-1">⚡</span>
+              <span className="text-[#f19813] mr-1">⚡</span>
               <span className="font-bold italic">17 OCT 2025</span>
             </div>
           </div>

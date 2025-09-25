@@ -18,7 +18,8 @@ import ProductReviews from "@/components/product/ProductReviews";
 import { getReviewsByProductId } from "@/app/apis/getReviewsByProductId";
 import { checkDelivery } from "@/app/apis/checkDelivery";
 import { useDeviceDetection } from "@/hooks/useDeviceDetection";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronRight } from "lucide-react";
+import CouponsDialog from "@/components/dialog/CouponsDialog";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
@@ -27,6 +28,7 @@ const ProductPage = ({ params }) => {
   const [pincode, setPincode] = useState("");
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
   const [deliveryLoading, setDeliveryLoading] = useState(false);
+  const [isCouponsDialogOpen, setIsCouponsDialogOpen] = useState(false);
   const { deviceType, isClient } = useDeviceDetection();
   const type = deviceType === "desktop" ? "web" : (deviceType === "tablet" ? "tablet" : "mobile");
 
@@ -141,10 +143,10 @@ const ProductPage = ({ params }) => {
 
   return (
     <div className="w-full p-4 bg-white">
-      <ProductBreadcrumb
+      {/* <ProductBreadcrumb
         category={data.categoryId}
         subCategory={data.subCategoryId}
-      />
+      /> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left: Images */}
@@ -172,12 +174,12 @@ const ProductPage = ({ params }) => {
             {/* Brand */}
             <div className="flex flex-row items-center gap-2">
               <button 
-                onClick={() => router.push(`/category?brandSlug=${data.brandId?.slug}`)}
-                className="font-semibold text-xl text-yellow-500 underline hover:text-yellow-600 transition-colors cursor-pointer"
+                onClick={() => window.open(`/category?brandSlug=${data.brandId?.slug}`, '_blank')}
+                className="font-semibold text-xl text-[#f19813] underline hover:text-[#d9820a] transition-colors cursor-pointer"
               >
                 {data.brandId?.name}
               </button>
-              <ArrowRight className="text-yellow-500 h-5 w-5"/>
+              <ArrowRight className="text-[#f19813] h-5 w-5"/>
             </div>
 
             <RatingReviews
@@ -225,7 +227,29 @@ const ProductPage = ({ params }) => {
             productId={data._id}
             variantId={selectedVariant}
             quantity={1}
+            quantityVariant="new"
           />
+
+          {/* Bank Offers and Coupons Section */}
+          <div className="bg-white border border-[#f19813] rounded-lg px-3 py-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-xs">%</span>
+                </div>
+                <h3 className="font-semibold text-gray-900 text-sm">
+                  Bank Offers and coupons
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsCouponsDialogOpen(true)}
+                className="flex items-center gap-1 text-[#f19813] hover:text-[#d9820a] font-medium text-sm transition-colors"
+              >
+                <span>Check offers</span>
+                <ChevronRight className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
 
           <PurchaseSection
             pincode={pincode}
@@ -266,6 +290,12 @@ const ProductPage = ({ params }) => {
       <HandPickedProducts />
 
       <ProductReviews productId={id} productName={data.title} reviews={reviewsData} />
+
+      {/* Coupons Dialog */}
+      <CouponsDialog
+        isOpen={isCouponsDialogOpen}
+        onClose={() => setIsCouponsDialogOpen(false)}
+      />
     </div>
   );
 };

@@ -69,7 +69,7 @@ const MobileMenu = React.memo(({
       <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
         <div className="space-y-4">
           <div className="relative">
-            <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-yellow-600" />
+            <MapPin size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#f19813]" />
             <input
               type="text"
               placeholder="Enter PINCODE to check delivery date"
