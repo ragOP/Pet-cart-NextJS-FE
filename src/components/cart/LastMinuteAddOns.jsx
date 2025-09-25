@@ -51,18 +51,18 @@ const LastMinuteAddOns = () => {
 
       {/* Carousel */}
       <CustomCarousel
-        className="hide-scrollbar min-h-[260px] flex items-center justify-center"
-        contentClassName="gap-4 flex items-center justify-center min-h-[220px]"
+        className="hide-scrollbar min-h-[320px] flex items-center justify-center"
+        contentClassName="gap-4 flex items-center justify-center min-h-[280px]"
         itemClassName="min-w-fit-content max-w-fit-content flex flex-col items-center justify-center"
         showArrows={true}
       >
         {isLoading && (
-          <div className="flex flex-1 justify-center items-center w-full h-full min-h-[220px]">
+          <div className="flex flex-1 justify-center items-center w-full h-full min-h-[280px]">
             <PrimaryLoader />
           </div>
         )}
         {isError && (
-          <div className="flex flex-1 justify-center items-center w-full h-full min-h-[220px]">
+          <div className="flex flex-1 justify-center items-center w-full h-full min-h-[280px]">
             <PrimaryEmptyState title="Failed to load products." />
           </div>
         )}
@@ -71,7 +71,7 @@ const LastMinuteAddOns = () => {
           data.map((product) => (
             <CarouselItem
               key={product._id || product.id}
-              className="flex flex-col items-center justify-center"
+              className="flex flex-col items-center justify-center px-2"
             >
               <BestSellerProduct
                 product={{
@@ -81,14 +81,14 @@ const LastMinuteAddOns = () => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-70 h-7 cursor-pointer"
+                className="w-72 h-auto cursor-pointer"
                 onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>
           ))}
         {data && data.length === 0 && !isLoading && (
           <div className="flex flex-1 w-full justify-center items-center">
-            <PrimaryEmptyState title="No bestsellers found." />
+            <PrimaryEmptyState title="No add-on products found." />
           </div>
         )}
       </CustomCarousel>

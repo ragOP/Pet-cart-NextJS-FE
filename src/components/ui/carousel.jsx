@@ -148,7 +148,7 @@ function CarouselPrevious({
   size = "icon",
   ...props
 }) {
-  const { orientation, scrollPrev, canScrollPrev } = useCarousel()
+  const { orientation, scrollPrev } = useCarousel()
 
   return (
     (<Button
@@ -156,16 +156,15 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        "absolute lg:size-12 size-8 rounded-full",
-        canScrollPrev ? "bg-white hover:bg-gray-50" : "bg-gray-200 cursor-not-allowed",
+        "absolute lg:size-12 size-8 rounded-full bg-white hover:bg-gray-50",
         orientation === "horizontal"
           ? "top-1/2 -left-12 -translate-y-1/2"
           : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
-      onClick={() => canScrollPrev && scrollPrev()}
+      onClick={() => scrollPrev()}
       {...props}>
-      <ArrowLeft className={`w-12 h-12 flex-shrink-0 ${canScrollPrev ? "text-[#0888B1]" : "text-gray-400"}`} />
+      <ArrowLeft className="w-12 h-12 flex-shrink-0 text-[#0888B1]" />
       <span className="sr-only">Previous slide</span>
     </Button>)
   );
@@ -177,7 +176,7 @@ function CarouselNext({
   size = "icon",
   ...props
 }) {
-  const { orientation, scrollNext, canScrollNext } = useCarousel()
+  const { orientation, scrollNext } = useCarousel()
 
   return (
     (<Button
@@ -185,16 +184,15 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        "absolute lg:size-12 size-8 rounded-full",
-        canScrollNext ? "bg-white hover:bg-gray-50" : "bg-gray-200 cursor-not-allowed",
+        "absolute lg:size-12 size-8 rounded-full bg-white hover:bg-gray-50",
         orientation === "horizontal"
           ? "top-1/2 -right-12 -translate-y-1/2"
           : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
         className
       )}
-      onClick={() => canScrollNext && scrollNext()}
+      onClick={() => scrollNext()}
       {...props}>
-      <ArrowRight className={`w-12 h-12 flex-shrink-0 ${canScrollNext ? "text-[#0888B1]" : "text-gray-400"}`} />
+      <ArrowRight className="w-12 h-12 flex-shrink-0 text-[#0888B1]" />
       <span className="sr-only">Next slide</span>
     </Button>)
   );

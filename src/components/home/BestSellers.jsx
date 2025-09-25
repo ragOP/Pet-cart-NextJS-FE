@@ -19,7 +19,7 @@ import { useRouter } from "next/navigation";
 const BestSellers = () =>{
   const params = {
     page: 1,
-    per_page: 10,
+    per_page: 20,
     // isBestSeller: true,
     max_price: 599,
   };

@@ -62,7 +62,7 @@ const BestSellerProduct = ({
   return (
     <div
       onClick={onClick}
-      className={`p-2 sm:p-4 rounded-2xl sm:rounded-3xl bg-white flex flex-col justify-between group transition-all duration-200 ${className} hover:shadow-lg border-2 sm:border-[3px] border-[#F59A11] relative w-full max-w-xs sm:max-w-sm`}
+      className={`p-3 sm:p-4 rounded-2xl sm:rounded-3xl bg-white flex flex-col group transition-all duration-200 ${className} hover:shadow-lg border-2 sm:border-[3px] border-[#F59A11] relative w-full max-w-xs sm:max-w-sm h-[420px] sm:h-[520px]`}
     >
       {/* Product Image and Badge */}
       <div className="relative mb-2 sm:mb-4">
@@ -82,7 +82,7 @@ const BestSellerProduct = ({
             </svg>
           </button>
         </div>
-        <div className="w-full h-48 sm:h-64 pt-6 sm:pt-8 pb-4 sm:pb-6 px-3 sm:px-4 rounded-lg relative bg-[#F6F6F6]">
+        <div className="w-full h-40 sm:h-48 pt-6 sm:pt-8 pb-4 sm:pb-6 px-3 sm:px-4 rounded-lg relative bg-[#F6F6F6]">
           <CustomImage
             key={selectedImage}
             src={product.images[selectedImage]}
@@ -137,7 +137,7 @@ const BestSellerProduct = ({
       {/* Variants */}
       <ProductVariants
         variants={product.variants}
-        maxDisplay={3}
+        maxDisplay={2}
         variantLabel="10KG (2x5KG)"
         showDiscount={true}
       />
@@ -171,13 +171,15 @@ const BestSellerProduct = ({
       </div>
 
       {/* Add to Cart Button */}
-      {/* <button
-        className="w-full bg-[#F59A11] hover:bg-[#e18a0e] text-white py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed min-h-[44px] touch-manipulation"
-        onClick={(e) => handleAddtoCart(e)}
-        disabled={isPending || isOutStock}
-      >
-        {isPending ? <PrimaryLoader isButton={true} /> : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
-      </button> */}
+      <div className="mt-auto">
+        <button
+          className="w-full bg-[#F59A11] hover:bg-[#e18a0e] text-white py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed min-h-[44px] touch-manipulation"
+          onClick={(e) => handleAddtoCart(e)}
+          disabled={isPending || isOutStock}
+        >
+          {isPending ? <PrimaryLoader isButton={true} /> : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
+        </button>
+      </div>
     </div>
   );
 };
