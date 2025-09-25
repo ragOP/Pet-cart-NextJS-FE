@@ -16,10 +16,10 @@ import { getBrands } from "@/app/apis/getBrands";
 import { getBreeds } from "@/app/apis/getBreeds";
 
 const promoImages = [
-  "/ad-banner.png",
-  "/ad-banner.png",
-  "/ad-banner.png",
-  "/ad-banner.png",
+  "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=300&h=150&fit=crop&crop=center",
+  "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&h=150&fit=crop&crop=center",
+  "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=300&h=150&fit=crop&crop=center",
+  "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300&h=150&fit=crop&crop=center",
 ];
 
 const BrandCard = ({ brand, selected }) => {
@@ -403,6 +403,23 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                   No collections found
                 </div>
               )}
+            </div>
+
+            {/* Promotional Images Section - Desktop Only */}
+            <div className="space-y-3 px-2 py-4">
+              <div className="space-y-3">
+                {promoImages.map((image, index) => (
+                  <div key={index} className="rounded-sm overflow-hidden">
+                    <Image
+                      src={image}
+                      alt={`Promo ${index + 1}`}
+                      width={200}
+                      height={200}
+                      className="w-full h-40 object-cover hover:scale-105 transition-transform duration-200 cursor-pointer"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </aside>
