@@ -292,37 +292,39 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
         </div>
 
         {/* Collections */}
-        <div className="rounded-[8px] border border-[#6A6868]">
-          {collections?.map((collection, index) => {
-            const isSelected = filters?.collectionSlug === collection.slug;
-            return (
-              <button
-                key={collection._id || index}
-                onClick={() => {
-                  if (onChangeFilter) {
-                    onChangeFilter({ collectionSlug: collection.slug });
-                  }
-                }}
-                className={cn(
-                  `flex items-center w-full gap-3 p-4 text-sm font-medium transition-colors`,
-                  isSelected
-                    ? "bg-blue-50 text-blue-700 border-blue-200"
-                    : "bg-white hover:bg-gray-100",
-                  index === 0 ? "rounded-t-[8px]" : "",
-                  index === collections.length - 1 ? "rounded-b-[8px]" : ""
-                )}
-              >
-                <Image
-                  src={collection.image || "/placeholder-collection.png"}
-                  alt={collection.name}
-                  width={20}
-                  height={20}
-                  className="shrink-0"
-                />
-                <span className="text-start">{collection.name}</span>
-              </button>
-            );
-          })}
+        <div className="bg-white rounded-lg border border-gray-200">
+          <div className="divide-y divide-gray-100">
+            {collections?.map((collection, index) => {
+              const isSelected = filters?.collectionSlug === collection.slug;
+              return (
+                <button
+                  key={collection._id || index}
+                  onClick={() => {
+                    if (onChangeFilter) {
+                      onChangeFilter({ collectionSlug: collection.slug });
+                    }
+                  }}
+                  className={cn(
+                    `w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 transition-colors`,
+                    isSelected ? "bg-gray-100" : ""
+                  )}
+                >
+                  <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={collection.image || "/placeholder-collection.png"}
+                      alt={collection.name}
+                      width={32}
+                      height={32}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <span className="font-medium text-gray-800 uppercase text-sm">
+                    {collection.name}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     );
@@ -352,23 +354,22 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
             </div>
 
             {/* Collections */}
-            <div className="rounded-[8px] border border-[#6A6868]">
+            <div className="bg-white rounded-lg border border-gray-200">
               {isCollectionsLoading ? (
                 // Skeleton loader for collections
-                <div className="space-y-0">
+                <div className="divide-y divide-gray-100">
                   {Array.from({ length: 3 }).map((_, index) => (
                     <div key={index} className="flex items-center gap-3 p-4 animate-pulse">
-                      <div className="w-5 h-5 bg-gray-200 rounded"></div>
-                      <div className="h-4 bg-gray-200 rounded flex-1"></div>
-                      {index < 2 && <div className="border-b border-[#6A6868] mx-4"></div>}
+                      <div className="w-8 h-8 bg-gray-100 rounded-full"></div>
+                      <div className="h-4 bg-gray-100 rounded flex-1"></div>
                     </div>
                   ))}
                 </div>
               ) : collections?.length > 0 ? (
-                collections.map((collection, index) => {
-                  const isSelected = filters?.collectionSlug === collection.slug;
-                  return (
-                    <>
+                <div className="divide-y divide-gray-100">
+                  {collections.map((collection, index) => {
+                    const isSelected = filters?.collectionSlug === collection.slug;
+                    return (
                       <button
                         key={collection._id || index}
                         onClick={() => {
@@ -377,29 +378,26 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                           }
                         }}
                         className={cn(
-                          `flex items-center w-full gap-3 p-4 text-sm font-medium transition-colors`,
-                          isSelected 
-                            ? "bg-blue-50 text-blue-700 border-blue-200" 
-                            : "bg-white hover:bg-gray-100",
-                          index === 0 ? "rounded-t-[8px]" : "",
-                          index === collections.length - 1 ? "rounded-b-[8px]" : ""
+                          `w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 transition-colors`,
+                          isSelected ? "bg-gray-100" : ""
                         )}
                       >
-                        <Image
-                          src={collection.image || "/placeholder-collection.png"}
-                          alt={collection.name}
-                          width={20}
-                          height={20}
-                          className="shrink-0"
-                        />
-                        <span className="text-start">{collection.name}</span>
+                        <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                          <Image
+                            src={collection.image || "/placeholder-collection.png"}
+                            alt={collection.name}
+                            width={32}
+                            height={32}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <span className="font-medium text-gray-800 uppercase text-sm">
+                          {collection.name}
+                        </span>
                       </button>
-                      {index < collections.length - 1 && (
-                        <div className="border-b border-[#6A6868] mx-4"></div>
-                      )}
-                    </>
-                  );
-                })
+                    );
+                  })}
+                </div>
               ) : (
                 <div className="p-4 text-center text-gray-500 text-sm">
                   No collections found
@@ -453,25 +451,30 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
             <div className="flex-1 overflow-y-auto p-4">
               <div className="space-y-6">
                 {/* Brand Filter */}
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">Brand</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {filterTabs.find(t => t.key === "brandSlug")?.items?.map((item) => (
+                <div className="border-b border-gray-200 pb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-lg font-semibold uppercase">Brand</h3>
+                    <button className="text-sm text-blue-600 hover:text-blue-700 underline">
+                      view all
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-5 gap-2">
+                    {filterTabs.find(t => t.key === "brandSlug")?.items?.slice(0, 10).map((item) => (
                       <div
                         key={item.value}
                         onClick={() => {
                           setSelectedBrand(item);
                           handleTempFilterChange("brandSlug", item.value);
                         }}
-                        className={`p-3 border rounded-lg cursor-pointer text-center ${tempFilters?.brandSlug === item.value
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                        className={`p-2 border rounded-lg cursor-pointer text-center transition-colors h-20 flex flex-col justify-between ${tempFilters?.brandSlug === item.value
+                            ? 'border-[#0b88b1] bg-[#0b88b1] bg-opacity-10'
+                            : 'border-[#badee9] bg-[#e6f3f7] hover:border-[#0b88b1]'
                           }`}
                       >
-                        <div className="flex flex-col items-center">
-                          <img src={item.image} alt={item.label} className="w-8 h-8 mb-2" />
-                          <span className="text-sm font-medium">{item.label}</span>
+                        <div className="flex justify-center items-center flex-1">
+                          <img src={item.image} alt={item.label} className="w-8 h-8 object-contain" />
                         </div>
+                        <span className="text-xs font-medium mt-1">{item.label}</span>
                       </div>
                     ))}
                   </div>
@@ -479,16 +482,16 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
 
 
                 {/* Life Stage Filter */}
-                <div>
-                  <h3 className="text-lg font-semibold mb-3">Life Stage</h3>
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-semibold mb-3 uppercase">Life Stage</h3>
                   <div className="flex flex-wrap gap-2">
                     {filterTabs.find(t => t.key === "lifeStage")?.items?.map((item) => (
                       <button
                         key={item.value}
                         onClick={() => handleTempFilterChange("lifeStage", item.value)}
-                        className={`h-10 px-4 rounded-lg border font-medium ${tempFilters?.lifeStage === item.value
-                            ? 'bg-blue-500 text-white border-blue-500'
-                            : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'
+                        className={`h-10 px-4 rounded-full border font-medium transition-colors ${tempFilters?.lifeStage === item.value
+                            ? 'bg-[#0b88b1] text-white border-[#0b88b1]'
+                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
                           }`}
                       >
                         {item.label}
@@ -497,25 +500,42 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                   </div>
                 </div>
 
+                {/* Breed Size Filter */}
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-semibold mb-3 uppercase">Breed Size</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {filterTabs.find(t => t.key === "breedSize")?.items?.map((item) => (
+                      <button
+                        key={item.value}
+                        onClick={() => handleTempFilterChange("breedSize", item.value)}
+                        className={`h-10 px-4 rounded-full border font-medium transition-colors ${tempFilters?.breedSize === item.value
+                            ? 'bg-[#0b88b1] text-white border-[#0b88b1]'
+                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                          }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
               </div>
             </div>
 
             {/* Footer Buttons - Fixed */}
             <div className="flex-shrink-0 border-t bg-white p-4">
-              <div className="flex gap-3">
+              <div className="flex items-center justify-between">
                 <button
                   onClick={clearAllFilters}
-                  className="flex-1 h-12 px-4 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 flex items-center justify-center"
+                  className="text-[#f19813] font-bold text-base hover:text-[#d9820a] transition-colors"
                 >
-                  <XCircle className="h-4 w-4 mr-2" />
-                  Clear All
+                  CLEAR ALL
                 </button>
                 <button
                   onClick={applyFilters}
-                  className="flex-1 h-12 px-4 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 flex items-center justify-center"
+                  className="bg-[#f19813] text-white px-8 py-3 rounded-lg font-bold text-base hover:bg-[#d9820a] transition-colors"
                 >
-                  Apply Filters
+                  APPLY
                 </button>
               </div>
             </div>

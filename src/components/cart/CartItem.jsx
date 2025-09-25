@@ -14,7 +14,7 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
   const productId = item?.productId?._id;
   const variantId = item?.variantId;
   return (
-    <div className="bg-white rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-start border border-[#F59A1133] w-full">
+    <div className="bg-white rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-start border border-[#f59a10] w-full">
       {/* Image - Full width on mobile, normal on desktop */}
       <div className="w-full sm:w-36 aspect-square sm:aspect-auto cursor-pointer"
       onClick={() => onNavigateToProduct(productDetails?._id)}>
@@ -74,7 +74,7 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
           </div>
 
           {/* Quantity controls */}
-          <div className="flex items-center border border-[#004E6A80] bg-[#004E6A05] rounded-[24px] overflow-hidden self-end">
+          <div className="flex items-center border border-[#f59a10] bg-[#004E6A05] rounded-[24px] overflow-hidden self-end">
             <button
               onClick={() => onQtyChange(productId, variantId, -1)}
               disabled={isLoading}

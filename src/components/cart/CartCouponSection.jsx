@@ -97,7 +97,7 @@ const CartCouponSection = ({ coupons, onApply, onRemove, appliedCoupon, cartTota
 
   return (
     <>
-      <div className="p-4 border-b border-[#0000001A]">
+      <div className="p-4 border-b border-[#f59a10]">
         <div className="flex items-center justify-between mb-3">
           <div className="font-semibold text-lg text-gray-800">Available Coupons</div>
           <button

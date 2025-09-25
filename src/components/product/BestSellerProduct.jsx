@@ -62,7 +62,7 @@ const BestSellerProduct = ({
   return (
     <div
       onClick={onClick}
-      className={`p-3 sm:p-4 rounded-2xl sm:rounded-3xl bg-white flex flex-col group transition-all duration-200 ${className} hover:shadow-lg border-2 sm:border-[3px] border-[#F59A11] relative w-full max-w-xs sm:max-w-sm h-[420px] sm:h-[520px]`}
+      className={`p-3 sm:p-4 rounded-2xl sm:rounded-3xl bg-white flex flex-col group transition-all duration-200 ${className} border border-transparent hover:border-[#f19813] relative w-full max-w-xs sm:max-w-sm h-[420px] sm:h-[520px]`}
     >
       {/* Product Image and Badge */}
       <div className="relative mb-2 sm:mb-4">
@@ -82,7 +82,7 @@ const BestSellerProduct = ({
             </svg>
           </button>
         </div>
-        <div className="w-full h-40 sm:h-48 pt-6 sm:pt-8 pb-4 sm:pb-6 px-3 sm:px-4 rounded-lg relative bg-[#F6F6F6]">
+        <div className="w-full h-40 sm:h-48 pt-6 sm:pt-8 pb-4 sm:pb-6 px-3 sm:px-4 rounded-lg relative bg-[#F6F6F6] border border-[#f19813]">
           <CustomImage
             key={selectedImage}
             src={product.images[selectedImage]}
@@ -135,12 +135,14 @@ const BestSellerProduct = ({
       </div>
 
       {/* Variants */}
-      <ProductVariants
-        variants={product.variants}
-        maxDisplay={2}
-        variantLabel="10KG (2x5KG)"
-        showDiscount={true}
-      />
+      <div className="flex-1 flex flex-col justify-center">
+        <ProductVariants
+          variants={product.variants}
+          maxDisplay={2}
+          variantLabel="10KG (2x5KG)"
+          showDiscount={true}
+        />
+      </div>
 
       {/* Price Section */}
       <div className="mb-3 sm:mb-4">

@@ -6,6 +6,7 @@ import CartSavingsBanner from "@/components/cart/CartSavingsBanner";
 import CartList from "@/components/cart/CartList";
 import CartSummary from "@/components/cart/CartSummary";
 import CartCouponSection from "@/components/cart/CartCouponSection";
+import CartProgressBar from "@/components/cart/CartProgressBar";
 import PincodeInput from "@/components/pincode/PincodeInput";
 import SpecialDeals from "@/components/cart/SpecialDeals";
 import LastMinuteAddOns from "@/components/cart/LastMinuteAddOns";
@@ -299,6 +300,11 @@ const CartPage = () => {
           <div className="h-16 bg-white rounded-lg shadow-sm animate-pulse" />
         )}
 
+        {/* Progress Bar */}
+        <div className="px-4 md:px-8 mt-2">
+          <CartProgressBar progress={75} />
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-6">
           <div className="w-full lg:w-1/2 flex flex-col gap-4">
             {cartLoading ? (
@@ -322,7 +328,7 @@ const CartPage = () => {
             )}
           </div>
           {/* Right: Summary */}
-          <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl h-fit border border-[#F59A1133]">
+          <div className="w-full lg:w-1/2 flex flex-col bg-white rounded-xl h-fit border border-[#f59a10]">
             <PincodeInput
               pincode={pincode}
               onPincodeChange={setPincode}
@@ -375,7 +381,7 @@ const CartPage = () => {
               }}
             />
             
-            <div className="border-b border-[#0000001A]" />
+            <div className="border-b border-[#f59a10]" />
             <CartSummary
               totalMrp={totalPrice}
               totalPrice={finalPayableAmount}

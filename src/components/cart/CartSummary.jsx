@@ -31,7 +31,7 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
           </div>
         </div>
 
-        <div className="border-t border-dashed border-[#F59A1166]" />
+        <div className="border-t border-dashed border-[#f59a10]" />
       </div>
 
       <div className="p-4 flex-shrink-0">

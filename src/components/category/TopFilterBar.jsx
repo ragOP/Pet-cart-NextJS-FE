@@ -148,36 +148,39 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
 
             {/* Selected Filter Chips */}
             {badgeLabels.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 pl-8">
                 {badgeLabels.map((badge, index) => {
                   let displayLabel = badge.label;
 
-                  // Special handling for different filter types
-                  if (badge.key === "collectionSlug" && filters?.collectionSlug) {
-                    const selectedCollection = collections?.find(c => c.slug === filters.collectionSlug);
-                    displayLabel = selectedCollection ? `${selectedCollection.name}` : `${filters.collectionSlug}`;
-                  } else if (badge.key === "brandSlug" && filters?.brandSlug) {
-                    displayLabel = `Brand: ${filters.brandSlug}`;
+                  // Simplify labels - remove prefixes like "Brand:", "Life Stage:", etc.
+                  if (badge.key === "brandSlug" && filters?.brandSlug) {
+                    displayLabel = filters.brandSlug;
                   } else if (badge.key === "lifeStage" && filters?.lifeStage) {
-                    displayLabel = `Life Stage: ${filters.lifeStage}`;
+                    displayLabel = filters.lifeStage;
                   } else if (badge.key === "breedSize" && filters?.breedSize) {
-                    displayLabel = `Breed Size: ${filters.breedSize}`;
+                    displayLabel = filters.breedSize;
                   } else if (badge.key === "productType" && filters?.productType) {
-                    displayLabel = `Product Type: ${filters.productType}`;
+                    displayLabel = filters.productType;
                   } else if (badge.key === "rating" && filters?.rating) {
-                    displayLabel = `Rating: ${filters.rating}+`;
+                    displayLabel = `${filters.rating}+`;
                   }
 
                   return (
-                    <Badge
+                    <div
                       key={index}
-                      variant="secondary"
-                      className="bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer"
-                      onClick={() => deleteFilter(badge.key)}
+                      className="flex items-center gap-2 bg-gray-200 text-gray-800 px-3 py-1.5 rounded-sm text-sm font-medium hover:bg-gray-300 cursor-pointer transition-colors"
                     >
-                      {displayLabel}
-                      <X className="h-3 w-3 ml-1" />
-                    </Badge>
+                      <span>{displayLabel}</span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteFilter(badge.key);
+                        }}
+                        className="flex items-center justify-center w-4 h-4 rounded-full border border-red-500 text-red-500 hover:bg-red-200 hover:text-white transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
                   );
                 })}
               </div>
@@ -252,17 +255,40 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
           {/* Mobile Selected Filter Chips */}
           {badgeLabels.length > 0 && (
             <div className="flex flex-wrap gap-2 px-4 pb-3">
-              {badgeLabels.map((badge, index) => (
-                <Badge
-                  key={index}
-                  variant="secondary"
-                  className="bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer"
-                  onClick={() => deleteFilter(badge.key)}
-                >
-                  {badge.label}
-                  <X className="h-3 w-3 ml-1" />
-                </Badge>
-              ))}
+              {badgeLabels.map((badge, index) => {
+                let displayLabel = badge.label;
+
+                // Simplify labels - remove prefixes like "Brand:", "Life Stage:", etc.
+                if (badge.key === "brandSlug" && filters?.brandSlug) {
+                  displayLabel = filters.brandSlug;
+                } else if (badge.key === "lifeStage" && filters?.lifeStage) {
+                  displayLabel = filters.lifeStage;
+                } else if (badge.key === "breedSize" && filters?.breedSize) {
+                  displayLabel = filters.breedSize;
+                } else if (badge.key === "productType" && filters?.productType) {
+                  displayLabel = filters.productType;
+                } else if (badge.key === "rating" && filters?.rating) {
+                  displayLabel = `${filters.rating}+`;
+                }
+
+                return (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 bg-gray-200 text-gray-800 px-3 py-1.5 rounded-full text-sm font-medium hover:bg-gray-300 cursor-pointer transition-colors"
+                  >
+                    <span>{displayLabel}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteFilter(badge.key);
+                      }}
+                      className="flex items-center justify-center w-4 h-4 rounded-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import SavingsIcon from "@/components/icons/SavingsIcon";
 
 const CartSavingsBanner = ({ savings }) => (
   <div
@@ -9,7 +10,8 @@ const CartSavingsBanner = ({ savings }) => (
       minHeight: 56,
     }}
   >
-    <span className="py-3 w-full text-center">
+    <span className="py-2 w-full text-center flex items-center justify-center gap-2">
+      <SavingsIcon className="w-6 h-6" />
       You're saving <span className="font-bold">₹{savings}</span> on this order
     </span>
   </div>
