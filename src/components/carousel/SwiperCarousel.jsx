@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useRef } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import { Navigation, Pagination, Autoplay } from "swiper/modules";
+// import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
+// // Import Swiper styles
+// import "swiper/css";
+// import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 export default function SwiperCarousel({
@@ -26,23 +26,23 @@ export default function SwiperCarousel({
   breakpoints = {},
   ...props
 }) {
-  const swiperRef = useRef(null);
+  // const swiperRef = useRef(null);
 
-  const handlePrev = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slidePrev();
-    }
-  };
+  // const handlePrev = () => {
+  //   if (swiperRef.current) {
+  //     swiperRef.current.slidePrev();
+  //   }
+  // };
 
-  const handleNext = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slideNext();
-    }
-  };
+  // const handleNext = () => {
+  //   if (swiperRef.current) {
+  //     swiperRef.current.slideNext();
+  //   }
+  // };
 
   return (
     <div className={`relative ${className}`} style={{ width, height }}>
-      {showArrows && (
+      {/* {showArrows && (
         <>
           <button
             onClick={handlePrev}
@@ -79,7 +79,7 @@ export default function SwiperCarousel({
             {child}
           </SwiperSlide>
         ))}
-      </Swiper>
+      </Swiper> */}
     </div>
   );
 }
