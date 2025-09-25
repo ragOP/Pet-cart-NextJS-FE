@@ -15,12 +15,14 @@ const CheckoutDialog = ({
   isOpen,
   onClose,
   onConfirmCheckout,
+  selectedAddressId,
 }) => {
   const [note, setNote] = useState("");
 
   const handleSubmit = () => {
     onConfirmCheckout({
       note,
+      addressId: selectedAddressId,
     });
     onClose();
   };
