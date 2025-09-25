@@ -5,13 +5,21 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { useQuery } from "@tanstack/react-query";
 import { getBrands } from "@/app/apis/getBrands";
 import { getBreeds } from "@/app/apis/getBreeds";
-import { SlidersHorizontal, X } from "lucide-react";
+import { SlidersHorizontal, X, Filter } from "lucide-react";
 import { convertFilterKeys } from "@/utils/convert_filter_keys";
 import unslug from "@/utils/unslug";
 import { Drawer } from "../common/CustomDrawer";
+import {
+  Drawer as ShadcnDrawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerClose
+} from "@/components/ui/drawer";
 
 const BrandCard = ({ brand, selected }) => {
   return (
@@ -22,11 +30,12 @@ const BrandCard = ({ brand, selected }) => {
   );
 };
 
-export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) {
+export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, selectedSubCategory, collections, onOpenFilterDrawer, productsData }) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [open, setOpen] = useState(false);
+  const [sortDrawerOpen, setSortDrawerOpen] = useState(false);
 
   const { data: brands = [] } = useQuery({
     queryKey: ["brands"],
@@ -71,15 +80,6 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
       ],
     },
     {
-      key: "isVeg",
-      label: "Diet Type",
-      type: "slider",
-      items: [
-        { label: "Non-Veg", value: false, color: "#ef4444" },
-        { label: "Veg", value: true, color: "#22c55e" },
-      ],
-    },
-    {
       key: "lifeStage",
       label: "Life Stage",
       items: [
@@ -115,66 +115,194 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
 
   return (
     <>
-      <div className="sticky top-[120px] z-10 flex-col gap-3 bg-transparent lg:bg-white p-2 sm:p-4 rounded-md mx-2 sm:mx-0 mb-5 ">
+      <div className="sticky top-[120px] z-20 flex-col gap-3 bg-transparent lg:bg-white sm:p-4 rounded-md mx-2 sm:mx-0">
         {/* Desktop Filter Bar */}
-        <div className="lg:flex flex-wrap items-center gap-3 hidden">
-          <Button variant="ghost" className="gap-2 text-black text-base font-semibold">
-            <SlidersHorizontal size={24} />
-            <span className="font-bold text-xl">Filters</span>
-          </Button>
+        <div className="lg:flex items-center justify-between gap-3 hidden px-2">
+          {/* Left side - Category, Selected Filters, and Veg/Non-Veg */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 text-black text-base font-semibold pl-2 pr-10">
+              <span className="font-bold text-xl">
+                {selectedSubCategory?.name || "Select Category"}
+              </span>
+            </div>
 
-          {/* Filter Triggers */}
-          {filterTabs.map((tab, index) => (
+            {/* Veg/Non-Veg Toggle */}
+            <div className="flex items-center gap-2">
+              <span className={`text-sm font-semibold transition-colors ${filters?.isVeg !== "true" ? "text-gray-900" : "text-green-600"
+                }`}>
+                {filters?.isVeg === "true" ? "Veg" : "Non-Veg"}
+              </span>
+              <Switch
+                checked={filters?.isVeg === "true"}
+                onCheckedChange={(checked) => {
+                  if (checked) {
+                    onChangeFilter({ isVeg: true });
+                  } else {
+                    onChangeFilter({ isVeg: null });
+                  }
+                }}
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-gray-300 scale-125"
+              />
+
+            </div>
+
+            {/* Selected Filter Chips */}
+            {badgeLabels.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {badgeLabels.map((badge, index) => {
+                  let displayLabel = badge.label;
+
+                  // Special handling for different filter types
+                  if (badge.key === "collectionSlug" && filters?.collectionSlug) {
+                    const selectedCollection = collections?.find(c => c.slug === filters.collectionSlug);
+                    displayLabel = selectedCollection ? `${selectedCollection.name}` : `${filters.collectionSlug}`;
+                  } else if (badge.key === "brandSlug" && filters?.brandSlug) {
+                    displayLabel = `Brand: ${filters.brandSlug}`;
+                  } else if (badge.key === "lifeStage" && filters?.lifeStage) {
+                    displayLabel = `Life Stage: ${filters.lifeStage}`;
+                  } else if (badge.key === "breedSize" && filters?.breedSize) {
+                    displayLabel = `Breed Size: ${filters.breedSize}`;
+                  } else if (badge.key === "productType" && filters?.productType) {
+                    displayLabel = `Product Type: ${filters.productType}`;
+                  } else if (badge.key === "rating" && filters?.rating) {
+                    displayLabel = `Rating: ${filters.rating}+`;
+                  }
+
+                  return (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer"
+                      onClick={() => deleteFilter(badge.key)}
+                    >
+                      {displayLabel}
+                      <X className="h-3 w-3 ml-1" />
+                    </Badge>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* Right side - Empty space for balance */}
+          <div className="flex-1"></div>
+
+          {/* Right side - Filter and Sort buttons */}
+          <div className="flex items-center gap-3">
+            {/* Desktop Filter Button */}
             <Button
-              key={tab.key}
               variant="outline"
               onClick={() => {
-                setOpen(true);
+                const filterTrigger = document.querySelector('[data-filter-trigger]');
+                if (filterTrigger) {
+                  filterTrigger.click();
+                }
               }}
               className="text-sm"
             >
-              {tab.label}
+              <Filter className="h-4 w-4 mr-2" />
+              Filters
             </Button>
-          ))}
 
-          {/* Sort By */}
-          <Select
-            onValueChange={(value) => onChangeFilter({ sort_by: value })}
-            defaultValue={filters?.sort_by}
-          >
-            <SelectTrigger className="w-[200px] text-sm">
-              <SelectValue placeholder="Sort By" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
-              <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
-            </SelectContent>
-          </Select>
+            {/* Sort By */}
+            <Select
+              onValueChange={(value) => onChangeFilter({ sort_by: value })}
+              defaultValue={filters?.sort_by}
+            >
+              <SelectTrigger className="w-[200px] text-sm">
+                <SelectValue placeholder="Sort By" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
+                <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Mobile Category and Veg Toggle - Above Products */}
+        <div className="lg:hidden z-10 bg-white w-full">
+          <div className="flex items-center justify-between py-4 bg-white">
+            <div className="flex items-center gap-2 text-black text-base font-semibold">
+              <span className="font-bold text-xl">
+                {selectedSubCategory?.name || "Select Category"}
+              </span>
+            </div>
+            
+            {/* Mobile Veg/Non-Veg Toggle */}
+            <div className="flex items-center gap-2 pr-2">
+              <span className={`text-sm font-semibold transition-colors ${filters?.isVeg !== "true" ? "text-gray-900" : "text-green-600"
+                }`}>
+                {filters?.isVeg === "true" ? "Veg" : "Non-Veg"}
+              </span>
+              <Switch
+                checked={filters?.isVeg === "true"}
+                onCheckedChange={(checked) => {
+                  if (checked) {
+                    onChangeFilter({ isVeg: true });
+                  } else {
+                    onChangeFilter({ isVeg: null });
+                  }
+                }}
+                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-gray-300 scale-125"
+              />
+            </div>
+          </div>
+          
+          {/* Mobile Selected Filter Chips */}
+          {badgeLabels.length > 0 && (
+            <div className="flex flex-wrap gap-2 px-4 pb-3">
+              {badgeLabels.map((badge, index) => (
+                <Badge
+                  key={index}
+                  variant="secondary"
+                  className="bg-blue-100 text-blue-800 hover:bg-blue-200 cursor-pointer"
+                  onClick={() => deleteFilter(badge.key)}
+                >
+                  {badge.label}
+                  <X className="h-3 w-3 ml-1" />
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Fixed Mobile Filter Bar at Bottom */}
-        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 p-3 flex gap-2">
-          <Button
-            onClick={() => setOpen(true)}
-            variant="outline"
-            className="flex-1 text-sm"
-          >
-            <SlidersHorizontal size={16} className="mr-2" />
-            Filters
-          </Button>
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 bg-[#fff] shadow-lg border-t border-gray-200">
+          <div className="flex">
+            {/* Sort Button */}
+            <div className="flex-1 border-r border-gray-200">
+              <Button
+                variant="ghost"
+                onClick={() => setSortDrawerOpen(true)}
+                className="w-full h-12 border-0 rounded-none bg-[#fff] hover:bg-gray-50"
+              >
+                <div className="flex items-center gap-2">
+                  <SlidersHorizontal className="h-4 w-4 text-gray-600" />
+                  <span className="font-semibold text-gray-800">SORT</span>
+                </div>
+              </Button>
+            </div>
 
-          <Select
-            onValueChange={(value) => onChangeFilter({ sort_by: value })}
-            defaultValue={filters?.sort_by}
-          >
-            <SelectTrigger className="flex-1 text-sm">
-              <SelectValue placeholder="Sort By" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="priceLowToHigh">Price: Low to High</SelectItem>
-              <SelectItem value="priceHighToLow">Price: High to Low</SelectItem>
-            </SelectContent>
-          </Select>
+            {/* Filter Button */}
+            <div className="flex-1">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  const filterTrigger = document.querySelector('[data-filter-trigger]');
+                  if (filterTrigger) {
+                    filterTrigger.click();
+                  }
+                }}
+                className="w-full h-12 border-0 rounded-none bg-[#fff] hover:bg-gray-50"
+              >
+                <div className="flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-gray-600" />
+                  <span className="font-semibold text-gray-800">FILTER</span>
+                </div>
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -247,6 +375,46 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter }) 
           </div>
         </div>
       </Drawer>
+
+      {/* Sort Drawer */}
+      <ShadcnDrawer
+        open={sortDrawerOpen}
+        onOpenChange={setSortDrawerOpen}
+        direction="bottom"
+      >
+        <DrawerContent className="w-full max-h-[30vh] rounded-t-lg">
+          <DrawerHeader className="flex flex-row items-center justify-between border-b border-gray-200 px-4 py-3">
+            <DrawerTitle className="text-lg font-semibold">Sort By</DrawerTitle>
+            <DrawerClose asChild>
+              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                <X className="h-4 w-4" />
+              </Button>
+            </DrawerClose>
+          </DrawerHeader>
+          <div className="px-4 py-4 space-y-2">
+            <Button
+              variant={filters?.sort_by === "priceLowToHigh" ? "default" : "ghost"}
+              onClick={() => {
+                onChangeFilter({ sort_by: "priceLowToHigh" });
+                setSortDrawerOpen(false);
+              }}
+              className="w-full justify-start h-12 text-left"
+            >
+              Price: Low to High
+            </Button>
+            <Button
+              variant={filters?.sort_by === "priceHighToLow" ? "default" : "ghost"}
+              onClick={() => {
+                onChangeFilter({ sort_by: "priceHighToLow" });
+                setSortDrawerOpen(false);
+              }}
+              className="w-full justify-start h-12 text-left"
+            >
+              Price: High to Low
+            </Button>
+          </div>
+        </DrawerContent>
+      </ShadcnDrawer>
     </>
   );
 }

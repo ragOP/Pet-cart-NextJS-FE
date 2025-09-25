@@ -8,17 +8,19 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "@/store/authSlice";
 import { openLoginPopup, setLoginRedirectUrl } from "@/store/uiSlice";
+import CircularLoader from "../loaders/CircularLoader";
 
 const PriceAndCartDisplay = ({
   price,
   salePrice,
   productId,
   variantId = null,
-  quantity = 1,
+  quantity: initialQuantity = 1,
   stock = 0,
 }) => {
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
+  const [quantity, setQuantity] = useState(initialQuantity);
   const router = useRouter();
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
@@ -63,6 +65,13 @@ const PriceAndCartDisplay = ({
   });
   const discount = calculateDiscountPercent(price, salePrice);
 
+  const handleQuantityChange = (change) => {
+    const newQuantity = quantity + change;
+    if (newQuantity >= 1 && newQuantity <= stock) {
+      setQuantity(newQuantity);
+    }
+  };
+
   const handleAddToCart = () => {
     if (!isLoggedIn) {
       toast.error("Please login to add products to cart", {
@@ -86,8 +95,9 @@ const PriceAndCartDisplay = ({
     }
   };
   return (
-    <div className="flex flex-col md:flex-row gap-4 w-full justify-between md:pr-4">
-      <div className="flex flex-col gap w-full md:w-1/2">
+    <div className="flex flex-col gap-4 w-full bg-gray-100 rounded-lg p-4">
+      {/* Price Section */}
+      <div className="flex flex-col gap-2">
         <span className="text-3xl font-bold">₹{salePrice || price || 0}</span>
         {salePrice && (
           <div className="flex items-center gap-2">
@@ -105,27 +115,52 @@ const PriceAndCartDisplay = ({
         <p className="text-sm text-[#0888B1]">incl. of all taxes</p>
       </div>
 
-      <button
-        onClick={handleAddToCart}
-        disabled={loading || isProductInCart || stock <= 0}
-        className={`w-full md:w-fit h-fit ${
-          loading
-            ? "bg-gray-400 cursor-not-allowed"
+      {/* Quantity Selector and Add to Cart Button */}
+      <div className="flex items-center gap-4 sm:gap-8 lg:gap-12">
+        {/* Quantity Selector */}
+        <div className="flex items-center border border-[#004E6A80] bg-[#004E6A05] rounded-[24px] overflow-hidden">
+          <button
+            onClick={() => handleQuantityChange(-1)}
+            disabled={quantity <= 1 || loading}
+            className="pr-3 pl-5 py-1.5 text-lg text-gray-700 border-r border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            -
+          </button>
+          <div className="px-4 py-1.5 text-base font-normal text-center min-w-[40px]">
+            {loading ? <CircularLoader size={16} /> : <span>{quantity}</span>}
+          </div>
+          <button
+            onClick={() => handleQuantityChange(1)}
+            disabled={quantity >= stock || loading}
+            className="pr-5 pl-3 py-1.5 text-lg text-gray-700 border-l border-[#004E6A80] cursor-pointer hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            +
+          </button>
+        </div>
+
+        {/* Add to Cart Button */}
+        <button
+          onClick={handleAddToCart}
+          disabled={loading || isProductInCart || stock <= 0}
+          className={`min-w-fit w-32 sm:w-40 lg:w-48 ${
+            loading
+              ? "bg-gray-400 cursor-not-allowed"
+              : isProductInCart
+              ? "bg-yellow-500 hover:bg-yellow-600 cursor-not-allowed"
+              : stock > 0
+              ? "bg-yellow-500 hover:bg-yellow-600 "
+              : "bg-gray-400 cursor-not-allowed"
+          } whitespace-nowrap text-white font-bold py-3 px-10 rounded-lg text-base transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D9820A]`}
+        >
+          {loading
+            ? "ADDING..."
             : isProductInCart
-            ? "bg-yellow-600 hover:bg-yellow-500 cursor-not-allowed"
+            ? "ADDED"
             : stock > 0
-            ? "bg-[#F59A11] hover:bg-[#D9820A]"
-            : "bg-gray-400 cursor-not-allowed"
-        } text-white font-bold py-3 px-10 rounded-lg text-base transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D9820A]`}
-      >
-        {loading
-          ? "ADDING..."
-          : isProductInCart
-          ? "ADDED"
-          : stock > 0
-          ? "ADD TO CART"
-          : "OUT OF STOCK"}
-      </button>
+            ? "ADD TO CART"
+            : "OUT OF STOCK"}
+        </button>
+      </div>
     </div>
   );
 };

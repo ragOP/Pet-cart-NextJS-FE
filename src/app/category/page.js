@@ -8,6 +8,7 @@ import BestSellerProduct from "@/components/product/BestSellerProduct";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getProducts } from "@/app/apis/getProducts";
 import { getSubCategories } from "@/app/apis/getSubCategories";
+import { getCollections } from "@/app/apis/getCollections";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -27,14 +28,17 @@ export default function CategoryPage() {
   const queryClient = useQueryClient();
 
   const [page, setPage] = useState(1);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
-  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  const [width, setWidth] = useState(
+    typeof window !== "undefined" ? window.innerWidth : 1024
+  );
   const type = width > 1024 ? "web" : width > 768 ? "tablet" : "mobile";
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const filters = {};
@@ -55,14 +59,20 @@ export default function CategoryPage() {
     per_page: 12,
     ...filters,
     ...(price_range && { price_range }),
+    ...(selectedSubCategory?._id && { subCategoryId: selectedSubCategory._id }),
   };
 
-  let subCategoryParam = searchParams.get("categorySlug");
+  let subCategoryParam = searchParams.get("subCategorySlug");
   if (subCategoryParam) {
     subCategoryParam = {
-      categorySlug: subCategoryParam,
+      subCategorySlug: subCategoryParam,
     };
   }
+
+  // Debug: Log subcategory parameter
+  useEffect(() => {
+    console.log("filters:", filters);
+  }, [filters]);
 
   const {
     data: productsData,
@@ -85,6 +95,67 @@ export default function CategoryPage() {
     select: (res) => res?.data?.data || [],
   });
 
+  // Set selected subcategory when subCategories are loaded or URL changes
+  useEffect(() => {
+    if (subCategories && subCategories.length > 0) {
+      const subCategorySlugFromUrl = searchParams.get("subCategorySlug");
+
+      if (subCategorySlugFromUrl) {
+        // Find subcategory by slug from URL
+        const subCategoryFromUrl = subCategories.find(
+          (sub) => sub.slug === subCategorySlugFromUrl
+        );
+        if (subCategoryFromUrl) {
+          setSelectedSubCategory(subCategoryFromUrl);
+        } else {
+          // If slug not found in fetched subcategories, select first subcategory and update URL
+          const firstSubCategory = subCategories[0];
+          setSelectedSubCategory(firstSubCategory);
+          const params = new URLSearchParams(searchParams);
+          params.set("subCategorySlug", firstSubCategory.slug);
+          router.replace(`/category?${params.toString()}`);
+        }
+      } else {
+        // No subcategory in URL, select first subcategory and set URL
+        const firstSubCategory = subCategories[0];
+        setSelectedSubCategory(firstSubCategory);
+        const params = new URLSearchParams(searchParams);
+        params.set("subCategorySlug", firstSubCategory.slug);
+        router.replace(`/category?${params.toString()}`);
+      }
+    }
+  }, [subCategories, searchParams, router]);
+
+  // Fetch collections based on selected subcategory
+  const {
+    data: collections,
+    isLoading: isCollectionsLoading,
+    isError: isCollectionsError,
+  } = useQuery({
+    queryKey: ["collections", selectedSubCategory?._id, selectedSubCategory?.slug],
+    queryFn: () =>
+      getCollections({
+        params: {
+          page: 1,
+          per_page: 100,
+          subCategoryId: selectedSubCategory?._id,
+        },
+      }),
+    select: (res) => res?.data?.data || [],
+    enabled: !!selectedSubCategory?._id,
+  });
+
+  // Debug: Log selectedSubCategory and collections when they change
+  useEffect(() => {
+    console.log("Selected SubCategory:", selectedSubCategory);
+  }, [selectedSubCategory]);
+
+  useEffect(() => {
+    if (collections) {
+      console.log("Collections loaded:", collections);
+    }
+  }, [collections]);
+
   const updateFilters = (newFilters) => {
     const params = new URLSearchParams();
 
@@ -95,36 +166,49 @@ export default function CategoryPage() {
     });
 
     Object.entries(newFilters).forEach(([key, value]) => {
-      if (!value || value === "0") {
+      if (
+        value === null ||
+        value === undefined ||
+        value === "" ||
+        value === "0"
+      ) {
         params.delete(key);
       } else {
         params.set(key, value);
       }
     });
 
-    router.push(`/category?${params.toString()}`);
+    router.replace(`/category?${params.toString()}`, { scroll: false });
     queryClient.invalidateQueries({
-      queryKey: ["products", page, { ...params }],
+      queryKey: ["products"],
     });
   };
 
   const deleteFilter = (key) => {
     const params = new URLSearchParams(searchParams);
     params.delete(key);
-    router.push(`/category?${params.toString()}`);
+    router.replace(`/category?${params.toString()}`, { scroll: false });
     queryClient.invalidateQueries({
-      queryKey: ["products", page, { ...params }],
+      queryKey: ["products"],
     });
+  };
+
+  const handleSubCategorySelect = (subCategory) => {
+    setSelectedSubCategory(subCategory);
+    // Update URL with subcategory slug
+    const params = new URLSearchParams(searchParams);
+    params.set("subCategorySlug", subCategory.slug);
+    router.push(`/category?${params.toString()}`);
   };
 
   const handleProductClick = (productId) => {
     router.push(`/product/${productId}`);
   };
 
-  const isLoading = isProductsLoading || isSubCategoriesLoading;
-  const isError = isProductsError || isSubCategoriesError;
+  const isInitialLoading = isSubCategoriesLoading || isCollectionsLoading;
+  const isError = isProductsError || isSubCategoriesError || isCollectionsError;
 
-  if (isLoading) {
+  if (isInitialLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#FFFBF6]">
         <PrimaryLoader />
@@ -158,88 +242,129 @@ export default function CategoryPage() {
         filters={filters || {}}
         onChangeFilter={updateFilters}
         deleteFilter={deleteFilter}
+        selectedSubCategory={selectedSubCategory}
+        collections={collections}
+        productsData={productsData}
       />
 
-      <div className="flex-1 flex max-w-full w-full px-2 sm:px-4">
+      <div className="flex-1 flex max-w-full w-full px-2 sm:px-4 lg:px-6">
+        {/* Desktop Collections Sidebar */}
+        <div className="hidden lg:block">
+          <FilterSidebar
+            collections={collections || []}
+            selectedSubCategory={selectedSubCategory}
+            onChangeFilter={updateFilters}
+            filters={filters}
+            showDesktopSidebar={true}
+            showMobileButton={false}
+            isCollectionsLoading={isCollectionsLoading}
+          />
+        </div>
+
+        {/* Unified Filter Drawer - Works for both mobile and desktop */}
         <FilterSidebar
-          subCategories={subCategories || []}
+          collections={collections || []}
+          selectedSubCategory={selectedSubCategory}
           onChangeFilter={updateFilters}
-          deleteFilter={deleteFilter}
+          filters={filters}
+          showDesktopSidebar={false}
+          showMobileButton={true}
+          isCollectionsLoading={isCollectionsLoading}
         />
 
-        <div className="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 lg:ml-6">
-          {productsData?.data?.length < 1 ? (
-            <div className="flex-1 flex justify-center items-center col-span-4">
-              <PrimaryEmptyState title="No products found!" />
+        <div className="flex-1 flex flex-col">
+          {/* Product Count Display */}
+          {/* {productsData && (
+            <div className="w-full px-2 sm:px-4 lg:px-6 py-4">
+              <p className="text-base font-medium text-gray-700">
+                Showing {productsData.data?.length || 0} of {productsData.total || 0} products
+              </p>
             </div>
-          ) : (
-            productsData?.data?.map((product, index) => (
-              <BestSellerProduct
-                className="cursor-pointer"
-                key={product._id}
-                product={product}
-                onClick={() => handleProductClick(product._id)}
-              />
-            ))
-          )}
+          )} */}
 
-          <div className="w-full col-span-2 sm:col-span-2 md:col-span-3 lg:col-span-4 flex justify-center lg:justify-end py-5 pb-20 lg:pb-5">
-            {productsData?.total > 0 && (
-              <Pagination>
-                <PaginationContent className="flex-wrap gap-1">
-                  <PaginationPrevious
-                    onClick={() => {
-                      setPage((prev) => Math.max(1, prev - 1));
-                    }}
-                    className="text-xs sm:text-sm"
-                  />
-                  {Array.from(
-                    {
-                      length: Math.min(5, Math.ceil(productsData?.total / params.per_page)),
-                    },
-                    (_, i) => {
-                      const totalPages = Math.ceil(productsData?.total / params.per_page);
-                      let pageNumber;
-
-                      if (totalPages <= 5) {
-                        pageNumber = i + 1;
-                      } else {
-                        if (page <= 3) {
-                          pageNumber = i + 1;
-                        } else if (page >= totalPages - 2) {
-                          pageNumber = totalPages - 4 + i;
-                        } else {
-                          pageNumber = page - 2 + i;
-                        }
-                      }
-
-                      return (
-                        <PaginationItem key={pageNumber}>
-                          <PaginationLink
-                            isActive={pageNumber === page}
-                            onClick={() => setPage(pageNumber)}
-                            className="text-xs sm:text-sm w-8 h-8 sm:w-10 sm:h-10"
-                          >
-                            {pageNumber}
-                          </PaginationLink>
-                        </PaginationItem>
-                      );
-                    }
-                  )}
-                  <PaginationNext
-                    onClick={() => {
-                      setPage((prev) =>
-                        Math.min(
-                          Math.ceil(productsData?.total / params.per_page),
-                          prev + 1
-                        )
-                      );
-                    }}
-                    className="text-xs sm:text-sm"
-                  />
-                </PaginationContent>
-              </Pagination>
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-4 xl:grid-cols-4 lg:p-4">
+            {isProductsLoading ? (
+              <div className="flex-1 flex justify-center items-center col-span-2 sm:col-span-2 md:col-span-3 lg:col-span-3 xl:col-span-4 py-20">
+                <PrimaryLoader />
+              </div>
+            ) : productsData?.data?.length < 1 ? (
+              <div className="flex-1 flex justify-center items-center col-span-2 sm:col-span-2 md:col-span-3 lg:col-span-3 xl:col-span-4">
+                <PrimaryEmptyState title="No products found!" />
+              </div>
+            ) : (
+              productsData?.data?.map((product, index) => (
+                <BestSellerProduct
+                  className="cursor-pointer"
+                  key={product._id}
+                  product={product}
+                  onClick={() => handleProductClick(product._id)}
+                />
+              ))
             )}
+
+            <div className="w-full col-span-2 sm:col-span-2 md:col-span-3 lg:col-span-3 xl:col-span-4 flex justify-center lg:justify-end py-5 pb-20 lg:pb-5">
+              {productsData?.total > 0 && (
+                <Pagination>
+                  <PaginationContent className="flex-wrap gap-1">
+                    <PaginationPrevious
+                      onClick={() => {
+                        setPage((prev) => Math.max(1, prev - 1));
+                      }}
+                      className="text-xs sm:text-sm"
+                    />
+                    {Array.from(
+                      {
+                        length: Math.min(
+                          5,
+                          Math.ceil(productsData?.total / params.per_page)
+                        ),
+                      },
+                      (_, i) => {
+                        const totalPages = Math.ceil(
+                          productsData?.total / params.per_page
+                        );
+                        let pageNumber;
+
+                        if (totalPages <= 5) {
+                          pageNumber = i + 1;
+                        } else {
+                          if (page <= 3) {
+                            pageNumber = i + 1;
+                          } else if (page >= totalPages - 2) {
+                            pageNumber = totalPages - 4 + i;
+                          } else {
+                            pageNumber = page - 2 + i;
+                          }
+                        }
+
+                        return (
+                          <PaginationItem key={pageNumber}>
+                            <PaginationLink
+                              isActive={pageNumber === page}
+                              onClick={() => setPage(pageNumber)}
+                              className="text-xs sm:text-sm w-8 h-8 sm:w-10 sm:h-10"
+                            >
+                              {pageNumber}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      }
+                    )}
+                    <PaginationNext
+                      onClick={() => {
+                        setPage((prev) =>
+                          Math.min(
+                            Math.ceil(productsData?.total / params.per_page),
+                            prev + 1
+                          )
+                        );
+                      }}
+                      className="text-xs sm:text-sm"
+                    />
+                  </PaginationContent>
+                </Pagination>
+              )}
+            </div>
           </div>
         </div>
       </div>

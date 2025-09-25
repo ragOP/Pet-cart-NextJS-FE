@@ -61,12 +61,19 @@ const ProfileForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col h-full border border-[#F59A1180] rounded-2xl">
-      <div className="p-6 ">
+    <form onSubmit={handleSubmit} className="flex flex-col h-full">
+      {/* Mobile Header */}
+      <div className="lg:hidden px-4 py-3 border-b border-gray-200">
+        <span className="text-xl font-semibold text-gray-900">Personal Details</span>
+      </div>
+
+      {/* Desktop Header */}
+      <div className="hidden lg:block p-6">
         <span className="text-[24px] font-medium">Personal Details</span>
       </div>
-      <div className=" border-b border-[#F59A1180]" />
-      <div className="space-y-6 p-6">
+      <div className="hidden lg:block border-b border-[#F59A1180]" />
+      
+      <div className="space-y-6 p-4 lg:p-6">
         {/* <div>
           <div className="flex gap-4">
             <div className="relative">
@@ -143,9 +150,9 @@ const ProfileForm = () => {
           </div>
         </div>
         {/* Action Buttons */}
-        <div className="flex justify-end gap-4">
-          <Button variant="outline" type="button">CANCEL</Button>
-          <Button className="bg-[#F59A11] hover:bg-[#E58A00]" type="submit" disabled={loading}>
+        <div className="flex flex-col sm:flex-row justify-end gap-4">
+          <Button variant="outline" type="button" className="w-full sm:w-auto">CANCEL</Button>
+          <Button className="bg-[#F59A11] hover:bg-[#E58A00] w-full sm:w-auto" type="submit" disabled={loading}>
             {loading ? "Saving..." : "SAVE"}
           </Button>
         </div>

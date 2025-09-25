@@ -217,8 +217,9 @@ const CartPage = () => {
     );
   }, []);
 
+
   const handleConfirmCheckout = async ({ note, addressId }) => {
-    console.log(cartData);
+    console.log("addressId", addressId);
     try {
       const res = await apiService({
         endpoint: "api/razorpay/create-payment",

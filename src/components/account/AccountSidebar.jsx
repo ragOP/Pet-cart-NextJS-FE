@@ -51,7 +51,7 @@ const menuItems = [
   },
 ];
 
-const AccountSidebar = () => {
+const AccountSidebar = ({ onItemClick }) => {
   const pathname = usePathname();
   const router = useRouter();
   const [logoutOpen, setLogoutOpen] = React.useState(false);
@@ -105,6 +105,7 @@ const AccountSidebar = () => {
               <li key={item.href} className="last:border-b-0">
                 <Link
                   href={item.href}
+                  onClick={onItemClick}
                   className={`flex items-center gap-3 py-3 px-4 transition-colors ${
                     isActive ? "bg-[#F59A11] text-white" : "hover:bg-orange-50"
                   }`}

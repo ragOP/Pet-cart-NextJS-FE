@@ -37,7 +37,7 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
   const progressPercent = Math.min(100, (currentAmount / targetAmount) * 100);
 
   return (
-    <div className="w-full px-2 md:px-8 py-8 bg-white">
+    <div className="w-full md:px-4 py-3 bg-white lg:px-[4%] px-[4%] -mt-4">
       {/* Header */}
       <div className="mb-4 flex flex-col pl-2 md:pl-0">
         <span className="text-[#0888B1] font-bold text-xl ">
@@ -58,7 +58,7 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
       {/* Carousel */}
       <CustomCarousel
         className="hide-scrollbar min-h-[260px] flex items-center justify-center"
-        contentClassName="gap-4 flex items-center justify-center min-h-[220px]"
+        contentClassName="gap-0 flex items-center justify-center min-h-[220px]"
         itemClassName="min-w-fit-content max-w-fit-content flex flex-col items-center justify-center"
         showArrows={true}
       >

@@ -120,9 +120,15 @@ const AddressPage = () => {
 
   return (
     <RequireAuth>
-      <div className="border flex flex-col gap-4 border-[#F59A1180] h-full rounded-lg">
+      <div className="flex flex-col h-full">
+        {/* Mobile Header */}
+        <div className="lg:hidden px-4 py-4 border-b border-gray-200 bg-white">
+          <h2 className="text-xl font-semibold text-gray-900">Saved Addresses</h2>
+        </div>
+
+        {/* Desktop Header */}
         <div
-          className={`flex justify-between items-center p-4 ${
+          className={`hidden lg:flex justify-between items-center p-4 ${
             addresses.length === 0
               ? "border border-transparent"
               : "border-b border-[#F59A1180]"
@@ -130,27 +136,48 @@ const AddressPage = () => {
         >
           <h2 className="text-xl font-medium">Saved Addresses</h2>
           <button
-            className="flex cursor-pointer items-center gap-2 border border-[#004E6A] hover:bg-indigo-50 px-4 py-2 text-[#004E6A]"
+            className="flex cursor-pointer items-center gap-2 border border-[#004E6A] hover:bg-indigo-50 px-4 py-2 text-[#004E6A] rounded-lg"
             onClick={handleAddAddress}
           >
             <span className="text-xl">+</span>
             <span className="font-semibold text-base">ADD NEW ADDRESS</span>
           </button>
         </div>
-        {isLoading ? (
-          <PrimaryLoader />
-        ) : addresses.length === 0 ? (
-          <EmptyAddressState onAddAddress={handleAddAddress} />
-        ) : (
-          <AddressList
-            addresses={addresses}
-            onEdit={handleEditAddress}
-            onDelete={handleDeleteAddress}
-            onSetDefault={(index) => {
-              updateMutation.mutate({ id: addresses[index]._id, data: { isDefault: true } });
-            }}
-          />
-        )}
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <PrimaryLoader />
+            </div>
+          ) : addresses.length === 0 ? (
+            <div className="px-4 py-8">
+              <EmptyAddressState onAddAddress={handleAddAddress} />
+            </div>
+          ) : (
+            <AddressList
+              addresses={addresses}
+              onEdit={handleEditAddress}
+              onDelete={handleDeleteAddress}
+              onSetDefault={(index) => {
+                updateMutation.mutate({ id: addresses[index]._id, data: { isDefault: true } });
+              }}
+            />
+          )}
+        </div>
+
+        {/* Mobile Add Button - After List */}
+        <div className="lg:hidden px-4 py-4 bg-white border-t border-gray-200">
+          <button
+            className="w-full flex cursor-pointer items-center justify-center gap-2 border-2 border-[#004E6A] hover:bg-indigo-50 px-4 py-3 text-[#004E6A] rounded-lg font-semibold"
+            onClick={handleAddAddress}
+          >
+            <span className="text-xl">+</span>
+            <span className="text-base">ADD NEW ADDRESS</span>
+          </button>
+        </div>
+
+        {/* Dialogs */}
         <AddressFormDialog
           isOpen={isDialogOpen}
           onClose={handleCloseDialog}

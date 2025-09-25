@@ -68,7 +68,7 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
           </button>
         ))}
       </div>
-      <div className="flex-1 relative">
+      <div className="flex-1 relative border-2 rounded-xl border-yellow-500 pl-4">
         <ReactImageMagnify
           {...{
             smallImage: {

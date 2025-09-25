@@ -6,7 +6,7 @@ import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { getProductById } from "@/helpers/home";
 import ImageGallery from "@/components/product/ImageGallery";
-import Variants from "@/components/product/Variants";
+import ProductVariants from "@/components/product/ProductVariants";
 import PriceAndCartDisplay from "@/components/product/PriceAndCartDisplay";
 import PurchaseSection from "@/components/product/PurchaseSection";
 import ProductBreadcrumb from "@/components/product/ProductBreadcrumb";
@@ -18,6 +18,7 @@ import ProductReviews from "@/components/product/ProductReviews";
 import { getReviewsByProductId } from "@/app/apis/getReviewsByProductId";
 import { checkDelivery } from "@/app/apis/checkDelivery";
 import { useDeviceDetection } from "@/hooks/useDeviceDetection";
+import { ArrowRight } from "lucide-react";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
@@ -104,17 +105,24 @@ const ProductPage = ({ params }) => {
   }
 
   const onSelectVariant = (variantId) => {
-    // Toggle the selected variant - if clicking the same variant, set to null to show original product
-    setSelectedVariant(prevVariant => prevVariant === variantId ? null : variantId);
+    // Set the selected variant ID directly
+    setSelectedVariant(variantId);
     setSelectedImage(0);
   };
 
   const currentVariant =
-    data.variants?.find((variant) => variant._id === selectedVariant) || {};
+    selectedVariant === 'main-product' || !selectedVariant 
+      ? {} // Empty object means use main product data
+      : data.variants?.find((variant) => variant._id === selectedVariant) || {};
 
-    const currentImages = [
-      ...(currentVariant.images?.length ? currentVariant.images : data.images || []),
-    ];
+  // Debug log to see what's happening
+  console.log('Selected Variant:', selectedVariant);
+  console.log('Current Variant:', currentVariant);
+  console.log('Main Product Data:', { price: data.price, salePrice: data.salePrice, stock: data.stock });
+
+  const currentImages = [
+    ...(currentVariant.images?.length ? currentVariant.images : data.images || []),
+  ];
 
   const mainImage = currentImages[selectedImage] || currentImages[0];
 
@@ -132,7 +140,7 @@ const ProductPage = ({ params }) => {
   if (isError || !data) return <PrimaryEmptyState title="Product not found" />;
 
   return (
-    <div className="w-full p-4 bg-[#FFFBF6]">
+    <div className="w-full p-4 bg-white">
       <ProductBreadcrumb
         category={data.categoryId}
         subCategory={data.subCategoryId}
@@ -157,40 +165,74 @@ const ProductPage = ({ params }) => {
         </div>
 
         {/* Right: Product Details */}
-        <div className="space-y-4">
+        <div className="space-y-2 py-4">
           {/* Rating & Reviews */}
-          <RatingReviews
-            averageRating={reviewsData?.firstReview?.rating || "5.0"}
-            reviewCount={reviewsData?.totalReviews || "0"}
-          />
+          <div className="flex flex-row items-center justify-between">
 
-          {/* Brand */}
-          <div className="space-y-2">
-            <div className="text-[#181818] underline">{data.brandId?.name}</div>
-            <h1 className="text-2xl font-bold text-[#181818]">{data.title}</h1>
+            {/* Brand */}
+            <div className="flex flex-row items-center gap-2">
+              <button 
+                onClick={() => router.push(`/category?brandSlug=${data.brandId?.slug}`)}
+                className="font-semibold text-xl text-yellow-500 underline hover:text-yellow-600 transition-colors cursor-pointer"
+              >
+                {data.brandId?.name}
+              </button>
+              <ArrowRight className="text-yellow-500 h-5 w-5"/>
+            </div>
+
+            <RatingReviews
+              averageRating={reviewsData?.firstReview?.rating || "5.0"}
+              reviewCount={reviewsData?.totalReviews || "0"}
+            />
           </div>
 
-          <Variants
-            variants={data.variants}
-            selectedVariant={selectedVariant}
-            onSelectVariant={(variantId) => onSelectVariant(variantId)}
+          <h1 className="text-2xl font-bold text-[#181818]">{data.title}</h1>
+
+          <ProductVariants
+            variants={[
+              // Main product as first option
+              {
+                _id: 'main-product',
+                productId: data._id,
+                sku: data.sku,
+                price: data.price,
+                salePrice: data.salePrice,
+                stock: data.stock,
+                weight: data.weight,
+                images: data.images,
+                attributes: {
+                  'Size': 'Default'
+                },
+                isMainProduct: true
+              },
+              // Then add all variants
+              ...(data.variants || [])
+            ]}
+            maxDisplay={999}
+            variantLabel="10KG (2x5KG)"
+            showDiscount={true}
+            size="large"
+            selectedVariant={selectedVariant || 'main-product'}
+            onVariantSelect={onSelectVariant}
+            isSelectable={true}
           />
 
           <PriceAndCartDisplay
-            stock={currentVariant.stock || data.stock}
-            price={currentVariant.price || data.price}
-            salePrice={currentVariant.salePrice || data.salePrice}
+            key={selectedVariant || 'main-product'} // Force re-render when variant changes
+            stock={currentVariant.stock ?? data.stock}
+            price={currentVariant.price ?? data.price}
+            salePrice={currentVariant.salePrice ?? data.salePrice}
             productId={data._id}
             variantId={selectedVariant}
             quantity={1}
-            />
+          />
 
           <PurchaseSection
             pincode={pincode}
             onPincodeChange={setPincode}
             onCheckDelivery={onCheckDelivery}
             expectedDeliveryDate={expectedDeliveryDate}
-            onAddToCart={() => {}}
+            onAddToCart={() => { }}
             deliveryLoading={deliveryLoading}
           />
         </div>

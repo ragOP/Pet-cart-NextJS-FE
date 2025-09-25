@@ -24,21 +24,14 @@ const RatingReviews = ({ averageRating = "5.0", reviewCount = "112" }) => {
           </>
         ) : ( */}
           <>
-            <span className="text-xl font-medium">{averageRating}</span>
-            <div className="flex gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${
-                    i < Math.round(rating)
-                      ? "fill-yellow-400 text-yellow-400"
-                      : "text-gray-300"
-                  }`}
-                />
-              ))}
+            <div className="flex items-center gap-1 px-2 py-1">
+              <Star className="w-4 h-4 fill-yellow-500 text-white" />
+              <span className="text-yellow-500 font-bold text-base">
+                {rating % 1 === 0 ? rating.toString() : averageRating}/5
+              </span>
             </div>
-            <span className="text-black font-medium underline">
-              {reviewCount} Reviews
+            <span className="text-black text-sm">
+              ({reviewCount} Reviews)
             </span>
           </>
          {/* )} */}

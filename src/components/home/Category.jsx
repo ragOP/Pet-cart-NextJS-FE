@@ -95,6 +95,7 @@ const Category = () => {
 
         return {
           title: sub.name,
+          subCategorySlug: sub.slug,
           itemsSlug: mappedCollectionsSlug,
           items:
             mappedCollectionsName.length > 0
@@ -133,13 +134,18 @@ const Category = () => {
             <div key={section.title} className="mb-6">
               <h3 className="font-medium mb-2">{section.title}</h3>
               <div className="space-y-3">
-                {section.items.map((item) => (
+                {section.items.map((item, itemIndex) => (
                   <div
                     key={item}
                     className="flex items-center py-2 hover:bg-gray-50 px-2 rounded-lg"
                     onClick={() => {
                       onClose();
-                      onClick(section?.itemsSlug);
+                      // Pass both subcategory and collection slugs
+                      const specificSlug = section?.itemsSlug?.[itemIndex];
+                      const subCategorySlug = section?.subCategorySlug;
+                      if (specificSlug && subCategorySlug) {
+                        onClick([specificSlug], subCategorySlug);
+                      }
                     }}
                   >
                     <CustomImage
@@ -276,13 +282,18 @@ const Category = () => {
                 {section.title}
               </h3>
               <div className="flex flex-col space-y-0">
-                {section.items.map((item) => (
+                {section.items.map((item, itemIndex) => (
                   <div
                     key={`${section.title}-${item}`}
                     className="group flex items-center space-x-2 cursor-pointer"
                     onClick={() => {
                       onClose();
-                      onClick(section?.itemsSlug);
+                      // Pass both subcategory and collection slugs
+                      const specificSlug = section?.itemsSlug?.[itemIndex];
+                      const subCategorySlug = section?.subCategorySlug;
+                      if (specificSlug && subCategorySlug) {
+                        onClick([specificSlug], subCategorySlug);
+                      }
                     }}
                   >
                     <CustomImage
@@ -308,8 +319,20 @@ const Category = () => {
     );
   }
 
-  const handleCollectionClick = (collectionSlug) => {
-    router.push(`/category?collectionSlug=${collectionSlug}`);
+  const handleCollectionClick = (collectionSlugs, subCategorySlug) => {
+    // Handle both single slug and array of slugs
+    const slug = Array.isArray(collectionSlugs) ? collectionSlugs[0] : collectionSlugs;
+    
+    // Build URL with both subcategory and collection slugs
+    const params = new URLSearchParams();
+    if (subCategorySlug) {
+      params.set('subCategorySlug', subCategorySlug);
+    }
+    if (slug) {
+      params.set('collectionSlug', slug);
+    }
+    
+    router.push(`/category?${params.toString()}`);
   };
 
   return (
@@ -317,9 +340,17 @@ const Category = () => {
       {/* Desktop Container (handles hover leave to close dropdowns) */}
       <div
         className="md:block relative"
-        onMouseLeave={() => {
-          setShowShopByBreed(false);
-          setShowShopByCategory(false);
+        onMouseLeave={(e) => {
+          // Only close if mouse is leaving the entire container area
+          const rect = e.currentTarget.getBoundingClientRect();
+          const x = e.clientX;
+          const y = e.clientY;
+          
+          // Check if mouse is outside the container bounds
+          if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+            setShowShopByBreed(false);
+            setShowShopByCategory(false);
+          }
         }}
       >
         {/* Desktop Navigation */}
@@ -365,15 +396,16 @@ const Category = () => {
         </div>
         {/* Spacer to prevent content jump due to fixed nav (desktop only) */}
         <div className="hidden md:block h-10" />
+      </div>
 
       {/* Mobile Navigation Trigger */}
-      <div className="md:hidden bg-black text-white px-4 py-3">
+      <div className="md:hidden sticky top-[68px] z-30 bg-black text-white px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <button
             onClick={() => setIsMobileMenuOpen(true)}
             className="flex items-center justify-center gap-2 flex-1 border border-white/30 py-2 px-3 rounded-lg hover:bg-white/10 transition-colors"
           >
-            <span className="text-sm font-medium">Browse Categories</span>
+            <span className="text-sm font-medium">Categories</span>
             <ChevronDown className="w-4 h-4" />
           </button>
 
@@ -433,50 +465,59 @@ const Category = () => {
         {/* Desktop Dropdowns */}
         {showShopByCategory && activeCategoryId && !isMobileMenuOpen && (
           <div className="fixed top-[122px] left-0 right-0 z-40 bg-white shadow-lg">
-            <Dropdown
-              icon={categories.find((category) => category._id === activeCategoryId)?.image}
-              title="Categories"
-              sections={getSectionsForCategory(activeCategoryId)}
-              onClose={() => setShowShopByCategory(false)}
-              onClick={handleCollectionClick}
-            />
+            <div 
+              onMouseEnter={() => setShowShopByCategory(true)}
+              onMouseLeave={() => setShowShopByCategory(false)}
+            >
+              <Dropdown
+                icon={categories.find((category) => category._id === activeCategoryId)?.image}
+                title="Categories"
+                sections={getSectionsForCategory(activeCategoryId)}
+                onClose={() => setShowShopByCategory(false)}
+                onClick={handleCollectionClick}
+              />
+            </div>
           </div>
         )}
 
         {/* Shop By Breed - Desktop */}
         {showShopByBreed && (
           <div className="absolute left-0 right-0 w-full bg-white shadow-lg p-4 md:p-6 z-10">
-            <CustomCarousel
-              className="max-w-full"
-              itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
-              showArrows={true}
+            <div 
+              onMouseEnter={() => setShowShopByBreed(true)}
+              onMouseLeave={() => setShowShopByBreed(false)}
             >
-              {loading
-                ? Array(6)
-                    .fill(0)
-                    .map((_, i) => <Skeleton key={i} className="w-24 h-24" />)
-                : breeds.map((breed) => (
-                    <Link
-                      key={breed._id}
-                      href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
-                      className="text-center hover:scale-105 transition-transform cursor-pointer"
-                    >
-                      <CustomImage
-                        src={breed.image}
-                        alt={breed.name}
-                        className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-gray-200 mx-auto"
-                        width={96}
-                        height={96}
-                      />
-                      <p className="text-center text-sm mt-2 line-clamp-2">
-                        {breed.name}
-                      </p>
-                    </Link>
-                  ))}
-            </CustomCarousel>
+              <CustomCarousel
+                className="max-w-full"
+                itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
+                showArrows={true}
+              >
+                {loading
+                  ? Array(6)
+                      .fill(0)
+                      .map((_, i) => <Skeleton key={i} className="w-24 h-24" />)
+                  : breeds.map((breed) => (
+                      <Link
+                        key={breed._id}
+                        href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
+                        className="text-center hover:scale-105 transition-transform cursor-pointer"
+                      >
+                        <CustomImage
+                          src={breed.image}
+                          alt={breed.name}
+                          className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-gray-200 mx-auto"
+                          width={96}
+                          height={96}
+                        />
+                        <p className="text-center text-sm mt-2 line-clamp-2">
+                          {breed.name}
+                        </p>
+                      </Link>
+                    ))}
+              </CustomCarousel>
+            </div>
           </div>
         )}
-      </div>
     </>
   );
 };

@@ -32,10 +32,10 @@ function AddressListItem({ address, onEdit, onDelete, onSetDefault, idx }) {
   };
 
   return (
-    <div className="bg-[#F9F7F3] border border-[#F59A111A] rounded-lg px-6 py-4 flex flex-col gap-2 relative ">
-      <div className="absolute top-2 right-4" ref={dropdownRef}>
+    <div className="bg-[#F9F7F3] border border-[#F59A111A] rounded-lg px-3 sm:px-4 lg:px-6 py-4 flex flex-col gap-3 relative">
+      <div className="absolute top-3 right-3" ref={dropdownRef}>
         <button
-          className="p-1 cursor-pointer text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+          className="p-2 cursor-pointer text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
           aria-label="More options"
           onClick={() => setShowDropdown(!showDropdown)}
         >
@@ -43,7 +43,7 @@ function AddressListItem({ address, onEdit, onDelete, onSetDefault, idx }) {
         </button>
 
         {showDropdown && (
-          <div className="absolute right-0 top-8 bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[120px] z-50">
+          <div className="absolute right-0 top-10 bg-white border border-gray-200 rounded-lg shadow-lg py-1 min-w-[120px] z-50">
             <button
               onClick={handleEdit}
               className="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors flex items-center gap-2"
@@ -70,22 +70,27 @@ function AddressListItem({ address, onEdit, onDelete, onSetDefault, idx }) {
           </div>
         )}
       </div>
-      <div className="text-base font-medium text-[#222] leading-snug break-words">
-        <span>
-          {address.firstName} {address.lastName}, {address.address1}
-          {address.address2 ? `, ${address.address2}` : ""}, {address.city},{" "}
-          {address.state}, {address.country}, {address.postalCode}
-        </span>
-      </div>
-      <div className="text-[#B3B3B3] font-medium text-base">
-        Mobile No. :{" "}
-        <span className="text-[#222] font-bold">{address.phone}</span>
+      
+      {/* Address Content */}
+      <div className="pr-12">
+        <div className="text-sm sm:text-base font-medium text-[#222] leading-relaxed break-words mb-2">
+          <span>
+            {address.firstName} {address.lastName}, {address.address1}
+            {address.address2 ? `, ${address.address2}` : ""}, {address.city},{" "}
+            {address.state}, {address.country}, {address.postalCode}
+          </span>
+        </div>
+        <div className="text-[#B3B3B3] font-medium text-sm sm:text-base">
+          Mobile No. :{" "}
+          <span className="text-[#222] font-bold">{address.phone}</span>
+        </div>
       </div>
 
+      {/* Default Address Badge */}
       {address.isDefault && (
-        <div className="absolute bottom-4 mt-2 right-4 flex items-center gap-1 bg-[#F9F7F3] border border-[#B3B3B3] rounded-full px-3 py-1 text-xs text-[#6A6868] font-medium">
-          <Check size={16} color="#6A6868" />
-          Default Address
+        <div className="flex items-center gap-1 bg-[#F9F7F3] border border-[#B3B3B3] rounded-full px-3 py-1 text-xs text-[#6A6868] font-medium self-start">
+          <Check size={14} color="#6A6868" />
+          <span>Default Address</span>
         </div>
       )}
     </div>
@@ -94,7 +99,7 @@ function AddressListItem({ address, onEdit, onDelete, onSetDefault, idx }) {
 
 const AddressList = ({ addresses, onEdit, onDelete, onSetDefault }) => {
   return (
-    <div className="flex flex-col gap-4 px-4 py-2">
+    <div className="flex flex-col gap-3 sm:gap-4 px-2 sm:px-4 py-2 lg:px-4">
       {addresses.map((address, idx) => (
         <AddressListItem
           key={idx}

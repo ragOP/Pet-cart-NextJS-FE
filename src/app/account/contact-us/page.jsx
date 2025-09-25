@@ -8,7 +8,7 @@ const CONTACTS = [
     label: "TRACK ORDER",
     desc: "View status of the order",
     icon: TrackOrderIcon,
-    href: "/track-order",
+    href: "/account/orders",
   },
   {
     label: "Return Order",

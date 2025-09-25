@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 
 const AccordionItem = ({ title, children, open, onClick }) => (
-  <div className="bg-white rounded-xl mb-3 shadow-none border-none">
+  <div className="bg-white rounded-xl mb-3 shadow-none border-2 border-yellow-500">
     <button
       className="w-full cursor-pointer flex items-center justify-between px-6 py-5 focus:outline-none"
       onClick={onClick}
@@ -26,6 +26,8 @@ const AccordionItem = ({ title, children, open, onClick }) => (
 const ProductAccordion = ({ items }) => {
   const [openIndex, setOpenIndex] = useState(null);
 
+  console.log("items", items)
+
   return (
     <div className="w-full mt-8">
       {items.map((item, idx) => (
@@ -47,7 +49,7 @@ const ProductAccordion = ({ items }) => {
               )}
             </div>
           ) : (
-            item.content
+            <div dangerouslySetInnerHTML={{ __html: item.content }} />
           )}
         </AccordionItem>
       ))}

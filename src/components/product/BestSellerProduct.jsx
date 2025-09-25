@@ -2,6 +2,7 @@ import React from "react";
 import CustomImage from "@/components/images/CustomImage";
 import { Heart, Star } from "lucide-react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
+import ProductVariants from "./ProductVariants";
 import { VariantBox } from "./Variants";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addProductToCart } from "@/app/apis/addProductToCart";
@@ -29,14 +30,14 @@ const BestSellerProduct = ({
   const { mutate: addToCart, isPending } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: (res) => {
-      if(res?.success){
+      if (res?.success) {
         toast.success("Product added to cart!", {
           position: "top-right",
           duration: 1500,
           autoClose: 1500,
         });
         queryClient.invalidateQueries({ queryKey: ["cart"] });
-      } else{
+      } else {
         toast.error(res?.message || "Failed to add product to cart", {
           position: "top-right",
           duration: 1500,
@@ -61,7 +62,7 @@ const BestSellerProduct = ({
   return (
     <div
       onClick={onClick}
-      className={`p-2 sm:p-4 rounded-2xl sm:rounded-3xl bg-white flex flex-col group transition-all duration-200 ${className} hover:shadow-lg border-2 sm:border-[3px] border-[#F59A11] relative w-full max-w-xs sm:max-w-sm`}
+      className={`p-2 sm:p-4 rounded-2xl sm:rounded-3xl bg-white flex flex-col justify-between group transition-all duration-200 ${className} hover:shadow-lg border-2 sm:border-[3px] border-[#F59A11] relative w-full max-w-xs sm:max-w-sm`}
     >
       {/* Product Image and Badge */}
       <div className="relative mb-2 sm:mb-4">
@@ -105,9 +106,8 @@ const BestSellerProduct = ({
               {product.images.map((_, index) => (
                 <div
                   key={index}
-                  className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full cursor-pointer ${
-                    index === selectedImage ? 'bg-[#F59A11]' : 'bg-gray-300'
-                  }`}
+                  className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full cursor-pointer ${index === selectedImage ? 'bg-[#F59A11]' : 'bg-gray-300'
+                    }`}
                   onMouseEnter={() => handleImageHover(index)}
                 />
               ))}
@@ -135,35 +135,12 @@ const BestSellerProduct = ({
       </div>
 
       {/* Variants */}
-      {product.variants && product.variants.length > 0 && (
-        <div className="flex flex-wrap gap-1 mb-2 sm:mb-2">
-          {product.variants.slice(0, 3).map((variant, index) => {
-            const variantDiscount = calculateDiscountPercent(variant.price, variant.salePrice) || 0;
-            return (
-              <div key={index} className="rounded-md sm:rounded-lg border border-[#004E6A] overflow-hidden bg-white flex-1 min-w-0">
-                <div className="bg-[#004E6A] text-white text-center py-0.5 px-0.5 sm:px-1">
-                  <div className="text-[7px] sm:text-[8px] font-bold">
-                    10KG (2x5KG)
-                  </div>
-                </div>
-                <div className="bg-white text-center py-0.5 px-0.5 sm:px-1">
-                  <div className="flex items-center justify-center space-x-1 sm:space-x-2">
-                    <span className="text-[9px] sm:text-[10px] font-bold text-[#004E6A]">₹ {variant.salePrice || variant.price}</span>
-                    {variant.price !== variant.salePrice && (
-                    <div className="text-[6px] sm:text-[7px] text-gray-500 line-through">MRP {variant.price}</div>
-                  )}
-                  </div>
-                  <div className="flex items-center justify-center space-x-1 sm:space-x-2">
-                  {variantDiscount > 0 && (
-                      <span className="text-[6px] sm:text-[7px] text-green-600 font-extrabold">{Math.round(variantDiscount)}% OFF</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <ProductVariants
+        variants={product.variants}
+        maxDisplay={3}
+        variantLabel="10KG (2x5KG)"
+        showDiscount={true}
+      />
 
       {/* Price Section */}
       <div className="mb-3 sm:mb-4">
@@ -185,22 +162,22 @@ const BestSellerProduct = ({
                 {Math.round(discount)}% OFF
               </div>
             )}
-              <div className="flex items-center text-[10px] sm:text-xs text-gray-600">
-                <span className="text-yellow-500 mr-1">⚡</span>
-                <span className="font-bold italic">17 OCT 2025</span>
-              </div>
+            <div className="flex items-center text-[10px] sm:text-xs text-gray-600">
+              <span className="text-yellow-500 mr-1">⚡</span>
+              <span className="font-bold italic">17 OCT 2025</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Add to Cart Button */}
-      <button
+      {/* <button
         className="w-full bg-[#F59A11] hover:bg-[#e18a0e] text-white py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed min-h-[44px] touch-manipulation"
         onClick={(e) => handleAddtoCart(e)}
         disabled={isPending || isOutStock}
       >
-        {isPending ? <PrimaryLoader  isButton={true}/> : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
-      </button>
+        {isPending ? <PrimaryLoader isButton={true} /> : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
+      </button> */}
     </div>
   );
 };

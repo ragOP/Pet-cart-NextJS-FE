@@ -14,6 +14,7 @@ import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
 import { CarouselItem } from "../ui/carousel";
 import "@/styles/hide-scrollbar.css";
+import { useRouter } from "next/navigation";
 
 const HandPickedProducts = () => {
   const params = {
@@ -27,8 +28,14 @@ const HandPickedProducts = () => {
     select: (res) => res?.data?.data || [],
   });
 
+  const router = useRouter();
+
+  const onNavigateToProduct = (id) => {
+    router.push(`/product/${id}`);
+  };
+
   return (
-    <div className="w-full px-2 md:px-4 py-8 bg-white">
+    <div className="w-full py-3 bg-white mt-4">
       {/* Header */}
       <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
         <CustomImage
@@ -46,7 +53,7 @@ const HandPickedProducts = () => {
       {/* Carousel */}
       <CustomCarousel
         className="hide-scrollbar min-h-[260px] flex items-center justify-center"
-        contentClassName="gap-4 flex items-center justify-center min-h-[220px]"
+        contentClassName="gap-0 flex items-center justify-center min-h-[220px]"
         itemClassName="min-w-fit-content max-w-fit-content flex flex-col items-center justify-center"
         showArrows={true}
       >
@@ -75,7 +82,8 @@ const HandPickedProducts = () => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-70"
+                className="w-70 cursor-pointer"
+                onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>
           ))}

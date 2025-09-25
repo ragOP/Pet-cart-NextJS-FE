@@ -31,12 +31,15 @@ const PurchaseSection = ({ pincode, onPincodeChange, onCheckDelivery, expectedDe
               Expected delivery date -{" "}
               <strong>{expectedDeliveryDate}</strong>
             </span>
-          </div>: <div className="flex items-center gap-3">
-            <DeliveryIcon />
-            <span className="text-base">
-              Enter Pincode to check delivery date
-            </span>
-          </div>}
+          </div> :
+            null
+            // <div className="flex items-center gap-3">
+            //   <DeliveryIcon />
+            //   <span className="text-base">
+            //     Enter Pincode to check delivery date
+            //   </span>
+            // </div>
+          }
           <div className="flex items-center gap-3">
             <NoReturnIcon />
             <span className="text-base">No Exchange & Returns</span>

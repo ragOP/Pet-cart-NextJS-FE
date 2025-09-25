@@ -130,7 +130,7 @@ const MobileMenu = React.memo(({
               <button
                 className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
                 onClick={() => {
-                  router.push('/track-order');
+                  router.push('/account/orders');
                   setIsMenuOpen(false);
                 }}
               >
@@ -209,6 +209,7 @@ const Header = ({ logo }) => {
   const [showDialogPincodeResult, setShowDialogPincodeResult] = useState(false);
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
+  console.log("USER", user)
   const isLoggedIn = !!token;
   const suggestions = ["Dog Food", "Cat Food", "Helno", "Royal Canin"];
   const [index, setIndex] = useState(0);
@@ -525,7 +526,7 @@ const Header = ({ logo }) => {
             className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
             aria-label="Track Order"
             type="button"
-            onClick={() => router.push('/account/track-order')}
+            onClick={() => router.push('/account/orders')}
           >
             <CustomImage
               src={truckIcon}
