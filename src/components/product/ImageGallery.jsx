@@ -98,11 +98,13 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
     const showNext = currentSlide < totalSlides - 1;
 
     return (
-      <div className="relative w-full">
+      <div className="relative w-full bg-gray-50/30 rounded-xl p-3">
         <Carousel 
           className="w-full" 
           opts={{
             startIndex: currentSlide,
+            dragFree: true,
+            containScroll: "trimSnaps",
             onSelect: (api) => {
               if (api) {
                 const newIndex = api.selectedScrollSnap();
@@ -114,18 +116,20 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
           <CarouselContent className="w-full p-0 m-0">
             {images.map((img, idx) => (
               <CarouselItem key={idx} className="w-full p-0 m-0">
-                <CustomImage
-                  src={img}
-                  alt={`Product ${idx + 1}`}
-                  className="w-full h-80 object-contain bg-white rounded-lg block border border-gray-200 shadow-sm"
-                  style={{ width: "100%" }}
-                />
+                <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+                  <CustomImage
+                    src={img}
+                    alt={`Product ${idx + 1}`}
+                    className="w-full h-72 object-contain transition-transform duration-300 ease-out"
+                    style={{ width: "100%" }}
+                  />
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>
           {showPrevious && (
             <CarouselPrevious 
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-10"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white/90 hover:bg-white shadow-lg border-0"
               onClick={() => {
                 setCurrentSlide(prev => Math.max(0, prev - 1));
               }}
@@ -133,7 +137,7 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
           )}
           {showNext && (
             <CarouselNext 
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-10"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white/90 hover:bg-white shadow-lg border-0"
               onClick={() => {
                 setCurrentSlide(prev => Math.min(totalSlides - 1, prev + 1));
               }}
@@ -145,36 +149,63 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex gap-4 p-4">
-        <div className="flex flex-col gap-2 w-24">
-          {images.map((img, idx) => (
-            <button
-              key={selectedVariant ? images[idx] : idx}
-              onClick={() => onSelect(idx)}
-              className={`border-2 rounded-lg overflow-hidden ${selectedImage === idx ? "border-orange-400" : "border-gray-200"
-                }`}
-            >
-              <CustomImage
-                src={img}
-                alt={`Product ${idx + 1}`}
-                className="w-full h-28 object-contain bg-white"
-                width={110}
-                height={110}
-              />
-            </button>
-          ))}
+    <div className="space-y-3 bg-gray-50/30 rounded-xl p-3">
+      <div className="flex gap-3 min-h-[400px]">
+        {/* Left Thumbnail Carousel */}
+        <div className="w-20 flex-shrink-0">
+          <Carousel 
+            className="w-full h-full" 
+            orientation="vertical"
+            opts={{
+              startIndex: selectedImage,
+              dragFree: true,
+              containScroll: "trimSnaps",
+              onSelect: (api) => {
+                if (api) {
+                  const newIndex = api.selectedScrollSnap();
+                  onSelect(newIndex);
+                }
+              }
+            }}
+          >
+            <CarouselContent className="h-[400px] flex flex-col gap-1.5 p-0 m-0">
+              {images.map((img, idx) => (
+                <CarouselItem key={selectedVariant ? images[idx] : idx} className="p-0 m-0">
+                  <button
+                    onClick={() => onSelect(idx)}
+                    className={`w-full border-2 rounded-lg overflow-hidden transition-all duration-300 ease-out transform hover:scale-105 active:scale-95 ${selectedImage === idx ? "border-orange-400 shadow-md" : "border-gray-200 hover:border-gray-300"}`}
+                  >
+                    <CustomImage
+                      src={img}
+                      alt={`Product ${idx + 1}`}
+                      className="w-full h-20 object-contain bg-white rounded-md"
+                      width={80}
+                      height={80}
+                    />
+                  </button>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            {images.length > 4 && (
+              <>
+                <CarouselPrevious className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 z-10 w-6 h-6 bg-white/90 hover:bg-white shadow-lg border-0" />
+                <CarouselNext className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1 z-10 w-6 h-6 bg-white/90 hover:bg-white shadow-lg border-0" />
+              </>
+            )}
+          </Carousel>
         </div>
-        <div className="flex-1 relative border-2 rounded-3xl p-2 shadow-sm">
+        
+        {/* Main Image */}
+        <div className="flex-1 relative border border-gray-200 rounded-2xl p-1.5 shadow-sm min-h-[400px] bg-white">
           <div
-            className={`cursor-pointer border-1 rounded-2xl p-2 border-[#F59A11] p-2 magnify-container relative ${isMagnifyEnabled ? 'ring-2 ring-blue-400' : ''}`}
+            className={`cursor-pointer border border-orange-300 rounded-xl p-1.5 magnify-container relative h-full transition-all duration-300 ease-out ${isMagnifyEnabled ? 'ring-2 ring-blue-400 shadow-lg' : 'hover:shadow-md'}`}
           >
             {isMagnifyEnabled && (
-              <div className="absolute top-2 right-2 bg-blue-500 text-white p-2 rounded-full z-10 shadow-lg">
-                <Search className="w-4 h-4" />
+              <div className="absolute top-2 right-2 bg-blue-500 text-white p-1.5 rounded-full z-10 shadow-lg animate-pulse">
+                <Search className="w-3 h-3" />
               </div>
             )}
-            <div onClick={handleImageClick}>
+            <div onClick={handleImageClick} className="h-full flex items-center justify-center rounded-lg overflow-hidden">
               <ReactImageMagnify
                 ref={magnifyRef}
                 key={`magnify-${isMagnifyEnabled}-${showMagnify}-${selectedImage}`}

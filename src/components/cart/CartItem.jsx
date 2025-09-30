@@ -8,19 +8,24 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
   const isLoading = qtyChangeLoadingIds.includes(item?.variantId || item?.productId?._id);
   const isDeleting = deleteLoadingIds.includes(item?.variantId || item?.productId?._id);
 
-  const discount = calculateDiscountPercent(item.productId?.price, item.productId?.salePrice);
-
-  const productDetails = item?.productId;
+  // Use variant data if variantId is present, otherwise use main product data
+  const isVariant = item?.variantId;
+  const productDetails = isVariant ? item?.variantId : item?.productId;
   const productId = item?.productId?._id;
   const variantId = item?.variantId;
+  
+  // Calculate discount based on variant or main product pricing
+  const originalPrice = isVariant ? item?.variantId?.price : item?.productId?.price;
+  const salePrice = isVariant ? item?.variantId?.salePrice : item?.productId?.salePrice;
+  const discount = calculateDiscountPercent(originalPrice, salePrice);
   return (
     <div className="bg-white rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-start border border-[#f59a10] w-full">
       {/* Image - Full width on mobile, normal on desktop */}
       <div className="w-full sm:w-36 aspect-square sm:aspect-auto cursor-pointer"
-      onClick={() => onNavigateToProduct(productDetails?._id)}>
+      onClick={() => onNavigateToProduct(item?.productId?._id)}>
         <CustomImage
-          src={productDetails?.images[0]}
-          alt={productDetails?.title}
+          src={productDetails?.images?.[0] || item?.productId?.images?.[0]}
+          alt={productDetails?.variantName || productDetails?.title}
           className="w-full h-full sm:w-36 object-contain rounded-lg bg-[#FFF7E6]"
         />
       </div>
@@ -30,12 +35,13 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
         <div className="flex justify-between items-start">
           <div className="flex-1 pr-2">
             <h2 className="text-[18px] sm:text-[20px] font-normal text-gray-800 line-height-[1.4]">
-              {productDetails?.title}
+              {isVariant ? item?.productId?.title : productDetails?.title}
             </h2>
-            {/* Variant badge - Moved inside title div for mobile */}
-            {/* <div className="inline-block px-3 py-1 text-sm rounded-lg bg-[#E3EBEE] text-gray-700 font-semibold mt-2 mb-2">
-              {productDetails?.description}
-            </div> */}
+            {isVariant && (
+              <div className="inline-block px-3 py-1 text-sm rounded-lg bg-[#E3EBEE] text-gray-700 font-semibold mt-2 mb-2">
+                {productDetails?.variantName}
+              </div>
+            )}
           </div>
           <button
             onClick={() => {
@@ -56,14 +62,14 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
           {/* Price section */}
           <div className="flex flex-col">
             <span className="text-xl font-bold text-[#218032]">
-              ₹{item.productId?.salePrice || item.productId?.price}
+              ₹{salePrice || originalPrice}
             </span>
-            {item?.productId?.salePrice && (
+            {salePrice && salePrice < originalPrice && (
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-sm text-gray-600 font-normal">
                   MRP{" "}
                   <span className="text-gray-500 line-through">
-                    ₹{item?.productId?.price || 0}
+                    ₹{originalPrice || 0}
                   </span>
                 </span>
                 <span className="text-[#218032] text-sm font-normal">

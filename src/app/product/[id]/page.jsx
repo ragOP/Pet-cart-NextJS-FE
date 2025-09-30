@@ -29,16 +29,18 @@ const ProductPage = ({ params }) => {
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
   const [deliveryLoading, setDeliveryLoading] = useState(false);
   const [isCouponsDialogOpen, setIsCouponsDialogOpen] = useState(false);
+  const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
   const { deviceType, isClient } = useDeviceDetection();
   const type = deviceType === "desktop" ? "web" : (deviceType === "tablet" ? "tablet" : "mobile");
 
   // Service guarantee chips data
   const serviceChips = [
-    { icon: Check, text: "100% Authentic", color: "text-green-500" },
-    { icon: Truck, text: "Fast Delivery", color: "text-orange-500" },
-    { icon: Lock, text: "Secure Checkout", color: "text-blue-500" },
-    { icon: CreditCard, text: "Multiple Payments", color: "text-purple-500" }
+    { icon: Check, text: "100% Authentic", color: "text-green-600", bgColor: "bg-green-50", iconBg: "bg-green-100" },
+    { icon: Truck, text: "Fast Delivery", color: "text-orange-600", bgColor: "bg-orange-50", iconBg: "bg-orange-100" },
+    { icon: Lock, text: "Secure Checkout", color: "text-blue-600", bgColor: "bg-blue-50", iconBg: "bg-blue-100" },
+    { icon: CreditCard, text: "Multiple Payments", color: "text-purple-600", bgColor: "bg-purple-50", iconBg: "bg-purple-100" }
   ];
+
 
   const {
     data = {},
@@ -120,6 +122,13 @@ const ProductPage = ({ params }) => {
     setSelectedImage(0);
   };
 
+  const handleTaskSubmit = (taskData) => {
+    // Handle Kanban task submission here
+    console.log("Task added to Kanban:", taskData);
+    // You can add API call to add task to Kanban board here
+    // For example: addTaskToKanban(taskData.kanbanColumn, taskData);
+  };
+
   const currentVariant =
     selectedVariant === 'main-product' || !selectedVariant
       ? {} // Empty object means use main product data
@@ -158,7 +167,7 @@ const ProductPage = ({ params }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-8 md:px-[10%]">
         {/* Left: Images */}
-        <div>
+        <div className="min-h-[500px]">
           {data.isBestSeller && (
             <div className="absolute top-4 left-4 bg-[#5BC5E5] text-white px-3 py-1 rounded-md text-sm font-semibold z-10">
               BESTSELLER
@@ -172,19 +181,23 @@ const ProductPage = ({ params }) => {
               setSelectedImage(idx);
             }}
           />
-          
-          {/* 4 Chips below image - Same design as desktop */}
-          <div className="mt-4">
-            <div className="grid grid-cols-2 gap-2 md:gap-3">
+
+          {/* Service chips with Add time button */}
+          <div className="mt-3">
+            <div className="grid grid-cols-2 gap-2">
               {serviceChips.map((chip, index) => {
                 const IconComponent = chip.icon;
                 return (
-                  <div key={index} className="bg-white border border-gray-100 rounded-xl px-3 py-3 md:px-4 md:py-3 shadow-sm flex items-center gap-2 md:gap-2">
-                    <IconComponent className={`w-4 h-4 md:w-5 md:h-5 ${chip.color}`} />
-                    <span className="text-xs md:text-sm font-medium text-gray-800">{chip.text}</span>
+                  <div key={index} className={`${chip.bgColor} border border-gray-200/50 rounded-lg px-2 py-1.5 shadow-sm flex items-center gap-1.5 hover:shadow-md transition-all duration-200`}>
+                    <div className={`${chip.iconBg} p-1 rounded-full flex items-center justify-center`}>
+                      <IconComponent className={`w-3 h-3 ${chip.color}`} />
+                    </div>
+                    <span className="text-xs font-medium text-gray-700">{chip.text}</span>
                   </div>
                 );
               })}
+
+
             </div>
           </div>
         </div>
@@ -320,6 +333,8 @@ const ProductPage = ({ params }) => {
         isOpen={isCouponsDialogOpen}
         onClose={() => setIsCouponsDialogOpen(false)}
       />
+
+
     </div>
   );
 };

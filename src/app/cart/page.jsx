@@ -278,7 +278,7 @@ const CartPage = () => {
   const totalPrice =
     cartData?.items?.reduce((acc, item) => acc + item.total, 0) || 0;
   const shipping = cartData?.shippingDetails?.totalCost || 0;
-  const finalPayableAmount = cartData?.total_price || 0;
+  const finalPayableAmount = cartData?.total_price_with_shipping_and_discount || cartData?.total_price || 0;
   const estimatedDeliveryDate = cartData?.shippingDetails?.estimatedDate || "N/A";
   // const couponDiscount = Math.max(finalPayableAmount - discountPrice, 0);
 
