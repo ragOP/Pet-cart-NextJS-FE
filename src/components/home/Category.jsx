@@ -101,6 +101,7 @@ const Category = () => {
             mappedCollectionsName.length > 0
               ? mappedCollectionsName
               : ["No collections"],
+          hasCollections: mappedCollectionsName.length > 0,
         };
       });
     },
@@ -132,13 +133,14 @@ const Category = () => {
           </h2>
           {sections.map((section) => (
             <div key={section.title} className="mb-6">
-              <h3 className="font-medium mb-2">{section.title}</h3>
-              <div className="space-y-3">
-                {section.items.map((item, itemIndex) => (
+              <h3 className="font-medium mb-2 text-sm">{section.title}</h3>
+              <div className="space-y-2">
+                {section.items && section.items.map((item, itemIndex) => (
                   <div
                     key={item}
-                    className="flex items-center py-2 hover:bg-gray-50 px-2 rounded-lg"
+                    className={`flex items-center py-1 px-2 rounded-lg ${section.hasCollections ? 'cursor-pointer hover:text-[#F59A11] transition-colors duration-200' : 'cursor-default text-gray-500'}`}
                     onClick={() => {
+                      if (!section.hasCollections) return;
                       onClose();
                       // Pass both subcategory and collection slugs
                       const specificSlug = section?.itemsSlug?.[itemIndex];
@@ -148,14 +150,7 @@ const Category = () => {
                       }
                     }}
                   >
-                    <CustomImage
-                      src={pawIcon}
-                      alt="paw"
-                      className="w-4 h-4 mr-2"
-                      width={16}
-                      height={16}
-                    />
-                    <span className="text-sm">{item}</span>
+                    <span className="text-xs">{item}</span>
                   </div>
                 ))}
               </div>
@@ -278,15 +273,16 @@ const Category = () => {
         <div className="flex flex-col md:grid md:grid-cols-5 md:gap-6 text-sm">
           {sections.map((section, index) => (
             <div className="mb-6 md:mb-0" key={section.title}>
-              <h3 className="uppercase mb-2 font-bold text-xl leading-[22.5px] tracking-[0.57px]">
+              <h3 className="uppercase mb-2 font-bold text-lg leading-[22.5px] tracking-[0.57px]">
                 {section.title}
               </h3>
-              <div className="flex flex-col space-y-0">
-                {section.items.map((item, itemIndex) => (
+              <div className="flex flex-col space-y-1">
+                {section.items && section.items.map((item, itemIndex) => (
                   <div
                     key={`${section.title}-${item}`}
-                    className="group flex items-center space-x-2 cursor-pointer"
+                    className={`flex items-center space-x-2 ${section.hasCollections ? 'cursor-pointer hover:text-[#F59A11] transition-colors duration-200' : 'cursor-default text-gray-500'}`}
                     onClick={() => {
+                      if (!section.hasCollections) return;
                       onClose();
                       // Pass both subcategory and collection slugs
                       const specificSlug = section?.itemsSlug?.[itemIndex];
@@ -296,22 +292,12 @@ const Category = () => {
                       }
                     }}
                   >
-                    <CustomImage
-                      src={pawIcon}
-                      alt="paw"
-                      className="w-4 h-4 hidden group-hover:inline"
-                      width={16}
-                      height={16}
-                    />
-                    <p className="text-base text-nowrap group-hover:font-semibold hover:translate-x-1 transition duration-300 ease-in-out">
+                    <p className="text-sm text-nowrap">
                       {item}
                     </p>
                   </div>
                 ))}
               </div>
-              {index < sections.length - ((sections.length % 5) || 5) && (
-                <hr className="mt-2" />
-              )}
             </div>
           ))}
         </div>
@@ -367,13 +353,13 @@ const Category = () => {
                   }}
                   className="flex items-center justify-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] cursor-pointer transition-colors outline-none"
                 >
-                  <CustomImage
+                  {/* <CustomImage
                     src={category.image}
                     alt={category.name}
                     className={`${category.name === "Dogs" ? "h-7" : "h-6.5"} w-auto rounded-3xl`}
                     width={24}
                     height={24}
-                  />
+                  /> */}
                   <span className="text-lg">
                     {category.name}
                     <ChevronDown className="inline-block h-5 w-5 ml-1" />

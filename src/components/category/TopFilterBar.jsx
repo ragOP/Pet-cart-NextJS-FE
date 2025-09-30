@@ -36,6 +36,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
   const [selectedBrand, setSelectedBrand] = useState(null);
   const [open, setOpen] = useState(false);
   const [sortDrawerOpen, setSortDrawerOpen] = useState(false);
+  const [highlightedFilter, setHighlightedFilter] = useState(null);
 
   const { data: brands = [] } = useQuery({
     queryKey: ["brands"],
@@ -59,26 +60,15 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
         image: b.logo,
       })),
     },
-    {
-      key: "breedSlug",
-      label: "Breed",
-      items: breeds.map((b) => ({
-        label: b.name,
-        value: b._id,
-        image: b.image,
-      })),
-    },
-    {
-      key: "rating",
-      label: "Rating",
-      items: [
-        { label: "1 Star", value: 1 },
-        { label: "2 Star", value: 2 },
-        { label: "3 Star", value: 3 },
-        { label: "4 Star", value: 4 },
-        { label: "5 Star", value: 5 },
-      ],
-    },
+    // {
+    //   key: "breedSlug",
+    //   label: "Breed",
+    //   items: breeds.map((b) => ({
+    //     label: b.name,
+    //     value: b.slug,
+    //     image: b.image,
+    //   })),
+    // },
     {
       key: "lifeStage",
       label: "Life Stage",
@@ -109,13 +99,24 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
         { label: "Treat", value: "Treat" },
       ],
     },
+    {
+      key: "rating",
+      label: "Rating",
+      items: [
+        { label: "1 Star", value: "1" },
+        { label: "2 Star", value: "2" },
+        { label: "3 Star", value: "3" },
+        { label: "4 Star", value: "4" },
+        { label: "5 Star", value: "5" },
+      ],
+    },
   ];
 
   const badgeLabels = convertFilterKeys(filters);
 
   return (
     <>
-      <div className="sticky top-[120px] z-20 flex-col gap-3 bg-transparent lg:bg-white sm:p-4 rounded-md mx-2 sm:mx-0">
+      <div className="sticky top-[120px] z-20 shadow-sm flex-col gap-3 bg-transparent lg:bg-white sm:p-4 px-2 sm:mx-0">
         {/* Desktop Filter Bar */}
         <div className="lg:flex items-center justify-between gap-3 hidden px-2">
           {/* Left side - Category, Selected Filters, and Veg/Non-Veg */}
@@ -146,45 +147,30 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
 
             </div>
 
-            {/* Selected Filter Chips */}
-            {badgeLabels.length > 0 && (
-              <div className="flex flex-wrap gap-2 pl-8">
-                {badgeLabels.map((badge, index) => {
-                  let displayLabel = badge.label;
+            {/* Filter Category Chips */}
+            <div className="flex flex-wrap gap-2 pl-8">
+              {filterTabs.map((tab) => {
+                const currentValues = filters?.[tab.key] ? (Array.isArray(filters[tab.key]) ? filters[tab.key] : [filters[tab.key]]) : [];
+                const isSelected = currentValues.length > 0;
+                const count = currentValues.length;
 
-                  // Simplify labels - remove prefixes like "Brand:", "Life Stage:", etc.
-                  if (badge.key === "brandSlug" && filters?.brandSlug) {
-                    displayLabel = filters.brandSlug;
-                  } else if (badge.key === "lifeStage" && filters?.lifeStage) {
-                    displayLabel = filters.lifeStage;
-                  } else if (badge.key === "breedSize" && filters?.breedSize) {
-                    displayLabel = filters.breedSize;
-                  } else if (badge.key === "productType" && filters?.productType) {
-                    displayLabel = filters.productType;
-                  } else if (badge.key === "rating" && filters?.rating) {
-                    displayLabel = `${filters.rating}+`;
-                  }
-
-                  return (
-                    <div
-                      key={index}
-                      className="flex items-center gap-2 bg-gray-200 text-gray-800 px-3 py-1.5 rounded-sm text-sm font-medium hover:bg-gray-300 cursor-pointer transition-colors"
-                    >
-                      <span>{displayLabel}</span>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteFilter(badge.key);
-                        }}
-                        className="flex items-center justify-center w-4 h-4 rounded-full border border-gray-500 text-gray-500 hover:bg-gray-600 hover:text-white transition-colors"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                return (
+                  <button
+                    key={tab.key}
+                    onClick={() => {
+                      setHighlightedFilter(tab.key);
+                      setOpen(true);
+                    }}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isSelected
+                        ? 'bg-[#fef3e2] border border-[#f19813] text-[#f19813]'
+                        : 'bg-gray-200 border border-gray-300 text-gray-600 hover:bg-gray-300'
+                      }`}
+                  >
+                    {tab.label} {count > 0 && `(${count})`}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Right side - Empty space for balance */}
@@ -193,19 +179,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
           {/* Right side - Filter and Sort buttons */}
           <div className="flex items-center gap-3">
             {/* Desktop Filter Button */}
-            <Button
-              variant="outline"
-              onClick={() => {
-                const filterTrigger = document.querySelector('[data-filter-trigger]');
-                if (filterTrigger) {
-                  filterTrigger.click();
-                }
-              }}
-              className="text-sm"
-            >
-              <Filter className="h-4 w-4 mr-2" />
-              Filters
-            </Button>
+
 
             {/* Sort By */}
             <Select
@@ -252,45 +226,6 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
             </div>
           </div>
 
-          {/* Mobile Selected Filter Chips */}
-          {badgeLabels.length > 0 && (
-            <div className="flex flex-wrap gap-2 px-4 pb-3">
-              {badgeLabels.map((badge, index) => {
-                let displayLabel = badge.label;
-
-                // Simplify labels - remove prefixes like "Brand:", "Life Stage:", etc.
-                if (badge.key === "brandSlug" && filters?.brandSlug) {
-                  displayLabel = filters.brandSlug;
-                } else if (badge.key === "lifeStage" && filters?.lifeStage) {
-                  displayLabel = filters.lifeStage;
-                } else if (badge.key === "breedSize" && filters?.breedSize) {
-                  displayLabel = filters.breedSize;
-                } else if (badge.key === "productType" && filters?.productType) {
-                  displayLabel = filters.productType;
-                } else if (badge.key === "rating" && filters?.rating) {
-                  displayLabel = `${filters.rating}+`;
-                }
-
-                return (
-                  <div
-                    key={index}
-                    className="flex items-center gap-2 bg-gray-200 text-gray-800 px-3 py-1.5 rounded-sm text-sm font-medium hover:bg-gray-300 cursor-pointer transition-colors"
-                  >
-                    <span>{displayLabel}</span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteFilter(badge.key);
-                      }}
-                      className="flex items-center justify-center w-4 h-4 rounded-full border border-gray-500 text-gray-500 hover:bg-gray-600 hover:text-white transition-colors"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          )}
         </div>
 
         {/* Fixed Mobile Filter Bar at Bottom */}
@@ -315,16 +250,25 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
               <Button
                 variant="ghost"
                 onClick={() => {
-                  const filterTrigger = document.querySelector('[data-filter-trigger]');
-                  if (filterTrigger) {
-                    filterTrigger.click();
-                  }
+                  setHighlightedFilter(null);
+                  setOpen(true);
                 }}
-                className="w-full h-12 border-0 rounded-none bg-[#fff] hover:bg-gray-50"
+                className="w-full h-12 border-0 rounded-none bg-[#fff] hover:bg-gray-50 relative"
               >
                 <div className="flex items-center gap-2">
                   <Filter className="h-4 w-4 text-gray-600" />
                   <span className="font-semibold text-gray-800">FILTER</span>
+                  {(() => {
+                    const totalFilterCount = filterTabs.reduce((total, tab) => {
+                      const currentValues = filters?.[tab.key] ? (Array.isArray(filters[tab.key]) ? filters[tab.key] : [filters[tab.key]]) : [];
+                      return total + currentValues.length;
+                    }, 0);
+                    return totalFilterCount > 0 ? (
+                      <span className="bg-[#f19813] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                        {totalFilterCount}
+                      </span>
+                    ) : null;
+                  })()}
                 </div>
               </Button>
             </div>
@@ -332,75 +276,247 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
         </div>
       </div>
 
-      <Drawer
-        open={open}
-        onClose={() => setOpen(false)}
-        direction="right"
-        width={typeof window !== 'undefined' && window.innerWidth < 768 ? "90%" : "50%"}
-        className="p-4 sm:p-6 flex flex-col h-full overflow-hidden"
-        overlayClassName="z-50"
-      >
-        <div className="flex items-center gap-2 w-full border-b-2 border-[#6A6868] pb-4 sm:pb-6">
-          <SlidersHorizontal className="w-5 h-5 sm:w-6 sm:h-6" />
-          <span className="font-bold text-lg sm:text-xl">Filters</span>
-        </div>
+      {/* Filter Drawer - Identical to Mobile Design */}
+      {open && (
+        <div className="fixed inset-0 z-50 bg-black/20" onClick={() => setOpen(false)}>
+          <div
+            className="fixed right-0 top-0 w-full lg:w-[480px] h-screen bg-white flex flex-col shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header - Fixed */}
+            <div className="flex items-center justify-between p-4 border-b bg-white flex-shrink-0">
+              <h2 className="text-lg font-semibold">Filters</h2>
+              <button
+                onClick={() => setOpen(false)}
+                className="p-2 hover:bg-gray-100 rounded"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
 
-        <div className="w-full flex-1 overflow-y-auto pr-2">
-          <div className="w-full">
-            {filterTabs.map((tab, index) => (
-              <div key={tab.key} className="flex flex-col border-b border-[#B4B3B3]">
-                <button
-                  className={`w-full text-left py-2 text-sm font-medium pt-6`}
-                  onClick={() => setOpen(false)}
-                >
-                  <span className="text-xl font-medium">{tab.label}</span>
-                </button>
-                <div className="flex space-x-2 pb-3">
-                  {["brandSlug"].includes(tab.key) ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 cursor-pointer">
-                      {tab.items.map((item) => (
-                        <div
-                          key={item.value}
-                          onClick={() => {
-                            setSelectedBrand(item);
-                            onChangeFilter({
-                              [tab.key]:
-                                filters?.[tab.key] === item.value ? null : item.value,
-                            })
-                          }}
-                        >
-                          <BrandCard brand={item} selected={selectedBrand?.value === item.value} />
+            {/* Scrollable Content - Flex 1 */}
+            <div className="flex-1 overflow-y-auto p-4">
+              <div className="space-y-6">
+                {/* Brand Filter */}
+                <div className="border-b border-gray-200 pb-6">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-semibold uppercase">Brand</h3>
+                  </div>
+                  <div className="grid grid-cols-5 gap-2">
+                    {filterTabs.find(t => t.key === "brandSlug")?.items?.slice(0, 10).map((item) => (
+                      <div
+                        key={item.value}
+                        onClick={() => {
+                          setSelectedBrand(item);
+                          const currentValues = filters?.brandSlug ? (Array.isArray(filters.brandSlug) ? filters.brandSlug : [filters.brandSlug]) : [];
+                          const newValues = currentValues.includes(item.value) 
+                            ? currentValues.filter(v => v !== item.value)
+                            : [...currentValues, item.value];
+                          onChangeFilter({
+                            brandSlug: newValues.length > 0 ? newValues : null,
+                          });
+                        }}
+                        className={`p-2 border rounded-lg cursor-pointer text-center transition-colors h-20 flex flex-col justify-between ${(() => {
+                          const currentValues = filters?.brandSlug ? (Array.isArray(filters.brandSlug) ? filters.brandSlug : [filters.brandSlug]) : [];
+                          return currentValues.includes(item.value);
+                        })()
+                            ? 'border-[#f19813] bg-[#fef3e2]'
+                            : 'border-[#badee9] bg-[#e6f3f7] hover:border-[#0b88b1]'
+                          }`}
+                      >
+                        <div className="flex justify-center items-center flex-1">
+                          <img src={item.image} alt={item.label} className="w-8 h-8 object-contain" />
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="flex flex-wrap gap-2">
-                      {tab.items.map((item) => (
-                        <Button
-                          key={item.value}
-                          variant={
-                            filters?.[tab.key] === item.value ? "default" : "ghost"
-                          }
-                          onClick={() => {
-                            onChangeFilter({
-                              [tab.key]:
-                                filters?.[tab.key] === item.value ? null : item.value,
-                            })
-                            setOpen(false)
-                          }}
-                          className={cn("w-auto min-w-[100px] sm:w-28 cursor-pointer flex justify-center text-center text-xs sm:text-sm p-2 bg-[#E7F4F8] border-2 border-[#BBDEE9] hover:bg-[#0888B1] hover:border-2 hover:border-[#0888B1]", filters?.[tab.key] === item.value ? "bg-[#0888B1] border-2 border-[#0888B1]" : "")}
-                        >
-                          {item.label}
-                        </Button>
-                      ))}
-                    </div>
-                  )}
+                        <span className="text-xs font-medium mt-1">{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Breed Filter - Commented out for now */}
+                {/* <div className="border-b border-gray-200 pb-6">
+                  <div className="mb-3">
+                    <h3 className="text-lg font-semibold uppercase">Breed</h3>
+                  </div>
+                  <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                    {filterTabs.find(t => t.key === "breedSlug")?.items?.slice(0, 10).map((item) => (
+                      <div
+                        key={item.value}
+                        onClick={() => {
+                          const currentValues = filters?.breedSlug ? (Array.isArray(filters.breedSlug) ? filters.breedSlug : [filters.breedSlug]) : [];
+                          const newValues = currentValues.includes(item.value) 
+                            ? currentValues.filter(v => v !== item.value)
+                            : [...currentValues, item.value];
+                          onChangeFilter({
+                            breedSlug: newValues.length > 0 ? newValues : null,
+                          });
+                        }}
+                        className={`p-3 border rounded-lg cursor-pointer text-center transition-colors flex flex-col justify-center items-center min-w-[80px] flex-shrink-0 ${(Array.isArray(filters?.breedSlug) ? filters.breedSlug : filters?.breedSlug ? [filters.breedSlug] : []).includes(item.value)
+                            ? 'border-[#f19813] bg-[#fef3e2]'
+                            : 'border-[#badee9] bg-[#e6f3f7] hover:border-[#0b88b1]'
+                          }`}
+                      >
+                        <div className="flex justify-center items-center flex-1">
+                          <img src={item.image} alt={item.label} className="w-8 h-8 object-contain" />
+                        </div>
+                        <span className="text-xs font-medium mt-1">{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div> */}
+
+                {/* Life Stage Filter */}
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-semibold mb-3 uppercase">Life Stage</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {filterTabs.find(t => t.key === "lifeStage")?.items?.map((item) => (
+                      <button
+                        key={item.value}
+                        onClick={() => {
+                          const currentValues = filters?.lifeStage ? (Array.isArray(filters.lifeStage) ? filters.lifeStage : [filters.lifeStage]) : [];
+                          const newValues = currentValues.includes(item.value) 
+                            ? currentValues.filter(v => v !== item.value)
+                            : [...currentValues, item.value];
+                          onChangeFilter({
+                            lifeStage: newValues.length > 0 ? newValues : null,
+                          });
+                        }}
+                        className={`h-10 px-4 rounded-full border font-medium transition-colors ${(() => {
+                          const currentValues = filters?.lifeStage ? (Array.isArray(filters.lifeStage) ? filters.lifeStage : [filters.lifeStage]) : [];
+                          return currentValues.includes(item.value);
+                        })()
+                            ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
+                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                          }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Breed Size Filter */}
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-semibold mb-3 uppercase">Breed Size</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {filterTabs.find(t => t.key === "breedSize")?.items?.map((item) => (
+                      <button
+                        key={item.value}
+                        onClick={() => {
+                          const currentValues = filters?.breedSize ? (Array.isArray(filters.breedSize) ? filters.breedSize : [filters.breedSize]) : [];
+                          const newValues = currentValues.includes(item.value) 
+                            ? currentValues.filter(v => v !== item.value)
+                            : [...currentValues, item.value];
+                          onChangeFilter({
+                            breedSize: newValues.length > 0 ? newValues : null,
+                          });
+                        }}
+                        className={`h-10 px-4 rounded-full border font-medium transition-colors ${(() => {
+                          const currentValues = filters?.breedSize ? (Array.isArray(filters.breedSize) ? filters.breedSize : [filters.breedSize]) : [];
+                          return currentValues.includes(item.value);
+                        })()
+                            ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
+                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                          }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Product Type Filter */}
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-semibold mb-3 uppercase">Product Type</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {filterTabs.find(t => t.key === "productType")?.items?.map((item) => (
+                      <button
+                        key={item.value}
+                        onClick={() => {
+                          const currentValues = filters?.productType ? (Array.isArray(filters.productType) ? filters.productType : [filters.productType]) : [];
+                          const newValues = currentValues.includes(item.value) 
+                            ? currentValues.filter(v => v !== item.value)
+                            : [...currentValues, item.value];
+                          onChangeFilter({
+                            productType: newValues.length > 0 ? newValues : null,
+                          });
+                        }}
+                        className={`h-10 px-4 rounded-full border font-medium transition-colors ${(() => {
+                          const currentValues = filters?.productType ? (Array.isArray(filters.productType) ? filters.productType : [filters.productType]) : [];
+                          return currentValues.includes(item.value);
+                        })()
+                            ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
+                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                          }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Rating Filter */}
+                <div className="border-b border-gray-200 pb-6">
+                  <h3 className="text-lg font-semibold mb-3 uppercase">Rating</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {filterTabs.find(t => t.key === "rating")?.items?.map((item) => (
+                      <button
+                        key={item.value}
+                        onClick={() => {
+                          const currentValues = filters?.rating ? (Array.isArray(filters.rating) ? filters.rating : [filters.rating]) : [];
+                          const newValues = currentValues.includes(item.value) 
+                            ? currentValues.filter(v => v !== item.value)
+                            : [...currentValues, item.value];
+                          onChangeFilter({
+                            rating: newValues.length > 0 ? newValues : null,
+                          });
+                        }}
+                        className={`h-10 px-4 rounded-full border font-medium transition-colors ${(() => {
+                          const currentValues = filters?.rating ? (Array.isArray(filters.rating) ? filters.rating : [filters.rating]) : [];
+                          return currentValues.includes(item.value);
+                        })()
+                            ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
+                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                          }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Footer Buttons - Fixed */}
+            <div className="flex-shrink-0 border-t bg-white p-4">
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => {
+                    // Clear all filters except sort_by
+                    const clearedFilters = {};
+                    Object.keys(filters).forEach(key => {
+                      if (key !== 'sort_by') {
+                        clearedFilters[key] = null;
+                      }
+                    });
+                    onChangeFilter(clearedFilters);
+                    setOpen(false);
+                  }}
+                  className="text-[#f19813] font-bold text-base hover:text-[#d9820a] transition-colors"
+                >
+                  CLEAR ALL
+                </button>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="bg-[#f19813] text-white px-8 py-3 rounded-lg font-bold text-base hover:bg-[#d9820a] transition-colors"
+                >
+                  APPLY
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </Drawer>
+      )}
 
       {/* Sort Drawer */}
       <ShadcnDrawer

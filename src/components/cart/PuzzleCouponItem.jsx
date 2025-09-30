@@ -13,7 +13,7 @@ const PuzzleCouponItem = ({ coupon, isApplied = false, onApply, onRemove }) => {
         <button
             type="button"
             aria-label={`Activate coupon`}
-            className="relative w-[240px] h-[96px] outline-none focus:outline-none bg-transparent rounded-2xl transition-all duration-200 hover:scale-105 focus:scale-105 cursor-pointer overflow-hidden"
+            className="relative w-[240px] h-[96px] outline-none focus:outline-none bg-transparent rounded-2xl transition-all duration-200 cursor-pointer overflow-hidden"
             onClick={() => {
                 if (isApplied) {
                     onRemove && onRemove(coupon._id);

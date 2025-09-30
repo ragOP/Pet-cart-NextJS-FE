@@ -35,16 +35,15 @@ const PincodeInput = ({ pincode, onPincodeChange, onCheckDelivery, className, de
 
   return (
     <div className={`flex gap-2 ${className}`}>
-      <div className="flex-1 flex gap-2 items-center border p-1 md:p-1.5 bg-gray-50 border-gray-300 rounded-lg ">
+      <div className="flex-1 flex gap-2 items-center border p-1 md:p-1.5  border-gray-300 rounded-lg ">
         <div
           className="border-r h-full pl-2 flex items-center cursor-pointer"
           onClick={handleLocationClick}
           title="Detect my location"
         >
           <MapPin
-            className={`w-4 h-4 mr-2 md:w-4 md:h-4  md:mr-3 text-[#F59A11] ${
-              loadingPin ? "animate-pulse" : ""
-            }`}
+            className={`w-4 h-4 mr-2 md:w-4 md:h-4  md:mr-3 text-[#F59A11] ${loadingPin ? "animate-pulse" : ""
+              }`}
           />
         </div>
         <input
@@ -54,13 +53,13 @@ const PincodeInput = ({ pincode, onPincodeChange, onCheckDelivery, className, de
           onChange={(e) => onPincodeChange(e.target.value)}
           className="flex-1 ml-1 md:ml-2 md:text-small text-sm outline-none bg-transparent"
         />
-        <button
-          onClick={onCheckDelivery}
-          className="bg-[#f19813] cursor-pointer hover:bg-[#d9820a] text-white px-3 md:px-8 py-1.5 md:py-1.5 rounded-lg font-semibold"
-        >
-          {deliveryLoading ? "CHECKING..." : "CHECK"}
-        </button>
       </div>
+      <button
+        onClick={onCheckDelivery}
+        className="bg-[#f19813] cursor-pointer hover:bg-[#d9820a] text-white px-2 md:px-8 py-1.5 md:py-1.5 rounded-lg font-semibold"
+      >
+        {deliveryLoading ? "CHECKING..." : "CHECK"}
+      </button>
     </div>
   );
 };

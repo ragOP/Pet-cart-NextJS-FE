@@ -335,9 +335,9 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
       {/* Desktop Collections Sidebar */}
       {showDesktopSidebar && (
         <aside className="w-[240px] space-y-4 hidden lg:block sticky top-[180px] self-start">
-          <div className="space-y-2 px-2">
+          <div className="space-y-2 px-2 mt-4">
             {/* Collections Header */}
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-gray-800">Collections</h3>
               {filters?.collectionSlug && (
                 <button
@@ -351,7 +351,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                   Remove
                 </button>
               )}
-            </div>
+            </div> */}
 
             {/* Collections */}
             <div className="bg-white rounded-lg border border-gray-200">

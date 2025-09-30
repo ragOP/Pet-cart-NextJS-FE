@@ -311,11 +311,7 @@ const CartPage = () => {
 
         <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-9">
           <div className="w-full lg:w-1/2 flex flex-col gap-4">
-            {cartLoading ? (
-              <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-              </div>
-            ) : cartError ? (
+            {cartError ? (
               <div className="text-center text-red-500 py-4">
                 Failed to load cart data. Please try refreshing the page.
               </div>

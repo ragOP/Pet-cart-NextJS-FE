@@ -1,6 +1,7 @@
 import React from "react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import VariantBoxIcon from "@/icons/VariantBoxIcon";
+import { formatWeight } from "@/utils/formatWeight";
 
 const Variants = ({ variants, selectedVariant, onSelectVariant }) => {
   console.log(variants, "variants");
@@ -49,17 +50,7 @@ export const VariantBox = ({
       }`}
     >
       <span className="text-sm">
-        {variant.weight > 1000
-          ? `${
-              (variant.weight / 1000) % 1 === 0
-                ? variant.weight / 1000
-                : (variant.weight / 1000).toFixed(2)
-            }kg`
-          : `${
-              variant.weight % 1 === 0
-                ? variant.weight
-                : variant.weight.toFixed(2)
-            }g`}
+        {formatWeight(variant.weight)}
         {" "}{variant.salePrice && discount > 0 ? `| ${discount}% OFF` : null}
       </span>
     </div>

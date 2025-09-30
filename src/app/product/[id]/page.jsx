@@ -11,15 +11,15 @@ import PriceAndCartDisplay from "@/components/product/PriceAndCartDisplay";
 import PurchaseSection from "@/components/product/PurchaseSection";
 import ProductBreadcrumb from "@/components/product/ProductBreadcrumb";
 import RatingReviews from "@/components/product/RatingReviews";
-import ProductAccordion from "@/components/product/ProductAccordion";
+import ProductTabs from "@/components/product/ProductTabs";
 import HandPickedProducts from "@/components/product/HandpickedProducts";
 import CategoryBanner from "@/components/category/CategoryBanner";
-import ProductReviews from "@/components/product/ProductReviews";
 import { getReviewsByProductId } from "@/app/apis/getReviewsByProductId";
 import { checkDelivery } from "@/app/apis/checkDelivery";
 import { useDeviceDetection } from "@/hooks/useDeviceDetection";
-import { ArrowRight, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronRight, FileIcon, FileTextIcon, InfoIcon, MessageSquare, MessageSquareIcon, Check, Truck, Lock, CreditCard } from "lucide-react";
 import CouponsDialog from "@/components/dialog/CouponsDialog";
+import { formatWeight } from "@/utils/formatWeight";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
@@ -31,6 +31,14 @@ const ProductPage = ({ params }) => {
   const [isCouponsDialogOpen, setIsCouponsDialogOpen] = useState(false);
   const { deviceType, isClient } = useDeviceDetection();
   const type = deviceType === "desktop" ? "web" : (deviceType === "tablet" ? "tablet" : "mobile");
+
+  // Service guarantee chips data
+  const serviceChips = [
+    { icon: Check, text: "100% Authentic", color: "text-green-500" },
+    { icon: Truck, text: "Fast Delivery", color: "text-orange-500" },
+    { icon: Lock, text: "Secure Checkout", color: "text-blue-500" },
+    { icon: CreditCard, text: "Multiple Payments", color: "text-purple-500" }
+  ];
 
   const {
     data = {},
@@ -49,7 +57,7 @@ const ProductPage = ({ params }) => {
       productName: data?.title,
       productType: data?.productType,
       brand: data?.brandId?.name,
-      netWeight: `${data?.weight}gm`,
+      netWeight: formatWeight(data?.weight),
       importedAndMarketedBy: data?.importedBy,
       origin: data?.countryOfOrigin,
       price: `₹${data?.price}`,
@@ -113,7 +121,7 @@ const ProductPage = ({ params }) => {
   };
 
   const currentVariant =
-    selectedVariant === 'main-product' || !selectedVariant 
+    selectedVariant === 'main-product' || !selectedVariant
       ? {} // Empty object means use main product data
       : data.variants?.find((variant) => variant._id === selectedVariant) || {};
 
@@ -142,13 +150,13 @@ const ProductPage = ({ params }) => {
   if (isError || !data) return <PrimaryEmptyState title="Product not found" />;
 
   return (
-    <div className="w-full p-4 bg-white">
+    <div className="w-full px-4 py-4 bg-white">
       {/* <ProductBreadcrumb
         category={data.categoryId}
         subCategory={data.subCategoryId}
       /> */}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-8 md:px-[10%]">
         {/* Left: Images */}
         <div>
           {data.isBestSeller && (
@@ -164,6 +172,21 @@ const ProductPage = ({ params }) => {
               setSelectedImage(idx);
             }}
           />
+          
+          {/* 4 Chips below image - Same design as desktop */}
+          <div className="mt-4">
+            <div className="grid grid-cols-2 gap-2 md:gap-3">
+              {serviceChips.map((chip, index) => {
+                const IconComponent = chip.icon;
+                return (
+                  <div key={index} className="bg-white border border-gray-100 rounded-xl px-3 py-3 md:px-4 md:py-3 shadow-sm flex items-center gap-2 md:gap-2">
+                    <IconComponent className={`w-4 h-4 md:w-5 md:h-5 ${chip.color}`} />
+                    <span className="text-xs md:text-sm font-medium text-gray-800">{chip.text}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {/* Right: Product Details */}
@@ -173,13 +196,13 @@ const ProductPage = ({ params }) => {
 
             {/* Brand */}
             <div className="flex flex-row items-center gap-2">
-              <button 
+              <button
                 onClick={() => window.open(`/category?brandSlug=${data.brandId?.slug}`, '_blank')}
                 className="font-semibold text-xl text-[#f19813] underline hover:text-[#d9820a] transition-colors cursor-pointer"
               >
                 {data.brandId?.name}
               </button>
-              <ArrowRight className="text-[#f19813] h-5 w-5"/>
+              <ArrowRight className="text-[#f19813] h-5 w-5" />
             </div>
 
             <RatingReviews
@@ -231,11 +254,11 @@ const ProductPage = ({ params }) => {
           />
 
           {/* Bank Offers and Coupons Section */}
-          <div className="bg-white border border-[#f19813] rounded-lg px-3 py-2">
+          <div className="bg-white border border-gray-200 rounded-lg px-4 mb-2 py-3 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">%</span>
+                <div className="bg-green-100 p-2 rounded-full flex items-center justify-center">
+                  <span className="text-green-500 font-bold text-xs">%</span>
                 </div>
                 <h3 className="font-semibold text-gray-900 text-sm">
                   Bank Offers and coupons
@@ -243,7 +266,7 @@ const ProductPage = ({ params }) => {
               </div>
               <button
                 onClick={() => setIsCouponsDialogOpen(true)}
-                className="flex items-center gap-1 text-[#f19813] hover:text-[#d9820a] font-medium text-sm transition-colors"
+                className="flex cursor-pointer items-center gap-1 text-[#f19813] hover:text-[#d9820a] hover:underline font-medium text-sm transition-colors"
               >
                 <span>Check offers</span>
                 <ChevronRight className="w-3 h-3" />
@@ -262,20 +285,23 @@ const ProductPage = ({ params }) => {
         </div>
       </div>
 
-      <ProductAccordion
+      <ProductTabs
         items={[
           {
             title: "Product Details",
             content: data.description,
+            icon: FileTextIcon
           },
           {
             title: "Additional Information",
             content: additionalInformation,
+            icon: InfoIcon
           },
-          // {
-          //   title: "Product Details",
-          //   content: "Another product details section.",
-          // },
+          {
+            title: "Reviews",
+            content: { ...reviewsData, productId: id, productName: data.title },
+            icon: MessageSquare,
+          },
         ]}
       />
 
@@ -288,8 +314,6 @@ const ProductPage = ({ params }) => {
       )}
 
       <HandPickedProducts />
-
-      <ProductReviews productId={id} productName={data.title} reviews={reviewsData} />
 
       {/* Coupons Dialog */}
       <CouponsDialog

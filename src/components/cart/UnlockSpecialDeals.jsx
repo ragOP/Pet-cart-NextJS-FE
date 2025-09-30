@@ -3,6 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { formatWeight } from '@/utils/formatWeight';
 
 const UnlockSpecialDeals = () => {
     // Dummy product data using actual product structure
@@ -122,7 +123,7 @@ const UnlockSpecialDeals = () => {
 
                                                  {/* Weight/Size info - Inside chip */}
                                                  <div className="bg-gray-200 text-gray-700 text-xs px-1.5 py-0.5 rounded-full inline-block mb-1">
-                                                     {product.weight ? `${product.weight / 1000}kg` : product.productType}
+                                                     {product.weight ? formatWeight(product.weight) : product.productType}
                                                  </div>
                                             </div>
 

@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import CustomImage from "@/components/images/CustomImage";
-import { Heart, Star } from "lucide-react";
+import { Heart, Star, ShoppingCart, Check } from "lucide-react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import ProductVariants from "./ProductVariants";
 import { VariantBox } from "./Variants";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { addProductToCart } from "@/app/apis/addProductToCart";
+import { getCart } from "@/app/apis/getCart";
 import { toast } from "sonner";
-import PrimaryLoader from "../loaders/PrimaryLoader";
+import PawLoader from "../loaders/PawLoader";
+import { useSelector } from "react-redux";
+import { selectToken } from "@/store/authSlice";
+import { useRouter } from "next/navigation";
 
 const BestSellerProduct = ({
   product,
@@ -15,7 +19,12 @@ const BestSellerProduct = ({
   onClick,
 }) => {
   const [selectedImage, setSelectedImage] = React.useState(0);
+  const [buttonState, setButtonState] = useState('add'); // 'add', 'adding', 'added'
+  const [showSuccess, setShowSuccess] = useState(false);
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const token = useSelector(selectToken);
+  const isLoggedIn = !!token;
 
   // Handle image hover
   const handleImageHover = (index) => {
@@ -27,23 +36,35 @@ const BestSellerProduct = ({
 
   const isOutStock = product.stock < 1 || product.variants?.some((variant) => variant.stock < 1);
 
+  // Check if product is in cart
+  const { data: cartData } = useQuery({
+    queryKey: ["cart"],
+    queryFn: () => getCart({ params: {} }),
+    select: (res) => res?.data || null,
+    enabled: isLoggedIn, // Only fetch cart when user is logged in
+  });
+
+  const isProductInCart = cartData?.items?.some((item) => {
+    return item.productId._id === product._id;
+  });
+  
+
   const { mutate: addToCart, isPending } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
-    onSuccess: (res) => {
-      if (res?.success) {
-        toast.success("Product added to cart!", {
-          position: "top-right",
-          duration: 1500,
-          autoClose: 1500,
-        });
-        queryClient.invalidateQueries({ queryKey: ["cart"] });
-      } else {
-        toast.error(res?.message || "Failed to add product to cart", {
-          position: "top-right",
-          duration: 1500,
-          autoClose: 1500,
-        });
-      }
+    onSuccess: () => {
+      setButtonState('added');
+      setShowSuccess(true);
+      toast.success("Product added to cart!", {
+        position: "top-right",
+        duration: 1500,
+        autoClose: 1500,
+      });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+
+      // Reset to "Go to Cart" after animation
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 2000);
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || "Failed to add product to cart", {
@@ -51,18 +72,34 @@ const BestSellerProduct = ({
         duration: 1500,
         autoClose: 1500,
       });
+      setButtonState('add');
     },
   });
 
   const handleAddtoCart = (e) => {
     e.stopPropagation();
+    
+    // If button shows "GO TO CART", navigate to cart page
+    if (buttonState === 'added') {
+      router.push('/cart');
+      return;
+    }
+    
+    setButtonState('adding');
     addToCart({ productId: product._id, variantId: null, quantity: 1 });
   };
+
+  useEffect(() => {
+    if (!isProductInCart && buttonState === 'added' && !isPending) {
+      setButtonState('add');
+      setShowSuccess(false);
+    }
+  }, [isProductInCart, buttonState, isPending]);
 
   return (
     <div
       onClick={onClick}
-      className={`p-3 sm:p-4 rounded-2xl sm:rounded-3xl bg-white flex flex-col group transition-all duration-200 ${className} border border-transparent hover:border-[#f19813] relative w-full max-w-xs sm:max-w-sm h-[420px] sm:h-[520px]`}
+      className={`p-3 sm:p-4 rounded-2xl sm:rounded-2xl bg-white shadow-xl flex flex-col group transition-all duration-200 ${className} border border-1 hover:border-[#f19813] relative w-full max-w-xs sm:max-w-sm h-[420px] sm:h-[520px]`}
     >
       {/* Product Image and Badge */}
       <div className="relative mb-2 sm:mb-4">
@@ -175,11 +212,50 @@ const BestSellerProduct = ({
       {/* Add to Cart Button */}
       <div className="mt-auto">
         <button
-          className="w-full bg-[#F59A11] hover:bg-[#e18a0e] text-white py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold transition-colors cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed min-h-[44px] touch-manipulation"
+          className={`w-full relative overflow-hidden text-white py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer disabled:cursor-not-allowed min-h-[44px] touch-manipulation ${
+            buttonState === 'adding'
+              ? "bg-[#F59A11] cursor-not-allowed"
+              : buttonState === 'added'
+                ? "bg-[#F59A11] hover:bg-[#e18a0e]"
+                : isOutStock
+                  ? "bg-gray-400"
+                  : "bg-[#F59A11] hover:bg-[#e18a0e]"
+          }`}
           onClick={(e) => handleAddtoCart(e)}
           disabled={isPending || isOutStock}
         >
-          {isPending ? <PrimaryLoader isButton={true} /> : (isOutStock ? "OUT OF STOCK" : "ADD TO CART")}
+          {buttonState === 'adding' && (
+            <div className="absolute inset-0 flex items-center justify-center bg-[#F59A11]">
+              <div className="flex items-center gap-2">
+                <PawLoader size={16} color="white" />
+                <span className="text-white font-bold text-xs sm:text-sm">ADDING...</span>
+              </div>
+            </div>
+          )}
+
+          {buttonState === 'added' && showSuccess && (
+            <div className="absolute inset-0 flex items-center justify-center bg-[#F59A11] animate-pulse">
+              <div className="flex items-center gap-1">
+                <Check className="w-4 h-4 text-white animate-bounce" />
+                <span className="text-white font-bold text-xs sm:text-sm">ADDED!</span>
+              </div>
+            </div>
+          )}
+
+          <div className={`flex items-center justify-center gap-1 transition-all duration-300 ${
+            buttonState === 'adding' || (buttonState === 'added' && showSuccess) ? 'opacity-0' : 'opacity-100'
+          }`}>
+            {buttonState === 'added' && !showSuccess ? (
+              <>
+                <ShoppingCart className="w-4 h-4" />
+                <span className="text-xs sm:text-sm">GO TO CART</span>
+              </>
+            ) : isOutStock ? (
+              <span className="text-xs sm:text-sm">OUT OF STOCK</span>
+            ) : (
+              <span className="text-xs sm:text-sm">ADD TO CART</span>
+            )}
+          </div>
         </button>
       </div>
     </div>

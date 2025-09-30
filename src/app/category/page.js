@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import CategoryBanner from "@/components/category/CategoryBanner";
 import FilterSidebar from "@/components/category/FilterSidebar";
 import TopFilterBar from "@/components/category/TopFilterBar";
@@ -41,10 +41,19 @@ export default function CategoryPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const filters = {};
-  searchParams.forEach((value, key) => {
-    filters[key] = value;
-  });
+  const filters = useMemo(() => {
+    const result = {};
+    searchParams.forEach((value, key) => {
+      // Handle comma-separated values (arrays) for multi-select filters
+      const multiSelectKeys = ['brandSlug', 'lifeStage', 'breedSize', 'productType', 'rating'];
+      if (multiSelectKeys.includes(key) && value.includes(',')) {
+        result[key] = value.split(',');
+      } else {
+        result[key] = value;
+      }
+    });
+    return result;
+  }, [searchParams]);
 
   const price_range =
     filters.min_price_range || filters.max_price_range
@@ -170,9 +179,13 @@ export default function CategoryPage() {
         value === null ||
         value === undefined ||
         value === "" ||
-        value === "0"
+        value === "0" ||
+        (Array.isArray(value) && value.length === 0)
       ) {
         params.delete(key);
+      } else if (Array.isArray(value)) {
+        // Handle arrays by joining with commas
+        params.set(key, value.join(','));
       } else {
         params.set(key, value);
       }
@@ -261,16 +274,18 @@ export default function CategoryPage() {
           />
         </div>
 
-        {/* Unified Filter Drawer - Works for both mobile and desktop */}
-        <FilterSidebar
-          collections={collections || []}
-          selectedSubCategory={selectedSubCategory}
-          onChangeFilter={updateFilters}
-          filters={filters}
-          showDesktopSidebar={false}
-          showMobileButton={true}
-          isCollectionsLoading={isCollectionsLoading}
-        />
+        {/* Mobile Filter Button */}
+        <div className="lg:hidden">
+          <FilterSidebar
+            collections={collections || []}
+            selectedSubCategory={selectedSubCategory}
+            onChangeFilter={updateFilters}
+            filters={filters}
+            showDesktopSidebar={false}
+            showMobileButton={true}
+            isCollectionsLoading={isCollectionsLoading}
+          />
+        </div>
 
         <div className="flex-1 flex flex-col">
           {/* Product Count Display */}
@@ -282,7 +297,7 @@ export default function CategoryPage() {
             </div>
           )} */}
 
-          <div className="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-3 lg:gap-4 xl:grid-cols-4 lg:p-4">
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-2 sm:gap-3 mt-4 md:mt-0 lg:gap-4 xl:grid-cols-4 lg:p-4">
             {isProductsLoading ? (
               <div className="flex-1 flex justify-center items-center col-span-2 sm:col-span-2 md:col-span-3 lg:col-span-3 xl:col-span-4 py-20">
                 <PrimaryLoader />

@@ -1,28 +1,71 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 
 const CartProgressBar = ({ cartTotal = 0 }) => {
     // Calculate progress based on 10,000 Rs target
     const targetAmount = 10000;
     const progress = Math.min(100, (cartTotal / targetAmount) * 100);
+    const [showDog, setShowDog] = useState(false);
+    const [dogPosition, setDogPosition] = useState(0);
+    const [animatedProgress, setAnimatedProgress] = useState(0);
+
+    // Show dog after 2s delay
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowDog(true);
+        }, 2000);
+        return () => clearTimeout(timer);
+    }, []);
+
+    // Animate both dog position and progress bar with racing effect
+    useEffect(() => {
+        if (showDog) {
+            const targetPosition = Math.min(100, Math.max(0, progress));
+            const duration = 1500; // 1.5 seconds for racing animation
+            const startTime = Date.now();
+            const startPosition = 0; // Always start from 0
+            const startProgress = 0; // Always start from 0
+
+            const animate = () => {
+                const elapsed = Date.now() - startTime;
+                const progressRatio = Math.min(elapsed / duration, 1);
+                
+                // Easing function for racing effect (ease-out)
+                const easeOut = 1 - Math.pow(1 - progressRatio, 3);
+                const currentPosition = startPosition + (targetPosition - startPosition) * easeOut;
+                const currentProgress = startProgress + (targetPosition - startProgress) * easeOut;
+                
+                setDogPosition(currentPosition);
+                setAnimatedProgress(currentProgress);
+                
+                if (progressRatio < 1) {
+                    requestAnimationFrame(animate);
+                }
+            };
+            
+            requestAnimationFrame(animate);
+        }
+    }, [showDog, progress]);
     
     return (
         <div className="w-full mb-6">
             <div className="flex flex-col">
                 {/* Dog Image positioned above progress bar based on progress */}
                 <div className="relative h-12">
-                    <div 
-                        className="absolute top-0 transform -translate-x-1/2 transition-all duration-300 ease-in-out z-10"
-                        style={{ left: `${Math.min(100, Math.max(0, progress))}%` }}
-                    >
-                        <Image
-                            src="/cart_running.png"
-                            alt="Cart Running"
-                            width={40}
-                            height={40}
-                            className="w-10 h-10 object-contain"
-                        />
-                    </div>
+                    {showDog && (
+                        <div 
+                            className="absolute top-0 transform -translate-x-1/2 z-10"
+                            style={{ left: `${dogPosition}%` }}
+                        >
+                            <Image
+                                src="/cart_running.png"
+                                alt="Cart Running"
+                                width={50}
+                                height={50}
+                                className="w-14 h-14 object-contain"
+                            />
+                        </div>
+                    )}
                 </div>
                 
                 {/* Progress Bar Background */}
@@ -30,7 +73,7 @@ const CartProgressBar = ({ cartTotal = 0 }) => {
                     {/* Progress Fill with Diagonal Stripes */}
                     <div
                         className="h-full bg-gradient-to-r from-[#f59a10] to-[#ffb84d] relative"
-                        style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+                        style={{ width: `${Math.min(100, Math.max(0, animatedProgress))}%` }}
                     >
                         {/* Diagonal Stripe Pattern */}
                         <div

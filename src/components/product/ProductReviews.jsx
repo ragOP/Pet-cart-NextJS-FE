@@ -192,7 +192,7 @@ const ProductReviews = ({ reviews = {}, productName = "Product", productId }) =>
   };
 
   return (
-    <div className="w-full bg-white rounded-lg p-4 md:p-6 my-8">
+    <div className="w-full bg-white rounded-lg p-4 md:p-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">

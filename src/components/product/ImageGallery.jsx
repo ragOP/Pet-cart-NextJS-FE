@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import CustomImage from "@/components/images/CustomImage";
 import {
   Carousel,
@@ -8,11 +8,44 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ReactImageMagnify from "react-image-magnify";
+import { Check, Truck, Lock, CreditCard, Search } from "lucide-react";
+
+// Service guarantee chips data
+const serviceChips = [
+  {
+    id: 1,
+    icon: Check,
+    text: "100% Authentic",
+    color: "text-green-500"
+  },
+  {
+    id: 2,
+    icon: Truck,
+    text: "Fast Delivery",
+    color: "text-orange-500"
+  },
+  {
+    id: 3,
+    icon: Lock,
+    text: "Secure Checkout",
+    color: "text-blue-500"
+  },
+  {
+    id: 4,
+    icon: CreditCard,
+    text: "Multiple Payments",
+    color: "text-purple-500"
+  }
+];
 
 const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false
   );
+  const [isMagnifyEnabled, setIsMagnifyEnabled] = useState(false);
+  const [showMagnify, setShowMagnify] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const magnifyRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,72 +55,182 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Handle click outside to disable magnify
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const magnifyContainer = document.querySelector('.magnify-container');
+      if (magnifyContainer && !magnifyContainer.contains(event.target)) {
+        setIsMagnifyEnabled(false);
+        setShowMagnify(false);
+      }
+    };
+
+    if (isMagnifyEnabled) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMagnifyEnabled]);
+
+  const handleImageClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (!isMagnifyEnabled) {
+      // First click: enable magnify and show it immediately
+      setIsMagnifyEnabled(true);
+      setShowMagnify(true);
+    } else {
+      // Second click: toggle magnify on/off
+      setShowMagnify(!showMagnify);
+    }
+  };
+
+  // Early return after all hooks are declared
   if (!images || images.length === 0) return null;
 
   if (isMobile) {
+    const totalSlides = images.length;
+    
+    const showPrevious = currentSlide > 0;
+    const showNext = currentSlide < totalSlides - 1;
+
     return (
-      <div className="relative w-full overflow-hidden">
-        <Carousel className="w-full">
-          <CarouselContent className="w-full">
+      <div className="relative w-full">
+        <Carousel 
+          className="w-full" 
+          opts={{
+            startIndex: currentSlide,
+            onSelect: (api) => {
+              if (api) {
+                const newIndex = api.selectedScrollSnap();
+                setCurrentSlide(newIndex);
+              }
+            }
+          }}
+        >
+          <CarouselContent className="w-full p-0 m-0">
             {images.map((img, idx) => (
-              <CarouselItem key={idx} className="w-full">
+              <CarouselItem key={idx} className="w-full p-0 m-0">
                 <CustomImage
                   src={img}
                   alt={`Product ${idx + 1}`}
-                  className="w-full h-60 object-contain bg-white rounded-lg block"
+                  className="w-full h-80 object-contain bg-white rounded-lg block border border-gray-200 shadow-sm"
                   style={{ width: "100%" }}
                 />
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="absolute left-2 top-1/2 -translate-y-1/2 z-10" />
-          <CarouselNext className="absolute right-2 top-1/2 -translate-y-1/2 z-10" />
+          {showPrevious && (
+            <CarouselPrevious 
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10"
+              onClick={() => {
+                setCurrentSlide(prev => Math.max(0, prev - 1));
+              }}
+            />
+          )}
+          {showNext && (
+            <CarouselNext 
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10"
+              onClick={() => {
+                setCurrentSlide(prev => Math.min(totalSlides - 1, prev + 1));
+              }}
+            />
+          )}
         </Carousel>
       </div>
     );
   }
 
   return (
-    <div className="flex gap-4 p-4">
-      <div className="flex flex-col gap-2 w-24">
-        {images.map((img, idx) => (
-          <button
-            key={selectedVariant ? images[idx] : idx}
-            onClick={() => onSelect(idx)}
-            className={`border-2 rounded-lg overflow-hidden ${
-              selectedImage === idx ? "border-orange-400" : "border-gray-200"
-            }`}
+    <div className="space-y-4">
+      <div className="flex gap-4 p-4">
+        <div className="flex flex-col gap-2 w-24">
+          {images.map((img, idx) => (
+            <button
+              key={selectedVariant ? images[idx] : idx}
+              onClick={() => onSelect(idx)}
+              className={`border-2 rounded-lg overflow-hidden ${selectedImage === idx ? "border-orange-400" : "border-gray-200"
+                }`}
+            >
+              <CustomImage
+                src={img}
+                alt={`Product ${idx + 1}`}
+                className="w-full h-28 object-contain bg-white"
+                width={110}
+                height={110}
+              />
+            </button>
+          ))}
+        </div>
+        <div className="flex-1 relative border-2 rounded-3xl p-2 shadow-sm">
+          <div
+            className={`cursor-pointer border-1 rounded-2xl p-2 border-[#F59A11] p-2 magnify-container relative ${isMagnifyEnabled ? 'ring-2 ring-blue-400' : ''}`}
           >
-            <CustomImage
-              src={img}
-              alt={`Product ${idx + 1}`}
-              className="w-full h-28 object-contain bg-white"
-              width={110}
-              height={110}
-            />
-          </button>
-        ))}
+            {isMagnifyEnabled && (
+              <div className="absolute top-2 right-2 bg-blue-500 text-white p-2 rounded-full z-10 shadow-lg">
+                <Search className="w-4 h-4" />
+              </div>
+            )}
+            <div onClick={handleImageClick}>
+              <ReactImageMagnify
+                ref={magnifyRef}
+                key={`magnify-${isMagnifyEnabled}-${showMagnify}-${selectedImage}`}
+                {...{
+                  smallImage: {
+                    alt: "Main Product",
+                    isFluidWidth: true,
+                    src: images[selectedImage],
+                  },
+                  largeImage: {
+                    src: images[selectedImage],
+                    width: 1000,
+                    height: 1000,
+                  },
+                  enlargedImageContainerDimensions: {
+                    width: "150%",
+                    height: "150%",
+                  },
+                  isHintEnabled: false,
+                  shouldHideHintAfterFirstActivation: true,
+                  shouldUsePositiveSpaceLens: true,
+                  lensStyle: {
+                    backgroundColor: 'rgba(0,0,0,.6)',
+                  },
+                  enlargedImageStyle: {
+                    zIndex: 1500,
+                  },
+                  enlargedImageContainerStyle: {
+                    zIndex: 1500,
+                  },
+                  isActivatedOnHover: showMagnify,
+                  isActivatedOnClick: false,
+                  isActivatedOnTouch: false,
+                  hoverDelayInMs: showMagnify ? 0 : 999999,
+                  hoverOffDelayInMs: 0,
+                }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="flex-1 relative border-2 rounded-xl border-yellow-500 pl-4">
-        <ReactImageMagnify
-          {...{
-            smallImage: {
-              alt: "Main Product",
-              isFluidWidth: true,
-              src: images[selectedImage],
-            },
-            largeImage: {
-              src: images[selectedImage],
-              width: 1000,
-              height: 1000,
-            },
-            enlargedImageContainerDimensions: {
-              width: "120%",
-              height: "150%",
-            },
-          }}
-        />
-      </div>
+
+      {/* Service Guarantee Chips - Show only 3 on desktop */}
+      {/* <div className="px-4">
+        <div className="grid grid-cols-2 gap-3">
+          {serviceChips.slice(0, 3).map((chip) => {
+            const IconComponent = chip.icon;
+            return (
+              <div key={chip.id} className="bg-white border-1 border-gray-100 rounded-xl px-4 py-3 shadow-sm flex items-center gap-2">
+                <IconComponent className={`w-5 h-5 ${chip.color}`} />
+                <span className="text-sm font-medium text-gray-800">{chip.text}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div> */}
     </div>
   );
 };

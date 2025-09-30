@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { addProductToCart } from "@/app/apis/addProductToCart";
@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "@/store/authSlice";
 import { openLoginPopup, setLoginRedirectUrl } from "@/store/uiSlice";
 import CircularLoader from "../loaders/CircularLoader";
+import PawLoader from "../loaders/PawLoader";
+import { ShoppingCart, Check, Plus, Heart } from "lucide-react";
 
 const PriceAndCartDisplay = ({
   price,
@@ -22,6 +24,8 @@ const PriceAndCartDisplay = ({
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(initialQuantity);
+  const [buttonState, setButtonState] = useState('add'); // 'add', 'adding', 'added'
+  const [showSuccess, setShowSuccess] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
@@ -42,16 +46,29 @@ const PriceAndCartDisplay = ({
     }
   });
 
+  useEffect(() => {
+    if (!isProductInCart && buttonState === 'added' && !loading) {
+      setButtonState('add');
+      setShowSuccess(false);
+    }
+  }, [isProductInCart, buttonState, loading]);
+
   const { mutate: addToCart } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
     onSuccess: () => {
+      setButtonState('added');
+      setShowSuccess(true);
       toast.success("Product added to cart!", {
         duration: 1500,
         autoClose: 1500,
       });
       queryClient.invalidateQueries({ queryKey: ["cart"] });
-      router.push("/cart");
       setLoading(false);
+
+      // Reset to "Go to Cart" after animation
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 2000);
     },
     onError: (error) => {
       toast.error(
@@ -62,6 +79,7 @@ const PriceAndCartDisplay = ({
         }
       );
       setLoading(false);
+      setButtonState('add');
     },
   });
   const discount = calculateDiscountPercent(price, salePrice);
@@ -82,12 +100,18 @@ const PriceAndCartDisplay = ({
       try {
         const currentPath = window.location.pathname + window.location.search + window.location.hash;
         dispatch(setLoginRedirectUrl(currentPath));
-      } catch (_) {}
+      } catch (_) { }
       router.push("/");
       dispatch(openLoginPopup({}));
       return;
     }
 
+    if (buttonState === 'added') {
+      router.push("/cart");
+      return;
+    }
+
+    setButtonState('adding');
     setLoading(true);
     if (variantId) {
       addToCart({ variantId, productId, quantity });
@@ -96,31 +120,81 @@ const PriceAndCartDisplay = ({
     }
   };
   return (
-    <div className="flex flex-col gap-4 w-full bg-gray-100 rounded-lg p-4">
+    <div className="flex flex-col border border-gray-200 gap-4 w-full shadow-sm rounded-lg p-4">
       {/* Price Section */}
-      <div className="flex flex-col gap-2">
-        <span className="text-3xl font-bold">₹{salePrice || price || 0}</span>
-        {salePrice && (
-          <div className="flex items-center gap-2">
-            <span className="text-xl text-gray-600 font-normal">
-              MRP{" "}
-              <span className="text-xl text-gray-500 line-through font-normal">
-                ₹{price || 0}
+      <div className="flex flex-col md:flex-row md:justify-between gap-4">
+        <div className="flex flex-col">
+          <span className="text-3xl font-bold mb-1">₹{salePrice || price || 0}</span>
+          {salePrice && (
+            <div className="flex items-center gap-2">
+              <span className="text-xl text-gray-600 font-normal">
+                MRP{" "}
+                <span className="text-xl text-gray-500 line-through font-normal">
+                  ₹{price || 0}
+                </span>
               </span>
-            </span>
-            <span className="text-[#218032] text-xl font-normal">
-              ({discount || 0}% Off)
-            </span>
-          </div>
-        )}
-        <p className="text-sm text-[#0888B1]">incl. of all taxes</p>
+              <span className="text-[#218032] text-xl font-normal">
+                ({discount || 0}% Off)
+              </span>
+            </div>
+          )}
+          <p className="text-sm text-[#0888B1]">incl. of all taxes</p>
+        </div>
+
+        {/* Add to Cart Button - Desktop: inline, Mobile: full width on new line */}
+        <div className="flex flex-col justify-end md:max-w-none">
+          <button
+            onClick={handleAddToCart}
+            disabled={loading || stock <= 0}
+            className={`w-full md:w-auto md:min-w-fit relative overflow-hidden ${buttonState === 'adding'
+              ? "bg-[#f19813] cursor-not-allowed"
+              : buttonState === 'added'
+                ? "bg-[#f19813] hover:bg-[#d9820a]"
+                : stock > 0
+                  ? "bg-[#f19813] hover:bg-[#d9820a]"
+                  : "bg-gray-400 cursor-not-allowed"
+              } whitespace-nowrap text-white font-bold py-3 md:py-2 px-8 rounded-lg text-lg md:text-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f19813] transform hover:scale-105 active:scale-95`}
+          >
+            {buttonState === 'adding' && (
+              <div className="absolute inset-0 flex items-center justify-center bg-[#f19813]">
+                <div className="flex items-center gap-3">
+                  <PawLoader size={24} color="white" />
+                  <span className="text-white font-bold">ADDING...</span>
+                </div>
+              </div>
+            )}
+
+            {buttonState === 'added' && showSuccess && (
+              <div className="absolute inset-0 flex items-center justify-center bg-[#f19813] animate-pulse">
+                <div className="flex items-center gap-2">
+                  <Check className="w-5 h-5 text-white animate-bounce" />
+                  <span className="text-white font-bold">ADDED!</span>
+                </div>
+              </div>
+            )}
+
+            <div className={`flex items-center justify-center md:justify-start gap-2 transition-all duration-300 ${buttonState === 'adding' || (buttonState === 'added' && showSuccess) ? 'opacity-0' : 'opacity-100'}`}>
+              {buttonState === 'added' && !showSuccess ? (
+                <>
+                  <ShoppingCart className="w-5 h-5" />
+                  <span>GO TO CART</span>
+                </>
+              ) : stock > 0 ? (
+                <>
+                  <span>ADD TO CART</span>
+                </>
+              ) : (
+                <span>OUT OF STOCK</span>
+              )}
+            </div>
+          </button>
+        </div>
       </div>
 
+
       {/* Quantity Selector and Add to Cart Button */}
-      <div className="flex items-center gap-4 sm:gap-8 lg:gap-12">
-        {/* Quantity Selector */}
+      {/* <div className="flex items-center gap-4 sm:gap-8 lg:gap-12">
         {quantityVariant === "new" ? (
-          // New Design - Orange border with clean layout
           <div className="flex items-center border border-[#f19813] bg-white rounded-lg overflow-hidden">
             <button
               onClick={() => handleQuantityChange(-1)}
@@ -130,7 +204,7 @@ const PriceAndCartDisplay = ({
               -
             </button>
             <div className="px-4 py-2 text-base font-normal text-center min-w-[40px] border-r border-gray-300">
-              {loading ? <CircularLoader size={16} /> : <span className="text-black">{quantity}</span>}
+              <span className="text-black">{quantity}</span>
             </div>
             <button
               onClick={() => handleQuantityChange(1)}
@@ -141,7 +215,6 @@ const PriceAndCartDisplay = ({
             </button>
           </div>
         ) : (
-          // Default Design - Original blue theme
           <div className="flex items-center border border-[#004E6A80] bg-[#004E6A05] rounded-[24px] overflow-hidden">
             <button
               onClick={() => handleQuantityChange(-1)}
@@ -151,7 +224,7 @@ const PriceAndCartDisplay = ({
               -
             </button>
             <div className="px-4 py-1.5 text-base font-normal text-center min-w-[40px]">
-              {loading ? <CircularLoader size={16} /> : <span>{quantity}</span>}
+              <span>{quantity}</span>
             </div>
             <button
               onClick={() => handleQuantityChange(1)}
@@ -163,29 +236,52 @@ const PriceAndCartDisplay = ({
           </div>
         )}
 
-        {/* Add to Cart Button */}
         <button
           onClick={handleAddToCart}
-          disabled={loading || isProductInCart || stock <= 0}
-          className={`min-w-fit ${
-            loading
-              ? "bg-gray-400 cursor-not-allowed"
-              : isProductInCart
-              ? "bg-[#f19813] hover:bg-[#d9820a] cursor-not-allowed"
-              : stock > 0
-              ? "bg-[#f19813] hover:bg-[#d9820a]"
-              : "bg-gray-400 cursor-not-allowed"
-          } whitespace-nowrap text-white font-bold py-2 px-8 rounded-lg text-xl transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f19813]`}
+          disabled={loading || stock <= 0}
+          className={`min-w-fit relative overflow-hidden ${buttonState === 'adding'
+             ? "bg-[#f19813] cursor-not-allowed"
+             : buttonState === 'added'
+               ? "bg-[#f19813] hover:bg-[#d9820a]"
+               : stock > 0
+                 ? "bg-[#f19813] hover:bg-[#d9820a]"
+                 : "bg-gray-400 cursor-not-allowed"
+             } whitespace-nowrap text-white font-bold py-2 px-8 rounded-lg text-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f19813] transform hover:scale-105 active:scale-95`}
         >
-          {loading
-            ? "ADDING..."
-            : isProductInCart
-            ? "ADDED"
-            : stock > 0
-            ? "ADD TO CART"
-            : "OUT OF STOCK"}
+          {buttonState === 'adding' && (
+            <div className="absolute inset-0 flex items-center justify-center bg-[#f19813]">
+              <div className="flex items-center gap-3">
+                <PawLoader size={24} color="white" />
+                <span className="text-white font-bold">ADDING...</span>
+              </div>
+            </div>
+          )}
+
+          {buttonState === 'added' && showSuccess && (
+            <div className="absolute inset-0 flex items-center justify-center bg-[#f19813] animate-pulse">
+              <div className="flex items-center gap-2">
+                <Check className="w-5 h-5 text-white animate-bounce" />
+                <span className="text-white font-bold">ADDED!</span>
+              </div>
+            </div>
+          )}
+
+          <div className={`flex items-center gap-2 transition-all duration-300 ${buttonState === 'adding' || (buttonState === 'added' && showSuccess) ? 'opacity-0' : 'opacity-100'}`}>
+            {buttonState === 'added' && !showSuccess ? (
+              <>
+                <ShoppingCart className="w-5 h-5" />
+                <span>GO TO CART</span>
+              </>
+            ) : stock > 0 ? (
+              <>
+                <span>ADD TO CART</span>
+              </>
+            ) : (
+              <span>OUT OF STOCK</span>
+            )}
+          </div>
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
