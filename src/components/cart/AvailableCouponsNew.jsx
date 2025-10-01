@@ -10,7 +10,7 @@ const AvailableCouponsNew = ({ coupons = [], appliedCoupon, onApply, onRemove })
     // Process real coupon data
     const processedCoupons = coupons.map(coupon => ({
         ...coupon,
-        isApplied: appliedCoupon?._id === coupon._id
+        isApplied: appliedCoupon === coupon._id
     }));
 
     return (

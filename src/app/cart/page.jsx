@@ -5,6 +5,7 @@ import RequireAuth from "@/components/auth/RequireAuth";
 import CartSavingsBanner from "@/components/cart/CartSavingsBanner";
 import CartList from "@/components/cart/CartList";
 import CartSummary from "@/components/cart/CartSummary";
+import CartSummarySkeleton from "@/components/cart/CartSummarySkeleton";
 import CartCouponSection from "@/components/cart/CartCouponSection";
 import CartProgressBar from "@/components/cart/CartProgressBar";
 import PincodeInput from "@/components/pincode/PincodeInput";
@@ -160,8 +161,56 @@ const CartPage = () => {
   };
 
   const handleApplyCoupon = (couponId) => {
+    // Find the coupon to validate
+    const coupon = couponsData?.find(c => c._id === couponId);
+    
+    if (!coupon) {
+      toast.error("Coupon not found");
+      return;
+    }
+
+    // Validate coupon
+    const isCouponValid = (coupon) => {
+      // Check if coupon is active
+      if (!coupon.active) return false;
+
+      // Check if current date is within coupon validity
+      const now = new Date();
+      const startDate = new Date(coupon.startDate);
+      const endDate = new Date(coupon.endDate);
+
+      if (now < startDate || now > endDate) return false;
+
+      // Check minimum purchase requirement
+      if (coupon.minPurchase && totalPrice < coupon.minPurchase) return false;
+
+      // Check total use limit
+      if (coupon.totalUseLimit && coupon.totalUseLimit <= 0) return false;
+
+      return true;
+    };
+
+    if (!isCouponValid(coupon)) {
+      const now = new Date();
+      const endDate = new Date(coupon.endDate);
+      
+      if (!coupon.active) {
+        toast.error("This coupon is inactive");
+      } else if (now < new Date(coupon.startDate)) {
+        toast.error("This coupon is not yet active");
+      } else if (now > endDate) {
+        toast.error("This coupon has expired");
+      } else if (coupon.minPurchase && totalPrice < coupon.minPurchase) {
+        toast.error(`Minimum purchase of ₹${coupon.minPurchase} required`);
+      } else if (coupon.totalUseLimit && coupon.totalUseLimit <= 0) {
+        toast.error("This coupon has reached its usage limit");
+      }
+      return;
+    }
+
     setAppliedCoupon(couponId);
     setParams((prev) => ({ ...prev, coupon_id: couponId }));
+    toast.success("Coupon applied successfully!");
   };
 
   const handleRemoveCoupon = () => {
@@ -390,15 +439,19 @@ const CartPage = () => {
             />
 
             <div className="border-b border-[#f59a10]" />
-            <CartSummary
-              totalMrp={totalPrice}
-              totalPrice={finalPayableAmount}
-              shipping={shipping}
-              estimatedDeliveryDate={estimatedDeliveryDate}
-              taxBreakup={{ cgst, sgst, igst, cess }}
-              couponDiscount={couponDiscount}
-              onPay={() => setIsCheckoutDialogOpen(true)}
-            />
+            {cartLoading ? (
+              <CartSummarySkeleton />
+            ) : (
+              <CartSummary
+                totalMrp={totalPrice}
+                totalPrice={finalPayableAmount}
+                shipping={shipping}
+                estimatedDeliveryDate={estimatedDeliveryDate}
+                taxBreakup={{ cgst, sgst, igst, cess }}
+                couponDiscount={couponDiscount}
+                onPay={() => setIsCheckoutDialogOpen(true)}
+              />
+            )}
           </div>
         </div>
 
