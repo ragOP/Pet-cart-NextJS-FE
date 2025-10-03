@@ -209,7 +209,7 @@ const Header = ({ logo }) => {
   const [showDialogPincodeResult, setShowDialogPincodeResult] = useState(false);
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
-  console.log("USER", user)
+
   const isLoggedIn = !!token;
   const suggestions = ["Dog Food", "Cat Food", "Helno", "Royal Canin"];
   const [index, setIndex] = useState(0);

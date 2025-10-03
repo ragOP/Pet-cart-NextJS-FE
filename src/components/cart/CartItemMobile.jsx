@@ -29,7 +29,7 @@ const CartItemMobile = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyC
       >
         <CustomImage
           src={productDetails?.images?.[0] || item?.productId?.images?.[0]}
-          alt={productDetails?.variantName || productDetails?.title}
+          alt={productDetails?.variant_name || productDetails?.variantName || productDetails?.title}
           className="w-full h-full object-contain rounded-lg bg-[#FFF7E6]"
         />
       </div>
@@ -44,7 +44,7 @@ const CartItemMobile = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyC
             </h2>
             {isVariant && (
               <div className="text-xs text-gray-600 mt-1">
-                {productDetails?.variantName}
+                {productDetails?.variant_name || productDetails?.variantName}
               </div>
             )}
           </div>
@@ -65,7 +65,7 @@ const CartItemMobile = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyC
         {/* Middle row - Quantity/Offer tag */}
         <div className="flex items-center gap-2">
           <div className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">
-            {item.quantity}x{formatWeight(productDetails?.weight)} | {discount}% OFF
+            {item.quantity}x{productDetails?.variant_name || formatWeight(productDetails?.weight)} | {discount}% OFF
           </div>
         </div>
 

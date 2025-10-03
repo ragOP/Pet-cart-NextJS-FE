@@ -35,6 +35,8 @@ const Home = () => {
     },
   });
 
+  console.log("pageConfig", pageConfig);
+
   // Component mapping for static sections
   const staticComponents = {
     main_banner: Applod,

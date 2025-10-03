@@ -50,7 +50,7 @@ export const VariantBox = ({
       }`}
     >
       <span className="text-sm">
-        {formatWeight(variant.weight)}
+        {variant.variant_name || formatWeight(variant.weight)}
         {" "}{variant.salePrice && discount > 0 ? `| ${discount}% OFF` : null}
       </span>
     </div>

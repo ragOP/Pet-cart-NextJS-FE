@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const ProductVariants = ({ 
   variants = [], 
   maxDisplay = 3, 
-  variantLabel = "10KG (2x5KG)",
+  variantLabel = "",
   showDiscount = true,
   className = "",
   size = "small", // "small" or "large"
@@ -71,7 +71,7 @@ const ProductVariants = ({
         >
           <div className={`${isSelected ? 'bg-[#004E6A] text-white' : 'bg-gray-100 text-gray-800'} text-center ${headerPadding}`}>
             <div className={labelTextSize}>
-              {isMainProduct ? formatWeight(variant.weight) || 'Default' : variantLabel}
+              {isMainProduct ? formatWeight(variant.weight) || 'Default' : variant?.variantName}
             </div>
           </div>
           <div className={`bg-white text-center ${contentPadding}`}>

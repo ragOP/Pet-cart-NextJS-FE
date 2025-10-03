@@ -25,7 +25,7 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
       onClick={() => onNavigateToProduct(item?.productId?._id)}>
         <CustomImage
           src={productDetails?.images?.[0] || item?.productId?.images?.[0]}
-          alt={productDetails?.variantName || productDetails?.title}
+          alt={productDetails?.variant_name || productDetails?.variantName || productDetails?.title}
           className="w-full h-full sm:w-36 object-contain rounded-lg bg-[#FFF7E6]"
         />
       </div>
@@ -39,7 +39,7 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
             </h2>
             {isVariant && (
               <div className="inline-block px-3 py-1 text-sm rounded-lg bg-[#E3EBEE] text-gray-700 font-semibold mt-2 mb-2">
-                {productDetails?.variantName}
+                {productDetails?.variant_name || productDetails?.variantName}
               </div>
             )}
           </div>
