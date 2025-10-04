@@ -182,7 +182,7 @@ const Applod = () => {
         </div>
       )}
 
-      {/* Carousel with dots (manual only), multi-card layout */}
+      {/* Carousel with dots (manual only), multi-card layout hghjg */}
       {slidersImages.length > 0 && (
         <div className="w-full mt-1">
           <div
