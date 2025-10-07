@@ -27,8 +27,16 @@ export default function CategoryPage() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const [page, setPage] = useState(1);
+  // Get page from URL or default to 1
+  const pageFromUrl = parseInt(searchParams.get("page")) || 1;
+  const [page, setPage] = useState(pageFromUrl);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+
+  // Sync page state with URL on mount and URL changes
+  useEffect(() => {
+    const urlPage = parseInt(searchParams.get("page")) || 1;
+    setPage(urlPage);
+  }, [searchParams]);
 
   const [width, setWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
@@ -191,15 +199,27 @@ export default function CategoryPage() {
       }
     });
 
+    // Reset to page 1 when filters change
+    params.set("page", "1");
+
     router.replace(`/category?${params.toString()}`, { scroll: false });
     queryClient.invalidateQueries({
       queryKey: ["products"],
     });
   };
 
+  // Helper function to update page in URL
+  const updatePage = (newPage) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", newPage.toString());
+    router.replace(`/category?${params.toString()}`, { scroll: false });
+  };
+
   const deleteFilter = (key) => {
     const params = new URLSearchParams(searchParams);
     params.delete(key);
+    // Reset to page 1 when filters change
+    params.set("page", "1");
     router.replace(`/category?${params.toString()}`, { scroll: false });
     queryClient.invalidateQueries({
       queryKey: ["products"],
@@ -211,6 +231,8 @@ export default function CategoryPage() {
     // Update URL with subcategory slug
     const params = new URLSearchParams(searchParams);
     params.set("subCategorySlug", subCategory.slug);
+    // Reset to page 1 when subcategory changes
+    params.set("page", "1");
     router.push(`/category?${params.toString()}`);
   };
 
@@ -323,7 +345,8 @@ export default function CategoryPage() {
                   <PaginationContent className="flex-wrap gap-1">
                     <PaginationPrevious
                       onClick={() => {
-                        setPage((prev) => Math.max(1, prev - 1));
+                        const newPage = Math.max(1, page - 1);
+                        updatePage(newPage);
                       }}
                       className="text-xs sm:text-sm"
                     />
@@ -356,7 +379,7 @@ export default function CategoryPage() {
                           <PaginationItem key={pageNumber}>
                             <PaginationLink
                               isActive={pageNumber === page}
-                              onClick={() => setPage(pageNumber)}
+                              onClick={() => updatePage(pageNumber)}
                               className="text-xs sm:text-sm w-8 h-8 sm:w-10 sm:h-10"
                             >
                               {pageNumber}
@@ -367,12 +390,9 @@ export default function CategoryPage() {
                     )}
                     <PaginationNext
                       onClick={() => {
-                        setPage((prev) =>
-                          Math.min(
-                            Math.ceil(productsData?.total / params.per_page),
-                            prev + 1
-                          )
-                        );
+                        const totalPages = Math.ceil(productsData?.total / params.per_page);
+                        const newPage = Math.min(totalPages, page + 1);
+                        updatePage(newPage);
                       }}
                       className="text-xs sm:text-sm"
                     />
