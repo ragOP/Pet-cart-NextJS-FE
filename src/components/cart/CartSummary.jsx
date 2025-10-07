@@ -11,9 +11,9 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
             <span role="img" aria-label="price">🏷️</span> Price Details
           </div>
           <div className="flex flex-col gap-2 text-base">
-            <div className="flex justify-between"><span>Total MRP Price</span><span>₹{totalMrp.toFixed(2)}</span></div>
+            <div className="flex justify-between"><span>Total MRP</span><span className="line-through">₹{totalMrp.toFixed(2)}</span></div>
             <div className="flex justify-between text-green-600 font-medium">
-              <span>Coupon Discount</span><span>- ₹{couponDiscount.toFixed(2)}</span>
+              <span>Discount of coupon on sale price</span><span>- ₹{couponDiscount.toFixed(2)}</span>
             </div>
             {cgst > 0 && <div className="flex justify-between"><span>CGST</span><span>₹{cgst.toFixed(2)}</span></div>}
             {sgst > 0 && <div className="flex justify-between"><span>SGST</span><span>₹{sgst.toFixed(2)}</span></div>}
@@ -21,7 +21,7 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
             {cess > 0 && <div className="flex justify-between"><span>CESS</span><span>₹{cess.toFixed(2)}</span></div>}
             {shipping && <div className="flex justify-between items-center">
               <div className="flex flex-col">
-                <span>Shipping Charges</span>
+                <span>Shipment Charges</span>
                 <span className="text-xs text-gray-400">Expected Delivery By : {estimatedDeliveryDate}</span>
               </div>
               <span className="text-green-600 font-semibold">

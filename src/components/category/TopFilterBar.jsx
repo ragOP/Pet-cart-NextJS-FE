@@ -127,24 +127,25 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
               </span>
             </div>
 
-            {/* Veg/Non-Veg Toggle */}
+            {/* Veg Filter Chip with Toggle */}
             <div className="flex items-center gap-2">
-              <span className={`text-sm font-semibold transition-colors ${filters?.isVeg !== "true" ? "text-gray-900" : "text-green-600"
-                }`}>
-                {filters?.isVeg === "true" ? "Veg" : "Non-Veg"}
-              </span>
-              <Switch
-                checked={filters?.isVeg === "true"}
-                onCheckedChange={(checked) => {
-                  if (checked) {
-                    onChangeFilter({ isVeg: true });
-                  } else {
-                    onChangeFilter({ isVeg: null });
-                  }
-                }}
-                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-gray-300 scale-125"
-              />
-
+              <div className={`px-3 py-2 rounded-sm border transition-colors flex items-center justify-center ${
+                filters?.isVeg === "true"
+                  ? 'bg-white border-green-500'
+                  : 'bg-white border-gray-300'
+              }`}>
+                <Switch
+                  checked={filters?.isVeg === "true"}
+                  onCheckedChange={(checked) => {
+                    if (checked) {
+                      onChangeFilter({ isVeg: true });
+                    } else {
+                      onChangeFilter({ isVeg: null });
+                    }
+                  }}
+                  className="data-[state=checked]:bg-gray-200 data-[state=unchecked]:bg-gray-200 [&>span]:data-[state=checked]:bg-green-500 [&>span]:data-[state=unchecked]:bg-gray-400"
+                />
+              </div>
             </div>
 
             {/* Filter Category Chips */}
@@ -199,30 +200,32 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
 
         {/* Mobile Category and Veg Toggle - Above Products */}
         <div className="lg:hidden z-10 bg-white w-full">
-          <div className="flex items-center justify-between py-4 bg-white">
+          <div className="flex items-center justify-between pb-3 px-4 pt-5 bg-white">
             <div className="flex items-center gap-2 text-black text-base font-semibold">
               <span className="font-bold text-xl">
                 {selectedSubCategory?.name || "Select Category"}
               </span>
             </div>
 
-            {/* Mobile Veg/Non-Veg Toggle */}
+            {/* Mobile Veg Filter Chip with Toggle */}
             <div className="flex items-center gap-2 pr-2">
-              <span className={`text-sm font-semibold transition-colors ${filters?.isVeg !== "true" ? "text-gray-900" : "text-green-600"
-                }`}>
-                {filters?.isVeg === "true" ? "Veg" : "Non-Veg"}
-              </span>
-              <Switch
-                checked={filters?.isVeg === "true"}
-                onCheckedChange={(checked) => {
-                  if (checked) {
-                    onChangeFilter({ isVeg: true });
-                  } else {
-                    onChangeFilter({ isVeg: null });
-                  }
-                }}
-                className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-gray-300 scale-125"
-              />
+              <div className={`px-2 py-1.5 rounded-sm border transition-colors flex items-center justify-center ${
+                filters?.isVeg === "true"
+                  ? 'bg-white border-green-500'
+                  : 'bg-white border-gray-300'
+              }`}>
+                <Switch
+                  checked={filters?.isVeg === "true"}
+                  onCheckedChange={(checked) => {
+                    if (checked) {
+                      onChangeFilter({ isVeg: true });
+                    } else {
+                      onChangeFilter({ isVeg: null });
+                    }
+                  }}
+                  className="data-[state=checked]:bg-gray-200 data-[state=unchecked]:bg-gray-200 [&>span]:data-[state=checked]:bg-green-500 [&>span]:data-[state=unchecked]:bg-gray-400 scale-75"
+                />
+              </div>
             </div>
           </div>
 

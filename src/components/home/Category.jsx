@@ -134,11 +134,11 @@ const Category = () => {
           {sections.map((section) => (
             <div key={section.title} className="mb-6">
               <h3 className="font-medium mb-2 text-sm">{section.title}</h3>
-              <div className="space-y-2">
+              <div className="space-y-[0.45rem]">
                 {section.items && section.items.map((item, itemIndex) => (
                   <div
                     key={item}
-                    className={`flex items-center py-1 px-2 rounded-lg ${section.hasCollections ? 'cursor-pointer hover:text-[#F59A11] transition-colors duration-200' : 'cursor-default text-gray-500'}`}
+                    className={`flex items-center py-1 px-2 rounded-lg ${section.hasCollections ? 'cursor-pointer hover:text-[#CC7700] hover:font-[500] transition-all duration-200' : 'cursor-default text-gray-500'}`}
                     onClick={() => {
                       if (!section.hasCollections) return;
                       onClose();
@@ -156,6 +156,8 @@ const Category = () => {
               </div>
             </div>
           ))}
+
+          <div className="border-b border-gray-200" />
         </div>
       </div>
     );
@@ -178,31 +180,31 @@ const Category = () => {
           <div className="grid grid-cols-2 gap-4">
             {loading
               ? Array(6)
-                  .fill(0)
-                  .map((_, i) => (
-                    <div key={i} className="flex flex-col items-center">
-                      <Skeleton className="w-32 h-32 rounded-full" />
-                      <Skeleton className="w-20 h-4 mt-2" />
-                    </div>
-                  ))
+                .fill(0)
+                .map((_, i) => (
+                  <div key={i} className="flex flex-col items-center">
+                    <Skeleton className="w-32 h-32 rounded-full" />
+                    <Skeleton className="w-20 h-4 mt-2" />
+                  </div>
+                ))
               : breeds.map((breed) => (
-                  <Link
-                    key={breed._id}
-                    href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="flex flex-col items-center hover:scale-105 transition-transform cursor-pointer"
-                  >
-                    <CustomImage
-                      src={breed.image}
-                      alt={breed.name}
-                      className="w-32 h-32 rounded-full border-2 border-gray-200"
-                      width={128}
-                      height={128}
-                    />
-                    <p className="text-center text-sm mt-2 font-medium">
-                      {breed.name}
-                    </p>
-                  </Link>
-                ))}
+                <Link
+                  key={breed._id}
+                  href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
+                  className="flex flex-col items-center hover:scale-105 transition-transform cursor-pointer"
+                >
+                  <CustomImage
+                    src={breed.image}
+                    alt={breed.name}
+                    className="w-32 h-32 rounded-full border-2 border-gray-200"
+                    width={128}
+                    height={128}
+                  />
+                  <p className="text-center text-sm mt-2 font-medium">
+                    {breed.name}
+                  </p>
+                </Link>
+              ))}
           </div>
         </div>
       </div>
@@ -280,7 +282,7 @@ const Category = () => {
                 {section.items && section.items.map((item, itemIndex) => (
                   <div
                     key={`${section.title}-${item}`}
-                    className={`flex items-center space-x-2 ${section.hasCollections ? 'cursor-pointer hover:text-[#F59A11] transition-colors duration-200' : 'cursor-default text-gray-500'}`}
+                    className={`flex items-center space-x-2  hover:font-[500] transition-all ${section.hasCollections ? 'cursor-pointer hover:text-[#CC7700] transition-colors duration-200' : 'cursor-default text-gray-500'}`}
                     onClick={() => {
                       if (!section.hasCollections) return;
                       onClose();
@@ -308,7 +310,7 @@ const Category = () => {
   const handleCollectionClick = (collectionSlugs, subCategorySlug) => {
     // Handle both single slug and array of slugs
     const slug = Array.isArray(collectionSlugs) ? collectionSlugs[0] : collectionSlugs;
-    
+
     // Build URL with both subcategory and collection slugs
     const params = new URLSearchParams();
     if (subCategorySlug) {
@@ -317,7 +319,7 @@ const Category = () => {
     if (slug) {
       params.set('collectionSlug', slug);
     }
-    
+
     router.push(`/category?${params.toString()}`);
   };
 
@@ -331,7 +333,7 @@ const Category = () => {
           const rect = e.currentTarget.getBoundingClientRect();
           const x = e.clientX;
           const y = e.clientY;
-          
+
           // Check if mouse is outside the container bounds
           if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
             setShowShopByBreed(false);
@@ -343,36 +345,36 @@ const Category = () => {
         <div className="lg:fixed top-[80px] left-0 right-0 z-40 overflow-x-auto bg-black hidden md:block">
           <div className="text-white px-8 py-2 relative z-20">
             <div className="flex justify-end space-x-6 min-w-max">
-            {categories?.map((category) => (
-              <div key={category._id} className="flex items-center space-x-2">
-                <button
-                  onMouseEnter={() => {
-                    setActiveCategoryId(category._id);
-                    setShowShopByCategory(true);
-                    setShowShopByBreed(false);
-                  }}
-                  className="flex items-center justify-center space-x-1 hover:text-[#F59A11] focus:text-[#F59A11] cursor-pointer transition-colors outline-none"
-                >
-                  {/* <CustomImage
+              {categories?.map((category) => (
+                <div key={category._id} className="flex items-center space-x-2">
+                  <button
+                    onMouseEnter={() => {
+                      setActiveCategoryId(category._id);
+                      setShowShopByCategory(true);
+                      setShowShopByBreed(false);
+                    }}
+                    className="flex items-center justify-center space-x-1 hover:text-[#CC7700] focus:text-[#E08A00] cursor-pointer transition-colors outline-none"
+                  >
+                    {/* <CustomImage
                     src={category.image}
                     alt={category.name}
                     className={`${category.name === "Dogs" ? "h-7" : "h-6.5"} w-auto rounded-3xl`}
                     width={24}
                     height={24}
                   /> */}
-                  <span className="text-lg">
-                    {category.name}
-                    <ChevronDown className="inline-block h-5 w-5 ml-1" />
-                  </span>
-                </button>
-              </div>
-            ))}
+                    <span className="text-lg">
+                      {category.name}
+                      <ChevronDown className="inline-block h-5 w-5 ml-1" />
+                    </span>
+                  </button>
+                </div>
+              ))}
               <button
                 onMouseEnter={() => {
                   setShowShopByBreed(true);
                   setShowShopByCategory(false);
                 }}
-                className="text-lg hover:text-[#F59A11] transition-colors outline-none focus:text-[#F59A11] flex items-center justify-center space-x-1 cursor-pointer"
+                className="text-lg hover:text-[#CC7700] transition-colors outline-none focus:text-[#E08A00] flex items-center justify-center space-x-1 cursor-pointer"
               >
                 <span className="text-lg">Shop By Breed</span>
                 <ChevronDown className="inline-block h-5 w-5 ml-1" />
@@ -448,62 +450,62 @@ const Category = () => {
         </div>
       )}
 
-        {/* Desktop Dropdowns */}
-        {showShopByCategory && activeCategoryId && !isMobileMenuOpen && (
-          <div className="fixed top-[122px] left-0 right-0 z-40 bg-white shadow-lg">
-            <div 
-              onMouseEnter={() => setShowShopByCategory(true)}
-              onMouseLeave={() => setShowShopByCategory(false)}
-            >
-              <Dropdown
-                icon={categories.find((category) => category._id === activeCategoryId)?.image}
-                title="Categories"
-                sections={getSectionsForCategory(activeCategoryId)}
-                onClose={() => setShowShopByCategory(false)}
-                onClick={handleCollectionClick}
-              />
-            </div>
+      {/* Desktop Dropdowns */}
+      {showShopByCategory && activeCategoryId && !isMobileMenuOpen && (
+        <div className="fixed top-[122px] left-0 right-0 z-40 bg-white shadow-lg">
+          <div
+            onMouseEnter={() => setShowShopByCategory(true)}
+            onMouseLeave={() => setShowShopByCategory(false)}
+          >
+            <Dropdown
+              icon={categories.find((category) => category._id === activeCategoryId)?.image}
+              title="Categories"
+              sections={getSectionsForCategory(activeCategoryId)}
+              onClose={() => setShowShopByCategory(false)}
+              onClick={handleCollectionClick}
+            />
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Shop By Breed - Desktop */}
-        {showShopByBreed && (
-          <div className="absolute left-0 right-0 w-full bg-white shadow-lg p-4 md:p-6 z-10">
-            <div 
-              onMouseEnter={() => setShowShopByBreed(true)}
-              onMouseLeave={() => setShowShopByBreed(false)}
+      {/* Shop By Breed - Desktop */}
+      {showShopByBreed && (
+        <div className="absolute left-0 right-0 w-full bg-white shadow-lg p-4 md:p-6 z-10">
+          <div
+            onMouseEnter={() => setShowShopByBreed(true)}
+            onMouseLeave={() => setShowShopByBreed(false)}
+          >
+            <CustomCarousel
+              className="max-w-full"
+              itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
+              showArrows={true}
             >
-              <CustomCarousel
-                className="max-w-full"
-                itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
-                showArrows={true}
-              >
-                {loading
-                  ? Array(6)
-                      .fill(0)
-                      .map((_, i) => <Skeleton key={i} className="w-24 h-24" />)
-                  : breeds.map((breed) => (
-                      <Link
-                        key={breed._id}
-                        href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
-                        className="text-center hover:scale-105 transition-transform cursor-pointer"
-                      >
-                        <CustomImage
-                          src={breed.image}
-                          alt={breed.name}
-                          className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-gray-200 mx-auto"
-                          width={96}
-                          height={96}
-                        />
-                        <p className="text-center text-sm mt-2 line-clamp-2">
-                          {breed.name}
-                        </p>
-                      </Link>
-                    ))}
-              </CustomCarousel>
-            </div>
+              {loading
+                ? Array(6)
+                  .fill(0)
+                  .map((_, i) => <Skeleton key={i} className="w-24 h-24" />)
+                : breeds.map((breed) => (
+                  <Link
+                    key={breed._id}
+                    href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="text-center hover:scale-105 transition-transform cursor-pointer"
+                  >
+                    <CustomImage
+                      src={breed.image}
+                      alt={breed.name}
+                      className="w-20 h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-2 border-gray-200 mx-auto"
+                      width={96}
+                      height={96}
+                    />
+                    <p className="text-center text-sm mt-2 line-clamp-2">
+                      {breed.name}
+                    </p>
+                  </Link>
+                ))}
+            </CustomCarousel>
           </div>
-        )}
+        </div>
+      )}
     </>
   );
 };

@@ -98,8 +98,8 @@ const PriceAndCartDisplay = ({
         autoClose: 1500,
       });
       try {
-        const currentPath = window.location.pathname + window.location.search + window.location.hash;
-        dispatch(setLoginRedirectUrl(currentPath));
+        // Set cart page as redirect URL instead of current page
+        dispatch(setLoginRedirectUrl("/cart"));
       } catch (_) { }
       router.push("/");
       dispatch(openLoginPopup({}));

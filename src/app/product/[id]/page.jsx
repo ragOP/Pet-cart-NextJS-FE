@@ -167,7 +167,7 @@ const ProductPage = ({ params }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-8 md:px-[10%]">
         {/* Left: Images */}
-        <div className="min-h-[500px]">
+        <div className="md:min-h-[500px]">
           {data.isBestSeller && (
             <div className="absolute top-4 left-4 bg-[#5BC5E5] text-white px-3 py-1 rounded-md text-sm font-semibold z-10">
               BESTSELLER
@@ -188,16 +188,14 @@ const ProductPage = ({ params }) => {
               {serviceChips.map((chip, index) => {
                 const IconComponent = chip.icon;
                 return (
-                  <div key={index} className={`${chip.bgColor} border border-gray-200/50 rounded-lg px-2 py-1.5 shadow-sm flex items-center gap-1.5 hover:shadow-md transition-all duration-200`}>
+                  <div key={index} className={`${chip.bgColor} border border-gray-200/50 rounded-lg px-2 py-1.5 md:px-4 py-3  shadow-sm flex items-center gap-1.5 hover:shadow-md transition-all duration-200`}>
                     <div className={`${chip.iconBg} p-1 rounded-full flex items-center justify-center`}>
                       <IconComponent className={`w-3 h-3 ${chip.color}`} />
                     </div>
-                    <span className="text-xs font-medium text-gray-700">{chip.text}</span>
+                    <span className="text-xs md:text-sm font-medium text-gray-700">{chip.text}</span>
                   </div>
                 );
               })}
-
-
             </div>
           </div>
         </div>
@@ -238,6 +236,7 @@ const ProductPage = ({ params }) => {
                 stock: data.stock,
                 weight: data.weight,
                 images: data.images,
+                productLabel: data.productLabel,
                 attributes: {
                   'Size': 'Default'
                 },

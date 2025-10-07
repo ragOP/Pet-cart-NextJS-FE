@@ -130,7 +130,8 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
           {showPrevious && (
             <CarouselPrevious 
               className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white/90 hover:bg-white shadow-lg border-0"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setCurrentSlide(prev => Math.max(0, prev - 1));
               }}
             />

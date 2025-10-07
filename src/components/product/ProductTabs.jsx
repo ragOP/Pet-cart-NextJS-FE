@@ -81,7 +81,7 @@ const ProductTabs = ({ items }) => {
   };
 
   return (
-    <div className="w-full mt-4 px-[10%]">
+    <div className="w-full mt-4 md:px-[10%]">
       {/* Desktop Tab Design */}
       <div className="hidden md:block">
         <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import offIcon from "@/assets/bestseller/off.png";
 import vegIcon from "@/assets/bestseller/veg-icon.png";
 import paswIcon from "@/assets/bestseller/paws.png";
@@ -17,6 +17,10 @@ import "@/styles/hide-scrollbar.css";
 import { useRouter } from "next/navigation";
 
 const LastMinuteAddOns = () => {
+  const [api, setApi] = useState(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  
   const router = useRouter();
   const params = {
     page: 1,
@@ -28,6 +32,28 @@ const LastMinuteAddOns = () => {
     queryFn: () => getProducts(params),
     select: (res) => res?.data?.data || [],
   });
+
+  // Update scroll states when API changes
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setCanScrollLeft(api.canScrollPrev());
+      setCanScrollRight(api.canScrollNext());
+    };
+
+    // Set initial state
+    onSelect();
+
+    // Listen for changes
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [api]);
 
   const onNavigateToProduct = (id) => {
     router.push(`/product/${id}`);
@@ -51,10 +77,17 @@ const LastMinuteAddOns = () => {
 
       {/* Carousel */}
       <CustomCarousel
-        className="hide-scrollbar min-h-[320px] flex items-center justify-center"
-        contentClassName="gap-4 flex items-center justify-center min-h-[280px]"
-        itemClassName="min-w-fit-content max-w-fit-content flex flex-col items-center justify-center"
+        className="hide-scrollbar min-h-[320px]"
+        contentClassName="gap-4"
+        itemClassName="flex flex-col items-center"
         showArrows={true}
+        canScrollLeft={canScrollLeft}
+        canScrollRight={canScrollRight}
+        setApi={setApi}
+        opts={{
+          align: "start",
+          loop: false
+        }}
       >
         {isLoading && (
           <div className="flex flex-1 justify-center items-center w-full h-full min-h-[280px]">
@@ -71,7 +104,7 @@ const LastMinuteAddOns = () => {
           data.map((product) => (
             <CarouselItem
               key={product._id || product.id}
-              className="flex flex-col items-center justify-center px-2"
+              className="basis-auto min-w-0"
             >
               <BestSellerProduct
                 product={{
@@ -81,7 +114,7 @@ const LastMinuteAddOns = () => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-72 h-auto cursor-pointer"
+                className="w-[280px] cursor-pointer"
                 onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>

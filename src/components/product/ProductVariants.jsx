@@ -71,7 +71,7 @@ const ProductVariants = ({
         >
           <div className={`${isSelected ? 'bg-[#004E6A] text-white' : 'bg-gray-100 text-gray-800'} text-center ${headerPadding}`}>
             <div className={labelTextSize}>
-              {isMainProduct ? formatWeight(variant.weight) || 'Default' : variant?.variantName}
+              {isMainProduct ? formatWeight(variant.productLabel) || 'Default' : variant?.variantName}
             </div>
           </div>
           <div className={`bg-white text-center ${contentPadding}`}>
@@ -122,22 +122,28 @@ const ProductVariants = ({
         {variants.length > itemsToShow && (
           <>
             <button
-              onClick={prevSlide}
+              onClick={(e) => {
+                e.stopPropagation();
+                prevSlide();
+              }}
               disabled={currentIndex === 0}
-              className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center shadow-md transition-all ${
+              className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 w-6 h-6 bg-white border border-gray-300 rounded-full flex items-center justify-center shadow-md transition-all ${
                 currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
               }`}
             >
-              <ChevronLeft className="w-4 h-4 text-gray-600" />
+              <ChevronLeft className="w-3 h-3 text-gray-600" />
             </button>
             <button
-              onClick={nextSlide}
+              onClick={(e) => {
+                e.stopPropagation();
+                nextSlide();
+              }}
               disabled={currentIndex === maxIndex}
-              className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-8 h-8 bg-white border border-gray-300 rounded-full flex items-center justify-center shadow-md transition-all ${
+              className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 w-6 h-6 bg-white border border-gray-300 rounded-full flex items-center justify-center shadow-md transition-all ${
                 currentIndex === maxIndex ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
               }`}
             >
-              <ChevronRight className="w-4 h-4 text-gray-600" />
+              <ChevronRight className="w-3 h-3 text-gray-600" />
             </button>
           </>
         )}
