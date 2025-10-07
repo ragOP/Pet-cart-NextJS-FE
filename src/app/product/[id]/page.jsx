@@ -23,7 +23,7 @@ import { formatWeight } from "@/utils/formatWeight";
 
 const ProductPage = ({ params }) => {
   const { id } = React.use(params);
-  const [selectedVariant, setSelectedVariant] = useState(null);
+  const [selectedVariant, setSelectedVariant] = useState('main-product');
   const [selectedImage, setSelectedImage] = useState(0);
   const [pincode, setPincode] = useState("");
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
@@ -134,14 +134,17 @@ const ProductPage = ({ params }) => {
       ? {} // Empty object means use main product data
       : data.variants?.find((variant) => variant._id === selectedVariant) || {};
 
+  // Combine variant/product images with common images
+  const currentImages = [
+    ...(currentVariant.images?.length ? currentVariant.images : data.images || []),
+    ...(data.commonImages || []),
+  ];
+
   // Debug log to see what's happening
   console.log('Selected Variant:', selectedVariant);
   console.log('Current Variant:', currentVariant);
+  console.log('Current Images:', currentImages);
   console.log('Main Product Data:', { price: data.price, salePrice: data.salePrice, stock: data.stock });
-
-  const currentImages = [
-    ...(currentVariant.images?.length ? currentVariant.images : data.images || []),
-  ];
 
   const mainImage = currentImages[selectedImage] || currentImages[0];
 
@@ -149,6 +152,11 @@ const ProductPage = ({ params }) => {
     // setSelectedVariant(data.variants?.[0]?._id || null);
     setSelectedImage(0);
   }, [data]);
+
+  // Reset selected image when variant changes
+  useEffect(() => {
+    setSelectedImage(0);
+  }, [selectedVariant]);
 
   if (isLoading)
     return (
@@ -174,6 +182,7 @@ const ProductPage = ({ params }) => {
             </div>
           )}
           <ImageGallery
+            key={selectedVariant}
             images={currentImages}
             selectedImage={selectedImage}
             selectedVariant={selectedVariant}
@@ -249,18 +258,18 @@ const ProductPage = ({ params }) => {
             variantLabel="10KG (2x5KG)"
             showDiscount={true}
             size="large"
-            selectedVariant={selectedVariant || 'main-product'}
+            selectedVariant={selectedVariant}
             onVariantSelect={onSelectVariant}
             isSelectable={true}
           />
 
           <PriceAndCartDisplay
-            key={selectedVariant || 'main-product'} // Force re-render when variant changes
+            key={selectedVariant} // Force re-render when variant changes
             stock={currentVariant.stock ?? data.stock}
             price={currentVariant.price ?? data.price}
             salePrice={currentVariant.salePrice ?? data.salePrice}
             productId={data._id}
-            variantId={selectedVariant}
+            variantId={selectedVariant === 'main-product' ? null : selectedVariant}
             quantity={1}
             quantityVariant="new"
           />

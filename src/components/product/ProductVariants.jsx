@@ -71,7 +71,7 @@ const ProductVariants = ({
         >
           <div className={`${isSelected ? 'bg-[#004E6A] text-white' : 'bg-gray-100 text-gray-800'} text-center ${headerPadding}`}>
             <div className={labelTextSize}>
-              {isMainProduct ? variant.productLabel || 'Default' : variant?.variantName}
+              {isMainProduct ? variant.productLabel || formatWeight(variant.weight) : variant?.variantName}
             </div>
           </div>
           <div className={`bg-white text-center ${contentPadding}`}>

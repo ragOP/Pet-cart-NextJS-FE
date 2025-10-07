@@ -10,6 +10,8 @@ import {
 import ReactImageMagnify from "react-image-magnify";
 import { Check, Truck, Lock, CreditCard, Search } from "lucide-react";
 
+// Note: Carousel components are still used for mobile view
+
 // Service guarantee chips data
 const serviceChips = [
   {
@@ -151,53 +153,30 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
 
   return (
     <div className="space-y-3 bg-gray-50/30 rounded-xl p-3">
-      <div className="flex gap-3 min-h-[400px]">
-        {/* Left Thumbnail Carousel */}
-        <div className="w-20 flex-shrink-0">
-          <Carousel 
-            className="w-full h-full" 
-            orientation="vertical"
-            opts={{
-              startIndex: selectedImage,
-              dragFree: true,
-              containScroll: "trimSnaps",
-              onSelect: (api) => {
-                if (api) {
-                  const newIndex = api.selectedScrollSnap();
-                  onSelect(newIndex);
-                }
-              }
-            }}
-          >
-            <CarouselContent className="h-[400px] flex flex-col gap-1.5 p-0 m-0">
-              {images.map((img, idx) => (
-                <CarouselItem key={selectedVariant ? images[idx] : idx} className="p-0 m-0">
-                  <button
-                    onClick={() => onSelect(idx)}
-                    className={`w-full border-2 rounded-lg overflow-hidden transition-all duration-300 ease-out transform hover:scale-105 active:scale-95 ${selectedImage === idx ? "border-orange-400 shadow-md" : "border-gray-200 hover:border-gray-300"}`}
-                  >
-                    <CustomImage
-                      src={img}
-                      alt={`Product ${idx + 1}`}
-                      className="w-full h-20 object-contain bg-white rounded-md"
-                      width={80}
-                      height={80}
-                    />
-                  </button>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            {images.length > 4 && (
-              <>
-                <CarouselPrevious className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 z-10 w-6 h-6 bg-white/90 hover:bg-white shadow-lg border-0" />
-                <CarouselNext className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1 z-10 w-6 h-6 bg-white/90 hover:bg-white shadow-lg border-0" />
-              </>
-            )}
-          </Carousel>
+      <div className="flex gap-3 h-[500px]">
+        {/* Left Thumbnail Scroll */}
+        <div className="w-20 flex-shrink-0 h-full overflow-y-auto hide-scrollbar">
+          <div className="flex flex-col gap-1.5">
+            {images.map((img, idx) => (
+              <button
+                key={selectedVariant ? images[idx] : idx}
+                onClick={() => onSelect(idx)}
+                className={`w-full border-2 rounded-lg overflow-hidden transition-all duration-200 cursor-pointer ${selectedImage === idx ? "border-orange-400 shadow-md" : "border-gray-200 hover:border-orange-400"}`}
+              >
+                <CustomImage
+                  src={img}
+                  alt={`Product ${idx + 1}`}
+                  className="w-full h-20 object-contain bg-white rounded-md"
+                  width={80}
+                  height={80}
+                />
+              </button>
+            ))}
+          </div>
         </div>
         
         {/* Main Image */}
-        <div className="flex-1 relative border border-gray-200 rounded-2xl p-1.5 shadow-sm min-h-[400px] bg-white">
+        <div className="flex-1 relative border border-gray-200 rounded-2xl p-1.5 shadow-sm h-full bg-white">
           <div
             className={`cursor-pointer border border-orange-300 rounded-xl p-1.5 magnify-container relative h-full transition-all duration-300 ease-out ${isMagnifyEnabled ? 'ring-2 ring-blue-400 shadow-lg' : 'hover:shadow-md'}`}
           >
