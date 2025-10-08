@@ -120,7 +120,7 @@ const AddressPage = () => {
 
   return (
     <RequireAuth>
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col h-full lg:border lg:border-[#F59A11] lg:rounded-lg">
         {/* Mobile Header */}
         <div className="lg:hidden px-4 py-4 border-b border-gray-200 bg-white">
           <h2 className="text-xl font-semibold text-gray-900">Saved Addresses</h2>

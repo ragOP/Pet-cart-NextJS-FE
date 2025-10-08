@@ -417,10 +417,8 @@ const CartPage = () => {
               ) : null}
             </div>
 
-            {/* GST Number Section */}
+            {/* Coupons Section */}
             <div className="border-b border-[#f59a10] px-4 py-4">
-              <GSTNumberSection />
-
               <AvailableCouponsNew
                 coupons={couponsData || []}
                 appliedCoupon={appliedCoupon}
@@ -439,6 +437,12 @@ const CartPage = () => {
             />
 
             <div className="border-b border-[#f59a10]" />
+            
+            {/* GST Number Section - Above Price Summary */}
+            <div className="px-4 pt-4">
+              <GSTNumberSection />
+            </div>
+
             {cartLoading ? (
               <CartSummarySkeleton />
             ) : (

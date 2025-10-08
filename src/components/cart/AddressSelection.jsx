@@ -159,14 +159,16 @@ const AddressSelection = ({
                         )}
                     </div>
 
-                    <DialogFooter className="p-4 border-t">
-                        <button
-                            onClick={() => setIsDialogOpen(false)}
-                            className="px-4 py-2 bg-[#F59A11] text-white rounded-lg hover:bg-[#E58A00] transition-colors w-full"
-                        >
-                            Confirm Selection
-                        </button>
-                    </DialogFooter>
+                    {addresses.length > 0 && (
+                        <DialogFooter className="p-4 border-t">
+                            <button
+                                onClick={() => setIsDialogOpen(false)}
+                                className="px-4 py-2 bg-[#F59A11] text-white rounded-lg hover:bg-[#E58A00] transition-colors w-full"
+                            >
+                                Confirm Selection
+                            </button>
+                        </DialogFooter>
+                    )}
                 </DialogContent>
             </Dialog>
         </>

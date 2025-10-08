@@ -9,6 +9,17 @@ const CartProgressBar = ({ cartTotal = 0 }) => {
     const [showDog, setShowDog] = useState(false);
     const [dogPosition, setDogPosition] = useState(0);
     const [animatedProgress, setAnimatedProgress] = useState(0);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detect mobile view
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Show dog after 2s delay
     useEffect(() => {
@@ -56,7 +67,7 @@ const CartProgressBar = ({ cartTotal = 0 }) => {
                     {showDog && (
                         <div 
                             className="absolute transform top-1 -translate-x-1/2 z-10"
-                            style={{ left: `${dogPosition + 1.5}%` }}
+                            style={{ left: `${dogPosition + (isMobile ? 5 : 1.5)}%` }}
                         >
                             <div className="w-20 h-20">
                                 <Lottie

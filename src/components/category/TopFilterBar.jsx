@@ -20,6 +20,7 @@ import {
   DrawerTitle,
   DrawerClose
 } from "@/components/ui/drawer";
+import VegSwitchButton from "../common/VegSwitchButton";
 
 const BrandCard = ({ brand, selected }) => {
   return (
@@ -127,25 +128,18 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
               </span>
             </div>
 
-            {/* Veg Filter Chip with Toggle */}
+            {/* Veg Filter with VegSwitchButton */}
             <div className="flex items-center gap-2">
-              <div className={`px-3 py-2 rounded-sm border transition-colors flex items-center justify-center ${
-                filters?.isVeg === "true"
-                  ? 'bg-white border-green-500'
-                  : 'bg-white border-gray-300'
-              }`}>
-                <Switch
-                  checked={filters?.isVeg === "true"}
-                  onCheckedChange={(checked) => {
-                    if (checked) {
-                      onChangeFilter({ isVeg: true });
-                    } else {
-                      onChangeFilter({ isVeg: null });
-                    }
-                  }}
-                  className="data-[state=checked]:bg-gray-200 data-[state=unchecked]:bg-gray-200 [&>span]:data-[state=checked]:bg-green-500 [&>span]:data-[state=unchecked]:bg-gray-400"
-                />
-              </div>
+              <VegSwitchButton
+                value={filters?.isVeg === "true"}
+                onValueChange={(checked) => {
+                  if (checked) {
+                    onChangeFilter({ isVeg: true });
+                  } else {
+                    onChangeFilter({ isVeg: null });
+                  }
+                }}
+              />
             </div>
 
             {/* Filter Category Chips */}
@@ -162,7 +156,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                       setHighlightedFilter(tab.key);
                       setOpen(true);
                     }}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isSelected
+                    className={`px-3 py-[0.4rem] rounded-md text-sm font-medium transition-colors ${isSelected
                         ? 'bg-[#fef3e2] border border-[#f19813] text-[#f19813]'
                         : 'bg-gray-200 border border-gray-300 text-gray-600 hover:bg-gray-300'
                       }`}
@@ -207,23 +201,18 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
               </span>
             </div>
 
-            {/* Mobile Veg Filter Chip with Toggle */}
+            {/* Mobile Veg Filter with VegSwitchButton */}
             <div className="flex items-center gap-2 pr-2">
-              <div className={`px-2 py-1.5 rounded-sm border transition-colors flex items-center justify-center ${
-                filters?.isVeg === "true"
-                  ? 'bg-white border-green-500'
-                  : 'bg-white border-gray-300'
-              }`}>
-                <Switch
-                  checked={filters?.isVeg === "true"}
-                  onCheckedChange={(checked) => {
+              <div className="scale-90">
+                <VegSwitchButton
+                  value={filters?.isVeg === "true"}
+                  onValueChange={(checked) => {
                     if (checked) {
                       onChangeFilter({ isVeg: true });
                     } else {
                       onChangeFilter({ isVeg: null });
                     }
                   }}
-                  className="data-[state=checked]:bg-gray-200 data-[state=unchecked]:bg-gray-200 [&>span]:data-[state=checked]:bg-green-500 [&>span]:data-[state=unchecked]:bg-gray-400 scale-75"
                 />
               </div>
             </div>
