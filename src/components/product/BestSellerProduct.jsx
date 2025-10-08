@@ -176,8 +176,8 @@ const BestSellerProduct = ({
         <ProductVariants
           variants={product.variants}
           maxDisplay={2}
-          variantLabel="10KG (2x5KG)"
           showDiscount={true}
+          showAllSelected={true}
         />
       </div>
 

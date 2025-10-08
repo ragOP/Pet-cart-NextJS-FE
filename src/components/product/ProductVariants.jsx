@@ -6,13 +6,13 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const ProductVariants = ({ 
   variants = [], 
   maxDisplay = 3, 
-  variantLabel = "",
   showDiscount = true,
   className = "",
   size = "small", // "small" or "large"
   selectedVariant = null,
   onVariantSelect = () => {},
-  isSelectable = false // New prop to differentiate between static and dynamic use cases
+  isSelectable = false, // New prop to differentiate between static and dynamic use cases
+  showAllSelected = false // New prop to show all variants as selected
 }) => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   
@@ -23,7 +23,7 @@ const ProductVariants = ({
   const isLarge = size === "large";
   const gapClass = isLarge ? "gap-2" : "gap-1";
   const marginClass = isLarge ? "mb-4" : "mb-2 sm:mb-2";
-  const containerClass = isLarge ? "rounded-lg border-2" : "rounded-md sm:rounded-lg border";
+  const containerClass = isLarge ? "rounded-sm border-2" : "rounded sm:rounded-sm border";
   const headerPadding = isLarge ? "py-1 px-2" : "py-0.5 px-0.5 sm:px-1";
   const contentPadding = isLarge ? "py-1 px-2" : "py-0.5 px-0.5 sm:px-1";
   const labelTextSize = isLarge ? "text-xs font-bold" : "text-[7px] sm:text-[8px] font-bold";
@@ -60,16 +60,19 @@ const ProductVariants = ({
       clickHandler = undefined;
     }
     
+    // Determine if this variant should appear selected
+    const appearSelected = showAllSelected || isSelected;
+    
     return (
       <div key={variant._id || index} className="relative flex-shrink-0">
         {/* Variant card */}
         <div 
           className={`${containerClass} overflow-hidden bg-white w-content ${cursorClass} transition-all duration-200 ${
-            isSelected ? 'border-[#004E6A] border-2' : 'border-gray-300'
+            appearSelected ? 'border-[#004E6A] border-1' : 'border-gray-300'
           }`}
           onClick={clickHandler}
         >
-          <div className={`${isSelected ? 'bg-[#004E6A] text-white' : 'bg-gray-100 text-gray-800'} text-center ${headerPadding}`}>
+          <div className={`${appearSelected ? 'bg-[#004E6A] text-white' : 'bg-gray-100 text-gray-800'} text-center ${headerPadding}`}>
             <div className={labelTextSize}>
               {isMainProduct ? variant.productLabel || formatWeight(variant.weight) : variant?.variantName}
             </div>
