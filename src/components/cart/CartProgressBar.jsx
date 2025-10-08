@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import Lottie from "lottie-react";
+import DogWalkingAnimation from "../../../public/Dogwalking.json";
 
 const CartProgressBar = ({ cartTotal = 0 }) => {
     // Calculate progress based on 10,000 Rs target
@@ -51,19 +52,20 @@ const CartProgressBar = ({ cartTotal = 0 }) => {
         <div className="w-full mb-6">
             <div className="flex flex-col">
                 {/* Dog Image positioned above progress bar based on progress */}
-                <div className="relative h-12">
+                <div className="relative h-16">
                     {showDog && (
                         <div 
-                            className="absolute top-0 transform -translate-x-1/2 z-10"
-                            style={{ left: `${dogPosition}%` }}
+                            className="absolute transform top-1 -translate-x-1/2 z-10"
+                            style={{ left: `${dogPosition + 1.5}%` }}
                         >
-                            <Image
-                                src="/cart_running.png"
-                                alt="Cart Running"
-                                width={50}
-                                height={50}
-                                className="w-14 h-14 object-contain"
-                            />
+                            <div className="w-20 h-20">
+                                <Lottie
+                                    animationData={DogWalkingAnimation}
+                                    loop={true}
+                                    autoplay={true}
+                                    style={{ width: '100%', height: '100%' }}
+                                />
+                            </div>
                         </div>
                     )}
                 </div>

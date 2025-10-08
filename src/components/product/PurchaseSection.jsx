@@ -10,7 +10,7 @@ const PurchaseSection = ({ pincode, onPincodeChange, onCheckDelivery, expectedDe
   return (
     <>
       {/* Delivery Information */}
-      <div className="bg-white px-2 border border-gray-200 md:px-6 py-3 md:py-4 rounded-lg space-y-4 shadow-sm">
+      <div className="bg-white px-2 border border-gray-200 md:px-4 py-3 md:py-4 rounded-lg space-y-4 shadow-sm">
         <h3 className="font-semibold text-gray-900">
           Delivery & Service Information
         </h3>

@@ -197,12 +197,12 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
                   },
                   largeImage: {
                     src: images[selectedImage],
-                    width: 1000,
-                    height: 1000,
+                    width: 2400,
+                    height: 2400,
                   },
                   enlargedImageContainerDimensions: {
-                    width: "150%",
-                    height: "150%",
+                    width: "200%",
+                    height: "200%",
                   },
                   isHintEnabled: false,
                   shouldHideHintAfterFirstActivation: true,

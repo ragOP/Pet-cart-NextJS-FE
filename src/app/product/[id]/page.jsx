@@ -278,7 +278,7 @@ const ProductPage = ({ params }) => {
           <div className="bg-white border border-gray-200 rounded-lg px-4 mb-2 py-3 shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="bg-green-100 p-2 rounded-full flex items-center justify-center">
+                <div className="bg-green-100 h-7 w-7 rounded-full flex items-center justify-center">
                   <span className="text-green-500 font-bold text-xs">%</span>
                 </div>
                 <h3 className="font-semibold text-gray-900 text-sm">
