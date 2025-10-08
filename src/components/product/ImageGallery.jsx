@@ -7,16 +7,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { X, ZoomIn } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-
-// Note: Carousel components are still used for mobile view
+import Zoom from 'react-medium-image-zoom';
+import 'react-medium-image-zoom/dist/styles.css';
 
 const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
   const [isMobile, setIsMobile] = useState(
     typeof window !== "undefined" ? window.innerWidth < 768 : false
   );
-  const [isZoomOpen, setIsZoomOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -26,12 +23,6 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  const handleImageClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsZoomOpen(true);
-  };
 
   // Early return after all hooks are declared
   if (!images || images.length === 0) return null;
@@ -120,44 +111,19 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
         
         {/* Main Image */}
         <div className="flex-1 relative border border-gray-200 rounded-2xl p-1.5 shadow-sm h-full bg-white">
-          <div
-            onClick={handleImageClick}
-            className="cursor-pointer border border-[#f19813] rounded-xl p-1.5 relative h-full transition-all duration-300 ease-out hover:shadow-md group"
-          >
-            <div className="absolute top-2 right-2 bg-black/50 text-white p-2 rounded-full z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-              <ZoomIn className="w-4 h-4" />
-            </div>
+          <div className="border border-[#f19813] rounded-xl p-1.5 relative h-full transition-all duration-300 ease-out hover:shadow-md">
             <div className="h-full flex items-center justify-center rounded-lg overflow-hidden">
-              <CustomImage
-                key={`main-${selectedImage}-${images[selectedImage]}`}
-                src={images[selectedImage]}
-                alt="Main Product"
-                className="w-full h-full object-contain"
-              />
+              <Zoom key={`zoom-${selectedImage}-${images[selectedImage]}`}>
+                <img
+                  src={images[selectedImage]}
+                  alt="Main Product"
+                  className="object-contain cursor-zoom-in"
+                />
+              </Zoom>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Zoom Dialog */}
-      <Dialog open={isZoomOpen} onOpenChange={setIsZoomOpen}>
-        <DialogContent className="max-w-7xl w-[95vw] h-[90vh] p-0 bg-white">
-          <button
-            onClick={() => setIsZoomOpen(false)}
-            className="absolute top-4 right-4 z-50 bg-gray-100 hover:bg-gray-200 p-2 rounded-full transition-colors shadow-lg"
-          >
-            <X className="w-6 h-6 text-gray-700" />
-          </button>
-          <div className="flex items-center justify-center p-8 h-full">
-            <img
-              key={`zoom-${selectedImage}-${images[selectedImage]}`}
-              src={images[selectedImage]}
-              alt="Zoomed Product"
-              className="max-w-full max-h-full object-contain"
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
