@@ -129,6 +129,7 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
             </div>
             <div className="h-full flex items-center justify-center rounded-lg overflow-hidden">
               <CustomImage
+                key={`main-${selectedImage}-${images[selectedImage]}`}
                 src={images[selectedImage]}
                 alt="Main Product"
                 className="w-full h-full object-contain"
@@ -140,7 +141,7 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
 
       {/* Zoom Dialog */}
       <Dialog open={isZoomOpen} onOpenChange={setIsZoomOpen}>
-        <DialogContent className="max-w-7xl w-[95vw] h-[90vh] p-0 bg-white border-2 border-[#f19813]">
+        <DialogContent className="max-w-7xl w-[95vw] h-[90vh] p-0 bg-white">
           <button
             onClick={() => setIsZoomOpen(false)}
             className="absolute top-4 right-4 z-50 bg-gray-100 hover:bg-gray-200 p-2 rounded-full transition-colors shadow-lg"
@@ -149,6 +150,7 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
           </button>
           <div className="flex items-center justify-center p-8 h-full">
             <img
+              key={`zoom-${selectedImage}-${images[selectedImage]}`}
               src={images[selectedImage]}
               alt="Zoomed Product"
               className="max-w-full max-h-full object-contain"

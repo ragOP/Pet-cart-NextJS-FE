@@ -174,8 +174,27 @@ const BestSellerProduct = ({
       {/* Variants */}
       <div className="flex-1 flex flex-col justify-center">
         <ProductVariants
-          variants={product.variants}
-          maxDisplay={2}
+          variants={[
+            // Main product as first option
+            {
+              _id: 'main-product',
+              productId: product._id,
+              sku: product.sku,
+              price: product.price,
+              salePrice: product.salePrice,
+              stock: product.stock,
+              weight: product.weight,
+              images: product.images,
+              productLabel: product.productLabel,
+              attributes: {
+                'Size': 'Default'
+              },
+              isMainProduct: true
+            },
+            // Then add all variants
+            ...(product.variants || [])
+          ]}
+          maxDisplay={9999}
           showDiscount={true}
           showAllSelected={true}
         />

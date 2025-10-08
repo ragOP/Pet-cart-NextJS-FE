@@ -141,10 +141,8 @@ const ProductPage = ({ params }) => {
   ];
 
   // Debug log to see what's happening
-  console.log('Selected Variant:', selectedVariant);
-  console.log('Current Variant:', currentVariant);
-  console.log('Current Images:', currentImages);
-  console.log('Main Product Data:', { price: data.price, salePrice: data.salePrice, stock: data.stock });
+  console.log('selectedImage', selectedImage);
+
 
   const mainImage = currentImages[selectedImage] || currentImages[0];
 
@@ -341,8 +339,6 @@ const ProductPage = ({ params }) => {
         isOpen={isCouponsDialogOpen}
         onClose={() => setIsCouponsDialogOpen(false)}
       />
-
-
     </div>
   );
 };
