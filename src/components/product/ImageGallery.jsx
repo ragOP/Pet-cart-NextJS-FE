@@ -87,7 +87,7 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
 
   return (
     <div className="space-y-3 bg-gray-50/30 rounded-xl p-3">
-      <div className="flex gap-3 h-[500px]">
+      <div className="flex gap-3">
         {/* Left Thumbnail Scroll */}
         <div className="w-20 flex-shrink-0 h-full overflow-y-auto hide-scrollbar">
           <div className="flex flex-col gap-1.5">
