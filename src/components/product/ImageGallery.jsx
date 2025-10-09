@@ -113,11 +113,22 @@ const ImageGallery = ({ images, selectedImage, selectedVariant, onSelect }) => {
         <div className="flex-1 relative border border-gray-200 rounded-2xl p-1.5 shadow-sm h-full bg-white">
           <div className="border border-[#f19813] rounded-xl p-1.5 relative h-full transition-all duration-300 ease-out hover:shadow-md">
             <div className="h-full flex items-center justify-center rounded-lg overflow-hidden">
-              <Zoom key={`zoom-${selectedImage}-${images[selectedImage]}`}>
+              <Zoom 
+                key={`zoom-${selectedImage}-${images[selectedImage]}`}
+                zoomMargin={40}
+                zoomImg={{
+                  src: images[selectedImage],
+                  style: {
+                    width: '90%',
+                    height: '90%',
+                    objectFit: 'contain'
+                  }
+                }}
+              >
                 <img
                   src={images[selectedImage]}
                   alt="Main Product"
-                  className="object-contain cursor-zoom-in"
+                  className="w-full h-full object-contain cursor-zoom-in"
                 />
               </Zoom>
             </div>
