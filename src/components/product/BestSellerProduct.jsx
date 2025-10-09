@@ -12,6 +12,8 @@ import PawLoader from "../loaders/PawLoader";
 import { useSelector } from "react-redux";
 import { selectToken } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
+import ProductVegIcon from "@/icons/ProductVegIcon";
+import ProductNonVegIcon from "@/icons/ProductNonVegIcon";
 
 const BestSellerProduct = ({
   product,
@@ -19,7 +21,7 @@ const BestSellerProduct = ({
   onClick,
 }) => {
   const [selectedImage, setSelectedImage] = React.useState(0);
-  const [buttonState, setButtonState] = useState('add'); // 'add', 'adding', 'added'
+  const [buttonState, setButtonState] = useState('add'); 
   const [showSuccess, setShowSuccess] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -47,7 +49,7 @@ const BestSellerProduct = ({
   const isProductInCart = cartData?.items?.some((item) => {
     return item.productId._id === product._id;
   });
-  
+
 
   const { mutate: addToCart, isPending } = useMutation({
     mutationFn: (payload) => addProductToCart(payload),
@@ -78,13 +80,13 @@ const BestSellerProduct = ({
 
   const handleAddtoCart = (e) => {
     e.stopPropagation();
-    
+
     // If button shows "GO TO CART", navigate to cart page
     if (buttonState === 'added') {
       router.push('/cart');
       return;
     }
-    
+
     setButtonState('adding');
     addToCart({ productId: product._id, variantId: null, quantity: 1 });
   };
@@ -99,7 +101,7 @@ const BestSellerProduct = ({
   return (
     <div
       onClick={onClick}
-      className={`p-3 sm:p-4 rounded-2xl sm:rounded-2xl bg-white shadow-xl flex flex-col group transition-all duration-200 ${className} border border-1 hover:border-[#f19813] relative w-full max-w-xs sm:max-w-sm h-[420px] sm:h-[520px]`}
+      className={`p-3 sm:p-4 rounded-2xl sm:rounded-2xl bg-white shadow-xl flex flex-col group transition-all duration-200 ${className} border border-1 hover:border-[#f19813] relative w-full max-w-xs sm:max-w-sm`}
     >
       {/* Product Image and Badge */}
       <div className="relative mb-2 sm:mb-4">
@@ -163,12 +165,8 @@ const BestSellerProduct = ({
             {product.brandId?.name || 'Brand'}
           </p>
         </div>
-        {product.isVeg === true && <div className="flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-green-600 rounded-sm bg-white ml-2">
-          <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-green-600 rounded-full"></div>
-        </div>}
-        {product.isVeg === false && <div className="flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-red-600 rounded-sm bg-white ml-2">
-          <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-red-600 rounded-full"></div>
-        </div>}
+        {product.isVeg === true && <ProductVegIcon />}
+        {product.isVeg === false && <ProductNonVegIcon />}
       </div>
 
       {/* Variants */}
@@ -231,15 +229,14 @@ const BestSellerProduct = ({
       {/* Add to Cart Button */}
       <div className="mt-auto">
         <button
-          className={`w-full relative overflow-hidden text-white py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer disabled:cursor-not-allowed min-h-[44px] touch-manipulation ${
-            buttonState === 'adding'
+          className={`w-full relative overflow-hidden text-white py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer disabled:cursor-not-allowed min-h-[44px] touch-manipulation ${buttonState === 'adding'
               ? "bg-[#F59A11] cursor-not-allowed"
               : buttonState === 'added'
                 ? "bg-[#F59A11] hover:bg-[#e18a0e]"
                 : isOutStock
                   ? "bg-gray-400"
                   : "bg-[#F59A11] hover:bg-[#e18a0e]"
-          }`}
+            }`}
           onClick={(e) => handleAddtoCart(e)}
           disabled={isPending || isOutStock}
         >
@@ -261,9 +258,8 @@ const BestSellerProduct = ({
             </div>
           )}
 
-          <div className={`flex items-center justify-center gap-1 transition-all duration-300 ${
-            buttonState === 'adding' || (buttonState === 'added' && showSuccess) ? 'opacity-0' : 'opacity-100'
-          }`}>
+          <div className={`flex items-center justify-center gap-1 transition-all duration-300 ${buttonState === 'adding' || (buttonState === 'added' && showSuccess) ? 'opacity-0' : 'opacity-100'
+            }`}>
             {buttonState === 'added' && !showSuccess ? (
               <>
                 <ShoppingCart className="w-4 h-4" />
