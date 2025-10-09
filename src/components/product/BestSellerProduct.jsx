@@ -14,6 +14,7 @@ import { selectToken } from "@/store/authSlice";
 import { useRouter } from "next/navigation";
 import ProductVegIcon from "@/icons/ProductVegIcon";
 import ProductNonVegIcon from "@/icons/ProductNonVegIcon";
+import QuickView from "./QuickView";
 
 const BestSellerProduct = ({
   product,
@@ -23,6 +24,7 @@ const BestSellerProduct = ({
   const [selectedImage, setSelectedImage] = React.useState(0);
   const [buttonState, setButtonState] = useState('add'); 
   const [showSuccess, setShowSuccess] = useState(false);
+  const [showQuickView, setShowQuickView] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
   const token = useSelector(selectToken);
@@ -110,16 +112,22 @@ const BestSellerProduct = ({
         </span>}
         {/* Expand/Fullscreen icons */}
         <div className="absolute z-5 top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 sm:gap-2">
-          <button className="w-6 h-6 sm:w-7 sm:h-7 bg-white rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+          <button 
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowQuickView(true);
+            }}
+            className="w-6 h-6 sm:w-7 sm:h-7 bg-white rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50"
+          >
             <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
             </svg>
           </button>
-          <button className="w-6 h-6 sm:w-7 sm:h-7 bg-white rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50">
+          {/* <button className="w-6 h-6 sm:w-7 sm:h-7 bg-white rounded border border-gray-300 flex items-center justify-center hover:bg-gray-50">
             <svg className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
             </svg>
-          </button>
+          </button> */}
         </div>
         <div className="w-full h-40 sm:h-48 pt-6 sm:pt-8 pb-4 sm:pb-6 px-3 sm:px-4 rounded-lg relative bg-[#F6F6F6] border border-[#f19813]">
           <CustomImage
@@ -155,22 +163,8 @@ const BestSellerProduct = ({
         </div>
       </div>
 
-      {/* Product Title and Veg Icon */}
-      <div className="flex justify-between items-start mb-2 sm:mb-3">
-        <div className="flex-1 pr-2">
-          <h3 className="text-xs sm:text-sm font-semibold leading-tight text-black mb-1 line-clamp-2">
-            {product.title}
-          </h3>
-          <p className="text-[#F59A11] font-bold text-xs sm:text-sm">
-            {product.brandId?.name || 'Brand'}
-          </p>
-        </div>
-        {product.isVeg === true && <ProductVegIcon />}
-        {product.isVeg === false && <ProductNonVegIcon />}
-      </div>
-
       {/* Variants */}
-      <div className="flex-1 flex flex-col justify-center">
+      <div className="mb-1">
         <ProductVariants
           variants={[
             // Main product as first option
@@ -199,31 +193,37 @@ const BestSellerProduct = ({
       </div>
 
       {/* Price Section */}
-      <div className="mb-3 sm:mb-4">
-        <div className="flex justify-between items-start">
+      <div className="mb-2">
+        <div className="flex justify-between items-center">
           <div className="flex-1">
-            <p className="text-[9px] sm:text-[10px] font-medium text-gray-500 mb-1">PRICE</p>
-            <p className="text-[#218032] text-xl sm:text-2xl font-bold mb-1">
+            <p className="text-[#218032] text-xl sm:text-2xl font-bold">
               ₹{product.salePrice || product.price}
             </p>
             {product.price !== product.salePrice && (
-              <p className="text-gray-500 font-medium text-[10px] sm:text-xs">
-                MRP <span className="line-through">₹{product.price}</span>
+              <p className="text-[#000] text-[11px] sm:text-[11px] -mt-2">
+                MRP <span className="line-through text-gray-500">₹{product.price}</span>
               </p>
             )}
           </div>
-          <div className="flex flex-col items-end mt-3 sm:mt-5">
-            {discount > 0 && (
-              <div className="relative bg-[#004E6A] text-white px-3 sm:px-5 py-0.5 sm:py-1 font-bold text-[10px] sm:text-xs mb-2 coupon-badge">
-                {Math.round(discount)}% OFF
-              </div>
-            )}
-            <div className="flex items-center text-[10px] sm:text-xs text-gray-600">
-              <span className="text-[#f19813] mr-1">⚡</span>
-              <span className="font-bold italic">17 OCT 2025</span>
-            </div>
+          <div className="flex items-center gap-2">
+            {product.isVeg === true && <ProductVegIcon />}
+            {product.isVeg === false && <ProductNonVegIcon />}
           </div>
         </div>
+      </div>
+
+      {/* Brand Name */}
+      <div className="mb-1">
+        <p className="text-[#F59A11] font-bold text-xs sm:text-sm">
+          {product.brandId?.name || 'Brand'}
+        </p>
+      </div>
+
+      {/* Product Title */}
+      <div className="mb-3 sm:mb-4">
+        <h3 className="text-xs sm:text-sm font-semibold leading-tight text-black line-clamp-2">
+          {product.title}
+        </h3>
       </div>
 
       {/* Add to Cart Button */}
@@ -235,8 +235,8 @@ const BestSellerProduct = ({
                 ? "bg-[#F59A11] hover:bg-[#e18a0e]"
                 : isOutStock
                   ? "bg-gray-400"
-                  : "bg-[#F59A11] hover:bg-[#e18a0e]"
-            }`}
+                    : "bg-[#F59A11] hover:bg-[#e18a0e]"
+             } rounded-lg`}
           onClick={(e) => handleAddtoCart(e)}
           disabled={isPending || isOutStock}
         >
@@ -273,6 +273,13 @@ const BestSellerProduct = ({
           </div>
         </button>
       </div>
+
+      {/* Quick View Modal */}
+      <QuickView 
+        product={product} 
+        isOpen={showQuickView} 
+        onClose={() => setShowQuickView(false)} 
+      />
     </div>
   );
 };

@@ -26,10 +26,10 @@ const ProductVariants = ({
   const containerClass = isLarge ? "rounded-sm border-2" : "rounded sm:rounded-sm border";
   const headerPadding = isLarge ? "py-1 px-2" : "py-[2px] px-1 sm:px-1";
   const contentPadding = isLarge ? "py-1 px-2" : "py-[2px] px-1 sm:px-1";
-  const labelTextSize = isLarge ? "text-xs font-bold" : "text-[7px] sm:text-[8px] font-bold";
-  const priceTextSize = isLarge ? "text-sm font-bold" : "text-[9px] sm:text-[10px] font-bold";
-  const mrpTextSize = isLarge ? "text-xs" : "text-[6px] sm:text-[7px]";
-  const discountTextSize = isLarge ? "text-xs font-extrabold" : "text-[6px] sm:text-[7px] font-extrabold";
+  const labelTextSize = isLarge ? "text-xs font-bold" : "text-[6px] sm:text-[7px] font-bold";
+  const priceTextSize = isLarge ? "text-sm font-bold" : "text-[7px] sm:text-[8px] font-bold";
+  const mrpTextSize = isLarge ? "text-xs" : "text-[5px] sm:text-[6px]";
+  const discountTextSize = isLarge ? "text-xs font-extrabold" : "text-[5px] sm:text-[6px] font-extrabold";
   const spaceClass = isLarge ? "space-x-2" : "space-x-0.5 sm:space-x-0.5";
 
   // For mobile carousel, show 2 items at a time
@@ -66,7 +66,7 @@ const ProductVariants = ({
     return (
       <div
         className={`${containerClass} overflow-hidden bg-white w-full ${cursorClass} transition-all duration-200 ${appearSelected ? 'border-[#004E6A] border-1' : 'border-gray-300'
-          } min-h-[60px]`}
+          } flex flex-col`}
         onClick={clickHandler}
       >
         <div className={`${appearSelected ? 'bg-[#004E6A] text-white' : 'bg-gray-100 text-gray-800'} text-center ${headerPadding}`}>
@@ -74,13 +74,13 @@ const ProductVariants = ({
             {isMainProduct ? variant.productLabel || formatWeight(variant.weight) : variant?.variantName}
           </div>
         </div>
-        <div className={`bg-white text-center ${contentPadding}`}>
+        <div className={`bg-white text-center ${contentPadding} flex-1 flex flex-col justify-center`}>
           <div className={`flex items-center justify-center ${spaceClass} flex-nowrap`}>
-            <span className={`${priceTextSize} text-black whitespace-nowrap`}>
+            <span className={`${priceTextSize} text-black whitespace-nowrap`} style={{ letterSpacing: '-0.3px' }}>
               ₹{variant.salePrice || variant.price}
             </span>
             {variant.price !== variant.salePrice && (
-              <div className={`${mrpTextSize} text-gray-500 line-through whitespace-nowrap`}>
+              <div className={`${mrpTextSize} text-gray-500 line-through whitespace-nowrap`} style={{ letterSpacing: '-0.7px' }}>
                 MRP {variant.price}
               </div>
             )}
@@ -101,10 +101,10 @@ const ProductVariants = ({
 
   return (
     <div className={`${marginClass} ${className}`}>
-      {/* Desktop: Show all variants in a flex wrap with 3 per row */}
+      {/* Desktop: Show all variants in a flex wrap with 4 per row */}
       <div className={`hidden md:flex flex-wrap ${size === "large" ? "gap-2" : "gap-1"} justify-start`}>
         {variants.slice(0, maxDisplay).map((variant, index) => (
-          <div key={variant._id || index} className="w-[calc(33.333%-0.25rem)] flex-shrink-0">
+          <div key={variant._id || index} className="w-[calc(25%-0.1875rem)] flex-shrink-0">
             {renderVariant(variant, index)}
           </div>
         ))}
