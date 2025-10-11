@@ -117,7 +117,7 @@ const HandPickedProducts = () => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-[280px] cursor-pointer"
+                className="min-w-[20rem] max-w-[20rem] min-h-full cursor-pointer"
                 onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>

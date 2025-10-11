@@ -4,6 +4,7 @@ import { Star, ShoppingCart } from 'lucide-react';
 import ProductVariants from './ProductVariants';
 import ProductVegIcon from '@/icons/ProductVegIcon';
 import ProductNonVegIcon from '@/icons/ProductNonVegIcon';
+import { formatPrice } from '@/utils/formatPrice';
 import {
     Dialog,
     DialogContent,
@@ -116,16 +117,16 @@ const QuickView = ({ product, isOpen, onClose }) => {
 
                         {/* Price and Veg Icon */}
                         <div className="flex justify-between items-center">
-                            <div>
-                                <p className="text-[#218032] text-2xl font-bold mb-1">
-                                    ₹{product.salePrice || product.price}
-                                </p>
-                                {product.price !== product.salePrice && (
-                                    <p className="text-gray-500 text-xs line-through">
-                                        MRP ₹{product.price}
-                                    </p>
-                                )}
-                            </div>
+                             <div>
+                                 <p className="text-[#218032] text-2xl font-bold mb-1">
+                                     ₹{formatPrice(product.salePrice || product.price)}
+                                 </p>
+                                 {product.price !== product.salePrice && (
+                                     <p className="text-gray-500 text-xs line-through">
+                                         MRP ₹{formatPrice(product.price)}
+                                     </p>
+                                 )}
+                             </div>
                             <div>
                                 {product.isVeg === true && <ProductVegIcon size={24} />}
                                 {product.isVeg === false && <ProductNonVegIcon size={24} />}

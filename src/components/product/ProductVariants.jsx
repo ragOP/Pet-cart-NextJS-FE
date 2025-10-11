@@ -1,6 +1,7 @@
 import React from "react";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import { formatWeight } from "@/utils/formatWeight";
+import { formatPrice } from "@/utils/formatPrice";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const ProductVariants = ({
@@ -77,11 +78,11 @@ const ProductVariants = ({
         <div className={`bg-white text-center ${contentPadding} flex-1 flex flex-col justify-center`}>
           <div className={`flex items-center justify-center ${spaceClass} flex-nowrap`}>
             <span className={`${priceTextSize} text-black whitespace-nowrap`} style={{ letterSpacing: '-0.3px' }}>
-              ₹{variant.salePrice || variant.price}
+              ₹{formatPrice(variant.salePrice || variant.price)}
             </span>
             {variant.price !== variant.salePrice && (
               <div className={`${mrpTextSize} text-gray-500 line-through whitespace-nowrap`} style={{ letterSpacing: '-0.7px' }}>
-                MRP {variant.price}
+                MRP {formatPrice(variant.price)}
               </div>
             )}
           </div>

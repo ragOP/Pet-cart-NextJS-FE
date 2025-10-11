@@ -13,7 +13,7 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
           <div className="flex flex-col gap-2 text-base">
             <div className="flex justify-between"><span>Total MRP</span><span className="line-through">₹{totalMrp.toFixed(2)}</span></div>
             <div className="flex justify-between text-green-600 font-medium">
-              <span>Discount of coupon on sale price</span><span>- ₹{couponDiscount.toFixed(2)}</span>
+              <span>Coupon discount</span><span>- ₹{couponDiscount.toFixed(2)}</span>
             </div>
             {cgst > 0 && <div className="flex justify-between"><span>CGST</span><span>₹{cgst.toFixed(2)}</span></div>}
             {sgst > 0 && <div className="flex justify-between"><span>SGST</span><span>₹{sgst.toFixed(2)}</span></div>}

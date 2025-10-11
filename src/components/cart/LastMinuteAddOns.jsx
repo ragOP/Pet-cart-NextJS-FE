@@ -114,7 +114,7 @@ const LastMinuteAddOns = () => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-[280px] cursor-pointer"
+                className="min-w-[280px] max-w-[280px] min-h-full cursor-pointer"
                 onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>

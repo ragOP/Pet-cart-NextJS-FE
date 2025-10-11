@@ -87,7 +87,7 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-70 cursor-pointer"
+                className="min-w-[300px] max-w-[300px] min-h-full cursor-pointer"
                 onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>
