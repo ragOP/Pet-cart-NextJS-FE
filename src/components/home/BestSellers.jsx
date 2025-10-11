@@ -17,6 +17,10 @@ import { CarouselItem } from "../ui/carousel";
 import { useRouter } from "next/navigation";
 
 const BestSellers = () =>{
+  const [api, setApi] = useState(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  
   const params = {
     page: 1,
     per_page: 20,
@@ -30,6 +34,28 @@ const BestSellers = () =>{
   });
 
   const router = useRouter();
+
+  // Update scroll states when API changes
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setCanScrollLeft(api.canScrollPrev());
+      setCanScrollRight(api.canScrollNext());
+    };
+
+    // Set initial state
+    onSelect();
+
+    // Listen for changes
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [api]);
 
   const onNavigateToProduct = (id) => {
     router.push(`/product/${id}`);
@@ -52,10 +78,19 @@ const BestSellers = () =>{
 
       {/* Carousel */}
       <CustomCarousel
-        className="hide-scrollbar min-h-[260px] flex items-center justify-center"
-        contentClassName="gap-0 flex items-center justify-center min-h-[220px]"
-        itemClassName="min-w-fit-content max-w-fit-content flex flex-col items-center justify-center"
+        className="hide-scrollbar min-h-[260px]"
+        contentClassName="gap-4"
+        itemClassName="flex flex-col items-center"
         showArrows={true}
+        canScrollLeft={canScrollLeft}
+        canScrollRight={canScrollRight}
+        setApi={setApi}
+        opts={{
+          align: "start",
+          loop: false,
+          dragFree: true,
+          containScroll: "trimSnaps"
+        }}
       >
         {isLoading && (
           <div className="flex flex-1 justify-center items-center w-full h-full min-h-[220px]">
@@ -72,7 +107,7 @@ const BestSellers = () =>{
           data.map((product) => (
             <CarouselItem
               key={product._id || product.id}
-              className="flex flex-col items-center justify-center"
+              className="basis-auto min-w-0"
             >
               <BestSellerProduct
                 product={{
@@ -82,7 +117,7 @@ const BestSellers = () =>{
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="w-70 cursor-pointer"
+                className="min-w-[20rem] max-w-[20rem] min-h-full cursor-pointer"
                 onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>

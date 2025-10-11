@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import ProductVegIcon from "@/icons/ProductVegIcon";
 import ProductNonVegIcon from "@/icons/ProductNonVegIcon";
 import QuickView from "./QuickView";
+import { formatPrice } from "@/utils/formatPrice";
 
 const BestSellerProduct = ({
   product,
@@ -103,7 +104,7 @@ const BestSellerProduct = ({
   return (
     <div
       onClick={onClick}
-      className={`p-3 sm:p-4 rounded-2xl sm:rounded-2xl bg-white shadow-xl flex flex-col group transition-all duration-200 ${className} border border-1 hover:border-[#f19813] relative w-full max-w-xs sm:max-w-sm`}
+      className={`p-3 sm:p-4 rounded-2xl sm:rounded-2xl bg-white shadow-xl flex flex-col group transition-all duration-200 border border-1 hover:border-[#f19813] relative ${className}`}
     >
       {/* Product Image and Badge */}
       <div className="relative mb-2 sm:mb-4">
@@ -197,11 +198,11 @@ const BestSellerProduct = ({
         <div className="flex justify-between items-center">
           <div className="flex-1">
             <p className="text-[#218032] text-xl sm:text-2xl font-bold">
-              ₹{product.salePrice || product.price}
+              ₹{formatPrice(product.salePrice || product.price)}
             </p>
             {product.price !== product.salePrice && (
-              <p className="text-[#000] text-[11px] sm:text-[11px] -mt-2">
-                MRP <span className="line-through text-gray-500">₹{product.price}</span>
+              <p className="text-[#000] text-[11px] sm:text-[11px] -mt-1">
+                MRP <span className="line-through text-gray-500">₹{formatPrice(product.price)}</span>
               </p>
             )}
           </div>

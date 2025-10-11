@@ -105,9 +105,11 @@ const Home = () => {
 
   return (
     <div
+    className="space-y-6"
       style={{
         // background: "linear-gradient(180deg, #FDF4E6 0%, #F7F5FF 100%)",
         background: "#fff"
+        
       }}
     >
       {sortedSections.map((section) => renderSection(section))}
