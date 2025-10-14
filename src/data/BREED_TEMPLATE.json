@@ -1,0 +1,157 @@
+{
+  "_comment": "Use this template to add a new breed. Copy this entire object and paste it into the appropriate category (dogs or cats) in shopByBreed.json",
+  
+  "id": "breed-name",
+  "name": "Breed Display Name",
+  "slug": "breed-name",
+  "image": "/path-to-image.png",
+  "description": "A brief description of the breed that will appear in the breed card and hero section.",
+  "category": "dogs",
+  
+  "characteristics": {
+    "size": "Small / Medium / Large",
+    "temperament": "Trait1, Trait2, Trait3",
+    "lifespan": "10-12 years",
+    "weight": "20-30 kg"
+  },
+  
+  "adaptability": {
+    "_comment": "Optional section - remove if not needed",
+    "hotWeatherTolerance": "28°C",
+    "coldWeatherTolerance": "8°C",
+    "description": "How the breed adapts to different climates...",
+    "image": "/adaptability-image.png"
+  },
+  
+  "diet": {
+    "_comment": "Optional section - remove if not needed",
+    "title": "DIET",
+    "subtitle": "Brief subtitle about diet considerations for this breed.",
+    "mainDescription": "<span class='text-[#0888B1] italic'>Breed Name</span> thrive on a <strong>balanced diet</strong> that includes...",
+    "image": "/diet-hero-image.png",
+    "tips": [
+      {
+        "number": "1",
+        "title": "First Diet Tip",
+        "description": "Detailed explanation of the first diet tip...",
+        "products": [
+          {
+            "id": 1,
+            "image": "/product-1.png",
+            "label": "Product Name",
+            "expandIcon": true
+          },
+          {
+            "id": 2,
+            "image": "/product-2.png",
+            "label": "Product Name 2",
+            "expandIcon": true
+          }
+        ]
+      },
+      {
+        "number": "2",
+        "title": "Second Diet Tip",
+        "description": "Detailed explanation of the second diet tip...",
+        "products": [
+          {
+            "id": 1,
+            "image": "/product-3.png",
+            "label": "Product Name 3",
+            "expandIcon": true
+          },
+          {
+            "id": 2,
+            "image": "/product-4.png",
+            "label": "Product Name 4",
+            "expandIcon": true
+          }
+        ]
+      }
+    ]
+  },
+  
+  "training": {
+    "_comment": "Optional section - remove if not needed",
+    "title": "BREED NAME TRAINING",
+    "mainDescription": "<span class='text-[#0888B1] italic'>Breed Name</span> require <strong>consistent training</strong> and...",
+    "image": "/training-hero-image.png",
+    "tips": [
+      {
+        "id": 1,
+        "title": "First Training Tip",
+        "description": "Detailed explanation of the first training tip...",
+        "image": "/training-tip-image.png",
+        "products": [
+          {
+            "image": "/training-product-1.png",
+            "label": "Training Product 1"
+          },
+          {
+            "image": "/training-product-2.png",
+            "label": "Training Product 2"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Second Training Tip",
+        "description": "Detailed explanation of the second training tip...",
+        "image": "/training-tip-image-2.png",
+        "products": [
+          {
+            "image": "/training-product-3.png",
+            "label": "Training Product 3"
+          },
+          {
+            "image": "/training-product-4.png",
+            "label": "Training Product 4"
+          }
+        ]
+      }
+    ]
+  },
+  
+  "grooming": {
+    "_comment": "Optional section - remove if not needed",
+    "title": "GROOMING",
+    "subtitle": "Brief subtitle about grooming needs of this breed.",
+    "mainDescription": "<span class='text-[#0888B1] italic'>Breed Name</span> have <strong>specific grooming needs</strong> that include...",
+    "image": "/grooming-hero-image.png",
+    "tips": [
+      {
+        "id": 1,
+        "title": "First Grooming Tip",
+        "description": "Detailed explanation of the first grooming tip...",
+        "image": "/grooming-tip-image.png",
+        "products": [
+          {
+            "image": "/grooming-product-1.png",
+            "label": "Grooming Product 1"
+          },
+          {
+            "image": "/grooming-product-2.png",
+            "label": "Grooming Product 2"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Second Grooming Tip",
+        "description": "Detailed explanation of the second grooming tip...",
+        "image": "/grooming-tip-image-2.png",
+        "products": [
+          {
+            "image": "/grooming-product-3.png",
+            "label": "Grooming Product 3"
+          },
+          {
+            "image": "/grooming-product-4.png",
+            "label": "Grooming Product 4"
+          }
+        ]
+      }
+    ]
+  }
+}
+

@@ -13,6 +13,7 @@ const CartCouponSection = ({ coupons, onApply, onRemove, appliedCoupon, cartTota
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCouponId, setSelectedCouponId] = useState(null);
+  const [manualCouponCode, setManualCouponCode] = useState("");
   const appliedCouponData = coupons?.find((coupon) => coupon._id === appliedCoupon);
 
   const handleApplyCoupon = (couponId) => {
@@ -24,6 +25,7 @@ const CartCouponSection = ({ coupons, onApply, onRemove, appliedCoupon, cartTota
     setIsDialogOpen(true);
     setSearchQuery(""); // Clear search when opening dialog
     setSelectedCouponId(null); // Reset selected coupon
+    setManualCouponCode(""); // Clear manual coupon code
   };
 
   const handleConfirmSelection = () => {
@@ -36,6 +38,38 @@ const CartCouponSection = ({ coupons, onApply, onRemove, appliedCoupon, cartTota
     onApply(selectedCouponId);
     toast.success("Coupon applied successfully!");
     setIsDialogOpen(false);
+  };
+
+  const handleApplyManualCoupon = () => {
+    const trimmedCode = manualCouponCode.trim().toUpperCase();
+    
+    if (!trimmedCode) {
+      toast.error("Please enter a coupon code");
+      return;
+    }
+
+    // Find the coupon by code
+    const foundCoupon = coupons?.find(
+      (coupon) => coupon.code.toUpperCase() === trimmedCode
+    );
+
+    if (!foundCoupon) {
+      toast.error("Invalid coupon code");
+      return;
+    }
+
+    // Check if coupon is valid
+    if (!isCouponValid(foundCoupon)) {
+      const status = getCouponStatus(foundCoupon);
+      toast.error(`Coupon is ${status.status.toLowerCase()}`);
+      return;
+    }
+
+    // Apply the coupon
+    onApply(foundCoupon._id);
+    toast.success("Coupon applied successfully!");
+    setIsDialogOpen(false);
+    setManualCouponCode("");
   };
 
   // Filter coupons based on search query
