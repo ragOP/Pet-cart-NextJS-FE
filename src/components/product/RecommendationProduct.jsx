@@ -17,11 +17,10 @@ import { CarouselItem } from "../ui/carousel";
 import "@/styles/hide-scrollbar.css";
 import { useRouter } from "next/navigation";
 
-const HandPickedProducts = ({ productId = null, type = "related", title = "Handpicked for you" }) => {
+const RecommendationProduct = ({ productId = null, type = "similar", title = "Recommended for you" }) => {
   const [api, setApi] = useState(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const carouselRef = useRef(null);
   
   const params = {
     page: 1,
@@ -31,7 +30,7 @@ const HandPickedProducts = ({ productId = null, type = "related", title = "Handp
 
   // Use recommendations API if productId is provided, otherwise use general products API
   const { data, isLoading, isError } = useQuery({
-    queryKey: productId ? ["recommendations", productId, type] : ["hand_picked", params],
+    queryKey: productId ? ["recommendations", productId, type] : ["recommended", params],
     queryFn: () => 
       productId 
         ? getRecommendations({ productId, type })
@@ -72,51 +71,12 @@ const HandPickedProducts = ({ productId = null, type = "related", title = "Handp
     };
   }, [api]);
 
-  // Add two-finger/trackpad scrolling support
-  useEffect(() => {
-    if (!api || !carouselRef.current) return;
-
-    const carouselElement = carouselRef.current.querySelector('[data-carousel-content]');
-    if (!carouselElement) return;
-
-    const handleWheel = (e) => {
-      // Check if it's a trackpad scroll (typically has smaller deltaY values and smoother scrolling)
-      const isTrackpad = Math.abs(e.deltaY) < 50;
-      
-      // For trackpad or horizontal scroll, let it scroll naturally
-      if (e.deltaX !== 0 || isTrackpad) {
-        e.preventDefault();
-        
-        // Get the scroll container
-        const scrollContainer = api.scrollSnapList();
-        const currentIndex = api.selectedScrollSnap();
-        
-        // Determine scroll direction and amount
-        const delta = e.deltaX || e.deltaY;
-        
-        if (Math.abs(delta) > 10) {
-          if (delta > 0 && api.canScrollNext()) {
-            api.scrollNext();
-          } else if (delta < 0 && api.canScrollPrev()) {
-            api.scrollPrev();
-          }
-        }
-      }
-    };
-
-    carouselElement.addEventListener('wheel', handleWheel, { passive: false });
-
-    return () => {
-      carouselElement.removeEventListener('wheel', handleWheel);
-    };
-  }, [api]);
-
   const onNavigateToProduct = (id) => {
     router.push(`/product/${id}`);
   };
 
   return (
-    <div ref={carouselRef} className="w-full py-3 bg-white mt-4">
+    <div className="w-full py-3 bg-white mt-4">
       {/* Header */}
       <div className="font-bold mb-4 font-gotham-rounded text-[28px] leading-[28.5px] tracking-[0.57px] align-middle flex flex-row gap-2">
         <CustomImage
@@ -127,7 +87,7 @@ const HandPickedProducts = ({ productId = null, type = "related", title = "Handp
           height={60}
         />
         <span className="space-x-2">
-        <span className="text-[#0888B1] text-2xl md:text-3xl">{title}</span>
+          <span className="text-[#0888B1] text-2xl md:text-3xl">{title}</span>
         </span>
       </div>
 
@@ -179,7 +139,7 @@ const HandPickedProducts = ({ productId = null, type = "related", title = "Handp
           ))}
         {data && data.length === 0 && !isLoading && (
           <div className="flex flex-1 w-full justify-center items-center">
-            <PrimaryEmptyState title="No bestsellers found." />
+            <PrimaryEmptyState title="No recommendations found." />
           </div>
         )}
       </CustomCarousel>
@@ -187,4 +147,5 @@ const HandPickedProducts = ({ productId = null, type = "related", title = "Handp
   );
 };
 
-export default HandPickedProducts;
+export default RecommendationProduct;
+

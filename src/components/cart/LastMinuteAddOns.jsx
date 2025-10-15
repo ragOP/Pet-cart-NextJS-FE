@@ -78,7 +78,7 @@ const LastMinuteAddOns = () => {
       {/* Carousel */}
       <CustomCarousel
         className="hide-scrollbar min-h-[320px]"
-        contentClassName="gap-4"
+        contentClassName=""
         itemClassName="flex flex-col items-center"
         showArrows={true}
         canScrollLeft={canScrollLeft}
@@ -114,7 +114,7 @@ const LastMinuteAddOns = () => {
                   offIcon,
                   label: product.title || product.name,
                 }}
-                className="min-w-[280px] max-w-[280px] min-h-full cursor-pointer"
+                className="min-w-[320px] max-w-[320px] min-h-full cursor-pointer"
                 onClick={() => onNavigateToProduct(product._id)}
               />
             </CarouselItem>

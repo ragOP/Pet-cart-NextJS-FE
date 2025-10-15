@@ -13,6 +13,7 @@ import ProductBreadcrumb from "@/components/product/ProductBreadcrumb";
 import RatingReviews from "@/components/product/RatingReviews";
 import ProductTabs from "@/components/product/ProductTabs";
 import HandPickedProducts from "@/components/product/HandpickedProducts";
+import RecommendationProduct from "@/components/product/RecommendationProduct";
 import CategoryBanner from "@/components/category/CategoryBanner";
 import { getReviewsByProductId } from "@/app/apis/getReviewsByProductId";
 import { checkDelivery } from "@/app/apis/checkDelivery";
@@ -324,7 +325,11 @@ const ProductPage = ({ params }) => {
         ]}
       />
 
-      <HandPickedProducts />
+      <HandPickedProducts 
+        productId={id} 
+        type="related" 
+        title="Handpicked For You"
+      />
 
       {isClient && (
         <div className="px-4 mb-4">
@@ -332,7 +337,11 @@ const ProductPage = ({ params }) => {
         </div>
       )}
 
-      <HandPickedProducts />
+      <RecommendationProduct 
+        productId={id} 
+        type="similar" 
+        title="Recommended For You"
+      />
 
       {/* Coupons Dialog */}
       <CouponsDialog

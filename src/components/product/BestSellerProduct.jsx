@@ -108,7 +108,7 @@ const BestSellerProduct = ({
     >
       {/* Product Image and Badge */}
       <div className="relative mb-2 sm:mb-4">
-        {product.isBestSeller && <span className="absolute z-5 top-2 sm:top-3 left-2 sm:left-3 bg-gradient-to-r from-[#1C83A8] via-[#48BDE6] to-[#13789D] text-white text-[10px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
+        {product.isBestSeller && <span className="absolute z-5 top-2 sm:top-2 left-2 sm:left-2 bg-gradient-to-r from-[#1C83A8] via-[#48BDE6] to-[#13789D] text-white text-[12px] sm:text-xs font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
           BESTSELLER
         </span>}
         {/* Expand/Fullscreen icons */}
@@ -130,7 +130,7 @@ const BestSellerProduct = ({
             </svg>
           </button> */}
         </div>
-        <div className="w-full h-40 sm:h-48 pt-6 sm:pt-8 pb-4 sm:pb-6 px-3 sm:px-4 rounded-lg relative bg-[#F6F6F6] border border-[#f19813]">
+        <div className="w-full h-60 sm:h-64 rounded-lg relative bg-[#F6F6F6] border border-[#f19813]">
           <CustomImage
             key={selectedImage}
             src={product.images[selectedImage]}
@@ -187,9 +187,12 @@ const BestSellerProduct = ({
             // Then add all variants
             ...(product.variants || [])
           ]}
-          maxDisplay={9999}
+          maxDisplay={2}
           showDiscount={true}
           showAllSelected={true}
+          onMoreClick={(e) => {
+            setShowQuickView(true);
+          }}
         />
       </div>
 

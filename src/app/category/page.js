@@ -73,7 +73,7 @@ export default function CategoryPage() {
 
   const params = {
     page,
-    per_page: 12,
+    per_page: 40,
     ...filters,
     ...(price_range && { price_range }),
     ...(selectedSubCategory?._id && { subCategoryId: selectedSubCategory._id }),
