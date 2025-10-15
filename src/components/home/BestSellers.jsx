@@ -79,7 +79,7 @@ const BestSellers = () =>{
       {/* Carousel */}
       <CustomCarousel
         className="hide-scrollbar min-h-[260px]"
-        contentClassName="gap-4"
+        contentClassName=""
         itemClassName="flex flex-col items-center"
         showArrows={true}
         canScrollLeft={canScrollLeft}
