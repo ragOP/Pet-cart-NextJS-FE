@@ -1,9 +1,41 @@
 import React from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, RefreshCw } from "lucide-react";
 import CustomImage from "../images/CustomImage";
 import "../../styles/hide-scrollbar.css";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { reorderPreviousOrder } from "@/app/apis/reorderPreviousOrder";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function OrderListItem({ order, onOrderClick, index }) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const { mutate: reorder, isPending: isReordering } = useMutation({
+    mutationFn: (orderId) => reorderPreviousOrder({ orderId }),
+    onSuccess: () => {
+      toast.success("Order items added to cart!", {
+        position: "top-right",
+        duration: 2000,
+      });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      // Navigate to cart after successful reorder
+      setTimeout(() => {
+        router.push("/cart");
+      }, 500);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to reorder", {
+        position: "top-right",
+        duration: 2000,
+      });
+    },
+  });
+
+  const handleReorder = (e) => {
+    e.stopPropagation();
+    reorder(order._id);
+  };
   const getStatusBadge = (status) => {
     const statusStyles = {
       DELIVERED: {
@@ -89,6 +121,16 @@ function OrderListItem({ order, onOrderClick, index }) {
             <p className="text-sm text-gray-600 mb-2 truncate">
               Rs. {order?.totalAmount.toFixed(2)}
             </p>
+
+            {/* Reorder Button */}
+            <button
+              onClick={handleReorder}
+              disabled={isReordering}
+              className="mt-2 bg-[#F59A11] hover:bg-[#E08900] text-white text-xs font-semibold px-3 py-1.5 rounded-md flex items-center gap-1.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isReordering ? 'animate-spin' : ''}`} />
+              {isReordering ? "Reordering..." : "Reorder"}
+            </button>
           </div>
         </div>
 

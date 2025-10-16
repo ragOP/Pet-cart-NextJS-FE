@@ -11,17 +11,9 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel";
 
 const QuickView = ({ product, isOpen, onClose }) => {
     const [selectedImage, setSelectedImage] = useState(0);
-    const [mobileCarouselApi, setMobileCarouselApi] = useState(null);
 
     const handleImageHover = (index) => {
         setSelectedImage(index);
@@ -35,22 +27,6 @@ const QuickView = ({ product, isOpen, onClose }) => {
             }, 0);
         }
     };
-
-    // Track mobile carousel changes
-    React.useEffect(() => {
-        if (!mobileCarouselApi) return;
-
-        const onSelect = () => {
-            setSelectedImage(mobileCarouselApi.selectedScrollSnap());
-        };
-
-        mobileCarouselApi.on("select", onSelect);
-        onSelect(); // Set initial
-
-        return () => {
-            mobileCarouselApi.off("select", onSelect);
-        };
-    }, [mobileCarouselApi]);
 
     // Combine product images with common images (like product page does)
     const allImages = [
@@ -76,120 +52,78 @@ const QuickView = ({ product, isOpen, onClose }) => {
                 <div className="px-4 lg:px-6 pb-4 lg:pb-6 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8" onClick={(e) => e.stopPropagation()}>
                     {/* Product Images - Left Side */}
                     <div className="space-y-4">
-                        {/* Desktop: Main Image with thumbnails below */}
-                        <div className="hidden lg:block space-y-4">
-                            {/* Main Image */}
-                            <div className="relative bg-[#F6F6F6] rounded-lg p-6 border border-[#f19813]">
-                                <CustomImage
-                                    key={selectedImage}
-                                    src={allImages[selectedImage]}
-                                    alt={product.title}
-                                    className="w-full h-80 object-contain"
-                                    width={500}
-                                    height={500}
-                                />
+                        {/* Main Image */}
+                        <div className="relative bg-[#F6F6F6] rounded-lg p-4 lg:p-6 border border-[#f19813]">
+                            <CustomImage
+                                key={selectedImage}
+                                src={allImages[selectedImage]}
+                                alt={product.title}
+                                className="w-full h-48 lg:h-80 object-contain"
+                                width={500}
+                                height={500}
+                            />
 
-                                {/* Rating */}
-                                {product.ratings?.average > 0 && (
-                                    <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                                        <Star className="h-2.5 w-2.5 fill-amber-400 stroke-amber-400" />
-                                        <span className="text-[10px] font-medium text-gray-700">
-                                            {product.ratings.average.toFixed(1)}
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Image Carousel Row */}
-                            {allImages && allImages.length > 1 && (
-                                <div className="relative p-4">
-                                    <Carousel
-                                        className="w-full"
-                                        opts={{
-                                            align: "start",
-                                            loop: true,
-                                            dragFree: true,
-                                        }}
-                                    >
-                                        <CarouselContent className="-mx-2 p-1">
-                                            {allImages.map((image, index) => (
-                                                <CarouselItem key={index} className="pl-2 basis-auto">
-                                                    <button
-                                                        onClick={() => setSelectedImage(index)}
-                                                        className={`w-20 h-20 rounded-lg border-2 transition-all duration-200 ${index === selectedImage
-                                                                ? 'border-[#f19813] shadow-md scale-105'
-                                                                : 'border-gray-200 hover:border-[#f19813] hover:scale-105'
-                                                            } bg-white overflow-hidden`}
-                                                    >
-                                                        <CustomImage
-                                                            src={image}
-                                                            alt={`${product.title} ${index + 1}`}
-                                                            className="w-full h-full object-contain"
-                                                            width={100}
-                                                            height={100}
-                                                        />
-                                                    </button>
-                                                </CarouselItem>
-                                            ))}
-                                        </CarouselContent>
-                                        <CarouselPrevious className="absolute -left-6 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white shadow-lg border-0 z-10" />
-                                        <CarouselNext className="absolute -right-6 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white shadow-lg border-0 z-10" />
-                                    </Carousel>
+                            {/* Rating */}
+                            {product.ratings?.average > 0 && (
+                                <div className="absolute bottom-2 left-2 flex items-center gap-1">
+                                    <Star className="h-3 w-3 lg:h-2.5 lg:w-2.5 fill-amber-400 stroke-amber-400" />
+                                    <span className="text-xs lg:text-[10px] font-medium text-gray-700">
+                                        {product.ratings.average.toFixed(1)}
+                                    </span>
                                 </div>
                             )}
                         </div>
 
-                        {/* Mobile: Scrollable Image Carousel */}
-                        <div className="lg:hidden">
-                            <Carousel
-                                className="w-full"
-                                setApi={setMobileCarouselApi}
-                                opts={{
-                                    align: "center",
-                                    loop: true,
-                                }}
-                            >
-                                <CarouselContent>
+                        {/* All Images Grid/Scroll */}
+                        {allImages && allImages.length > 1 && (
+                            <>
+                                {/* Desktop: Wrapping Grid */}
+                                <div className="hidden lg:flex flex-wrap gap-2">
                                     {allImages.map((image, index) => (
-                                        <CarouselItem key={index}>
-                                            <div className="relative bg-[#F6F6F6] rounded-lg p-4 border border-[#f19813]">
+                                        <button
+                                            key={index}
+                                            onClick={() => setSelectedImage(index)}
+                                            className={`w-20 h-20 rounded-lg border-2 transition-all duration-200 ${index === selectedImage
+                                                    ? 'border-[#f19813] shadow-md scale-105'
+                                                    : 'border-gray-200 hover:border-[#f19813] hover:scale-105'
+                                                } bg-white overflow-hidden flex-shrink-0`}
+                                        >
+                                            <CustomImage
+                                                src={image}
+                                                alt={`${product.title} ${index + 1}`}
+                                                className="w-full h-full object-contain"
+                                                width={100}
+                                                height={100}
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Mobile: Horizontal Scroll */}
+                                <div className="lg:hidden overflow-x-auto scrollbar-hide">
+                                    <div className="flex gap-2">
+                                        {allImages.map((image, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => setSelectedImage(index)}
+                                                className={`w-16 h-16 rounded-lg border-2 transition-all duration-200 ${index === selectedImage
+                                                        ? 'border-[#f19813] shadow-md'
+                                                        : 'border-gray-200'
+                                                    } bg-white overflow-hidden flex-shrink-0`}
+                                            >
                                                 <CustomImage
                                                     src={image}
                                                     alt={`${product.title} ${index + 1}`}
-                                                    className="w-full h-64 object-contain"
-                                                    width={400}
-                                                    height={400}
+                                                    className="w-full h-full object-contain"
+                                                    width={80}
+                                                    height={80}
                                                 />
-                                                
-                                                {/* Rating */}
-                                                {product.ratings?.average > 0 && index === 0 && (
-                                                    <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                                                        <Star className="h-3 w-3 fill-amber-400 stroke-amber-400" />
-                                                        <span className="text-xs font-medium text-gray-700">
-                                                            {product.ratings.average.toFixed(1)}
-                                                        </span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </CarouselItem>
-                                    ))}
-                                </CarouselContent>
-                                
-                                {/* Dots indicator */}
-                                {allImages.length > 1 && (
-                                    <div className="flex justify-center gap-1.5 mt-3">
-                                        {allImages.map((_, index) => (
-                                            <div
-                                                key={index}
-                                                className={`w-2 h-2 rounded-full transition-all ${
-                                                    index === selectedImage ? 'bg-[#f19813] w-6' : 'bg-gray-300'
-                                                }`}
-                                            />
+                                            </button>
                                         ))}
                                     </div>
-                                )}
-                            </Carousel>
-                        </div>
+                                </div>
+                            </>
+                        )}
                     </div>
 
                     {/* Product Details - Right Side */}
