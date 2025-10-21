@@ -18,6 +18,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useQuery } from "@tanstack/react-query";
+import { getCart } from "@/app/apis/getCart";
 
 const MobileMenu = React.memo(({
   logo,
@@ -34,7 +36,8 @@ const MobileMenu = React.memo(({
   onClearPincodeResult,
   isLoggedIn,
   user,
-  onLoginClick
+  onLoginClick,
+  cartItemCount
 }) => {
   return (
     <div
@@ -138,13 +141,20 @@ const MobileMenu = React.memo(({
                 <span className="text-gray-700">Track Order</span>
               </button>
               <button
-                className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition"
+                className="flex items-center space-x-3 w-full p-3 hover:bg-gray-50 rounded-xl transition relative"
                 onClick={() => {
                   router.push('/cart');
                   setIsMenuOpen(false);
                 }}
               >
-                <CustomImage src={cartIcon} alt="Cart" className="h-6 w-6" width={24} height={24} />
+                <div className="relative">
+                  <CustomImage src={cartIcon} alt="Cart" className="h-6 w-6" width={24} height={24} />
+                  {cartItemCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                      {cartItemCount}
+                    </span>
+                  )}
+                </div>
                 <span className="text-gray-700">Cart</span>
               </button>
             </>
@@ -217,6 +227,16 @@ const Header = ({ logo }) => {
   const menuRef = React.useRef(null);
   const debounceTimeoutRef = useRef(null);
   const showLoginPopup = useSelector(selectLoginPopupOpen);
+
+  // Get cart data
+  const { data: cartData } = useQuery({
+    queryKey: ["cart"],
+    queryFn: () => getCart({ params: {} }),
+    select: (res) => res?.data || null,
+    enabled: isLoggedIn,
+  });
+
+  const cartItemCount = cartData?.items?.length || 0;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -416,7 +436,11 @@ const Header = ({ logo }) => {
               onClick={() => router.push('/cart')}
             >
               <ShoppingCart size={22} />
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">2</span>
+              {cartItemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
             </button>
           </div>
         </div>
@@ -461,6 +485,7 @@ const Header = ({ logo }) => {
             isLoggedIn={isLoggedIn}
             user={user}
             onLoginClick={() => dispatch(openLoginPopup({}))}
+            cartItemCount={cartItemCount}
           />
         )}
       </div>
@@ -537,7 +562,7 @@ const Header = ({ logo }) => {
             />
           </button>
           <button
-            className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer"
+            className="rounded-full p-2 hover:bg-gray-100 focus:bg-gray-200 transition cursor-pointer relative"
             aria-label="Cart"
             type="button"
             onClick={() => router.push('/cart')}
@@ -549,6 +574,11 @@ const Header = ({ logo }) => {
               width={24}
               height={24}
             />
+            {cartItemCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                {cartItemCount}
+              </span>
+            )}
           </button>
           <HeaderUserSection />
         </div>

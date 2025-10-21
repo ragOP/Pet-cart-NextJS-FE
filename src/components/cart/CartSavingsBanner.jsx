@@ -12,7 +12,7 @@ const CartSavingsBanner = ({ savings }) => (
   >
     <span className="py-1 w-full text-center flex items-center justify-center gap-2">
       <SavingsIcon className="w-10 h-10" />
-      You're saving <span className="font-bold">₹{savings}</span> on this order
+      You're saving <span className="font-bold">₹{savings || 0}</span> on this order
     </span>
   </div>
 );
