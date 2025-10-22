@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +32,7 @@ import { updateProfile } from "@/app/apis/updateProfile";
 import heart from "@/assets/heart.png";
 
 const LoginPopup = ({ isOpen, onClose }) => {
-  const [form, setForm] = useState({ phoneNumber: "", otp: "", email: "" });
+  const [form, setForm] = useState({ phoneNumber: "", otp: "", email: "", referralCode: "" });
   const [step, setStep] = useState(1);
   const [countdown, setCountdown] = useState(0);
   const [otpLoading, setOtpLoading] = useState(false);
@@ -41,6 +41,16 @@ const LoginPopup = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const redirectUrl = useSelector(selectLoginRedirectUrl);
   const router = useRouter();
+
+  // Load referral code from sessionStorage if available
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const refCode = sessionStorage.getItem('referralCode');
+      if (refCode) {
+        setForm(prev => ({ ...prev, referralCode: refCode }));
+      }
+    }
+  }, []);
 
   React.useEffect(() => {
     let timer;
@@ -179,6 +189,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
       const apiResponse = await updateProfile({
         data: {
           email: form.email,
+          ...(form.referralCode && { referralCode: form.referralCode }),
         },
         token: token,
       });
@@ -192,6 +203,10 @@ const LoginPopup = ({ isOpen, onClose }) => {
           description: "Welcome to PetCaart.",
           position: "top-right",
         });
+        // Clear referral code from session storage
+        if (typeof window !== 'undefined') {
+          sessionStorage.removeItem('referralCode');
+        }
         setTimeout(() => {
           const goto = redirectUrl || "/";
           router.push(goto);
@@ -250,10 +265,14 @@ const LoginPopup = ({ isOpen, onClose }) => {
   };
 
   const resetForm = () => {
-    setForm({ phoneNumber: "", otp: "", email: "" });
+    setForm({ phoneNumber: "", otp: "", email: "", referralCode: "" });
     setStep(1);
     setCountdown(0);
     setIsExistingUser(null);
+    // Clear referral code from session storage
+    if (typeof window !== 'undefined') {
+      sessionStorage.removeItem('referralCode');
+    }
   };
 
   const handleClose = () => {
@@ -497,22 +516,45 @@ const LoginPopup = ({ isOpen, onClose }) => {
                   )}
 
                   {step === 3 && (
-                    <div>
-                      <label className="block text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
-                        Email Address
-                      </label>
-                      <Input
-                        type="email"
-                        name="email"
-                        placeholder="Enter your email address"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                        className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-3 text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-lg cursor-pointer"
-                      />
-                      <p className="text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm text-gray-500 mt-1 text-center">
-                        We'll use this to send you exclusive & offers.
-                      </p>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
+                          Email Address
+                        </label>
+                        <Input
+                          type="email"
+                          name="email"
+                          placeholder="Enter your email address"
+                          value={form.email}
+                          onChange={handleChange}
+                          required
+                          className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-3 text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-lg cursor-pointer"
+                        />
+                        <p className="text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm text-gray-500 mt-1 text-center">
+                          We'll use this to send you exclusive & offers.
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm font-medium text-gray-700 mb-2">
+                          Referral Code <span className="text-gray-400 font-normal">(Optional)</span>
+                        </label>
+                        <Input
+                          type="text"
+                          name="referralCode"
+                          placeholder="Enter referral code (if any)"
+                          value={form.referralCode}
+                          onChange={handleChange}
+                          className="w-full focus:ring-2 focus:ring-[#1F5163] focus:border-[#1F5163] border-gray-300 rounded-lg py-3 text-sm sm:text-sm md:text-sm lg:text-sm xl:text-base 2xl:text-lg uppercase"
+                          maxLength={20}
+                        />
+                        {form.referralCode && (
+                          <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                            <Check className="w-3 h-3" />
+                            Referral code will be applied
+                          </p>
+                        )}
+                      </div>
                     </div>
                   )}
 

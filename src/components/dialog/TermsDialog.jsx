@@ -12,32 +12,36 @@ const terms = [
   {
     title: "Reward Structure:",
     content: [
-      "When your friend signs up using your referral link and places their first order, both of you will receive a 50% discount coupon for your next purchase.",
-      "Discount applies to one-time use only and is valid on orders above ₹499.",
+      "When your friend signs up using your referral link and completes their first order, you will receive ₹150 credited to your wallet.",
+      "The wallet credit will be added after successful delivery of your friend's first order.",
+    ],
+  },
+  {
+    title: "Wallet Usage:",
+    content: [
+      "You can use up to 15% of your order value from your wallet balance for each purchase.",
+      "Wallet balance can be used across multiple orders until exhausted.",
     ],
   },
   {
     title: "Referral Limit:",
-    content: "You can invite as many friends as you like, but the 50% discount can be earned a maximum of 5 times per user during the offer period.",
-  },
-  {
-    title: "Discount Validity:",
-    content: [
-      "The discount coupon is valid for 30 days from the date of issue.",
-      "Offer not applicable on sale or promotional items.",
-    ],
+    content: "You can invite unlimited friends. There is no limit on the number of referrals or wallet credits you can earn.",
   },
   {
     title: "Order Status:",
-    content: "The reward will only be issued after your friend's first order is successfully delivered and not cancelled or returned.",
+    content: "The ₹150 wallet credit will only be issued after your friend's first order is successfully delivered and not cancelled or returned.",
   },
   {
     title: "Non-Transferable:",
-    content: "Referral rewards are non-transferable and cannot be redeemed for cash.",
+    content: "Wallet credits are non-transferable and cannot be withdrawn as cash. They can only be used for purchases on PetCaart.",
+  },
+  {
+    title: "Minimum Order Value:",
+    content: "There is no minimum order value to use wallet balance, but you can only use up to 15% of the order total per transaction.",
   },
   {
     title: "Abuse of Program:",
-    content: "Any fraudulent activity or misuse of the referral system may lead to disqualification from the program.",
+    content: "Any fraudulent activity or misuse of the referral system may lead to disqualification from the program and forfeiture of wallet credits.",
   },
   {
     title: "Modification Rights:",

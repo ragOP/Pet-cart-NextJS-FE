@@ -18,6 +18,8 @@ const ProfileForm = () => {
   // const [image, setImage] = useState(null);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+
+  console.log(authUser, "authUser");
   
   // Sync form state with Redux user data
   useEffect(() => {
