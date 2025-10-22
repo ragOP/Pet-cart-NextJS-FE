@@ -45,6 +45,7 @@ const CartPage = () => {
   const [params, setParams] = useState({
     address_id: getCookie("addressId"),
     coupon_id: appliedCoupon,
+    isUsingWalletAmount: isUsingWalletAmount,
   });
   const width = window.innerWidth;
   const type = width > 1024 ? "web" : width > 768 ? "tablet" : "mobile";
@@ -275,6 +276,7 @@ const CartPage = () => {
 
   const handleWalletToggle = (isUsing) => {
     setIsUsingWalletAmount(isUsing);
+    setParams((prev) => ({ ...prev, isUsingWalletAmount: isUsing }));
   };
 
   const handleConfirmCheckout = async ({ note, addressId }) => {
@@ -331,8 +333,7 @@ const CartPage = () => {
     }
   };
 
-  const totalPrice =
-    cartData?.items?.reduce((acc, item) => acc + item.total, 0) || 0;
+  const totalPrice = cartData?.items?.reduce((acc, item) => acc + item.total, 0) || 0;
   const shipping = cartData?.shippingDetails?.totalCost || 0;
   const finalPayableAmount = cartData?.total_price_with_shipping_and_discount || cartData?.total_price || 0;
   const estimatedDeliveryDate = cartData?.shippingDetails?.estimatedDate || "N/A";
@@ -361,9 +362,11 @@ const CartPage = () => {
         )}
 
         {/* Progress Bar */}
-        <div className="px-4 md:px-8 mt-2">
-          <CartProgressBar cartTotal={totalPrice} />
-        </div>
+        {!cartError && cartData && (
+          <div className="px-4 md:px-8 mt-2">
+            <CartProgressBar cartTotal={totalPrice} />
+          </div>
+        )}
 
         <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-9">
           <div className="w-full lg:w-1/2 flex flex-col gap-4">
@@ -452,6 +455,11 @@ const CartPage = () => {
 
             {cartLoading ? (
               <CartSummarySkeleton />
+            ) : cartError || !cartData ? (
+              <div className="p-4 text-center text-red-500">
+                <p className="font-medium">Unable to load cart summary</p>
+                <p className="text-sm text-gray-500 mt-1">Please try refreshing the page</p>
+              </div>
             ) : (
               <CartSummary
                 totalMrp={totalPrice}
