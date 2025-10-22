@@ -39,6 +39,7 @@ const CartPage = () => {
   const [isCheckoutDialogOpen, setIsCheckoutDialogOpen] = useState(false);
   const [deliveryLoading, setDeliveryLoading] = useState(false);
   const [expectedDeliveryDate, setExpectedDeliveryDate] = useState("");
+  const [isUsingWalletAmount, setIsUsingWalletAmount] = useState(false);
   const router = useRouter();
   const queryClient = useQueryClient();
   const [params, setParams] = useState({
@@ -272,6 +273,10 @@ const CartPage = () => {
   }, []);
 
 
+  const handleWalletToggle = (isUsing) => {
+    setIsUsingWalletAmount(isUsing);
+  };
+
   const handleConfirmCheckout = async ({ note, addressId }) => {
     console.log("addressId", addressId);
     try {
@@ -283,6 +288,7 @@ const CartPage = () => {
           couponId: appliedCoupon,
           addressId,
           note,
+          isUsingWalletAmount,
         },
       });
       const data = res.response.data;
@@ -305,6 +311,7 @@ const CartPage = () => {
             razorpayOrderId: response.razorpay_order_id,
             razorpayPaymentId: response.razorpay_payment_id,
             razorpaySignature: response.razorpay_signature,
+            isUsingWalletAmount,
           });
         },
         prefill: {
@@ -454,6 +461,7 @@ const CartPage = () => {
                 taxBreakup={{ cgst, sgst, igst, cess }}
                 couponDiscount={couponDiscount}
                 onPay={() => setIsCheckoutDialogOpen(true)}
+                onWalletToggle={handleWalletToggle}
               />
             )}
           </div>
