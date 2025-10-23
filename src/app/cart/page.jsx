@@ -488,6 +488,7 @@ const CartPage = () => {
                 couponDiscount={couponDiscount}
                 walletBalance={walletData}
                 walletDiscount={walletDiscount}
+                isUsingWallet={isUsingWalletAmount}
                 isAddressSelected={!!params.address_id}
                 onPay={() => setIsCheckoutDialogOpen(true)}
                 onWalletToggle={handleWalletToggle}

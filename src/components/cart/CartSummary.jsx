@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { Wallet, Info } from "lucide-react";
 
-const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0, walletBalance = 0, walletDiscount = 0, onPay, estimatedDeliveryDate, onWalletToggle, isAddressSelected = false }) => {
+const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0, walletBalance = 0, walletDiscount = 0, isUsingWallet = false, onPay, estimatedDeliveryDate, onWalletToggle, isAddressSelected = false }) => {
   const { cgst = 0, sgst = 0, igst = 0, cess = 0 } = taxBreakup;
-  const [isUsingWallet, setIsUsingWallet] = useState(false);
   const hasWalletAmount = walletBalance > 0;
 
   const handleWalletToggle = (checked) => {
-    setIsUsingWallet(checked);
     onWalletToggle?.(checked);
   };
 
