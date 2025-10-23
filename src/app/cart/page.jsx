@@ -29,6 +29,7 @@ import { getCookie } from "@/utils/cookies/getCookie";
 import { setCookie } from "@/utils/cookies/setCookie";
 import CheckoutDialog from "@/components/cart/CheckoutDialog";
 import { apiService } from "../apis/apiService";
+import { endpoints } from "../apis/endpoints";
 import AddressSelection from "@/components/cart/AddressSelection";
 
 const CartPage = () => {
@@ -73,6 +74,19 @@ const CartPage = () => {
     queryKey: ["addresses"],
     queryFn: () => getAddresses(),
     select: (data) => data?.data || [],
+  });
+
+  // Fetch user wallet balance
+  const { data: walletData } = useQuery({
+    queryKey: ["walletBalance"],
+    queryFn: async () => {
+      const response = await apiService({
+        endpoint: endpoints.checkUserWallet,
+        method: "GET",
+      });
+      return response.response;
+    },
+    select: (res) => res?.data?.walletBalance || 0,
   });
 
   const { mutate: addToCart } = useMutation({
@@ -468,6 +482,7 @@ const CartPage = () => {
                 estimatedDeliveryDate={estimatedDeliveryDate}
                 taxBreakup={{ cgst, sgst, igst, cess }}
                 couponDiscount={couponDiscount}
+                walletBalance={walletData}
                 onPay={() => setIsCheckoutDialogOpen(true)}
                 onWalletToggle={handleWalletToggle}
               />
