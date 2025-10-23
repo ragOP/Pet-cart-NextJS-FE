@@ -111,7 +111,7 @@ const CartPage = () => {
   });
 
   const { mutate: createOrderMutation } = useMutation({
-    mutationFn: (payload) => createOrder({ data: payload }),
+    mutationFn: (payload) => createOrder({ data: payload, params: { isUsingWalletAmount: isUsingWalletAmount } }),
     onSuccess: (res) => {
       if (res?.success) {
         toast.success("Order Placed", {
@@ -179,7 +179,7 @@ const CartPage = () => {
   const handleApplyCoupon = (couponId) => {
     // Find the coupon to validate
     const coupon = couponsData?.find(c => c._id === couponId);
-    
+
     if (!coupon) {
       toast.error("Coupon not found");
       return;
@@ -209,7 +209,7 @@ const CartPage = () => {
     if (!isCouponValid(coupon)) {
       const now = new Date();
       const endDate = new Date(coupon.endDate);
-      
+
       if (!coupon.active) {
         toast.error("This coupon is inactive");
       } else if (now < new Date(coupon.startDate)) {
@@ -331,9 +331,6 @@ const CartPage = () => {
               razorpayPaymentId: response.razorpay_payment_id,
               razorpaySignature: response.razorpay_signature,
             },
-            params: {
-              isUsingWalletAmount: isUsingWalletAmount,
-            }
           });
         },
         prefill: {
@@ -468,7 +465,7 @@ const CartPage = () => {
             />
 
             <div className="border-b border-[#f59a10]" />
-            
+
             {/* GST Number Section - Above Price Summary */}
             <div className="px-4 pt-4">
               <GSTNumberSection />
