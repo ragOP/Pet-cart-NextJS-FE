@@ -111,7 +111,7 @@ const CartPage = () => {
   });
 
   const { mutate: createOrderMutation } = useMutation({
-    mutationFn: (payload) => createOrder({ data: payload, params: { isUsingWalletAmount: isUsingWalletAmount } }),
+    mutationFn: (payload) => createOrder({ data: payload?.data, params: { isUsingWalletAmount: isUsingWalletAmount } }),
     onSuccess: (res) => {
       if (res?.success) {
         toast.success("Order Placed", {
