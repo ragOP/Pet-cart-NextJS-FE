@@ -31,6 +31,7 @@ import CheckoutDialog from "@/components/cart/CheckoutDialog";
 import { apiService } from "../apis/apiService";
 import { endpoints } from "../apis/endpoints";
 import AddressSelection from "@/components/cart/AddressSelection";
+import ReferralRewards from "@/components/cart/ReferralRewards";
 
 const CartPage = () => {
   const [pincode, setPincode] = useState("");
@@ -388,6 +389,8 @@ const CartPage = () => {
 
         <div className="flex flex-col lg:flex-row gap-8 mx-auto px-4 md:px-8 mt-9">
           <div className="w-full lg:w-1/2 flex flex-col gap-4">
+            {/* Referral Rewards */}
+            {/* <ReferralRewards /> */}
             {cartError ? (
               <div className="text-center text-red-500 py-4">
                 Failed to load cart data. Please try refreshing the page.
@@ -492,6 +495,7 @@ const CartPage = () => {
                 isAddressSelected={!!params.address_id}
                 onPay={() => setIsCheckoutDialogOpen(true)}
                 onWalletToggle={handleWalletToggle}
+                cartItemsCount={cartData?.items?.length || 0}
               />
             )}
           </div>

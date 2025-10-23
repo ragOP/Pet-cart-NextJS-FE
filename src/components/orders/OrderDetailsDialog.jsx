@@ -71,7 +71,7 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
                 <h4 className="font-semibold text-gray-900 mb-1 text-sm">
                   {item.productId.title}
                 </h4>
-                <p className="text-sm text-gray-600 mb-2">{item.productId.brand}</p>
+                <p className="text-sm text-gray-600 mb-2">{item.productId.brandId?.name || 'N/A'}</p>
                 <div className="flex items-center justify-between">
                   {/* <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">
                     {item.productId.size} | {calculateDiscountPercent(item.total + item.couponDiscount, item.price)}% Off
@@ -95,33 +95,29 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
               <span className="text-gray-900">₹{order.rawPrice.toFixed(2)}</span>
             </div>
 
-            {order.couponDiscount > 0 && (
+            {order.discountedAmount > 0 && (
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Coupon Discount</span>
-                <span className="text-gray-900">₹{order.couponDiscount}</span>
+                <span className="text-gray-600">Product Discount</span>
+                <span className="text-green-600">- ₹{order.discountedAmount.toFixed(2)}</span>
+              </div>
+            )}
+
+            {order.walletDiscount > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Wallet Discount</span>
+                <span className="text-green-600">- ₹{order.walletDiscount.toFixed(2)}</span>
               </div>
             )}
 
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Total Tax</span>
-              <span className="text-gray-900">₹{(order.amountAfterTax.toFixed(2) - order.discountedAmountAfterCoupon.toFixed(2)).toFixed(2)}</span>
+              <span className="text-gray-600">Subtotal</span>
+              <span className="text-gray-900">₹{order.discountedAmountAfterCoupon.toFixed(2)}</span>
             </div>
 
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Total Discount</span>
-              <span className="text-green-600">- {""}₹{order.discountedAmount.toFixed(2)}</span>
+              <span className="text-gray-600">Tax & Charges</span>
+              <span className="text-gray-900">₹{(order.totalAmount - order.discountedAmountAfterCoupon).toFixed(2)}</span>
             </div>
-
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Shipping Charges</span>
-              <span className="text-gray-900 font-medium">
-              ₹{(order.totalAmount.toFixed(2) - order.amountAfterTax.toFixed(2)).toFixed(2)}
-              </span>
-            </div>
-
-            {order.shippingCharges === 0 && (
-              <p className="text-xs text-gray-500">To be applied at checkout</p>
-            )}
 
             <div className="border-t pt-3 mt-3">
               <div className="flex justify-between font-semibold text-lg">

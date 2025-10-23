@@ -2,7 +2,7 @@ import React from "react";
 
 const CartSummarySkeleton = () => {
   return (
-    <div className="flex flex-col h-max justify-between bg-white rounded-xl border border-[#f59a10]">
+    <div className="flex flex-col h-max justify-between bg-white rounded-xl">
       <div className="flex-shrink-0">
         <div className="p-4">
           <div className="font-semibold text-lg mb-4 flex items-center gap-2">

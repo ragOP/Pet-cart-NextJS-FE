@@ -20,12 +20,14 @@ import "@/styles/hide-scrollbar.css";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUser, setUser } from "@/store/authSlice";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function WalletPage() {
     const [page, setPage] = useState(1);
     const perPage = 10;
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
+    const router = useRouter();
 
     // Fetch wallet info (balance)
     const {
@@ -51,7 +53,7 @@ export default function WalletPage() {
 
     // Fetch wallet transactions
     const {
-        data: walletData,
+        data: walletData = {},
         isLoading: isLoadingTransactions,
         isError,
         refetch: refetchTransactions,
@@ -70,7 +72,11 @@ export default function WalletPage() {
         });
     };
 
-    const transactions = walletData?.transactions || [];
+    const handleOrderIdClick = (orderId) => {
+        router.push(`/account/orders?orderId=${orderId}`);
+    };
+
+    const transactions = walletData?.data || [];
     const totalTransactions = walletData?.total || 0;
     const walletBalance = walletInfo?.walletBalance ?? user?.walletBalance ?? 0;
     const totalPages = Math.ceil(totalTransactions / perPage);
@@ -133,7 +139,7 @@ export default function WalletPage() {
                 {/* Transactions List */}
                 <div className="p-4 lg:p-6">
                     <h2 className="text-base lg:text-lg font-semibold text-gray-900 mb-4">
-                        Transaction History
+                        Transaction History ({totalTransactions || 0})
                     </h2>
 
                     {isFetchingTransactions ? (
@@ -187,7 +193,16 @@ export default function WalletPage() {
                                                     </p>
                                                     {transaction.orderId && (
                                                         <p className="text-xs text-gray-500 mt-1">
-                                                            Order ID: {transaction.orderId}
+                                                            Order ID:{" "}
+                                                            <span 
+                                                                className="text-blue-600 hover:text-blue-800 cursor-pointer font-mono underline decoration-dotted underline-offset-2"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleOrderIdClick(transaction.orderId);
+                                                                }}
+                                                            >
+                                                                #{transaction.orderId}
+                                                            </span>
                                                         </p>
                                                     )}
                                                 </div>

@@ -112,9 +112,8 @@ const AccountSidebar = ({ onItemClick }) => {
                 <Link
                   href={item.href}
                   onClick={onItemClick}
-                  className={`flex items-center gap-3 py-3 px-4 transition-colors ${
-                    isActive ? "bg-[#F59A11] text-white" : "hover:bg-orange-50"
-                  }`}
+                  className={`flex items-center gap-3 py-3 px-4 transition-colors ${isActive ? "bg-[#F59A11] text-white" : "hover:bg-orange-50"
+                    }`}
                 >
                   <Icon className="w-5 h-5" />
                   <span>{item.title}</span>
@@ -172,12 +171,7 @@ const SidebarProfileNameBlock = () => {
       <p className="text-sm text-gray-500">
         PetCaart member since {memberSince}
       </p>
-      {walletBalance > 0 && (
-        <div className="mt-2 flex items-center gap-1.5 bg-gradient-to-r from-[#F59A11]/10 to-[#E08900]/10 px-2 py-1 rounded-md">
-          <Wallet className="w-3.5 h-3.5 text-[#F59A11]" />
-          <span className="text-xs font-semibold text-[#F59A11]">₹{walletBalance.toFixed(2)}</span>
-        </div>
-      )}
+
     </div>
   );
 };
