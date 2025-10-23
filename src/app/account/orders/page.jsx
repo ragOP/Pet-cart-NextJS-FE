@@ -8,6 +8,8 @@ import OrdersList from "@/components/orders/OrdersList";
 import { useQuery } from "@tanstack/react-query";
 import { getOrders } from "@/app/apis/getOrders";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
+import { RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 import "@/styles/hide-scrollbar.css"
 
 export default function OrdersPage() {
@@ -18,6 +20,8 @@ export default function OrdersPage() {
     data: orders = [],
     isLoading,
     isError,
+    refetch: refetchOrders,
+    isFetching: isFetchingOrders,
   } = useQuery({
     queryKey: ["orders"],
     queryFn: getOrders,
@@ -34,29 +38,47 @@ export default function OrdersPage() {
     setSelectedOrder(null);
   };
 
+  const handleRefresh = async () => {
+    await refetchOrders();
+    toast.success("Orders updated successfully!", {
+      position: "top-right",
+      duration: 1500,
+    });
+  };
+
   return (
     <RequireAuth>
       <div className="bg-white border border-[#F59A1180] h-[80vh] overflow-y-auto rounded-lg shadow-sm hide-scrollbar">
         <div className="px-6 py-4 flex items-center justify-between mb-6 border-b border-[#F59A1180]">
           <h1 className="text-2xl font-semibold text-gray-900">My Orders</h1>
-          <button className="bg-[#F59A11] text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-[#E08900] transition-colors">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleRefresh}
+              disabled={isFetchingOrders}
+              className="bg-[#F59A11] hover:bg-[#E08900] text-white px-3 py-2 rounded-lg font-medium flex items-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm"
             >
-              <path
-                d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            TRACK ORDER
-          </button>
+              <RefreshCw className={`w-4 h-4 ${isFetchingOrders ? 'animate-spin' : ''}`} />
+              <span className="hidden sm:inline">Refresh</span>
+            </button>
+            <button className="bg-[#F59A11] text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 hover:bg-[#E08900] transition-colors">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              TRACK ORDER
+            </button>
+          </div>
         </div>
 
         {isLoading ? (

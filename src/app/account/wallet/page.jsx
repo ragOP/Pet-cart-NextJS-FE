@@ -76,6 +76,41 @@ export default function WalletPage() {
         router.push(`/account/orders?orderId=${orderId}`);
     };
 
+    const extractOrderIdFromDescription = (description) => {
+        if (!description) return null;
+        const orderMatch = description.match(/order\s+([a-f0-9]{24})/i);
+        return orderMatch ? orderMatch[1] : null;
+    };
+
+    const renderDescription = (description) => {
+        if (!description) return description;
+        
+        const orderId = extractOrderIdFromDescription(description);
+        if (!orderId) return description;
+
+        const beforeOrder = description.split(new RegExp(`order\\s+${orderId}`, 'i'))[0];
+        const afterOrder = description.split(new RegExp(`order\\s+${orderId}`, 'i'))[1] || '';
+
+        return (
+            <>
+                {beforeOrder}
+                <button 
+                    className="text-[#F59A11] hover:text-[#E08900] cursor-pointer font-mono underline decoration-dotted underline-offset-2 bg-transparent border-none p-0 text-left hover:bg-orange-50 px-1 py-0.5 rounded transition-colors font-semibold"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleOrderIdClick(orderId);
+                    }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onMouseUp={(e) => e.stopPropagation()}
+                >
+                    order #{orderId}
+                </button>
+                {afterOrder}
+            </>
+        );
+    };
+
     const transactions = walletData?.data || [];
     const totalTransactions = walletData?.total || 0;
     const walletBalance = walletInfo?.walletBalance ?? user?.walletBalance ?? 0;
@@ -186,24 +221,27 @@ export default function WalletPage() {
 
                                                 <div className="flex-1 min-w-0">
                                                     <p className="text-sm font-medium text-gray-900 mb-1">
-                                                        {transaction.description || transaction.type}
+                                                        {renderDescription(transaction.description || transaction.type)}
                                                     </p>
                                                     <p className="text-xs text-gray-500">
                                                         {formatDate(transaction.createdAt)}
                                                     </p>
                                                     {transaction.orderId && (
-                                                        <p className="text-xs text-gray-500 mt-1">
-                                                            Order ID:{" "}
-                                                            <span 
-                                                                className="text-blue-600 hover:text-blue-800 cursor-pointer font-mono underline decoration-dotted underline-offset-2"
+                                                        <div className="text-xs text-gray-500 mt-1">
+                                                            <span className="text-gray-500">Order ID: </span>
+                                                            <button 
+                                                                className="text-[#F59A11] hover:text-[#E08900] cursor-pointer font-mono underline decoration-dotted underline-offset-2 bg-transparent border-none p-0 text-left hover:bg-orange-50 px-1 py-0.5 rounded transition-colors font-semibold"
                                                                 onClick={(e) => {
+                                                                    e.preventDefault();
                                                                     e.stopPropagation();
                                                                     handleOrderIdClick(transaction.orderId);
                                                                 }}
+                                                                onMouseDown={(e) => e.stopPropagation()}
+                                                                onMouseUp={(e) => e.stopPropagation()}
                                                             >
                                                                 #{transaction.orderId}
-                                                            </span>
-                                                        </p>
+                                                            </button>
+                                                        </div>
                                                     )}
                                                 </div>
                                             </div>
