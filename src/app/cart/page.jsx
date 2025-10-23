@@ -365,6 +365,7 @@ const CartPage = () => {
   ) || { cgst: 0, sgst: 0, igst: 0, cess: 0 };
 
   const couponDiscount = cartData?.discount_amount;
+  const walletDiscount = cartData?.walletDiscount || 0;
 
   return (
     <RequireAuth>
@@ -483,6 +484,8 @@ const CartPage = () => {
                 taxBreakup={{ cgst, sgst, igst, cess }}
                 couponDiscount={couponDiscount}
                 walletBalance={walletData}
+                walletDiscount={walletDiscount}
+                isAddressSelected={!!params.address_id}
                 onPay={() => setIsCheckoutDialogOpen(true)}
                 onWalletToggle={handleWalletToggle}
               />

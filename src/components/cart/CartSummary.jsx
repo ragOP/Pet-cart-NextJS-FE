@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Wallet, Info } from "lucide-react";
 
-const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0, walletBalance = 0, onPay, estimatedDeliveryDate, onWalletToggle }) => {
+const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0, walletBalance = 0, walletDiscount = 0, onPay, estimatedDeliveryDate, onWalletToggle, isAddressSelected = false }) => {
   const { cgst = 0, sgst = 0, igst = 0, cess = 0 } = taxBreakup;
   const [isUsingWallet, setIsUsingWallet] = useState(false);
   const hasWalletAmount = walletBalance > 0;
@@ -11,11 +11,10 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
     onWalletToggle?.(checked);
   };
 
-  console.log("walletBalance:", walletBalance, "hasWalletAmount:", hasWalletAmount)
+  console.log("walletBalance:", walletBalance, "hasWalletAmount:", hasWalletAmount, "walletDiscount:", walletDiscount)
 
-  const maxWalletUsage = walletBalance * 0.15; // 15% of wallet balance
-  const walletDiscount = isUsingWallet ? Math.min(maxWalletUsage, totalPrice) : 0;
-  const finalAmount = totalPrice - walletDiscount;
+  const maxWalletUsage = walletBalance * 0.15; // 15% of wallet balance for tooltip display
+  const finalAmount = totalPrice - (isUsingWallet ? walletDiscount : 0);
 
   return (
     <div className="flex flex-col h-max justify-between bg-white rounded-xl">
@@ -89,10 +88,17 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
 
         <button
           onClick={() => {
-            onPay();
+            if (isAddressSelected) {
+              onPay();
+            }
           }}
-          className="w-full bg-[#F59A11] cursor-pointer hover:bg-[#D9820A] text-white font-bold py-3 rounded-lg text-lg transition-colors">
-          PAY
+          disabled={!isAddressSelected}
+          className={`w-full font-bold py-3 rounded-lg text-lg transition-colors ${
+            isAddressSelected
+              ? "bg-[#F59A11] cursor-pointer hover:bg-[#D9820A] text-white"
+              : "bg-gray-300 cursor-not-allowed text-gray-500"
+          }`}>
+          {isAddressSelected ? "PAY" : "SELECT ADDRESS TO PAY"}
         </button>
       </div>
     </div>

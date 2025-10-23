@@ -63,7 +63,8 @@ const ProfileForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col h-full">
+    <div className="flex flex-col h-full lg:border lg:border-[#F59A11] lg:rounded-lg">
+      <form onSubmit={handleSubmit} className="flex flex-col h-full">
       {/* Mobile Header */}
       <div className="lg:hidden px-4 py-3 border-b border-gray-200">
         <span className="text-xl font-semibold text-gray-900">Personal Details</span>
@@ -159,7 +160,8 @@ const ProfileForm = () => {
           </Button>
         </div>
       </div>
-    </form>
+      </form>
+    </div>
   );
 };
 
