@@ -304,8 +304,10 @@ const CartPage = () => {
           couponId: appliedCoupon,
           addressId,
           note,
-          isUsingWalletAmount,
         },
+        params: {
+          isPaymentUsingWallet: isUsingWalletAmount,
+        }
       });
       const data = res.response.data;
 
@@ -320,14 +322,18 @@ const CartPage = () => {
         order_id: data.orderId,
         handler: function (response) {
           createOrderMutation({
-            cartId: cartData?._id,
-            couponId: appliedCoupon,
-            addressId,
-            note,
-            razorpayOrderId: response.razorpay_order_id,
-            razorpayPaymentId: response.razorpay_payment_id,
-            razorpaySignature: response.razorpay_signature,
-            isUsingWalletAmount,
+            data: {
+              cartId: cartData?._id,
+              couponId: appliedCoupon,
+              addressId,
+              note,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+            },
+            params: {
+              isUsingWalletAmount: isUsingWalletAmount,
+            }
           });
         },
         prefill: {
