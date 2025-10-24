@@ -295,7 +295,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                     <h3 className="text-lg font-semibold uppercase">Brand</h3>
                   </div>
                   <div className="grid grid-cols-5 gap-2">
-                    {filterTabs.find(t => t.key === "brandSlug")?.items?.slice(0, 10).map((item) => (
+                    {filterTabs.find(t => t.key === "brandSlug")?.items?.map((item) => (
                       <div
                         key={item.value}
                         onClick={() => {
@@ -331,7 +331,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                     <h3 className="text-lg font-semibold uppercase">Breed</h3>
                   </div>
                   <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                    {filterTabs.find(t => t.key === "breedSlug")?.items?.slice(0, 10).map((item) => (
+                    {filterTabs.find(t => t.key === "breedSlug")?.items?.map((item) => (
                       <div
                         key={item.value}
                         onClick={() => {

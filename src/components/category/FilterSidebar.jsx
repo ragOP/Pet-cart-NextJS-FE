@@ -476,7 +476,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                     </button>
                   </div>
                   <div className="grid grid-cols-5 gap-2">
-                    {filterTabs.find(t => t.key === "brandSlug")?.items?.slice(0, 10).map((item) => (
+                    {filterTabs.find(t => t.key === "brandSlug")?.items?.map((item) => (
                       <div
                         key={item.value}
                         onClick={() => {
