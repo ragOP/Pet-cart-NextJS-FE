@@ -1,5 +1,13 @@
 import React from "react";
-import { X, HelpCircle, MapPin, CreditCard, Package, Calendar, Weight } from "lucide-react";
+import {
+  X,
+  HelpCircle,
+  MapPin,
+  CreditCard,
+  Package,
+  Calendar,
+  Weight,
+} from "lucide-react";
 import CustomImage from "@/components/images/CustomImage";
 import { calculateDiscountPercent } from "@/helpers/product/calculateDiscountPercent";
 import "../../styles/hide-scrollbar.css";
@@ -40,14 +48,24 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
               ORDER ID : {order.orderId}
             </h2>
             <div className="flex items-center gap-3 mt-1">
-              <p className={`text-sm ${getStatusColor(order.status)} font-medium`}>
+              <p
+                className={`text-sm ${getStatusColor(
+                  order.status
+                )} font-medium`}
+              >
                 {formatDate(order.createdAt)}
               </p>
-              <span className={`px-2 py-1 rounded-full text-xs font-medium ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                  order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                    order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                }`}>
+              <span
+                className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  order.status === "pending"
+                    ? "bg-yellow-100 text-yellow-800"
+                    : order.status === "delivered"
+                    ? "bg-green-100 text-green-800"
+                    : order.status === "cancelled"
+                    ? "bg-red-100 text-red-800"
+                    : "bg-gray-100 text-gray-800"
+                }`}
+              >
                 {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
               </span>
             </div>
@@ -62,7 +80,9 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
 
         {/* Item Details */}
         <div className="p-4">
-          <h3 className="text-sm font-semibold text-gray-900 mb-3">ITEM DETAILS</h3>
+          <h3 className="text-sm font-semibold text-gray-900 mb-3">
+            ITEM DETAILS
+          </h3>
 
           {order.items.map((item, index) => (
             <div key={item._id} className="flex gap-3 mb-4">
@@ -81,14 +101,21 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
                   {item.productId.title}
                 </h4>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm text-gray-500 line-through">₹{item.productId.price}</span>
+                  <span className="text-sm text-gray-500 line-through">
+                    ₹{item.productId.price}
+                  </span>
                   <span className="text-sm text-green-600 font-medium">
-                    {calculateDiscountPercent(item.productId.price, item.price)}% Off
+                    {calculateDiscountPercent(item.productId.price, item.price)}
+                    % Off
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Quantity: {item.quantity}</span>
-                  <span className="font-semibold text-gray-900">₹{item.price}</span>
+                  <span className="text-sm text-gray-600">
+                    Quantity: {item.quantity}
+                  </span>
+                  <span className="font-semibold text-gray-900">
+                    ₹{item.price}
+                  </span>
                 </div>
               </div>
             </div>
@@ -104,9 +131,13 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
             </h3>
             <div className="bg-gray-50 p-3 rounded-lg">
               <p className="font-medium text-gray-900">{order.address.name}</p>
-              <p className="text-sm text-gray-600 mt-1">{order.address.mobile} • {order.address.email}</p>
               <p className="text-sm text-gray-600 mt-1">
-                {order.address.address}, {order.address.city}, {order.address.state} - {order.address.pincode}, {order.address.country}
+                {order.address.mobile} • {order.address.email}
+              </p>
+              <p className="text-sm text-gray-600 mt-1">
+                {order.address.address}, {order.address.city},{" "}
+                {order.address.state} - {order.address.pincode},{" "}
+                {order.address.country}
               </p>
             </div>
           </div>
@@ -121,17 +152,25 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
           <div className="bg-gray-50 p-3 rounded-lg">
             <div className="flex justify-between items-center mb-2">
               <span className="text-sm text-gray-600">Payment Method ID</span>
-              <span className="text-sm font-medium text-gray-900 font-mono">{order.paymentMethod}</span>
+              <span className="text-sm font-medium text-gray-900 font-mono">
+                {order.paymentMethod}
+              </span>
             </div>
             {order.transcation && (
               <>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm text-gray-600">Transaction ID</span>
-                  <span className="text-sm font-medium text-gray-900 font-mono">{order.transcation.razorpayPaymentId}</span>
+                  <span className="text-sm font-medium text-gray-900 font-mono">
+                    {order.transcation.razorpayPaymentId}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-gray-600">Razorpay Order ID</span>
-                  <span className="text-sm font-medium text-gray-900 font-mono">{order.transcation.razorpayOrderId}</span>
+                  <span className="text-sm text-gray-600">
+                    Razorpay Order ID
+                  </span>
+                  <span className="text-sm font-medium text-gray-900 font-mono">
+                    {order.transcation.razorpayOrderId}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-600">Payment Status</span>
@@ -153,7 +192,9 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
           <div className="bg-gray-50 p-3 rounded-lg space-y-1">
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">Order Date</span>
-              <span className="text-sm font-medium text-gray-900">{formatDate(order.createdAt)}</span>
+              <span className="text-sm font-medium text-gray-900">
+                {formatDate(order.createdAt)}
+              </span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-sm text-gray-600">Order Weight</span>
@@ -164,19 +205,34 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
             </div>
             {order.shipRocketOrderId && (
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">ShipRocket Order ID</span>
-                <span className="text-sm font-medium text-gray-900">{order.shipRocketOrderId}</span>
+                <span className="text-sm text-gray-600">
+                  ShipRocket Order ID
+                </span>
+                <span className="text-sm font-medium text-gray-900">
+                  {order.shipRocketOrderId}
+                </span>
               </div>
             )}
             {order.note && (
               <div className="mt-3 pt-3 border-t border-gray-200">
                 <span className="text-sm text-gray-600">Order Note</span>
-                <p className="text-sm font-medium text-gray-900 mt-1">{order.note}</p>
+                <p className="text-sm font-medium text-gray-900 mt-1">
+                  {order.note}
+                </p>
               </div>
             )}
           </div>
         </div>
 
+        <div className="px-4 pb-3">
+          {order.cashBackOnOrder > 0 && (
+            <div className="text-sm mt-2">
+              <span className="text-gray-600 flex items-center gap-1">
+                🪙 Cashback Earned On this order <span className="text-green-600 font-bold">(+₹{order.cashBackOnOrder.toFixed(2)})</span>
+              </span>
+            </div>
+          )}
+        </div>
         {/* Order Bill Details */}
         <div className="px-4 pb-4">
           <h3 className="text-sm font-semibold text-gray-900 mb-3">
@@ -186,53 +242,72 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Total MRP Price</span>
-              <span className="text-gray-900">₹{order.rawPrice.toFixed(2)}</span>
+              <span className="text-gray-900 line-through">
+                ₹{order.totalMRP.toFixed(2)}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-600">Discount on MRP Price</span>
+              <span className="text-gray-900">
+                ₹{order.rawPrice.toFixed(2)}
+              </span>
             </div>
 
             {order.discountedAmount > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Product Discount</span>
-                <span className="text-green-600">- ₹{order.discountedAmount.toFixed(2)}</span>
+                <span className="text-green-600">
+                  - ₹{order.discountedAmount.toFixed(2)}
+                </span>
               </div>
             )}
 
             {order.couponCode && (
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Coupon Discount ({order.couponCode})</span>
-                <span className="text-green-600">- ₹{(order.rawPrice - order.discountedAmountAfterCoupon - order.walletDiscount).toFixed(2)}</span>
+                <span className="text-gray-600">
+                  Coupon Discount ({order.couponCode})
+                </span>
+                <span className="text-green-600">
+                  - ₹
+                  {(
+                    order.rawPrice -
+                    order.discountedAmountAfterCoupon -
+                    order.walletDiscount
+                  ).toFixed(2)}
+                </span>
               </div>
             )}
 
             {order.walletDiscount > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Wallet Discount</span>
-                <span className="text-green-600">- ₹{order.walletDiscount.toFixed(2)}</span>
+                <span className="text-green-600">
+                  - ₹{order.walletDiscount.toFixed(2)}
+                </span>
               </div>
             )}
 
-            <div className="flex justify-between text-sm">
+            {/* <div className="flex justify-between text-sm">
               <span className="text-gray-600">Subtotal</span>
               <span className="text-gray-900">₹{order.discountedAmountAfterCoupon.toFixed(2)}</span>
-            </div>
+            </div> */}
 
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Delivery Charges</span>
               <span className="text-gray-900">
-                {order.shippingCharge > 0 ? `₹${order.shippingCharge.toFixed(2)}` : 'FREE'}
+                {order.shippingCharge > 0
+                  ? `₹${order.shippingCharge.toFixed(2)}`
+                  : "FREE"}
               </span>
             </div>
-
-            {order.cashBackOnOrder > 0 && (
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Cashback on Order</span>
-                <span className="text-green-600">+ ₹{order.cashBackOnOrder.toFixed(2)}</span>
-              </div>
-            )}
 
             <div className="border-t pt-3 mt-3">
               <div className="flex justify-between font-semibold text-lg">
                 <span className="text-gray-900">Grand Total</span>
-                <span className="text-gray-900">₹{order.totalAmount.toFixed(2)}</span>
+                <span className="text-gray-900">
+                  ₹{order.totalAmount.toFixed(2)}
+                </span>
               </div>
             </div>
           </div>
