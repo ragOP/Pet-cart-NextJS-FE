@@ -34,26 +34,56 @@ const BreedDietTips = ({ breed }) => {
                             {/* Right Side - Two Images */}
                             <div className={`w-[65%] flex flex-row gap-6 justify-center items-center ${isEven ? 'order-2' : 'order-1'}`}>
                                 {/* First Image */}
-                                <div className="flex-1 flex items-center justify-center h-80">
-                                    <CustomImage
-                                        src={tip.products[0].image}
-                                        alt={tip.products[0].label}
-                                        className="w-full h-full object-contain"
-                                        width={300}
-                                        height={400}
-                                    />
-                                </div>
+                                {tip.products[0].link ? (
+                                    <div 
+                                        className="flex-1 flex items-center justify-center h-80 cursor-pointer hover:opacity-75 transition-opacity"
+                                        onClick={() => window.open(tip.products[0].link, '_blank', 'noopener,noreferrer')}
+                                    >
+                                        <CustomImage
+                                            src={tip.products[0].image}
+                                            alt={tip.products[0].label}
+                                            className="w-full h-full object-contain"
+                                            width={300}
+                                            height={400}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="flex-1 flex items-center justify-center h-80">
+                                        <CustomImage
+                                            src={tip.products[0].image}
+                                            alt={tip.products[0].label}
+                                            className="w-full h-full object-contain"
+                                            width={300}
+                                            height={400}
+                                        />
+                                    </div>
+                                )}
 
                                 {/* Second Image */}
-                                <div className="flex-1 flex items-center justify-center h-80">
-                                    <CustomImage
-                                        src={tip.products[1].image}
-                                        alt={tip.products[1].label}
-                                        className="w-full h-full object-contain"
-                                        width={300}
-                                        height={400}
-                                    />
-                                </div>
+                                {tip.products[1].link ? (
+                                    <div 
+                                        className="flex-1 flex items-center justify-center h-80 cursor-pointer hover:opacity-75 transition-opacity"
+                                        onClick={() => window.open(tip.products[1].link, '_blank', 'noopener,noreferrer')}
+                                    >
+                                        <CustomImage
+                                            src={tip.products[1].image}
+                                            alt={tip.products[1].label}
+                                            className="w-full h-full object-contain"
+                                            width={300}
+                                            height={400}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="flex-1 flex items-center justify-center h-80">
+                                        <CustomImage
+                                            src={tip.products[1].image}
+                                            alt={tip.products[1].label}
+                                            className="w-full h-full object-contain"
+                                            width={300}
+                                            height={400}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -76,26 +106,56 @@ const BreedDietTips = ({ breed }) => {
                             {/* Two Images - Side by side on mobile */}
                             <div className="flex flex-row gap-3 sm:gap-4 justify-center items-center">
                                 {/* First Image */}
-                                <div className="flex-1 flex items-center justify-center h-48 sm:h-56">
-                                    <CustomImage
-                                        src={tip.products[0].image}
-                                        alt={tip.products[0].label}
-                                        className="w-full h-full object-contain"
-                                        width={300}
-                                        height={400}
-                                    />
-                                </div>
+                                {tip.products[0].link ? (
+                                    <div 
+                                        className="flex-1 flex items-center justify-center h-48 sm:h-56 cursor-pointer hover:opacity-75 transition-opacity"
+                                        onClick={() => window.open(tip.products[0].link, '_blank', 'noopener,noreferrer')}
+                                    >
+                                        <CustomImage
+                                            src={tip.products[0].image}
+                                            alt={tip.products[0].label}
+                                            className="w-full h-full object-contain"
+                                            width={300}
+                                            height={400}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="flex-1 flex items-center justify-center h-48 sm:h-56">
+                                        <CustomImage
+                                            src={tip.products[0].image}
+                                            alt={tip.products[0].label}
+                                            className="w-full h-full object-contain"
+                                            width={300}
+                                            height={400}
+                                        />
+                                    </div>
+                                )}
 
                                 {/* Second Image */}
-                                <div className="flex-1 flex items-center justify-center h-48 sm:h-56">
-                                    <CustomImage
-                                        src={tip.products[1].image}
-                                        alt={tip.products[1].label}
-                                        className="w-full h-full object-contain"
-                                        width={300}
-                                        height={400}
-                                    />
-                                </div>
+                                {tip.products[1].link ? (
+                                    <div 
+                                        className="flex-1 flex items-center justify-center h-48 sm:h-56 cursor-pointer hover:opacity-75 transition-opacity"
+                                        onClick={() => window.open(tip.products[1].link, '_blank', 'noopener,noreferrer')}
+                                    >
+                                        <CustomImage
+                                            src={tip.products[1].image}
+                                            alt={tip.products[1].label}
+                                            className="w-full h-full object-contain"
+                                            width={300}
+                                            height={400}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="flex-1 flex items-center justify-center h-48 sm:h-56">
+                                        <CustomImage
+                                            src={tip.products[1].image}
+                                            alt={tip.products[1].label}
+                                            className="w-full h-full object-contain"
+                                            width={300}
+                                            height={400}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

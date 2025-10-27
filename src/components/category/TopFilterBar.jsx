@@ -24,9 +24,13 @@ import VegSwitchButton from "../common/VegSwitchButton";
 
 const BrandCard = ({ brand, selected }) => {
   return (
-    <div className={cn("flex flex-col items-center gap-1 sm:gap-2 bg-[#E7F4F8] p-2 rounded-md cursor-pointer w-full h-24 sm:h-28 lg:w-32 lg:h-36 transition-colors", selected && "bg-[#0888B1] border-2 border-[#0888B1]")}>
-      <img src={brand.image} alt={brand.value} className="h-12 sm:h-16 lg:h-24 object-contain" />
-      <span className="text-xs sm:text-sm lg:text-base font-medium text-center line-clamp-2">{brand.label}</span>
+    <div className={cn("flex flex-col items-center justify-between bg-[#E7F4F8] px-2 pt-2 rounded-md cursor-pointer w-full min-h-24 transition-colors", selected && "bg-[#0888B1] border-2 border-[#0888B1]")}>
+      <div className="flex justify-center items-center flex-1">
+        <img src={brand.image} alt={brand.value} className="h-12 sm:h-16 lg:h-24 object-contain" />
+      </div>
+      <div className="w-full px-1 py-1">
+        <span className="text-xs sm:text-sm lg:text-base font-medium text-center leading-tight block" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{brand.label}</span>
+      </div>
     </div>
   );
 };
@@ -157,8 +161,8 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                       setOpen(true);
                     }}
                     className={`px-3 py-[0.4rem] rounded-md text-sm font-medium transition-colors ${isSelected
-                        ? 'bg-[#fef3e2] border border-[#f19813] text-[#f19813]'
-                        : 'bg-gray-200 border border-gray-300 text-gray-600 hover:bg-gray-300'
+                      ? 'bg-[#fef3e2] border border-[#f19813] text-[#f19813]'
+                      : 'bg-gray-200 border border-gray-300 text-gray-600 hover:bg-gray-300'
                       }`}
                   >
                     {tab.label} {count > 0 && `(${count})`}
@@ -301,25 +305,25 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                         onClick={() => {
                           setSelectedBrand(item);
                           const currentValues = filters?.brandSlug ? (Array.isArray(filters.brandSlug) ? filters.brandSlug : [filters.brandSlug]) : [];
-                          const newValues = currentValues.includes(item.value) 
+                          const newValues = currentValues.includes(item.value)
                             ? currentValues.filter(v => v !== item.value)
                             : [...currentValues, item.value];
                           onChangeFilter({
                             brandSlug: newValues.length > 0 ? newValues : null,
                           });
                         }}
-                        className={`p-2 border rounded-lg cursor-pointer text-center transition-colors h-20 flex flex-col justify-between ${(() => {
+                        className={`px-2  pt-2 border rounded-lg cursor-pointer text-center transition-colors h-20 flex flex-col justify-between ${(() => {
                           const currentValues = filters?.brandSlug ? (Array.isArray(filters.brandSlug) ? filters.brandSlug : [filters.brandSlug]) : [];
                           return currentValues.includes(item.value);
                         })()
-                            ? 'border-[#f19813] bg-[#fef3e2]'
-                            : 'border-[#badee9] bg-[#e6f3f7] hover:border-[#0b88b1]'
+                          ? 'border-[#f19813] bg-[#fef3e2]'
+                          : 'border-[#badee9] bg-[#e6f3f7] hover:border-[#0b88b1]'
                           }`}
                       >
                         <div className="flex justify-center items-center flex-1">
                           <img src={item.image} alt={item.label} className="w-8 h-8 object-contain" />
                         </div>
-                        <span className="text-xs font-medium mt-1">{item.label}</span>
+                        <span className="text-xs font-medium mt-1 line-clamp-2">{item.label}</span>
                       </div>
                     ))}
                   </div>
@@ -351,7 +355,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                         <div className="flex justify-center items-center flex-1">
                           <img src={item.image} alt={item.label} className="w-8 h-8 object-contain" />
                         </div>
-                        <span className="text-xs font-medium mt-1">{item.label}</span>
+                        <span className="text-xs font-medium mt-1 line-clamp-2">{item.label}</span>
                       </div>
                     ))}
                   </div>
@@ -366,7 +370,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                         key={item.value}
                         onClick={() => {
                           const currentValues = filters?.lifeStage ? (Array.isArray(filters.lifeStage) ? filters.lifeStage : [filters.lifeStage]) : [];
-                          const newValues = currentValues.includes(item.value) 
+                          const newValues = currentValues.includes(item.value)
                             ? currentValues.filter(v => v !== item.value)
                             : [...currentValues, item.value];
                           onChangeFilter({
@@ -377,11 +381,11 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                           const currentValues = filters?.lifeStage ? (Array.isArray(filters.lifeStage) ? filters.lifeStage : [filters.lifeStage]) : [];
                           return currentValues.includes(item.value);
                         })()
-                            ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
-                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                          ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
+                          : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
                           }`}
                       >
-                        {item.label}
+                        <span className="truncate">{item.label}</span>
                       </button>
                     ))}
                   </div>
@@ -396,7 +400,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                         key={item.value}
                         onClick={() => {
                           const currentValues = filters?.breedSize ? (Array.isArray(filters.breedSize) ? filters.breedSize : [filters.breedSize]) : [];
-                          const newValues = currentValues.includes(item.value) 
+                          const newValues = currentValues.includes(item.value)
                             ? currentValues.filter(v => v !== item.value)
                             : [...currentValues, item.value];
                           onChangeFilter({
@@ -407,11 +411,11 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                           const currentValues = filters?.breedSize ? (Array.isArray(filters.breedSize) ? filters.breedSize : [filters.breedSize]) : [];
                           return currentValues.includes(item.value);
                         })()
-                            ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
-                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                          ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
+                          : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
                           }`}
                       >
-                        {item.label}
+                        <span className="truncate">{item.label}</span>
                       </button>
                     ))}
                   </div>
@@ -426,7 +430,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                         key={item.value}
                         onClick={() => {
                           const currentValues = filters?.productType ? (Array.isArray(filters.productType) ? filters.productType : [filters.productType]) : [];
-                          const newValues = currentValues.includes(item.value) 
+                          const newValues = currentValues.includes(item.value)
                             ? currentValues.filter(v => v !== item.value)
                             : [...currentValues, item.value];
                           onChangeFilter({
@@ -437,11 +441,11 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                           const currentValues = filters?.productType ? (Array.isArray(filters.productType) ? filters.productType : [filters.productType]) : [];
                           return currentValues.includes(item.value);
                         })()
-                            ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
-                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                          ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
+                          : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
                           }`}
                       >
-                        {item.label}
+                        <span className="truncate">{item.label}</span>
                       </button>
                     ))}
                   </div>
@@ -456,7 +460,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                         key={item.value}
                         onClick={() => {
                           const currentValues = filters?.rating ? (Array.isArray(filters.rating) ? filters.rating : [filters.rating]) : [];
-                          const newValues = currentValues.includes(item.value) 
+                          const newValues = currentValues.includes(item.value)
                             ? currentValues.filter(v => v !== item.value)
                             : [...currentValues, item.value];
                           onChangeFilter({
@@ -467,11 +471,11 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                           const currentValues = filters?.rating ? (Array.isArray(filters.rating) ? filters.rating : [filters.rating]) : [];
                           return currentValues.includes(item.value);
                         })()
-                            ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
-                            : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                          ? 'bg-[#fef3e2] text-[#f19813] border-[#f19813]'
+                          : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
                           }`}
                       >
-                        {item.label}
+                        <span className="truncate">{item.label}</span>
                       </button>
                     ))}
                   </div>

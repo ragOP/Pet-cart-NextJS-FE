@@ -244,7 +244,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                         color: 'white'
                       } : {}}
                     >
-                      {item.label}
+                      <span className="truncate">{item.label}</span>
                     </Button>
                   ))}
                 </div>
@@ -259,7 +259,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                       }}
                       className="h-10 px-4"
                     >
-                      {item.label}
+                      <span className="truncate">{item.label}</span>
                     </Button>
                   ))}
                 </div>
@@ -483,7 +483,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                           setSelectedBrand(item);
                           handleTempFilterChange("brandSlug", item.value);
                         }}
-                        className={`p-2 border rounded-lg cursor-pointer text-center transition-colors h-20 flex flex-col justify-between ${tempFilters?.brandSlug === item.value
+                        className={`px-2 pt-2 border rounded-lg cursor-pointer text-center transition-colors min-h-24 flex flex-col justify-between ${tempFilters?.brandSlug === item.value
                             ? 'border-[#0b88b1] bg-[#0b88b1] bg-opacity-10'
                             : 'border-[#badee9] bg-[#e6f3f7] hover:border-[#0b88b1]'
                           }`}
@@ -491,7 +491,9 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                         <div className="flex justify-center items-center flex-1">
                           <img src={item.image} alt={item.label} className="w-8 h-8 object-contain" />
                         </div>
-                        <span className="text-xs font-medium mt-1">{item.label}</span>
+                        <div className="w-full px-1 py-1">
+                          <span className="text-xs font-medium leading-tight block" style={{display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>{item.label}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -511,7 +513,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                             : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
                           }`}
                       >
-                        {item.label}
+                        <span className="truncate">{item.label}</span>
                       </button>
                     ))}
                   </div>
@@ -530,7 +532,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                             : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
                           }`}
                       >
-                        {item.label}
+                        <span className="truncate">{item.label}</span>
                       </button>
                     ))}
                   </div>

@@ -80,7 +80,10 @@ const BreedGrooming = ({ breed }) => {
                                 <div className={`w-[65%] flex flex-row gap-6 justify-center items-center h-48 ${isEven ? 'order-2' : 'order-1'}`}>
                                     {/* First Image */}
                                     {tip.products && tip.products[0] && (
-                                        <div className="flex-1 flex items-center justify-center">
+                                        <div 
+                                            className={`flex-1 flex items-center justify-center ${tip.products[0].link ? 'cursor-pointer hover:opacity-75 transition-opacity' : ''}`}
+                                            onClick={tip.products[0].link ? () => window.open(tip.products[0].link, '_blank', 'noopener,noreferrer') : undefined}
+                                        >
                                             <CustomImage
                                                 src={tip.products[0].image || "/gm-3.png"}
                                                 alt={tip.products[0].label || "Grooming Product 1"}
@@ -93,7 +96,10 @@ const BreedGrooming = ({ breed }) => {
 
                                     {/* Second Image */}
                                     {tip.products && tip.products[1] && (
-                                        <div className="flex-1 flex items-center justify-center">
+                                        <div 
+                                            className={`flex-1 flex items-center justify-center ${tip.products[1].link ? 'cursor-pointer hover:opacity-75 transition-opacity' : ''}`}
+                                            onClick={tip.products[1].link ? () => window.open(tip.products[1].link, '_blank', 'noopener,noreferrer') : undefined}
+                                        >
                                             <CustomImage
                                                 src={tip.products[1].image || "/gm-3.png"}
                                                 alt={tip.products[1].label || "Grooming Product 2"}
@@ -126,7 +132,10 @@ const BreedGrooming = ({ breed }) => {
                                 <div className="flex flex-row gap-3 sm:gap-4 justify-center items-center h-48 sm:h-56">
                                     {/* First Image */}
                                     {tip.products && tip.products[0] && (
-                                        <div className="flex-1 flex items-center justify-center">
+                                        <div 
+                                            className={`flex-1 flex items-center justify-center ${tip.products[0].link ? 'cursor-pointer hover:opacity-75 transition-opacity' : ''}`}
+                                            onClick={tip.products[0].link ? () => window.open(tip.products[0].link, '_blank', 'noopener,noreferrer') : undefined}
+                                        >
                                             <CustomImage
                                                 src={tip.products[0].image || "/gm-3.png"}
                                                 alt={tip.products[0].label || "Grooming Product 1"}
@@ -139,7 +148,10 @@ const BreedGrooming = ({ breed }) => {
 
                                     {/* Second Image */}
                                     {tip.products && tip.products[1] && (
-                                        <div className="flex-1 flex items-center justify-center">
+                                        <div 
+                                            className={`flex-1 flex items-center justify-center ${tip.products[1].link ? 'cursor-pointer hover:opacity-75 transition-opacity' : ''}`}
+                                            onClick={tip.products[1].link ? () => window.open(tip.products[1].link, '_blank', 'noopener,noreferrer') : undefined}
+                                        >
                                             <CustomImage
                                                 src={tip.products[1].image || "/gm-3.png"}
                                                 alt={tip.products[1].label || "Grooming Product 2"}

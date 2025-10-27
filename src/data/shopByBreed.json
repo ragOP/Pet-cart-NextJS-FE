@@ -66,13 +66,15 @@
                 "id": 1,
                 "image": "/gm-3.png",
                 "label": "Chicken Based Food",
-                "expandIcon": true
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
               },
               {
                 "id": 2,
                 "image": "/gm-3.png",
                 "label": "Liver Based Food",
-                "expandIcon": true
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
               }
             ]
           },
@@ -85,13 +87,15 @@
                 "id": 1,
                 "image": "/gm-3.png",
                 "label": "Grain-Free Food",
-                "expandIcon": true
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
               },
               {
                 "id": 2,
                 "image": "/gm-3.png",
                 "label": "Natural Food",
-                "expandIcon": true
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
               }
             ]
           },
@@ -104,13 +108,15 @@
                 "id": 1,
                 "image": "/gm-3.png",
                 "label": "Fish Oil Supplement",
-                "expandIcon": true
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
               },
               {
                 "id": 2,
                 "image": "/gm-3.png",
                 "label": "Salmon Based Food",
-                "expandIcon": true
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
               }
             ]
           },
@@ -123,13 +129,15 @@
                 "id": 1,
                 "image": "/gm-3.png",
                 "label": "Puppy Food",
-                "expandIcon": true
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
               },
               {
                 "id": 2,
                 "image": "/gm-3.png",
                 "label": "Senior Dog Food",
-                "expandIcon": true
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
               }
             ]
           }
@@ -149,11 +157,13 @@
             "products": [
               {
                 "image": "/gm-3.png",
-                "label": "Training Product 1"
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
               },
               {
                 "image": "/gm-3.png",
-                "label": "Training Product 2"
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
               }
             ]
           },
@@ -165,11 +175,13 @@
             "products": [
               {
                 "image": "/gm-3.png",
-                "label": "Puzzle Toys"
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
               },
               {
                 "image": "/gm-3.png",
-                "label": "Interactive Toys"
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
               }
             ]
           }
@@ -189,11 +201,13 @@
             "products": [
               {
                 "image": "/gm-3.png",
-                "label": "Grooming Brush"
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
               },
               {
                 "image": "/gm-3.png",
-                "label": "Dog Shampoo"
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
               }
             ]
           },
@@ -205,11 +219,13 @@
             "products": [
               {
                 "image": "/gm-3.png",
-                "label": "Ear Cleaner"
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
               },
               {
                 "image": "/gm-3.png",
-                "label": "Cotton Pads"
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
               }
             ]
           }
