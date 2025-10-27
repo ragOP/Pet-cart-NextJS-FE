@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Wallet, Info } from "lucide-react";
 
-const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0, walletBalance = 0, walletDiscount = 0, isUsingWallet = false, onPay, estimatedDeliveryDate, onWalletToggle, isAddressSelected = false, cartItemsCount = 0 }) => {
+const CartSummary = ({ totalMrp, subTotal, totalPrice, shipping, taxBreakup = {}, couponDiscount = 0, walletBalance = 0, walletDiscount = 0, isUsingWallet = false, onPay, estimatedDeliveryDate, onWalletToggle, isAddressSelected = false, cartItemsCount = 0 }) => {
   const { cgst = 0, sgst = 0, igst = 0, cess = 0 } = taxBreakup;
   const hasWalletAmount = walletBalance > 0;
 
@@ -13,7 +13,7 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
 
   const maxWalletUsage = walletBalance * 0.15; // 15% of wallet balance for tooltip display
   const cashbackAmount = totalPrice * 0.05; // 5% cashback on order
-  const finalAmount = totalPrice - (isUsingWallet ? walletDiscount : 0);
+  // const finalAmount = totalPrice - (isUsingWallet ? walletDiscount : 0);
 
   return (
     <div className="flex flex-col h-max justify-between bg-white rounded-xl">
@@ -27,6 +27,7 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
               </div>
               <div className="flex flex-col gap-2 text-base">
                 <div className="flex justify-between"><span>Total MRP</span><span className="line-through">₹{totalMrp.toFixed(2)}</span></div>
+                <div className="flex justify-between"><span>Discount On MRP</span><span>₹{subTotal.toFixed(2)}</span></div>
                 <div className="flex justify-between text-green-600 font-medium">
                   <span>Coupon discount</span><span>- ₹{couponDiscount.toFixed(2)}</span>
                 </div>
@@ -92,7 +93,7 @@ const CartSummary = ({ totalMrp, totalPrice, shipping, taxBreakup = {}, couponDi
       {cartItemsCount > 0 && <div className="p-4 flex-shrink-0">
         <div className="flex justify-between items-center text-lg font-bold mb-4">
           <span>To Pay</span>
-          <span>₹{finalAmount.toFixed(2)}</span>
+          <span>₹{totalPrice.toFixed(2)}</span>
         </div>
 
         <button

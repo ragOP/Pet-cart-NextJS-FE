@@ -307,7 +307,7 @@ const CartPage = () => {
           note,
         },
         params: {
-          isPaymentUsingWallet: isUsingWalletAmount,
+          isUsingWalletAmount: isUsingWalletAmount,
         }
       });
       const data = res.response.data;
@@ -355,6 +355,7 @@ const CartPage = () => {
   const shipping = cartData?.shippingDetails?.totalCost || 0;
   const finalPayableAmount = cartData?.total_price_with_shipping_and_discount || cartData?.total_price || 0;
   const estimatedDeliveryDate = cartData?.shippingDetails?.estimatedDate || "N/A";
+  const totalMrp = cartData?.totalMRP || 0;
   // const couponDiscount = Math.max(finalPayableAmount - discountPrice, 0);
 
   const { cgst, sgst, igst, cess } = cartData?.items?.reduce(
@@ -483,7 +484,8 @@ const CartPage = () => {
               </div>
             ) : (
               <CartSummary
-                totalMrp={totalPrice}
+                totalMrp={totalMrp}
+                subTotal={totalPrice}
                 totalPrice={finalPayableAmount}
                 shipping={shipping}
                 estimatedDeliveryDate={estimatedDeliveryDate}
