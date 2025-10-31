@@ -13,6 +13,7 @@ import {
   fetchBreeds,
   fetchCollections,
 } from "@/helpers/home";
+import { getAllBreeds } from "@/helpers/shopByBreed";
 import { Skeleton } from "../ui/skeleton";
 import { useRouter } from "next/navigation";
 
@@ -44,19 +45,31 @@ const Category = () => {
         categoriesData,
         subCategoriesData,
         brandsData,
-        breedsData,
+        // breedsData, // Commented out - not required, using JSON breeds instead
         collectionsData,
       ] = await Promise.all([
         fetchCategories(paramInitialState),
         fetchSubCategories(paramInitialState),
         fetchBrands(paramInitialState),
-        fetchBreeds(paramInitialState),
+        // fetchBreeds(paramInitialState), // Commented out - using JSON breeds instead
         fetchCollections(paramInitialState),
       ]);
       setCategories(categoriesData?.data?.categories || []);
       setSubCategories(subCategoriesData?.data || []);
       setBrands(brandsData?.data || []);
-      setBreeds(breedsData?.data || []);
+      
+      // Use JSON breeds only (no API fetching)
+      const jsonBreeds = getAllBreeds();
+      
+      // Transform JSON breeds to match API breed structure
+      const transformedJsonBreeds = jsonBreeds.map(breed => ({
+        _id: breed.id,
+        name: breed.name,
+        slug: breed.slug,
+        image: breed.image
+      }));
+      
+      setBreeds(transformedJsonBreeds);
       setCollections(collectionsData?.data || []);
     } catch (error) {
       console.error("Error loading data", error);
@@ -163,7 +176,7 @@ const Category = () => {
     );
   }
 
-  function MobileBreedView({ onBack }) {
+  function MobileBreedView({ onBack, onSelect }) {
     return (
       <div className="fixed inset-0 bg-white z-50 flex flex-col animate-in slide-in-from-right">
         <div className="flex items-center justify-between p-4 border-b">
@@ -177,7 +190,7 @@ const Category = () => {
         </div>
         <div className="flex-1 overflow-y-auto p-4">
           <h2 className="text-xl font-semibold mb-6">Shop By Breed</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-8">
             {loading
               ? Array(6)
                 .fill(0)
@@ -189,9 +202,12 @@ const Category = () => {
                 ))
               : breeds.map((breed) => (
                 <Link
-                  key={breed._id}
+                  key={breed._id || breed.id}
                   href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="flex flex-col items-center hover:scale-105 transition-transform cursor-pointer"
+                  className="group flex flex-col items-center cursor-pointer"
+                  onClick={() => {
+                    if (onSelect) onSelect();
+                  }}
                 >
                   <CustomImage
                     src={breed.image}
@@ -200,7 +216,7 @@ const Category = () => {
                     width={128}
                     height={128}
                   />
-                  <p className="text-center text-sm mt-2 font-medium">
+                  <p className="text-center text-sm mt-2 font-medium transition-colors duration-200 group-hover:text-[#CC7700]">
                     {breed.name}
                   </p>
                 </Link>
@@ -329,16 +345,13 @@ const Category = () => {
       <div
         className="md:block relative"
         onMouseLeave={(e) => {
-          // Only close if mouse is leaving the entire container area
-          const rect = e.currentTarget.getBoundingClientRect();
-          const x = e.clientX;
-          const y = e.clientY;
-
-          // Check if mouse is outside the container bounds
-          if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
-            setShowShopByBreed(false);
-            setShowShopByCategory(false);
+          const related = e.relatedTarget;
+          // If moving into any dropdown, do not close
+          if (related && related.closest && related.closest(".petcaart-dropdown")) {
+            return;
           }
+          setShowShopByBreed(false);
+          setShowShopByCategory(false);
         }}
       >
         {/* Desktop Navigation */}
@@ -446,6 +459,9 @@ const Category = () => {
             onBack={() => {
               setShowShopByBreed(false);
             }}
+            onSelect={() => {
+              setShowShopByBreed(false);
+            }}
           />
         </div>
       )}
@@ -470,14 +486,15 @@ const Category = () => {
 
       {/* Shop By Breed - Desktop */}
       {showShopByBreed && (
-        <div className="absolute left-0 right-0 w-full bg-white shadow-lg p-4 md:p-6 z-10">
+        <div className="fixed top-[122px] left-0 right-0 z-40 bg-white shadow-lg px-8">
           <div
+            className="petcaart-dropdown p-4 md:p-6"
             onMouseEnter={() => setShowShopByBreed(true)}
             onMouseLeave={() => setShowShopByBreed(false)}
           >
             <CustomCarousel
               className="max-w-full"
-              itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto"
+              itemClassName="flex flex-col items-center w-28 group cursor-pointer relative mx-auto mx-6"
               showArrows={true}
             >
               {loading
@@ -486,9 +503,10 @@ const Category = () => {
                   .map((_, i) => <Skeleton key={i} className="w-24 h-24" />)
                 : breeds.map((breed) => (
                   <Link
-                    key={breed._id}
+                    key={breed._id || breed.id}
                     href={`/shop-by-breed/${breed.slug || breed.name.toLowerCase().replace(/\s+/g, '-')}`}
-                    className="text-center hover:scale-105 transition-transform cursor-pointer"
+                    className="group text-center cursor-pointer"
+                    onClick={() => setShowShopByBreed(false)}
                   >
                     <CustomImage
                       src={breed.image}
@@ -497,7 +515,7 @@ const Category = () => {
                       width={96}
                       height={96}
                     />
-                    <p className="text-center text-sm mt-2 line-clamp-2">
+                    <p className="text-center text-sm mt-2 line-clamp-2 transition-colors duration-200 group-hover:text-[#CC7700]">
                       {breed.name}
                     </p>
                   </Link>

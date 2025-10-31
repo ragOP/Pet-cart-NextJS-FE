@@ -1,10 +1,10 @@
 {
   "dogs": [
     {
-      "id": "german-shepherd",
-      "name": "German Shepherd",
-      "slug": "german-shepherd",
-      "image": "/gm-7.png",
+      "id": "boxer",
+      "name": "Boxer",
+      "slug": "boxer",
+      "image": "/boxer-7.png",
       "navigation": [
         {
           "title": "ABOUT",
@@ -23,29 +23,29 @@
           "image": "/t4.png"
         }
       ],
-      "description": "The <span style='color: #004e6a; font-weight: 600;'>German Shepherd</span> is one of the world's most versatile and intelligent dog breeds—loyal, confident, and highly trainable. Known for their courage, devotion, and protective nature, <span style='color: #004e6a; font-weight: 600;'>German Shepherds</span> excel in working roles, family environments, and as service dogs.",
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Boxer</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Boxers</span> excel in family environments, working roles, and active lifestyles.",
       "category": "dogs",
       "characteristics": {
-        "size": "Large",
-        "temperament": "Confident, Courageous, Smart",
-        "lifespan": "9-13 years",
-        "weight": "30-40 kg",
-        "colors": ["Black & Tan", "Black", "White", "Sable"],
+        "size": "Medium to Large",
+        "temperament": "Playful, Loyal, Intelligent",
+        "lifespan": "10-12 years",
+        "weight": "25-35 kg",
+        "colors": ["Fawn", "Brindle", "White"],
         "weightDetails": {
-          "male": "30-40 kg",
-          "female": "25-35 kg"
+          "male": "30-35 kg",
+          "female": "25-32 kg"
         },
         "heightDetails": {
-          "male": "61-66 cm",
-          "female": "56-61 cm"
+          "male": "57-63 cm",
+          "female": "53-60 cm"
         },
-        "coat": "Double coat, medium length"
+        "coat": "Short, smooth coat"
       },
       "adaptability": {
-        "hotWeatherTolerance": "28°C",
-        "coldWeatherTolerance": "8°C",
-        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>German Shepherds</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>double coat</strong>.</span>",
-        "image": "/gm-1.png"
+        "hotWeatherTolerance": "30°C",
+        "coldWeatherTolerance": "6°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Boxers</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "/boxer-1.png"
       },
       "traits": {
         "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
@@ -53,25 +53,25 @@
       },
       "diet": {
         "title": "DIET",
-        "subtitle": "Consider following tips when choosing food for your German Shepherd.",
-        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>German Shepherds</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
-        "image": "/gm-2.png",
+        "subtitle": "Consider following tips when choosing food for your Boxer.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Boxers</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "/boxer-2.png",
         "tips": [
           {
             "number": "1",
             "title": "Choose a protein-rich diet",
-            "description": "German Shepherds have a high energy level and require a high protein diet to support their active lifestyle. Look for a diet with at least 18-25% protein for adult German Shepherds and even more for growing puppies.",
+            "description": "Boxers benefit from 22–28% protein, heart-supportive nutrients (taurine, Omega-3s) and joint support to match their activity.",
             "products": [
               {
                 "id": 1,
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Chicken Based Food",
                 "expandIcon": true,
                 "link": "https://petcaart.com/product/chicken-based-food"
               },
               {
                 "id": 2,
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Liver Based Food",
                 "expandIcon": true,
                 "link": "https://petcaart.com/product/liver-based-food"
@@ -81,18 +81,18 @@
           {
             "number": "2",
             "title": "Avoid fillers & additives",
-            "description": "German Shepherds have a sensitive stomach and should avoid food that includes fillers such as wheat and soy that are difficult to digest and may cause allergies.",
+            "description": "Boxers should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
             "products": [
               {
                 "id": 1,
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Grain-Free Food",
                 "expandIcon": true,
                 "link": "https://petcaart.com/product/grain-free-food"
               },
               {
                 "id": 2,
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Natural Food",
                 "expandIcon": true,
                 "link": "https://petcaart.com/product/natural-food"
@@ -102,18 +102,18 @@
           {
             "number": "3",
             "title": "Add Essential Fatty Acids",
-            "description": "German Shepherds have a thick double coat that requires a diet which includes essential fatty acids to keep them healthy and shiny. Look for food that contains Omega-3 and Omega-6 fatty acids.",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
             "products": [
               {
                 "id": 1,
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Fish Oil Supplement",
                 "expandIcon": true,
                 "link": "https://petcaart.com/product/fish-oil-supplement"
               },
               {
                 "id": 2,
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Salmon Based Food",
                 "expandIcon": true,
                 "link": "https://petcaart.com/product/salmon-based-food"
@@ -123,18 +123,18 @@
           {
             "number": "4",
             "title": "Consider their age",
-            "description": "Choose an appropriate diet according to your German Shepherd's age, as puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "description": "Choose an appropriate diet according to your Boxer's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
             "products": [
               {
                 "id": 1,
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Puppy Food",
                 "expandIcon": true,
                 "link": "https://petcaart.com/product/puppy-food"
               },
               {
                 "id": 2,
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Senior Dog Food",
                 "expandIcon": true,
                 "link": "https://petcaart.com/product/senior-dog-food"
@@ -144,24 +144,24 @@
         ]
       },
       "training": {
-        "title": "GERMAN SHEPHERD TRAINING",
-        "subtitle": "Essential training tips to help your German Shepherd thrive.",
-        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>German Shepherds</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
-        "image": "/gm-4.png",
+        "title": "BOXER TRAINING",
+        "subtitle": "Essential training tips to help your Boxer thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Boxers</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "/boxer-4.png",
         "tips": [
           {
             "id": 1,
             "title": "Physical training and exercises",
-            "description": "German Shepherds require regular physical exercise. Include activities such as running, playing fetch, swimming, agility training, or hiking in their training regime.",
-            "image": "/gm-4.png",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/boxer-4.png",
             "products": [
               {
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Training Product 1",
                 "link": "https://petcaart.com/product/training-product-1"
               },
               {
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Training Product 2",
                 "link": "https://petcaart.com/product/training-product-2"
               }
@@ -170,16 +170,16 @@
           {
             "id": 2,
             "title": "Interactive play",
-            "description": "German Shepherds require mental stimulation to keep their minds active. Activities such as scent-retention games and puzzle toys are great options to keep them stimulated.",
-            "image": "/gm-4.png",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/boxer-4.png",
             "products": [
               {
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Puzzle Toys",
                 "link": "https://petcaart.com/product/puzzle-toys"
               },
               {
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Interactive Toys",
                 "link": "https://petcaart.com/product/interactive-toys"
               }
@@ -189,23 +189,23 @@
       },
       "grooming": {
         "title": "GROOMING",
-        "subtitle": "Consider following tips when grooming your German Shepherd.",
-        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>German Shepherds</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs despite having dense and <strong style='color: #000000;'>medium-length</strong> coats.</span> Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
-        "image": "/gm-6.png",
+        "subtitle": "Consider following tips when grooming your Boxer.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Boxers</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "/boxer-6.png",
         "tips": [
           {
             "id": 1,
             "title": "Brush and bath",
-            "description": "German Shepherds should be regularly brushed to remove loose hair and distribute natural oils. Occasional bathing is sufficient to keep them clean and fresh.",
-            "image": "/gm-3.png",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/boxer-3.png",
             "products": [
               {
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Grooming Brush",
                 "link": "https://petcaart.com/product/grooming-brush"
               },
               {
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Dog Shampoo",
                 "link": "https://petcaart.com/product/dog-shampoo"
               }
@@ -214,16 +214,16 @@
           {
             "id": 2,
             "title": "Keep their ears clean",
-            "description": "German Shepherds have ears prone to infections, so it's important to check their ears regularly and to clean them when required with a cotton ball and a mild ear-cleaning solution.",
-            "image": "/gm-3.png",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/boxer-3.png",
             "products": [
               {
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Ear Cleaner",
                 "link": "https://petcaart.com/product/ear-cleaner"
               },
               {
-                "image": "/gm-3.png",
+                "image": "/boxer-3.png",
                 "label": "Cotton Pads",
                 "link": "https://petcaart.com/product/cotton-pads"
               }
@@ -234,346 +234,9 @@
       "homeCookedFood": {
         "title": "Home-Cooked Food Must Contain:",
         "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
-        "image": "/gm-8.png"
-      }
-    },
-    {
-      "id": "golden-retriever",
-      "name": "Golden Retriever",
-      "slug": "golden-retriever",
-      "image": "https://images.unsplash.com/photo-1633722715463-d30f4f325e24?w=400",
-      "navigation": [
-        {
-          "title": "ABOUT",
-          "image": "/t1.png"
-        },
-        {
-          "title": "DIET",
-          "image": "/t2.png"
-        },
-        {
-          "title": "TRAINING",
-          "image": "/t3.png"
-        },
-        {
-          "title": "GROOMING",
-          "image": "/t4.png"
-        }
-      ],
-      "description": "The Golden Retriever is one of the world's most adored dog breeds—loyal, loving, and always up for a game of fetch. Known for their friendly nature, intelligence, and devotion, Goldens thrive in families, active homes, and even therapy roles where companionship and play are central.",
-      "category": "dogs",
-      "characteristics": {
-        "size": "Large",
-        "temperament": "Friendly, Intelligent, Devoted",
-        "lifespan": "10-12 years",
-        "weight": "25-34 kg",
-        "colors": ["Golden", "Light Golden", "Dark Golden"],
-        "weightDetails": {
-          "male": "29-34 kg",
-          "female": "25-29 kg"
-        },
-        "heightDetails": {
-          "male": "56-61 cm",
-          "female": "51-56 cm"
-        },
-        "coat": "Long, water-repellent double coat"
-      },
-      "adaptability": {
-        "hotWeatherTolerance": "26°C",
-        "coldWeatherTolerance": "5°C",
-        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Golden Retrievers</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>water-repellent double coat</strong>.</span>",
-        "image": "/gm-1.png"
-      },
-      "traits": {
-        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
-        "image": "/shepherd-2.png"
-      },
-      "diet": {
-        "title": "DIET",
-        "subtitle": "Consider following tips when choosing food for your Golden Retrievers.",
-        "mainDescription": "<span class='text-[#0888B1] italic'>Golden Retrievers</span> thrive on a <strong>balanced diet rich in proteins, healthy fats,</strong> and essential nutrients to support their active lifestyle and maintain their beautiful coat.",
-        "image": "/gm-2.png",
-        "tips": [
-          {
-            "number": "1",
-            "title": "High-quality protein sources",
-            "description": "Golden Retrievers need high-quality protein from sources like chicken, fish, or lamb. Look for food with at least 20-25% protein content for optimal health.",
-            "products": [
-              {
-                "id": 1,
-                "image": "/gm-3.png",
-                "label": "Chicken & Rice",
-                "expandIcon": true
-              },
-              {
-                "id": 2,
-                "image": "/gm-3.png",
-                "label": "Fish Formula",
-                "expandIcon": true
-              }
-            ]
-          },
-          {
-            "number": "2",
-            "title": "Joint health support",
-            "description": "Golden Retrievers are prone to joint issues. Choose food with glucosamine and chondroitin to support hip and joint health.",
-            "products": [
-              {
-                "id": 1,
-                "image": "/gm-3.png",
-                "label": "Joint Support Formula",
-                "expandIcon": true
-              },
-              {
-                "id": 2,
-                "image": "/gm-3.png",
-                "label": "Hip & Joint Supplement",
-                "expandIcon": true
-              }
-            ]
-          }
-        ]
-      },
-      "training": {
-        "title": "GOLDEN RETRIEVER TRAINING",
-        "mainDescription": "<span class='text-[#0888B1] italic'>Golden Retrievers</span> are <strong>highly trainable and eager to please,</strong> making them excellent candidates for obedience training and various canine sports.",
-        "image": "/gm-4.png",
-        "tips": [
-          {
-            "id": 1,
-            "title": "Positive reinforcement",
-            "description": "Golden Retrievers respond best to positive reinforcement. Use treats, praise, and play as rewards for good behavior.",
-            "image": "/gm-4.png",
-            "products": [
-              {
-                "image": "/gm-3.png",
-                "label": "Training Treats"
-              },
-              {
-                "image": "/gm-3.png",
-                "label": "Clicker Training"
-              }
-            ]
-          },
-          {
-            "id": 2,
-            "title": "Swimming and retrieval",
-            "description": "Golden Retrievers love water and retrieving. Incorporate swimming sessions and fetch games into their exercise routine.",
-            "image": "/gm-4.png",
-            "products": [
-              {
-                "image": "/gm-3.png",
-                "label": "Water Toys"
-              },
-              {
-                "image": "/gm-3.png",
-                "label": "Floating Balls"
-              }
-            ]
-          }
-        ]
-      },
-      "grooming": {
-        "title": "GROOMING",
-        "subtitle": "Golden Retrievers require regular grooming to maintain their beautiful golden coat and prevent matting.",
-        "mainDescription": "<span class='text-[#0888B1] italic'>Golden Retrievers</span> have <strong>longer coats that require regular grooming</strong> to keep them healthy, shiny, and tangle-free.",
-        "image": "/gm-6.png",
-        "tips": [
-          {
-            "id": 1,
-            "title": "Regular brushing",
-            "description": "Golden Retrievers should be brushed 3-4 times per week to remove loose hair and prevent matting. Daily brushing during shedding season is recommended.",
-            "image": "/gm-3.png",
-            "products": [
-              {
-                "image": "/gm-3.png",
-                "label": "Slicker Brush"
-              },
-              {
-                "image": "/gm-3.png",
-                "label": "Undercoat Rake"
-              }
-            ]
-          },
-          {
-            "id": 2,
-            "title": "Bathing and coat care",
-            "description": "Bathe your Golden Retriever every 6-8 weeks with a gentle dog shampoo to keep their coat clean and healthy.",
-            "image": "/gm-3.png",
-            "products": [
-              {
-                "image": "/gm-3.png",
-                "label": "Coat Shampoo"
-              },
-              {
-                "image": "/gm-3.png",
-                "label": "Conditioning Spray"
-              }
-            ]
-          }
-        ]
-      },
-      "homeCookedFood": {
-        "title": "Home-Cooked Food Must Contain:",
-        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
-        "image": "/gm-8.png"
-      }
-    },
-    {
-      "id": "labrador",
-      "name": "Labrador Retriever",
-      "slug": "labrador",
-      "image": "https://images.unsplash.com/photo-1579195064642-622c09f2f7f9?w=400",
-      "description": "Outgoing, friendly, and active dogs that make excellent family pets. Labradors are known for their gentle temperament and love for people.",
-      "category": "dogs",
-      "characteristics": {
-        "size": "Large",
-        "temperament": "Outgoing, Even-Tempered, Gentle",
-        "lifespan": "10-12 years",
-        "weight": "25-36 kg"
-      }
-    },
-    {
-      "id": "beagle",
-      "name": "Beagle",
-      "slug": "beagle",
-      "image": "https://images.unsplash.com/photo-1505628346881-b72b27e84530?w=400",
-      "description": "Merry, friendly, and curious hounds with excellent sense of smell.",
-      "category": "dogs",
-      "characteristics": {
-        "size": "Small to Medium",
-        "temperament": "Friendly, Curious, Merry",
-        "lifespan": "12-15 years",
-        "weight": "9-11 kg"
-      }
-    },
-    {
-      "id": "pug",
-      "name": "Pug",
-      "slug": "pug",
-      "image": "https://images.unsplash.com/photo-1517849845537-4d257902454a?w=400",
-      "description": "Charming, mischievous, and loving companion dogs with distinctive wrinkled faces.",
-      "category": "dogs",
-      "characteristics": {
-        "size": "Small",
-        "temperament": "Charming, Mischievous, Loving",
-        "lifespan": "12-15 years",
-        "weight": "6-8 kg"
-      }
-    },
-    {
-      "id": "shih-tzu",
-      "name": "Shih Tzu",
-      "slug": "shih-tzu",
-      "image": "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=400",
-      "description": "Affectionate, playful, and outgoing toy dogs with long, flowing coats.",
-      "category": "dogs",
-      "characteristics": {
-        "size": "Small",
-        "temperament": "Affectionate, Playful, Outgoing",
-        "lifespan": "10-16 years",
-        "weight": "4-7 kg"
-      }
-    },
-    {
-      "id": "indie",
-      "name": "Indian Pariah (Indie)",
-      "slug": "indie",
-      "image": "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=400",
-      "description": "Smart, adaptable, and loyal native Indian dogs with excellent health.",
-      "category": "dogs",
-      "characteristics": {
-        "size": "Medium",
-        "temperament": "Intelligent, Alert, Social",
-        "lifespan": "13-14 years",
-        "weight": "15-20 kg"
-      }
-    },
-    {
-      "id": "pomeranian",
-      "name": "Pomeranian",
-      "slug": "pomeranian",
-      "image": "https://images.unsplash.com/photo-1546527868-ccb7ee7dfa6a?w=400",
-      "description": "Bold, inquisitive, and lively toy dogs with a fluffy double coat.",
-      "category": "dogs",
-      "characteristics": {
-        "size": "Small",
-        "temperament": "Bold, Inquisitive, Lively",
-        "lifespan": "12-16 years",
-        "weight": "2-3 kg"
+        "image": "/boxer-8.png"
       }
     }
   ],
-  "cats": [
-    {
-      "id": "persian",
-      "name": "Persian Cat",
-      "slug": "persian",
-      "image": "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=400",
-      "description": "Gentle, quiet, and affectionate cats with long, luxurious coats.",
-      "category": "cats",
-      "characteristics": {
-        "size": "Medium",
-        "temperament": "Gentle, Quiet, Affectionate",
-        "lifespan": "12-17 years",
-        "weight": "3-5 kg"
-      }
-    },
-    {
-      "id": "siamese",
-      "name": "Siamese Cat",
-      "slug": "siamese",
-      "image": "https://images.unsplash.com/photo-1513360371669-4adf3dd7dff8?w=400",
-      "description": "Vocal, social, and intelligent cats with distinctive color points.",
-      "category": "cats",
-      "characteristics": {
-        "size": "Medium",
-        "temperament": "Vocal, Social, Intelligent",
-        "lifespan": "12-20 years",
-        "weight": "3-5 kg"
-      }
-    },
-    {
-      "id": "british-shorthair",
-      "name": "British Shorthair",
-      "slug": "british-shorthair",
-      "image": "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=400",
-      "description": "Easygoing, calm, and affectionate cats with dense, plush coats.",
-      "category": "cats",
-      "characteristics": {
-        "size": "Medium to Large",
-        "temperament": "Easygoing, Calm, Affectionate",
-        "lifespan": "12-20 years",
-        "weight": "4-8 kg"
-      }
-    },
-    {
-      "id": "maine-coon",
-      "name": "Maine Coon",
-      "slug": "maine-coon",
-      "image": "https://images.unsplash.com/photo-1574158622682-e40e69881006?w=400",
-      "description": "Gentle giants with sociable and playful personalities.",
-      "category": "cats",
-      "characteristics": {
-        "size": "Large",
-        "temperament": "Gentle, Sociable, Playful",
-        "lifespan": "12-15 years",
-        "weight": "5-10 kg"
-      }
-    },
-    {
-      "id": "indie-cat",
-      "name": "Indian Street Cat (Indie)",
-      "slug": "indie-cat",
-      "image": "https://images.unsplash.com/photo-1529778873920-4da4926a72c2?w=400",
-      "description": "Resilient, adaptable, and loving native Indian cats with robust health.",
-      "category": "cats",
-      "characteristics": {
-        "size": "Small to Medium",
-        "temperament": "Independent, Adaptable, Affectionate",
-        "lifespan": "12-18 years",
-        "weight": "3-5 kg"
-      }
-    }
-  ]
+  "cats": []
 }
