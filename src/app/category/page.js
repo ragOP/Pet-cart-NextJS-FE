@@ -236,8 +236,8 @@ export default function CategoryPage() {
     router.push(`/category?${params.toString()}`);
   };
 
-  const handleProductClick = (productId) => {
-    router.push(`/product/${productId}`);
+  const handleProductClick = (product) => {
+    router.push(`/product/${product?.slug}`);
   };
 
   const isInitialLoading = isSubCategoriesLoading || isCollectionsLoading;
@@ -334,7 +334,7 @@ export default function CategoryPage() {
                   className="cursor-pointer"
                   key={product._id}
                   product={product}
-                  onClick={() => handleProductClick(product._id)}
+                  onClick={() => handleProductClick(product)}
                 />
               ))
             )}

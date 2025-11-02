@@ -63,8 +63,8 @@ function Trending() {
 
   const router = useRouter();
 
-  const onNavigateToProduct = (id) => {
-    router.push(`/product/${id}`);
+  const onNavigateToProduct = (product) => {
+    router.push(`/product/${product?.slug}`);
   };
 
   return (
@@ -109,7 +109,7 @@ function Trending() {
                 alt={item.title}
                 label={item.title}
                 className="w-50 cursor-pointer"
-                onClick={() => onNavigateToProduct(item._id)}
+                onClick={() => onNavigateToProduct(item)}
               />
             </CarouselItem>
           ))}

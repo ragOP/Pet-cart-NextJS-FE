@@ -24,8 +24,8 @@ const NewLaunched = () => {
 
   const router = useRouter();
 
-  const onNavigateToProduct = (id) => {
-    router.push(`/product/${id}`);
+  const onNavigateToProduct = (product) => {
+    router.push(`/product/${product?.slug}`);
   };
 
   return (
@@ -65,7 +65,7 @@ const NewLaunched = () => {
                 tag={item.tag}
                 className="max-w-50 cursor-pointer"
                 chip={item.isBestSeller ? "BESTSELLER" : undefined}
-                onClick={() => onNavigateToProduct(item._id)}
+                onClick={() => onNavigateToProduct(item)}
               />
             </CarouselItem>
           ))}

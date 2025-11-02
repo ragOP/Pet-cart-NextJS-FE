@@ -25,7 +25,7 @@ const CartItemMobile = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyC
       {/* Image - Small and compact */}
       <div 
         className="w-30 h-30 cursor-pointer flex-shrink-0"
-        onClick={() => onNavigateToProduct(item?.productId?._id)}
+        onClick={() => onNavigateToProduct(item?.productId?.slug)}
       >
         <CustomImage
           src={productDetails?.images?.[0] || item?.productId?.images?.[0]}

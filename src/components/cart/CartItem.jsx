@@ -22,7 +22,7 @@ const CartItem = ({ item, onQtyChange, onRemove, onNavigateToProduct, qtyChangeL
     <div className="bg-white rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-start border border-[#f59a10] w-full">
       {/* Image - Full width on mobile, normal on desktop */}
       <div className="w-full sm:w-36 aspect-square sm:aspect-auto cursor-pointer"
-      onClick={() => onNavigateToProduct(item?.productId?._id)}>
+      onClick={() => onNavigateToProduct(item?.productId?.slug)}>
         <CustomImage
           src={productDetails?.images?.[0] || item?.productId?.images?.[0]}
           alt={productDetails?.variant_name || productDetails?.variantName || productDetails?.title}

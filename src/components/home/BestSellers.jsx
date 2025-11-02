@@ -57,8 +57,8 @@ const BestSellers = () =>{
     };
   }, [api]);
 
-  const onNavigateToProduct = (id) => {
-    router.push(`/product/${id}`);
+  const onNavigateToProduct = (product) => {
+    router.push(`/product/${product?.slug}`);
   };
 
   return (
@@ -118,7 +118,7 @@ const BestSellers = () =>{
                   label: product.title || product.name,
                 }}
                 className="min-w-[20rem] max-w-[20rem] min-h-full cursor-pointer"
-                onClick={() => onNavigateToProduct(product._id)}
+                onClick={() => onNavigateToProduct(product)}
               />
             </CarouselItem>
           ))}

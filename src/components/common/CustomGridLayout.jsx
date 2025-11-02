@@ -16,9 +16,9 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
       } else {
         router.push(item.link);
       }
-    } else if (item.itemId && item.itemId._id) {
+    } else if (item.itemId && item.itemId.slug) {
       // If it's a product/category with itemId, navigate to product page
-      router.push(`/product/${item.itemId._id}`);
+      router.push(`/product/${item.itemId.slug}`);
     }
   };
 

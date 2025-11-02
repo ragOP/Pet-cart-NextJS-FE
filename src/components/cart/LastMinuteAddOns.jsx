@@ -55,8 +55,8 @@ const LastMinuteAddOns = () => {
     };
   }, [api]);
 
-  const onNavigateToProduct = (id) => {
-    router.push(`/product/${id}`);
+  const onNavigateToProduct = (product) => {
+    router.push(`/product/${product?.slug}`);
   };
 
   return (
@@ -115,7 +115,7 @@ const LastMinuteAddOns = () => {
                   label: product.title || product.name,
                 }}
                 className="min-w-[320px] max-w-[320px] min-h-full cursor-pointer"
-                onClick={() => onNavigateToProduct(product._id)}
+                onClick={() => onNavigateToProduct(product)}
               />
             </CarouselItem>
           ))}

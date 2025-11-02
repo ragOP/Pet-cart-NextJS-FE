@@ -22,8 +22,8 @@ const Essential = () => {
     select: (res) => res?.data?.data || [],
   });
 
-  const onNavigateToProduct = (id) => {
-    router.push(`/product/${id}`);
+  const onNavigateToProduct = (product) => {
+    router.push(`/product/${product?.slug}`);
   };
 
   return (
@@ -71,7 +71,7 @@ const Essential = () => {
                 alt={item.title}
                 label={item.title}
                 className="w-50 cursor-pointer"
-                onClick={() => onNavigateToProduct(item._id)}
+                onClick={() => onNavigateToProduct(item)}
               />
             </CarouselItem>
           ))}

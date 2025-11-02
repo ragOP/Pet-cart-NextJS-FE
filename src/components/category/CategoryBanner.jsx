@@ -22,7 +22,7 @@ export default function CategoryBanner({ type }) {
 
   // console.log(data?.productId?._id);
   const onNavigateToProduct = () => {
-    router.push(`/product/${data?.productId?._id}`);
+    router.push(`/product/${data?.productId?.slug}`);
   };
 
   return (

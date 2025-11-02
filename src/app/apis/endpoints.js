@@ -9,6 +9,7 @@ export const endpoints = {
 
   // products
   products: "api/product",
+  getSingleProductBySlug: "api/product/get-single-product/slug",
 
   // blogs
   blogs: "api/blog",

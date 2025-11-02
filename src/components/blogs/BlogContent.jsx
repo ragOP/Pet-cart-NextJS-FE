@@ -20,9 +20,9 @@ const BlogContent = ({ blog }) => {
   if (!blog) return null;
 
   // Navigation function
-  const handleProductClick = (productId) => {
-    if (productId) {
-      router.push(`/product/${productId}`);
+  const handleProductClick = (product) => {
+    if (product?.slug) {
+      router.push(`/product/${product.slug}`);
     }
   };
 
@@ -146,7 +146,7 @@ const BlogContent = ({ blog }) => {
                   <BestSellerProduct
                     product={formattedProduct}
                     className="w-70 cursor-pointer"
-                    onClick={() => handleProductClick(product._id)}
+                    onClick={() => handleProductClick(product)}
                   />
                 </CarouselItem>
               ) : null;

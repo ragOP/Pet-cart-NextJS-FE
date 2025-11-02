@@ -208,3 +208,15 @@ export const getProductById = async ({ id }) => {
   }
 };
 
+export const getProductBySlug = async ({ slug }) => {
+  try {
+    const apiResponse = await apiService({
+      endpoint: `${endpoints.getSingleProductBySlug}/${slug}`,
+    });
+
+    return apiResponse;
+  } catch (error) {
+    console.error(error);
+  }
+};
+

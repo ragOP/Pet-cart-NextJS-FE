@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import PrimaryLoader from "@/components/loaders/PrimaryLoader";
 import PrimaryEmptyState from "@/components/empty-states/PrimaryEmptyState";
-import { getProductById } from "@/helpers/home";
+import { getProductBySlug } from "@/helpers/home";
 import ImageGallery from "@/components/product/ImageGallery";
 import ProductVariants from "@/components/product/ProductVariants";
 import PriceAndCartDisplay from "@/components/product/PriceAndCartDisplay";
@@ -23,7 +23,7 @@ import CouponsDialog from "@/components/dialog/CouponsDialog";
 import { formatWeight } from "@/utils/formatWeight";
 
 const ProductPage = ({ params }) => {
-  const { id } = React.use(params);
+  const { slug } = React.use(params);
   const [selectedVariant, setSelectedVariant] = useState('main-product');
   const [selectedImage, setSelectedImage] = useState(0);
   const [pincode, setPincode] = useState("");
@@ -48,8 +48,8 @@ const ProductPage = ({ params }) => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["product", id],
-    queryFn: () => getProductById({ id }),
+    queryKey: ["product", slug],
+    queryFn: () => getProductBySlug({ slug }),
     select: (res) => res?.response?.data || {},
   });
 
@@ -90,17 +90,20 @@ const ProductPage = ({ params }) => {
     isLoading: reviewsLoading,
     isError: reviewsError,
   } = useQuery({
-    queryKey: ["reviews", id],
-    queryFn: () => getReviewsByProductId({ id }),
+    queryKey: ["reviews", data?._id],
+    queryFn: () => getReviewsByProductId({ id: data?._id }),
     select: (res) => res?.response?.data || {},
+    enabled: !!data?._id,
   });
 
   const onCheckDelivery = async () => {
+    if (!data?._id) return;
+    
     setDeliveryLoading(true);
     try {
       const response = await checkDelivery({
         pincode: pincode,
-        productId: id,
+        productId: data?._id,
       });
 
       if (response?.success) {
@@ -237,7 +240,7 @@ const ProductPage = ({ params }) => {
               // Main product as first option
               {
                 _id: 'main-product',
-                productId: data._id,
+                productId: data?._id,
                 sku: data.sku,
                 price: data.price,
                 salePrice: data.salePrice,
@@ -267,7 +270,7 @@ const ProductPage = ({ params }) => {
             stock={currentVariant.stock ?? data.stock}
             price={currentVariant.price ?? data.price}
             salePrice={currentVariant.salePrice ?? data.salePrice}
-            productId={data._id}
+            productId={data?._id}
             variantId={selectedVariant === 'main-product' ? null : selectedVariant}
             quantity={1}
             quantityVariant="new"
@@ -319,14 +322,14 @@ const ProductPage = ({ params }) => {
           },
           {
             title: "Reviews",
-            content: { ...reviewsData, productId: id, productName: data.title },
+            content: { ...reviewsData, productId: data?._id, productName: data.title },
             icon: MessageSquare,
           },
         ]}
       />
 
       <HandPickedProducts 
-        productId={id} 
+        productId={data?._id} 
         type="related" 
         title="Handpicked For You"
       />
@@ -338,7 +341,7 @@ const ProductPage = ({ params }) => {
       )}
 
       <RecommendationProduct 
-        productId={id} 
+        productId={data?._id} 
         type="similar" 
         title="Recommended For You"
       />

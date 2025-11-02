@@ -29,8 +29,8 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
     select: (res) => res?.data?.data || [],
   });
 
-  const onNavigateToProduct = (id) => {
-    router.push(`/product/${id}`);
+  const onNavigateToProduct = (product) => {
+    router.push(`/product/${product?.slug}`);
   };
 
   const remainingAmount = Math.max(0, targetAmount - currentAmount);
@@ -88,7 +88,7 @@ const SpecialDeals = ({ currentAmount = 597, targetAmount = 1500 }) => {
                   label: product.title || product.name,
                 }}
                 className="min-w-[300px] max-w-[300px] min-h-full cursor-pointer"
-                onClick={() => onNavigateToProduct(product._id)}
+                onClick={() => onNavigateToProduct(product)}
               />
             </CarouselItem>
           ))}

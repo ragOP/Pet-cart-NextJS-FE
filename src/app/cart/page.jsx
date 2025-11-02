@@ -264,8 +264,8 @@ const CartPage = () => {
     }
   };
 
-  const onNavigateToProduct = (id) => {
-    router.push(`/product/${id}`);
+  const onNavigateToProduct = (slug) => {
+    router.push(`/product/${slug}`);
   };
 
   const loadScript = (src) => {
