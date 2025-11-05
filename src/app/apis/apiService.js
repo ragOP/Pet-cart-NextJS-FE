@@ -58,12 +58,12 @@ export const apiService = async ({
     // Auto logout on 401 Unauthorized
     if (error?.response?.status === 401) {
       store.dispatch(clearAuth());
-      if (typeof window !== "undefined") {
-        window.location.href = "/";
-        setTimeout(() => {
-          store.dispatch(openLoginPopup({}));
-        }, 100);
-      }
+      // if (typeof window !== "undefined") {
+      //   window.location.href = "/";
+      //   setTimeout(() => {
+      //     store.dispatch(openLoginPopup({}));
+      //   }, 100);
+      // }
     }
     console.error(error, "backend endpoint error");
     return { success: false, error: true, ...(error || {}) };

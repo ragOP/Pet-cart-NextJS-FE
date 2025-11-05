@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import RequireAuth from "@/components/auth/RequireAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken } from "@/store/authSlice";
+import { openLoginPopup, setLoginRedirectUrl } from "@/store/uiSlice";
 import CartSavingsBanner from "@/components/cart/CartSavingsBanner";
 import CartList from "@/components/cart/CartList";
 import CartSummary from "@/components/cart/CartSummary";
@@ -44,6 +46,9 @@ const CartPage = () => {
   const [isUsingWalletAmount, setIsUsingWalletAmount] = useState(false);
   const router = useRouter();
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+  const token = useSelector(selectToken);
+  const isLoggedIn = !!token;
   const [params, setParams] = useState({
     address_id: getCookie("addressId"),
     coupon_id: appliedCoupon,
@@ -60,6 +65,7 @@ const CartPage = () => {
     queryKey: ["cart", params],
     queryFn: () => getCart({ params }),
     select: (res) => res?.data || null,
+    enabled: isLoggedIn, // Only fetch cart when user is logged in
   });
 
   const user = localStorage.getItem("persist:auth");
@@ -288,6 +294,15 @@ const CartPage = () => {
     );
   }, []);
 
+  // Open login popup if not logged in
+  useEffect(() => {
+    if (!isLoggedIn) {
+      dispatch(setLoginRedirectUrl("/cart"));
+      dispatch(openLoginPopup({}));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   const handleWalletToggle = (isUsing) => {
     setIsUsingWalletAmount(isUsing);
@@ -372,9 +387,19 @@ const CartPage = () => {
   const couponDiscount = cartData?.discount_amount;
   const walletDiscount = cartData?.walletDiscount || 0;
 
+  // Don't render cart content if not logged in
+  if (!isLoggedIn) {
+    return (
+      <div className="bg-[#FFFBF6] min-h-screen w-full flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg font-semibold text-gray-700 mb-2">Please login to view your cart</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <RequireAuth>
-      <div className="bg-[#FFFBF6] min-h-screen w-full">
+    <div className="bg-[#FFFBF6] min-h-screen w-full">
         {cartData && !cartLoading ? (
           <CartSavingsBanner savings={couponDiscount} />
         ) : (
@@ -517,7 +542,6 @@ const CartPage = () => {
           onConfirmCheckout={handleConfirmCheckout}
         />
       </div>
-    </RequireAuth>
   );
 };
 

@@ -90,12 +90,8 @@ const PriceAndCartDisplay = ({
         duration: 1500,
         autoClose: 1500,
       });
-      try {
-        // Set cart page as redirect URL instead of current page
-        dispatch(setLoginRedirectUrl("/cart"));
-      } catch (_) { }
-      router.push("/");
-      dispatch(openLoginPopup({}));
+      // Navigate to cart - RequireAuth will handle showing login popup
+      router.push("/cart");
       return;
     }
 
@@ -139,8 +135,7 @@ const PriceAndCartDisplay = ({
           <button
             onClick={handleAddToCart}
             disabled={loading || stock <= 0}
-            className={`w-full md:w-auto md:min-w-fit relative overflow-hidden ${
-              stock <= 0
+            className={`w-full md:w-auto md:min-w-fit relative overflow-hidden ${stock <= 0
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-[#f19813] hover:bg-[#d9820a]"
               } whitespace-nowrap text-white font-bold py-3 md:py-2 px-8 rounded-lg text-lg md:text-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#f19813] transform hover:scale-105 active:scale-95`}

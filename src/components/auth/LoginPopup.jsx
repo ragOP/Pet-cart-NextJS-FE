@@ -29,6 +29,8 @@ import {
 import { sendOtp } from "@/app/apis/sendOtp";
 import { loginUser } from "@/app/apis/loginUser";
 import { updateProfile } from "@/app/apis/updateProfile";
+import { addProductToCart } from "@/app/apis/addProductToCart";
+import { useQueryClient } from "@tanstack/react-query";
 import heart from "@/assets/heart.png";
 
 const LoginPopup = ({ isOpen, onClose }) => {
@@ -41,6 +43,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const redirectUrl = useSelector(selectLoginRedirectUrl);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   // Load referral code from sessionStorage if available
   useEffect(() => {
@@ -126,6 +129,10 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
         if (data.isExisitinguser === true) {
           dispatch(setAuth({ token: data.token, user: data.user }));
+          
+          // Sync localStorage cart items after login
+          syncLocalStorageCartItems(data.token);
+          
           toast.success("Login Successful!", {
             description: "Welcome back to PetCaart.",
             position: "top-right",
@@ -198,6 +205,9 @@ const LoginPopup = ({ isOpen, onClose }) => {
         const userData = apiResponse.data?.data || apiResponse.data;
 
         dispatch(setAuth({ token: token, user: userData }));
+
+        // Sync localStorage cart items after registration
+        syncLocalStorageCartItems(token);
 
         toast.success("Account Created!", {
           description: "Welcome to PetCaart.",
@@ -291,6 +301,41 @@ const LoginPopup = ({ isOpen, onClose }) => {
       setForm({ ...form, email: "" });
     }
     setStep(targetStep);
+  };
+
+  // Sync localStorage cart items to server cart
+  const syncLocalStorageCartItems = async (token) => {
+    try {
+      const pendingCartItems = JSON.parse(localStorage.getItem('pendingCartItems') || '[]');
+      
+      if (pendingCartItems.length > 0) {
+        // Add each pending item to cart
+        const syncPromises = pendingCartItems.map((item) => {
+          return addProductToCart({
+            productId: item.productId,
+            variantId: item.variantId,
+            quantity: item.quantity,
+          });
+        });
+
+        // Wait for all items to be added
+        await Promise.all(syncPromises);
+        
+        // Clear localStorage after successful sync
+        localStorage.removeItem('pendingCartItems');
+        
+        // Invalidate cart query to refresh cart data
+        // queryClient.invalidateQueries({ queryKey: ["cart"] });
+        
+        toast.success("Items from your saved cart have been added!", {
+          position: "top-right",
+          duration: 2000,
+        });
+      }
+    } catch (error) {
+      console.error('Error syncing local cart:', error);
+      // Don't show error to user, just log it
+    }
   };
 
   return (

@@ -90,6 +90,41 @@ const BestSellerProduct = ({
       return;
     }
 
+    // If not logged in, save to localStorage and navigate to cart
+    if (!isLoggedIn) {
+      try {
+        const pendingCartItems = JSON.parse(localStorage.getItem('pendingCartItems') || '[]');
+        const cartItem = {
+          productId: product._id,
+          variantId: null,
+          quantity: 1,
+          product: product // Store full product data for reference
+        };
+        
+        // Check if product already exists in pending cart
+        const existingIndex = pendingCartItems.findIndex(
+          item => item.productId === product._id && item.variantId === null
+        );
+        
+        if (existingIndex >= 0) {
+          // Update quantity if exists
+          pendingCartItems[existingIndex].quantity += 1;
+        } else {
+          // Add new item
+          pendingCartItems.push(cartItem);
+        }
+        
+        localStorage.setItem('pendingCartItems', JSON.stringify(pendingCartItems));
+      } catch (error) {
+        console.error('Error saving to localStorage:', error);
+      }
+      
+      // Navigate to cart page - RequireAuth will handle showing login
+      router.push('/cart');
+      return;
+    }
+
+    // If logged in, add to cart normally
     setButtonState('adding');
     addToCart({ productId: product._id, variantId: null, quantity: 1 });
   };
