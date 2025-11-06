@@ -22,26 +22,13 @@ import {
 } from "@/components/ui/drawer";
 import VegSwitchButton from "../common/VegSwitchButton";
 
-const BrandCard = ({ brand, selected }) => {
-  return (
-    <div className={cn("flex flex-col items-center justify-between bg-[#E7F4F8] px-2 pt-2 rounded-md cursor-pointer w-full min-h-24 transition-colors", selected && "bg-[#0888B1] border-2 border-[#0888B1]")}>
-      <div className="flex justify-center items-center flex-1">
-        <img src={brand.image} alt={brand.value} className="h-12 sm:h-16 lg:h-24 object-contain" />
-      </div>
-      <div className="w-full px-1 py-1">
-        <span className="text-xs sm:text-sm lg:text-base font-medium text-center leading-tight block" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{brand.label}</span>
-      </div>
-    </div>
-  );
-};
-
 export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, selectedSubCategory, collections, onOpenFilterDrawer, productsData }) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
-  const [selectedBrand, setSelectedBrand] = useState(null);
   const [open, setOpen] = useState(false);
   const [sortDrawerOpen, setSortDrawerOpen] = useState(false);
   const [highlightedFilter, setHighlightedFilter] = useState(null);
+  const [showAllBrands, setShowAllBrands] = useState(false);
 
   const { data: brands = [] } = useQuery({
     queryKey: ["brands"],
@@ -272,11 +259,10 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
         </div>
       </div>
 
-      {/* Filter Drawer - Identical to Mobile Design */}
       {open && (
         <div className="fixed inset-0 z-50 bg-black/20" onClick={() => setOpen(false)}>
           <div
-            className="fixed right-0 top-0 w-full lg:w-[480px] h-screen bg-white flex flex-col shadow-2xl"
+            className="fixed right-0 top-0 w-full lg:w-[560px] h-screen bg-white flex flex-col shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header - Fixed */}
@@ -295,38 +281,45 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
               <div className="space-y-6">
                 {/* Brand Filter */}
                 <div className="border-b border-gray-200 pb-6">
-                  <div className="mb-3">
+                  <div className="flex items-center justify-between mb-3">
                     <h3 className="text-lg font-semibold uppercase">Brand</h3>
                   </div>
-                  <div className="grid grid-cols-5 gap-2">
-                    {filterTabs.find(t => t.key === "brandSlug")?.items?.map((item) => (
-                      <div
-                        key={item.value}
-                        onClick={() => {
-                          setSelectedBrand(item);
-                          const currentValues = filters?.brandSlug ? (Array.isArray(filters.brandSlug) ? filters.brandSlug : [filters.brandSlug]) : [];
-                          const newValues = currentValues.includes(item.value)
-                            ? currentValues.filter(v => v !== item.value)
-                            : [...currentValues, item.value];
-                          onChangeFilter({
-                            brandSlug: newValues.length > 0 ? newValues : null,
-                          });
-                        }}
-                        className={`px-2  pt-2 border rounded-lg cursor-pointer text-center transition-colors h-20 flex flex-col justify-between ${(() => {
-                          const currentValues = filters?.brandSlug ? (Array.isArray(filters.brandSlug) ? filters.brandSlug : [filters.brandSlug]) : [];
-                          return currentValues.includes(item.value);
-                        })()
-                          ? 'border-[#f19813] bg-[#fef3e2]'
-                          : 'border-[#badee9] bg-[#e6f3f7] hover:border-[#0b88b1]'
-                          }`}
-                      >
-                        <div className="flex justify-center items-center flex-1">
-                          <img src={item.image} alt={item.label} className="w-8 h-8 object-contain" />
-                        </div>
-                        <span className="text-xs font-medium mt-1 line-clamp-2">{item.label}</span>
-                      </div>
-                    ))}
+                  <div className="flex flex-wrap gap-2">
+                    {filterTabs
+                      .find(t => t.key === "brandSlug")?.items
+                      ?.slice(0, showAllBrands ? undefined : 20)
+                      .map((item) => {
+                      const currentValues = filters?.brandSlug ? (Array.isArray(filters.brandSlug) ? filters.brandSlug : [filters.brandSlug]) : [];
+                      const isSelected = currentValues.includes(item.value);
+                      return (
+                        <button
+                          key={item.value}
+                          onClick={() => {
+                            const newValues = isSelected
+                              ? currentValues.filter(v => v !== item.value)
+                              : [...currentValues, item.value];
+                            onChangeFilter({
+                              brandSlug: newValues.length > 0 ? newValues : null,
+                            });
+                          }}
+                          className={`h-10 px-4 rounded-full border font-medium transition-colors ${isSelected
+                              ? 'bg-[#0b88b1] text-white border-[#0b88b1]'
+                              : 'bg-[#e6f3f7] text-gray-700 border-[#badee9] hover:border-[#0b88b1]'
+                            }`}
+                        >
+                          <span className="truncate">{item.label}</span>
+                        </button>
+                      );
+                    })}
                   </div>
+                  {filterTabs.find(t => t.key === "brandSlug")?.items?.length > 20 && (
+                    <button
+                      onClick={() => setShowAllBrands(prev => !prev)}
+                      className="mt-3 text-sm font-semibold text-[#0b88b1] hover:underline ml-2 cursor-pointer"
+                    >
+                      {showAllBrands ? "Show Less" : "Show More"}
+                    </button>
+                  )}
                 </div>
 
                 {/* Breed Filter - Commented out for now */}

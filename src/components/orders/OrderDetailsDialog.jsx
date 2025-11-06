@@ -38,6 +38,8 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
     }
   };
 
+  console.log("ORDER", order)
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/50 overflow-y-auto hide-scrollbar">
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[95vh] overflow-y-auto hide-scrollbar">
@@ -242,15 +244,15 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Total MRP Price</span>
-              <span className="text-gray-900 line-through">
+              <span className="text-gray-900">
                 ₹{order.totalMRP.toFixed(2)}
               </span>
             </div>
 
             <div className="flex justify-between text-sm">
-              <span className="text-gray-600">Discount on MRP Price</span>
+              <span className="text-gray-600">Sale Price</span>
               <span className="text-gray-900">
-                ₹{order.rawPrice.toFixed(2)}
+                ₹{(order.totalMRP - order.rawPrice).toFixed(2)}
               </span>
             </div>
 
@@ -263,7 +265,7 @@ export default function OrderDetailsDialog({ order, isOpen, onClose }) {
               </div>
             )}
 
-            {order.couponCode && (
+            {order.couponCode?.trim() !== "" && (
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">
                   Coupon Discount ({order.couponCode})
