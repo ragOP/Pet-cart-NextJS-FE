@@ -44,11 +44,17 @@ const CartProgressBar = ({ cartTotal = 0 }) => {
                 
                 // Easing function for racing effect (ease-out)
                 const easeOut = 1 - Math.pow(1 - progressRatio, 3);
-                const currentPosition = startPosition + (targetPosition - startPosition) * easeOut;
-                const currentProgress = startProgress + (targetPosition - startProgress) * easeOut;
+                // const currentPosition = startPosition + (targetPosition - startPosition) * easeOut;
+                // const currentProgress = startProgress + (targetPosition - startProgress) * easeOut;
                 
-                setDogPosition(currentPosition);
-                setAnimatedProgress(currentProgress);
+                // setDogPosition(currentPosition);
+                // setAnimatedProgress(currentProgress);
+
+                const currentPosition = 100
+                const currentProgress = 100
+
+                setDogPosition(currentPosition === 100 && isMobile ? 90 : currentPosition === 100 && !isMobile ? 97 : currentPosition);
+                setAnimatedProgress(currentPosition);
                 
                 if (progressRatio < 1) {
                     requestAnimationFrame(animate);
