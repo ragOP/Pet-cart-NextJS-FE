@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +29,13 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
   const [sortDrawerOpen, setSortDrawerOpen] = useState(false);
   const [highlightedFilter, setHighlightedFilter] = useState(null);
   const [showAllBrands, setShowAllBrands] = useState(false);
+  const sortValue = filters?.sort_by || "priceLowToHigh";
+
+  useEffect(() => {
+    if (!filters?.sort_by) {
+      onChangeFilter({ sort_by: "priceLowToHigh" });
+    }
+  }, [filters?.sort_by, onChangeFilter]);
 
   const { data: brands = [] } = useQuery({
     queryKey: ["brands"],
@@ -170,7 +177,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
             {/* Sort By */}
             <Select
               onValueChange={(value) => onChangeFilter({ sort_by: value })}
-              defaultValue={filters?.sort_by}
+              value={sortValue}
             >
               <SelectTrigger className="w-[200px] text-sm">
                 <SelectValue placeholder="Sort By" />
@@ -524,7 +531,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
           </DrawerHeader>
           <div className="px-4 py-4 space-y-2">
             <Button
-              variant={filters?.sort_by === "priceLowToHigh" ? "default" : "ghost"}
+              variant={sortValue === "priceLowToHigh" ? "default" : "ghost"}
               onClick={() => {
                 onChangeFilter({ sort_by: "priceLowToHigh" });
                 setSortDrawerOpen(false);
@@ -534,7 +541,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
               Price: Low to High
             </Button>
             <Button
-              variant={filters?.sort_by === "priceHighToLow" ? "default" : "ghost"}
+              variant={sortValue === "priceHighToLow" ? "default" : "ghost"}
               onClick={() => {
                 onChangeFilter({ sort_by: "priceHighToLow" });
                 setSortDrawerOpen(false);
