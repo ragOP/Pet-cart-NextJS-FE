@@ -23,7 +23,7 @@ const BestSellerProduct = ({
   onClick,
 }) => {
   const [selectedImage, setSelectedImage] = React.useState(0);
-  const [buttonState, setButtonState] = useState('add'); 
+  const [buttonState, setButtonState] = useState('add');
   const [showSuccess, setShowSuccess] = useState(false);
   const [showQuickView, setShowQuickView] = useState(false);
   const queryClient = useQueryClient();
@@ -100,12 +100,12 @@ const BestSellerProduct = ({
           quantity: 1,
           product: product // Store full product data for reference
         };
-        
+
         // Check if product already exists in pending cart
         const existingIndex = pendingCartItems.findIndex(
           item => item.productId === product._id && item.variantId === null
         );
-        
+
         if (existingIndex >= 0) {
           // Update quantity if exists
           pendingCartItems[existingIndex].quantity += 1;
@@ -113,12 +113,12 @@ const BestSellerProduct = ({
           // Add new item
           pendingCartItems.push(cartItem);
         }
-        
+
         localStorage.setItem('pendingCartItems', JSON.stringify(pendingCartItems));
       } catch (error) {
         console.error('Error saving to localStorage:', error);
       }
-      
+
       // Navigate to cart page - RequireAuth will handle showing login
       router.push('/cart');
       return;
@@ -148,7 +148,7 @@ const BestSellerProduct = ({
         </span>}
         {/* Expand/Fullscreen icons */}
         <div className="absolute z-5 top-2 sm:top-3 right-2 sm:right-3 flex flex-col gap-1 sm:gap-2">
-          <button 
+          <button
             onClick={(e) => {
               e.stopPropagation();
               setShowQuickView(true);
@@ -165,7 +165,7 @@ const BestSellerProduct = ({
             </svg>
           </button> */}
         </div>
-        <div className="w-full h-60 sm:h-64 rounded-lg relative bg-[#F6F6F6] border border-[#f19813]">
+        <div className="w-full h-60 sm:h-64 rounded-lg relative bg-white border border-[#f19813]">
           <CustomImage
             key={selectedImage}
             src={product.images[selectedImage]}
@@ -314,10 +314,10 @@ const BestSellerProduct = ({
       </div>
 
       {/* Quick View Modal */}
-      <QuickView 
-        product={product} 
-        isOpen={showQuickView} 
-        onClose={() => setShowQuickView(false)} 
+      <QuickView
+        product={product}
+        isOpen={showQuickView}
+        onClose={() => setShowQuickView(false)}
       />
     </div>
   );

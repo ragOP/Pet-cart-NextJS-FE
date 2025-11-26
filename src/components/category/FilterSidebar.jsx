@@ -78,6 +78,13 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
     };
   }, [open]);
 
+  // Split the prefix of the collection name
+  const splitCollectionName = (name) => {
+    if(name.startsWith("Dog") || name.startsWith("Cat")) {
+      return name.split(" ").slice(1).join(" ");
+    }
+    return name;
+  };
 
   // Initialize temp filters when drawer opens
   React.useEffect(() => {
@@ -382,7 +389,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                           isSelected ? "bg-gray-100" : ""
                         )}
                       >
-                        <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                        <div className="w-8 h-8 rounded-sm overflow-hidden flex-shrink-0">
                           <Image
                             src={collection.image || "/placeholder-collection.png"}
                             alt={collection.name}
@@ -392,7 +399,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                           />
                         </div>
                         <span className="font-medium text-gray-800 uppercase text-sm">
-                          {collection.name}
+                          {splitCollectionName(collection.name)}
                         </span>
                       </button>
                     );

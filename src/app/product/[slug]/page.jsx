@@ -57,19 +57,19 @@ const ProductPage = ({ params }) => {
     if (!data?.title) return null;
 
     return {
-      productName: data?.title,
-      productType: data?.productType,
-      brand: data?.brandId?.name,
-      netWeight: formatWeight(data?.weight),
-      importedAndMarketedBy: data?.importedBy,
-      origin: data?.countryOfOrigin,
-      price: `₹${data?.price}`,
-      discount: `${(((data?.price - data?.salePrice) / data?.price) * 100).toFixed(2)}%`,
-      platform: "Pet Caart",
-      subCategory: data?.subCategoryId?.name,
-      category: data?.categoryId?.name,
-      lifeStage: data?.lifeStage,
-      disclaimer: "All Images are for representation purpose only, You are advised to read the batch details, manufacturer details, expiry date and other details mentioned on the product.",
+      ProductName: data?.title,
+      ProductType: data?.productType,
+      Brand: data?.brandId?.name,
+      NetWeight: formatWeight(data?.weight),
+      ImportedAndMarketedBy: data?.importedBy,
+      Origin: data?.countryOfOrigin,
+      Price: `₹${data?.price}`,
+      Discount: `${(((data?.price - data?.salePrice) / data?.price) * 100).toFixed(2)}%`,
+      Platform: "PetCaart",
+      SubCategory: data?.subCategoryId?.name,
+      Category: data?.categoryId?.name,
+      LifeStage: data?.lifeStage,
+      Disclaimer: "All Images are for representation purpose only, You are advised to read the batch details, manufacturer details, expiry date and other details mentioned on the product.",
     };
   }, [
     data?.title,
@@ -98,7 +98,7 @@ const ProductPage = ({ params }) => {
 
   const onCheckDelivery = async () => {
     if (!data?._id) return;
-    
+
     setDeliveryLoading(true);
     try {
       const response = await checkDelivery({
@@ -328,9 +328,9 @@ const ProductPage = ({ params }) => {
         ]}
       />
 
-      <HandPickedProducts 
-        productId={data?._id} 
-        type="related" 
+      <HandPickedProducts
+        productId={data?._id}
+        type="related"
         title="Handpicked For You"
       />
 
@@ -340,9 +340,9 @@ const ProductPage = ({ params }) => {
         </div>
       )}
 
-      <RecommendationProduct 
-        productId={data?._id} 
-        type="similar" 
+      <RecommendationProduct
+        productId={data?._id}
+        type="similar"
         title="Recommended For You"
       />
 
