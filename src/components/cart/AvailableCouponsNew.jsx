@@ -35,7 +35,10 @@ const AvailableCouponsNew = ({ coupons = [], appliedCoupon, onApply, onRemove })
             >
                 <CarouselContent className="flex gap-4">
                     {processedCoupons.map((coupon) => (
-                        <CarouselItem key={coupon._id} className="">
+                        <CarouselItem
+                            key={coupon._id}
+                            className="basis-1/3 min-w-[260px]"
+                        >
                             <PuzzleCouponItem
                                 coupon={coupon}
                                 isApplied={coupon.isApplied}
