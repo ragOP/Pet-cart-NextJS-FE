@@ -4,7 +4,7 @@
       "id": "boxer",
       "name": "Boxer",
       "slug": "boxer",
-      "image": "/boxer-7.png",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608329/1_li3y1f.png",
       "navigation": [
         {
           "title": "ABOUT",
@@ -30,7 +30,11 @@
         "temperament": "Playful, Loyal, Intelligent",
         "lifespan": "10-12 years",
         "weight": "25-35 kg",
-        "colors": ["Fawn", "Brindle", "White"],
+        "colors": [
+          "Fawn",
+          "Brindle",
+          "White"
+        ],
         "weightDetails": {
           "male": "30-35 kg",
           "female": "25-32 kg"
@@ -45,17 +49,17 @@
         "hotWeatherTolerance": "30°C",
         "coldWeatherTolerance": "6°C",
         "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Boxers</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
-        "image": "/boxer-1.png"
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608328/2_ahmoml.png"
       },
       "traits": {
         "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
-        "image": "/trait-img.png"
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608329/3_rmxk7n.png"
       },
       "diet": {
         "title": "DIET",
         "subtitle": "Consider following tips when choosing food for your Boxer.",
         "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Boxers</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
-        "image": "/boxer-2.png",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608331/4_ttexps.png",
         "tips": [
           {
             "number": "1",
@@ -147,7 +151,7 @@
         "title": "BOXER TRAINING",
         "subtitle": "Essential training tips to help your Boxer thrive.",
         "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Boxers</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
-        "image": "/boxer-4.png",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608328/6_ke1zlc.png",
         "tips": [
           {
             "id": 1,
@@ -191,7 +195,7 @@
         "title": "GROOMING",
         "subtitle": "Consider following tips when grooming your Boxer.",
         "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Boxers</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
-        "image": "/boxer-6.png",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608329/7_jd7cv8.png",
         "tips": [
           {
             "id": 1,
@@ -235,6 +239,2396 @@
         "title": "Home-Cooked Food Must Contain:",
         "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
         "image": "/boxer-8.png"
+      }
+    },
+    {
+      "id": "doberman",
+      "name": "Doberman",
+      "slug": "doberman",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608619/2_xoutja.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Doberman</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Dobermans</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Large",
+        "temperament": "Alert, Loyal, Fearless",
+        "lifespan": "10-13 years",
+        "weight": "30-45 kg",
+        "colors": [
+          "Black & Rust",
+          "Red",
+          "Blue",
+          "Fawn"
+        ],
+        "weightDetails": {
+          "male": "34-45 kg",
+          "female": "30-40 kg"
+        },
+        "heightDetails": {
+          "male": "68-72 cm",
+          "female": "63-68 cm"
+        },
+        "coat": "Sleek, short coat"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "30°C",
+        "coldWeatherTolerance": "8°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Dobermans</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608619/1_sdegkv.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608619/3_bmeoff.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Doberman.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Dobermans</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608618/4_earnzn.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Dobermans thrive on 25–30% protein with healthy fats to maintain strength and agility for their athletic lifestyle.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/doberman-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/doberman-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Dobermans should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/doberman-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/doberman-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/doberman-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/doberman-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Doberman's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/doberman-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/doberman-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "DOBERMAN TRAINING",
+        "subtitle": "Essential training tips to help your Doberman thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Dobermans</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608618/6_ka1aym.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/doberman-4.png",
+            "products": [
+              {
+                "image": "/doberman-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/doberman-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/doberman-4.png",
+            "products": [
+              {
+                "image": "/doberman-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/doberman-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Doberman.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Dobermans</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762608623/7_uxsepu.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/doberman-3.png",
+            "products": [
+              {
+                "image": "/doberman-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/doberman-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/doberman-3.png",
+            "products": [
+              {
+                "image": "/doberman-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/doberman-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/doberman-8.png"
+      }
+    },
+    {
+      "id": "pomeranian",
+      "name": "Pomeranian",
+      "slug": "pomeranian",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612125/1_mizvdl.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Pomeranian</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Pomeranians</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Small",
+        "temperament": "Alert, Playful, Intelligent",
+        "lifespan": "12-16 years",
+        "weight": "2-4 kg",
+        "colors": [
+          "Orange",
+          "Cream",
+          "Black",
+          "Sable"
+        ],
+        "weightDetails": {
+          "male": "3-4 kg",
+          "female": "2-3.5 kg"
+        },
+        "heightDetails": {
+          "male": "21-28 cm",
+          "female": "18-25 cm"
+        },
+        "coat": "Thick, fluffy double coat"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "32°C",
+        "coldWeatherTolerance": "5°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Pomeranians</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612124/2_obeumi.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612124/3_ck7iow.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Pomeranian.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Pomeranians</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612124/4_th3epe.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Pomeranians thrive on nutrient-dense small-breed diets with Omega-rich ingredients to support their coat and energy levels.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/pom-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/pom-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Pomeranians should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/pom-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/pom-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/pom-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/pom-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Pomeranian's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/pom-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/pom-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "POMERANIAN TRAINING",
+        "subtitle": "Essential training tips to help your Pomeranian thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Pomeranians</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612124/6_pkouhr.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/pom-4.png",
+            "products": [
+              {
+                "image": "/pom-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/pom-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/pom-4.png",
+            "products": [
+              {
+                "image": "/pom-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/pom-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Pomeranian.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Pomeranians</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612124/7_o5yr6i.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/pom-3.png",
+            "products": [
+              {
+                "image": "/pom-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/pom-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/pom-3.png",
+            "products": [
+              {
+                "image": "/pom-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/pom-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/pom-8.png"
+      }
+    },
+    {
+      "id": "pug",
+      "name": "Pug",
+      "slug": "pug",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612260/1_smqhpr.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Pug</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Pugs</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Small",
+        "temperament": "Playful, Affectionate, Cheerful",
+        "lifespan": "12-15 years",
+        "weight": "6-8 kg",
+        "colors": [
+          "Fawn",
+          "Black",
+          "Apricot",
+          "Silver Fawn"
+        ],
+        "weightDetails": {
+          "male": "6-8 kg",
+          "female": "6-8 kg"
+        },
+        "heightDetails": {
+          "male": "30-36 cm",
+          "female": "28-34 cm"
+        },
+        "coat": "Short, smooth coat with facial folds"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "28°C",
+        "coldWeatherTolerance": "10°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Pugs</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612260/2_f2gkdj.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612259/3_ikpxht.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Pug.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Pugs</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612259/4_n6f3o4.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Pugs need controlled calories with easily digestible protein to prevent obesity and support respiratory and joint health.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/pug-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/pug-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Pugs should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/pug-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/pug-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/pug-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/pug-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Pug's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/pug-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/pug-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "PUG TRAINING",
+        "subtitle": "Essential training tips to help your Pug thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Pugs</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612260/6_arla5n.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/pug-4.png",
+            "products": [
+              {
+                "image": "/pug-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/pug-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/pug-4.png",
+            "products": [
+              {
+                "image": "/pug-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/pug-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Pug.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Pugs</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612258/7_s0om8l.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/pug-3.png",
+            "products": [
+              {
+                "image": "/pug-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/pug-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/pug-3.png",
+            "products": [
+              {
+                "image": "/pug-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/pug-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/pug-8.png"
+      }
+    },
+    {
+      "id": "rottweiler",
+      "name": "Rottweiler",
+      "slug": "rottweiler",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612610/1_jifxgq.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Rottweiler</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Rottweilers</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Large",
+        "temperament": "Confident, Loyal, Protective",
+        "lifespan": "9-10 years",
+        "weight": "35-60 kg",
+        "colors": ["Black & Tan"],
+        "weightDetails": {
+          "male": "45-60 kg",
+          "female": "35-48 kg"
+        },
+        "heightDetails": {
+          "male": "61-69 cm",
+          "female": "56-63 cm"
+        },
+        "coat": "Short, dense double coat"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "28°C",
+        "coldWeatherTolerance": "0°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Rottweilers</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612611/2_e2yamf.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612610/3_vaxacr.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Rottweiler.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Rottweilers</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612610/4_slizal.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Rottweilers benefit from lean, protein-rich diets (22–28%) with joint-supporting nutrients for their large, muscular build.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/rott-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/rott-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Rottweilers should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/rott-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/rott-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/rott-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/rott-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Rottweiler's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/rott-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/rott-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "ROTTWEILER TRAINING",
+        "subtitle": "Essential training tips to help your Rottweiler thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Rottweilers</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612609/6_s8wks9.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/rott-4.png",
+            "products": [
+              {
+                "image": "/rott-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/rott-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/rott-4.png",
+            "products": [
+              {
+                "image": "/rott-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/rott-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Rottweiler.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Rottweilers</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612609/7_mns7id.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/rott-3.png",
+            "products": [
+              {
+                "image": "/rott-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/rott-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/rott-3.png",
+            "products": [
+              {
+                "image": "/rott-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/rott-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/rott-8.png"
+      }
+    },
+    {
+      "id": "beagle",
+      "name": "Beagle",
+      "slug": "beagle",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612759/1_jaix4f.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Beagle</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Beagles</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Small to Medium",
+        "temperament": "Curious, Friendly, Merry",
+        "lifespan": "12-15 years",
+        "weight": "9-14 kg",
+        "colors": ["Tri-color", "Lemon & White", "Red & White"],
+        "weightDetails": {
+          "male": "10-14 kg",
+          "female": "9-13 kg"
+        },
+        "heightDetails": {
+          "male": "36-41 cm",
+          "female": "33-38 cm"
+        },
+        "coat": "Short, dense coat"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "30°C",
+        "coldWeatherTolerance": "5°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Beagles</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612758/2_dqkgls.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612758/3_xsld2a.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Beagle.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Beagles</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612759/4_mimtes.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Beagles are prone to overeating—use measured portions with 18–25% protein and moderate calories to maintain ideal weight.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/beagle-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/beagle-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Beagles should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/beagle-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/beagle-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/beagle-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/beagle-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Beagle's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/beagle-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/beagle-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "BEAGLE TRAINING",
+        "subtitle": "Essential training tips to help your Beagle thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Beagles</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612757/6_sgshvg.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/beagle-4.png",
+            "products": [
+              {
+                "image": "/beagle-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/beagle-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/beagle-4.png",
+            "products": [
+              {
+                "image": "/beagle-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/beagle-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Beagle.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Beagles</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762612759/7_llhizn.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/beagle-3.png",
+            "products": [
+              {
+                "image": "/beagle-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/beagle-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/beagle-3.png",
+            "products": [
+              {
+                "image": "/beagle-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/beagle-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/beagle-8.png"
+      }
+    },
+    {
+      "id": "golden-retriever",
+      "name": "Golden Retriever",
+      "slug": "golden-retriever",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613210/1_chrnnl.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Golden Retriever</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Golden Retrievers</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Large",
+        "temperament": "Friendly, Intelligent, Devoted",
+        "lifespan": "10-12 years",
+        "weight": "25-34 kg",
+        "colors": ["Light Golden", "Golden", "Dark Golden", "Cream"],
+        "weightDetails": {
+          "male": "30-34 kg",
+          "female": "25-32 kg"
+        },
+        "heightDetails": {
+          "male": "56-61 cm",
+          "female": "51-56 cm"
+        },
+        "coat": "Double coat, medium length, water-repellent"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "30°C",
+        "coldWeatherTolerance": "4°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Golden Retrievers</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613210/2_rsuvpp.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613209/3_xqorlz.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Golden Retriever.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Golden Retrievers</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613209/4_dxn8kl.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Golden Retrievers are energetic; look for 18–25% protein for adults and higher for puppies to sustain activity and muscle health.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/gold-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/gold-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Golden Retrievers should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/gold-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/gold-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/gold-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/gold-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Golden Retriever's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/gold-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/gold-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "GOLDEN RETRIEVER TRAINING",
+        "subtitle": "Essential training tips to help your Golden Retriever thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Golden Retrievers</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613208/5_kq445j.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/gold-4.png",
+            "products": [
+              {
+                "image": "/gold-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/gold-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/gold-4.png",
+            "products": [
+              {
+                "image": "/gold-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/gold-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Golden Retriever.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Golden Retrievers</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613208/6_yclflk.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/gold-3.png",
+            "products": [
+              {
+                "image": "/gold-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/gold-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/gold-3.png",
+            "products": [
+              {
+                "image": "/gold-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/gold-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/gold-8.png"
+      }
+    },
+    {
+      "id": "great-dane",
+      "name": "Great Dane",
+      "slug": "great-dane",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613293/2_a9edol.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Great Dane</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Great Danes</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Giant",
+        "temperament": "Gentle, Loyal, Confident",
+        "lifespan": "8-10 years",
+        "weight": "50-80 kg",
+        "colors": ["Fawn", "Brindle", "Harlequin", "Blue", "Black"],
+        "weightDetails": {
+          "male": "63-80 kg",
+          "female": "50-66 kg"
+        },
+        "heightDetails": {
+          "male": "76-86 cm",
+          "female": "71-81 cm"
+        },
+        "coat": "Short, smooth coat"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "28°C",
+        "coldWeatherTolerance": "5°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Great Danes</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613296/1_syzop5.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613292/3_s1apwo.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Great Dane.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Great Danes</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613291/4_kdhvdy.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Great Danes require controlled large-breed nutrition with balanced calcium and multiple small meals to help prevent bloating.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/greatdane-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/greatdane-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Great Danes should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/greatdane-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/greatdane-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/greatdane-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/greatdane-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Great Dane's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/greatdane-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/greatdane-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "GREAT DANE TRAINING",
+        "subtitle": "Essential training tips to help your Great Dane thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Great Danes</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613292/6_nc8twn.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/greatdane-4.png",
+            "products": [
+              {
+                "image": "/greatdane-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/greatdane-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/greatdane-4.png",
+            "products": [
+              {
+                "image": "/greatdane-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/greatdane-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Great Dane.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Great Danes</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762613290/7_opf4ej.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/greatdane-3.png",
+            "products": [
+              {
+                "image": "/greatdane-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/greatdane-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/greatdane-3.png",
+            "products": [
+              {
+                "image": "/greatdane-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/greatdane-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/greatdane-8.png"
+      }
+    },
+    {
+      "id": "labrador-retriever",
+      "name": "Labrador Retriever",
+      "slug": "labrador-retriever",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615185/2_s7s5gd.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Labrador Retriever</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Labrador Retrievers</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Medium to Large",
+        "temperament": "Friendly, Active, Outgoing",
+        "lifespan": "10-14 years",
+        "weight": "25-36 kg",
+        "colors": ["Black", "Yellow", "Chocolate"],
+        "weightDetails": {
+          "male": "29-36 kg",
+          "female": "25-32 kg"
+        },
+        "heightDetails": {
+          "male": "57-62 cm",
+          "female": "55-60 cm"
+        },
+        "coat": "Short, dense double coat, water-resistant"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "30°C",
+        "coldWeatherTolerance": "5°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Labrador Retrievers</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615185/1_vtfzpb.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615184/3_pcm7uj.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Labrador Retriever.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Labrador Retrievers</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615184/4_t1xr83.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Labrador Retrievers love food; choose portion-controlled meals with 18–25% protein to maintain energy and prevent excess weight.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/lab-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/lab-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Labrador Retrievers should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/lab-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/lab-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/lab-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/lab-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Labrador Retriever's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/lab-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/lab-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "LABRADOR RETRIEVER TRAINING",
+        "subtitle": "Essential training tips to help your Labrador Retriever thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Labrador Retrievers</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615183/6_wvkwvg.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/lab-4.png",
+            "products": [
+              {
+                "image": "/lab-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/lab-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/lab-4.png",
+            "products": [
+              {
+                "image": "/lab-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/lab-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Labrador Retriever.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Labrador Retrievers</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615183/7_ntbpsv.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/lab-3.png",
+            "products": [
+              {
+                "image": "/lab-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/lab-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/lab-3.png",
+            "products": [
+              {
+                "image": "/lab-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/lab-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/lab-8.png"
+      }
+    },
+    {
+      "id": "shih-tzu",
+      "name": "Shih Tzu",
+      "slug": "shih-tzu",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615278/2_fcwnjg.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Shih Tzu</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Shih Tzus</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Small",
+        "temperament": "Affectionate, Playful, Gentle",
+        "lifespan": "10-16 years",
+        "weight": "4-7.5 kg",
+        "colors": ["Gold & White", "Black & White", "Solid Black", "Solid Gold"],
+        "weightDetails": {
+          "male": "5-7.5 kg",
+          "female": "4-6.5 kg"
+        },
+        "heightDetails": {
+          "male": "23-27 cm",
+          "female": "20-24 cm"
+        },
+        "coat": "Long, flowing double coat"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "32°C",
+        "coldWeatherTolerance": "10°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Shih Tzus</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615281/1_miqxlm.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615275/3_upzagz.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Shih Tzu.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Shih Tzus</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615275/4_q32mip.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Shih Tzus do best with small-bite kibble (20–25% protein) and Omega-rich foods to support coat health.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/shihtzu-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/shihtzu-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Shih Tzus should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/shihtzu-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/shihtzu-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/shihtzu-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/shihtzu-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Shih Tzu's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/shihtzu-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/shihtzu-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "SHIH TZU TRAINING",
+        "subtitle": "Essential training tips to help your Shih Tzu thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Shih Tzus</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615274/6_ob833h.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/shihtzu-4.png",
+            "products": [
+              {
+                "image": "/shihtzu-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/shihtzu-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/shihtzu-4.png",
+            "products": [
+              {
+                "image": "/shihtzu-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/shihtzu-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Shih Tzu.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Shih Tzus</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762615275/7_dugtfj.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/shihtzu-3.png",
+            "products": [
+              {
+                "image": "/shihtzu-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/shihtzu-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/shihtzu-3.png",
+            "products": [
+              {
+                "image": "/shihtzu-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/shihtzu-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/shihtzu-8.png"
+      }
+    },
+    {
+      "id": "siberian-husky",
+      "name": "Siberian Husky",
+      "slug": "siberian-husky",
+      "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762459345/2_iotewa.png",
+      "navigation": [
+        {
+          "title": "ABOUT",
+          "image": "/t1.png"
+        },
+        {
+          "title": "DIET",
+          "image": "/t2.png"
+        },
+        {
+          "title": "TRAINING",
+          "image": "/t3.png"
+        },
+        {
+          "title": "GROOMING",
+          "image": "/t4.png"
+        }
+      ],
+      "description": "The <span style='color: #004e6a; font-weight: 600;'>Siberian Husky</span> is known for its signature traits—loyalty, intelligence, and trainability. Recognized for their confidence and affectionate nature, <span style='color: #004e6a; font-weight: 600;'>Siberian Huskies</span> excel in family environments, working roles, and active lifestyles.",
+      "category": "dogs",
+      "characteristics": {
+        "size": "Medium to Large",
+        "temperament": "Outgoing, Alert, Gentle",
+        "lifespan": "12-15 years",
+        "weight": "20-30 kg",
+        "colors": [
+          "Black & White",
+          "Gray & White",
+          "Red & White",
+          "Agouti"
+        ],
+        "weightDetails": {
+          "male": "20-27 kg",
+          "female": "16-23 kg"
+        },
+        "heightDetails": {
+          "male": "54-60 cm",
+          "female": "50-56 cm"
+        },
+        "coat": "Thick double coat"
+      },
+      "adaptability": {
+        "hotWeatherTolerance": "28°C",
+        "coldWeatherTolerance": "-15°C",
+        "description": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Siberian Huskies</span> adapt <span style='color: #6b7280;'>well to both <strong style='color: #000000;'>hot</strong> and <strong style='color: #000000;'>cold</strong> climates, thanks to their <strong style='color: #000000;'>coat</strong> and overall resilience.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762459348/1_s4cmub.png"
+      },
+      "traits": {
+        "description": "These attributes have been rated by dog trainers, expert vets and pet behaviorists. Remember that all dogs are individuals with their own personalities.",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762459345/3_sutmqz.png"
+      },
+      "diet": {
+        "title": "DIET",
+        "subtitle": "Consider following tips when choosing food for your Siberian Husky.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Siberian Huskies</span> thrive on a <span style='color: #6b7280;'>high-protein, balanced diet rich in <strong style='color: #000000;'>animal-based proteins</strong>, <strong style='color: #000000;'>healthy fats</strong>,</span> <span style='color: #6b7280;'>and essential vitamins</span> <span style='color: #6b7280;'>to support their <strong style='color: #000000;'>active lifestyle</strong> and <strong style='color: #000000;'>joint health</strong>.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762459345/4_uhnqqm.png",
+        "tips": [
+          {
+            "number": "1",
+            "title": "Choose a protein-rich diet",
+            "description": "Siberian Huskies need 25–30% protein and healthy fats; they self-regulate portions, so serve moderate meals and ensure hydration.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/husky-3.png",
+                "label": "Chicken Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/chicken-based-food"
+              },
+              {
+                "id": 2,
+                "image": "/husky-3.png",
+                "label": "Liver Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/liver-based-food"
+              }
+            ]
+          },
+          {
+            "number": "2",
+            "title": "Avoid fillers & additives",
+            "description": "Siberian Huskys should avoid foods with heavy fillers such as wheat and soy that may be difficult to digest or trigger sensitivities.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/husky-3.png",
+                "label": "Grain-Free Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/grain-free-food"
+              },
+              {
+                "id": 2,
+                "image": "/husky-3.png",
+                "label": "Natural Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/natural-food"
+              }
+            ]
+          },
+          {
+            "number": "3",
+            "title": "Add Essential Fatty Acids",
+            "description": "Look for foods containing Omega-3 and Omega-6 fatty acids to support skin, coat, and joint comfort.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/husky-3.png",
+                "label": "Fish Oil Supplement",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/fish-oil-supplement"
+              },
+              {
+                "id": 2,
+                "image": "/husky-3.png",
+                "label": "Salmon Based Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/salmon-based-food"
+              }
+            ]
+          },
+          {
+            "number": "4",
+            "title": "Consider their age",
+            "description": "Choose an appropriate diet according to your Siberian Husky's age—puppies need more protein and fat for growth, while adult and senior dogs may require lower levels for weight maintenance.",
+            "products": [
+              {
+                "id": 1,
+                "image": "/husky-3.png",
+                "label": "Puppy Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/puppy-food"
+              },
+              {
+                "id": 2,
+                "image": "/husky-3.png",
+                "label": "Senior Dog Food",
+                "expandIcon": true,
+                "link": "https://petcaart.com/product/senior-dog-food"
+              }
+            ]
+          }
+        ]
+      },
+      "training": {
+        "title": "SIBERIAN HUSKY TRAINING",
+        "subtitle": "Essential training tips to help your Siberian Husky thrive.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Siberian Huskies</span> require <span style='color: #6b7280;'>regular <strong style='color: #000000;'>exercise</strong>, proper <strong style='color: #000000;'>grooming</strong>, <strong style='color: #000000;'>socialization</strong>, and consistent <strong style='color: #000000;'>training</strong></span> <span style='color: #6b7280;'>to maintain their physical health and mental well-being.</span>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762459345/6_xsdwue.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Physical training and exercises",
+            "description": "Include activities such as running, playing fetch, swimming, agility training, or hiking in their routine.",
+            "image": "/husky-4.png",
+            "products": [
+              {
+                "image": "/husky-3.png",
+                "label": "Training Product 1",
+                "link": "https://petcaart.com/product/training-product-1"
+              },
+              {
+                "image": "/husky-3.png",
+                "label": "Training Product 2",
+                "link": "https://petcaart.com/product/training-product-2"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Interactive play",
+            "description": "Use scent-retention games and puzzle toys to provide mental stimulation and keep them engaged.",
+            "image": "/husky-4.png",
+            "products": [
+              {
+                "image": "/husky-3.png",
+                "label": "Puzzle Toys",
+                "link": "https://petcaart.com/product/puzzle-toys"
+              },
+              {
+                "image": "/husky-3.png",
+                "label": "Interactive Toys",
+                "link": "https://petcaart.com/product/interactive-toys"
+              }
+            ]
+          }
+        ]
+      },
+      "grooming": {
+        "title": "GROOMING",
+        "subtitle": "Consider following tips when grooming your Siberian Husky.",
+        "mainDescription": "<span style='color: #004e6a; font-weight: 600; font-style: italic;'>Siberian Huskies</span> have relatively <span style='color: #6b7280;'>low <strong style='color: #000000;'>grooming</strong> needs</span> despite their coat type. Here are some essential tips <span style='color: #6b7280;'>to ensure they</span> <strong style='color: #000000;'>shine.</strong>",
+        "image": "https://res.cloudinary.com/dtypwgdpn/image/upload/v1762459345/7_rjntcg.png",
+        "tips": [
+          {
+            "id": 1,
+            "title": "Brush and bath",
+            "description": "Brush regularly to remove loose hair and distribute natural oils. Occasional bathing keeps them clean and fresh.",
+            "image": "/husky-3.png",
+            "products": [
+              {
+                "image": "/husky-3.png",
+                "label": "Grooming Brush",
+                "link": "https://petcaart.com/product/grooming-brush"
+              },
+              {
+                "image": "/husky-3.png",
+                "label": "Dog Shampoo",
+                "link": "https://petcaart.com/product/dog-shampoo"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Keep their ears clean",
+            "description": "Check ears regularly and clean when required with a cotton ball and a mild ear-cleaning solution.",
+            "image": "/husky-3.png",
+            "products": [
+              {
+                "image": "/husky-3.png",
+                "label": "Ear Cleaner",
+                "link": "https://petcaart.com/product/ear-cleaner"
+              },
+              {
+                "image": "/husky-3.png",
+                "label": "Cotton Pads",
+                "link": "https://petcaart.com/product/cotton-pads"
+              }
+            ]
+          }
+        ]
+      },
+      "homeCookedFood": {
+        "title": "Home-Cooked Food Must Contain:",
+        "description": "<span style='color: #6b7280;'>Preparing home-cooked meals may be <strong style='color: #000000;'>time consuming</strong> and <strong style='color: #000000;'>nutritionally incomplete</strong>, consider adding food <strong style='color: #000000;'>toppers</strong> or <strong style='color: #000000;'>supplements</strong> to make up for the <strong style='color: #000000;'>lack of nutrients</strong>.</span>",
+        "image": "/husky-8.png"
       }
     }
   ],
