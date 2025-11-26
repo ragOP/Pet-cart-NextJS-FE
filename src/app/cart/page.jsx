@@ -523,6 +523,7 @@ const CartPage = () => {
                 onPay={() => setIsCheckoutDialogOpen(true)}
                 onWalletToggle={handleWalletToggle}
                 cartItemsCount={cartData?.items?.length || 0}
+                platformFee={cartData?.platformFee || 0}
               />
             )}
           </div>
