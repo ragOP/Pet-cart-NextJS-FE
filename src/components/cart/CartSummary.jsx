@@ -61,8 +61,9 @@ const CartSummary = ({
                     <div className="relative group">
                       <InfoIcon className="w-4 h-4 text-gray-400 cursor-help" />
                       <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap z-10">
-                        Platform fee is charged to cover the cost of running the
-                        platform and providing a seamless shopping experience.
+                      This small fee helps us maintain safe, reliable, and
+                        pet-friendly payment systems so your checkout stays
+                        smooth and protected 🐶
                         <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800"></div>
                       </div>
                     </div>
