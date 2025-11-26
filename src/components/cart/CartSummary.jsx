@@ -100,7 +100,7 @@ const CartSummary = ({
                       Expected Delivery By : {estimatedDeliveryDate}
                     </span>
                   </div>
-                  <span className="text-green-600 font-semibold">
+                  <span>
                     {shipping === 0 ? "FREE" : `₹${shipping.toFixed(2)}`}
                   </span>
                 </div>
