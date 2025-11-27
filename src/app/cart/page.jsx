@@ -401,7 +401,7 @@ const CartPage = () => {
   return (
     <div className="bg-[#FFFBF6] min-h-screen w-full">
         {cartData && !cartLoading ? (
-          <CartSavingsBanner savings={couponDiscount} />
+          <CartSavingsBanner savings={couponDiscount + walletDiscount + (totalMrp - totalPrice)} />
         ) : (
           <div className="h-16 bg-white rounded-lg shadow-sm animate-pulse" />
         )}
