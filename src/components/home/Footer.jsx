@@ -28,9 +28,13 @@ const Footer = ({
       {/* Background Image Overlay */}
       <div
         className="absolute inset-0 w-full h-full bg-cover bg-center pointer-events-none z-0"
+        aria-hidden="true"
+      />
+      {/* Gradient Overlay */}
+      <div
+        className="absolute inset-0 w-full h-full pointer-events-none z-[1]"
         style={{
-          backgroundImage: `url(${petFooterBg.src})`,
-          opacity: 0.85,
+          background: 'linear-gradient(to bottom, rgba(0, 122, 154, 0.09), rgba(245, 180, 65, 0.09))'
         }}
         aria-hidden="true"
       />
@@ -44,14 +48,15 @@ const Footer = ({
               Online Shopping
             </h3>
             <ul className="space-y-1 text-[#181818]">
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Dogs
+              <li>
+                <Link href="/category?subCategorySlug=dog-food&collectionSlug=dog-dry-food&sort_by=priceLowToHigh&page=1" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Dogs
+                </Link>
               </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Cats
-              </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Small Pets
+              <li>
+                <Link href="/category?subCategorySlug=cat-food&collectionSlug=cat-dry-food&sort_by=priceLowToHigh&page=1" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Cats
+                </Link>
               </li>
             </ul>
           </div>
@@ -60,17 +65,25 @@ const Footer = ({
           <div>
             <h3 className="text-[#004E6A] font-bold uppercase mb-2">Explore</h3>
             <ul className="space-y-1 text-[#181818]">
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Our story
+              <li>
+                <Link href="/support" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Our story
+                </Link>
               </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                FAQs
+              <li>
+                <Link href="/faq" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  FAQs
+                </Link>
               </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Blog
+              <li>
+                <Link href="/blogs" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Blog
+                </Link>
               </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Contact Us
+              <li>
+                <Link href="/account/contact-us" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Contact Us
+                </Link>
               </li>
             </ul>
           </div>
@@ -81,26 +94,35 @@ const Footer = ({
               Quick Links
             </h3>
             <ul className="space-y-1 text-[#181818]">
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                My Account
+              <li>
+                <Link href="/account/profile" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  My Account
+                </Link>
               </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Track Your Order
+              <li>
+                <Link href="/account/orders" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Track Your Order
+                </Link>
               </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Refund policy
+              <li>
+                <Link href="/refund-and-return-policy" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Refund & Return policy
+                </Link>
               </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Return policy
+              <li>
+                <Link href="/privacy-policy" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Privacy Policy
+                </Link>
               </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Privacy Policy
+              <li>
+                <Link href="/terms-and-policy" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Terms of Use
+                </Link>
               </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Terms of Use
-              </li>
-              <li className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
-                Refer and save
+              <li>
+                <Link href="/account/invite-friends" className="text-[#181818] hover:text-[#004E6A] hover:underline transition-colors cursor-pointer">
+                  Refer and save
+                </Link>
               </li>
             </ul>
           </div>
@@ -181,7 +203,9 @@ const Footer = ({
             <CustomImage
               src={logo || petLogo}
               alt="PetCaart"
-              className="w-36 md:w-45 md:h-30"
+              className="w-44 md:w-45 md:h-30 object-contain"
+              width={180}
+              height={144}
             />
           </div>
         </div>

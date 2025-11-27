@@ -129,10 +129,10 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
         if (data.isExisitinguser === true) {
           dispatch(setAuth({ token: data.token, user: data.user }));
-          
+
           // Sync localStorage cart items after login
           syncLocalStorageCartItems(data.token);
-          
+
           toast.success("Login Successful!", {
             description: "Welcome back to PetCaart.",
             position: "top-right",
@@ -307,7 +307,7 @@ const LoginPopup = ({ isOpen, onClose }) => {
   const syncLocalStorageCartItems = async (token) => {
     try {
       const pendingCartItems = JSON.parse(localStorage.getItem('pendingCartItems') || '[]');
-      
+
       if (pendingCartItems.length > 0) {
         // Add each pending item to cart
         const syncPromises = pendingCartItems.map((item) => {
@@ -320,13 +320,13 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
         // Wait for all items to be added
         await Promise.all(syncPromises);
-        
+
         // Clear localStorage after successful sync
         localStorage.removeItem('pendingCartItems');
-        
+
         // Invalidate cart query to refresh cart data
         // queryClient.invalidateQueries({ queryKey: ["cart"] });
-        
+
         toast.success("Items from your saved cart have been added!", {
           position: "top-right",
           duration: 2000,
@@ -653,11 +653,11 @@ const LoginPopup = ({ isOpen, onClose }) => {
 
                   <div className="text-center text-sm sm:text-sm md:text-sm lg:text-xs xl:text-xs 2xl:text-sm text-gray-500 mt-1">
                     By continuing, you agree to our{" "}
-                    <a href="#" className="text-[#1F5163] hover:underline">
+                    <a href="/terms-and-policy" className="text-[#1F5163] hover:underline">
                       Terms of Service
                     </a>{" "}
                     and{" "}
-                    <a href="#" className="text-[#1F5163] hover:underline">
+                    <a href="/privacy-policy" className="text-[#1F5163] hover:underline">
                       Privacy Policy
                     </a>
                     .
