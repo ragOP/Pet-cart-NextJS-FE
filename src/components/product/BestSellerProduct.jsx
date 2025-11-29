@@ -139,7 +139,7 @@ const BestSellerProduct = ({
   return (
     <div
       onClick={onClick}
-      className={`p-3 sm:p-4 rounded-2xl sm:rounded-2xl bg-white shadow-xl flex flex-col group transition-all duration-200 border border-1 hover:border-[#f19813] relative ${className}`}
+      className={`p-3 sm:p-4 rounded-2xl sm:rounded-2xl bg-white flex flex-col group transition-all duration-200 border border-1 hover:border-[#f19813] relative ${className}`}
     >
       {/* Product Image and Badge */}
       <div className="relative mb-2 sm:mb-4">

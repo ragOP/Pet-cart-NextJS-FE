@@ -120,11 +120,11 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
         <div className="lg:flex items-center justify-between gap-3 hidden px-2">
           {/* Left side - Category, Selected Filters, and Veg/Non-Veg */}
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-black text-base font-semibold pl-2 pr-10">
+            {selectedSubCategory && <div className="flex items-center gap-2 text-black text-base font-semibold pl-2 pr-10">
               <span className="font-bold text-xl">
                 {selectedSubCategory?.name || "Select Category"}
               </span>
-            </div>
+            </div>}
 
             {/* Veg Filter with VegSwitchButton */}
             <div className="flex items-center gap-2">
@@ -340,7 +340,7 @@ export default function TopFilterBar({ filters, onChangeFilter, deleteFilter, se
                         key={item.value}
                         onClick={() => {
                           const currentValues = filters?.breedSlug ? (Array.isArray(filters.breedSlug) ? filters.breedSlug : [filters.breedSlug]) : [];
-                          const newValues = currentValues.includes(item.value) 
+                          const newValues = currentValues.includes(item.value)
                             ? currentValues.filter(v => v !== item.value)
                             : [...currentValues, item.value];
                           onChangeFilter({

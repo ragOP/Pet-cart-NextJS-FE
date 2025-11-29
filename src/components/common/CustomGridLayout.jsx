@@ -103,7 +103,7 @@ const CustomGridLayout = ({ gridData, isLoading }) => {
           {contentItems?.map((item, itemIndex) => (
             <div
               key={item._id || itemIndex}
-              className="relative group cursor-pointer overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 transform"
+              className="relative group cursor-pointer overflow-hidden hover:shadow-lg transition-all duration-300 transform"
               onClick={() => handleItemClick(item)}
             >
               <CustomImage

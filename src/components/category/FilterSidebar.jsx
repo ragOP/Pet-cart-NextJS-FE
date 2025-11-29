@@ -372,7 +372,7 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                     </div>
                   ))}
                 </div>
-              ) : collections?.length > 0 ? (
+              ) : collections?.length > 0 && (
                 <div className="divide-y divide-gray-100">
                   {collections.map((collection, index) => {
                     const isSelected = filters?.collectionSlug === collection.slug;
@@ -404,10 +404,6 @@ export default function FilterSidebar({ collections, selectedSubCategory, onChan
                       </button>
                     );
                   })}
-                </div>
-              ) : (
-                <div className="p-4 text-center text-gray-500 text-sm">
-                  No collections found
                 </div>
               )}
             </div>

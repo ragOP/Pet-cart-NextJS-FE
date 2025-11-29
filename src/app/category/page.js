@@ -112,34 +112,27 @@ export default function CategoryPage() {
     select: (res) => res?.data?.data || [],
   });
 
-  // Set selected subcategory when subCategories are loaded or URL changes
   useEffect(() => {
     if (subCategories && subCategories.length > 0) {
-      const subCategorySlugFromUrl = searchParams.get("subCategorySlug");
+      const hasAnyParams = searchParams.toString().length > 0;
 
-      if (subCategorySlugFromUrl) {
-        // Find subcategory by slug from URL
-        const subCategoryFromUrl = subCategories.find(
-          (sub) => sub.slug === subCategorySlugFromUrl
-        );
-        if (subCategoryFromUrl) {
-          setSelectedSubCategory(subCategoryFromUrl);
-        } else {
-          // If slug not found in fetched subcategories, select first subcategory and update URL
-          const firstSubCategory = subCategories[0];
-          setSelectedSubCategory(firstSubCategory);
-          const params = new URLSearchParams(searchParams);
-          params.set("subCategorySlug", firstSubCategory.slug);
-          router.replace(`/category?${params.toString()}`);
+      if (hasAnyParams) {
+        const subCategorySlugFromUrl = searchParams.get("subCategorySlug");
+        if (subCategorySlugFromUrl) {
+          const subCategoryFromUrl = subCategories.find(
+            (sub) => sub.slug === subCategorySlugFromUrl
+          );
+          if (subCategoryFromUrl) {
+            setSelectedSubCategory(subCategoryFromUrl);
+          }
         }
-      } else {
-        // No subcategory in URL, select first subcategory and set URL
-        const firstSubCategory = subCategories[0];
-        setSelectedSubCategory(firstSubCategory);
-        const params = new URLSearchParams(searchParams);
-        params.set("subCategorySlug", firstSubCategory.slug);
-        router.replace(`/category?${params.toString()}`);
+        return;
       }
+      const firstSubCategory = subCategories[0];
+      setSelectedSubCategory(firstSubCategory);
+      const params = new URLSearchParams();
+      params.set("subCategorySlug", firstSubCategory.slug);
+      router.replace(`/category?${params.toString()}`);
     }
   }, [subCategories, searchParams, router]);
 
