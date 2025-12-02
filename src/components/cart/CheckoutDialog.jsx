@@ -37,9 +37,9 @@ const CheckoutDialog = ({
         <div className="p-4 flex flex-col gap-4">
           {/* Note */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm text-gray-700">Note (Optional)</label>
+            <label className="text-sm text-gray-700">Name of the pet (Optional)</label>
             <Input
-              placeholder="Leave a note for delivery..."
+              placeholder="Enter the name of the pet..."
               value={note}
               onChange={(e) => setNote(e.target.value)}
               className="bg-[#6A68680D] border border-gray-300 text-sm"

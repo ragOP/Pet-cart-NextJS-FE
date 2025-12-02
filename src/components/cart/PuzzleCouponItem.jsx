@@ -43,10 +43,20 @@ const PuzzleCouponItem = ({ coupon, isApplied = false, onApply, onRemove }) => {
                     </div>
                 </div>
 
-                <div className="ml-4 flex flex-col items-center justify-between py-4  text-[#684A00] font-gotham-rounded font-bold">
+                <div className="ml-4 flex flex-col items-center justify-between py-1  text-[#684A00] font-gotham-rounded font-bold">
                     <span className="text-[8px] md:text-[10px]font-medium text-[#323232]">USE CODE</span>
-                    <div className="flex flex-col items-center tracking-0 leading-[100%] space-y-1 font-holtwood font-[400]">
-                        <span className="text-[12px] md:text-[12px] px-2">{coupon?.code}</span>
+                    <div className="flex items-center justify-center w-full max-w-[80px] px-2 overflow-hidden">
+                        <span
+                            className="text-[10px] sm:text-[10px] md:text-[9px] font-holtwood font-[400] tracking-0 leading-tight text-center inline-block"
+                            style={{
+                                wordBreak: 'break-word',
+                                overflowWrap: 'anywhere',
+                                maxWidth: '100%',
+                                hyphens: 'auto'
+                            }}
+                        >
+                            {coupon?.code}
+                        </span>
                     </div>
                     <span className={`text-[8px] mt-2 md:text-[11px] font-bold hover:underline ${isApplied ? 'text-red-600' : 'text-[#004E6A]'
                         }`}>

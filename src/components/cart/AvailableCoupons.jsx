@@ -44,7 +44,7 @@ const AvailableCoupons = () => {
         <Percent className="w-5 h-5 text-red-500" />
         <h3 className="text-lg font-semibold text-gray-900">Available Coupons</h3>
       </div>
-      
+
       {/* Coupon Carousel */}
       <Carousel
         opts={{
@@ -67,7 +67,7 @@ const AvailableCoupons = () => {
                   <div className="relative">
                     <div className="absolute -top-2 left-0 right-0 h-4 bg-white rounded-full"></div>
                     <div className="absolute -bottom-2 left-0 right-0 h-4 bg-white rounded-full"></div>
-                    
+
                     <div className="px-4 py-3 relative z-10">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
@@ -92,7 +92,7 @@ const AvailableCoupons = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Action Card */}
                 <div className="w-32 bg-orange-200 rounded-lg p-3 flex flex-col justify-center items-center">
                   <div className="text-orange-800 font-bold text-sm mb-2">
@@ -113,7 +113,7 @@ const AvailableCoupons = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        
+
         <CarouselPrevious className="left-2" />
         <CarouselNext className="right-2" />
       </Carousel>
