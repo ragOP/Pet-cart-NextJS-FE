@@ -57,10 +57,10 @@ const Category = () => {
       setCategories(categoriesData?.data?.categories || []);
       setSubCategories(subCategoriesData?.data || []);
       setBrands(brandsData?.data || []);
-      
+
       // Use JSON breeds only (no API fetching)
       const jsonBreeds = getAllBreeds();
-      
+
       // Transform JSON breeds to match API breed structure
       const transformedJsonBreeds = jsonBreeds.map(breed => ({
         _id: breed.id,
@@ -68,7 +68,7 @@ const Category = () => {
         slug: breed.slug,
         image: breed.image
       }));
-      
+
       setBreeds(transformedJsonBreeds);
       setCollections(collectionsData?.data || []);
     } catch (error) {
@@ -122,6 +122,13 @@ const Category = () => {
   );
 
   function MobileDropdown({ category, sections, onBack, onClick, onClose }) {
+    const splitCollectionName = (name) => {
+      if(name.startsWith("Dog") || name.startsWith("Cat")) {
+        return name.split(" ").slice(1).join(" ");
+      }
+      return name;
+    };
+
     return (
       <div className="fixed inset-0 bg-white z-50 flex flex-col">
         <div className="flex items-center justify-between p-4 border-b">
@@ -163,7 +170,7 @@ const Category = () => {
                       }
                     }}
                   >
-                    <span className="text-xs">{item}</span>
+                    <span className="text-xs">{splitCollectionName(item)}</span>
                   </div>
                 ))}
               </div>
@@ -265,6 +272,13 @@ const Category = () => {
   }
 
   function Dropdown({ icon, title, sections, onClose, onClick }) {
+    const splitCollectionName = (name) => {
+      if(name.startsWith("Dog") || name.startsWith("Cat")) {
+        return name.split(" ").slice(1).join(" ");
+      }
+      return name;
+    };
+
     useEffect(() => {
       function handleClick(e) {
         if (!e.target.closest(".petcaart-dropdown")) {
@@ -311,7 +325,7 @@ const Category = () => {
                     }}
                   >
                     <p className="text-sm text-nowrap">
-                      {item}
+                      {splitCollectionName(item)}
                     </p>
                   </div>
                 ))}
